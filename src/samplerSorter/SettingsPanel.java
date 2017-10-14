@@ -32,7 +32,7 @@ public class SettingsPanel extends JPanel {
 		ActionListener actionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				Properties.DISPLAY_SOUND_SUFFIXES.setNewValue(chckbxNewCheckBox.isSelected());
-				RunSS.refreshSoundPanelAfterSuffixChange();
+				SSUI.refreshSoundPanelAfterSuffixChange();
 			}
 		};
 		chckbxNewCheckBox.addActionListener(actionListener);
@@ -101,20 +101,30 @@ public class SettingsPanel extends JPanel {
 
 		add(panSlider);
 
+		JCheckBox chckbxPlayAudioOn = new JCheckBox("Play Audio on Click");
+		chckbxPlayAudioOn.setSelected(Properties.PLAY_ON_CLICK.isTrue());
+		chckbxPlayAudioOn.setBounds(8, 39, 147, 25);
+		ActionListener act = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				Properties.PLAY_ON_CLICK.setNewValue(chckbxPlayAudioOn.isSelected());
+			}
+		};
+		chckbxPlayAudioOn.addActionListener(act);
+		add(chckbxPlayAudioOn);
+
 	}
 
 	private void updateAudioVolume(double volume) {
 
-		RunSS.audioPlayer.setVolume(volume);
+		SSUI.audioPlayer.setVolume(volume);
 
 		lblMasterVolume.setText("Master volume (" + (int) (volume) + "%)");
 	}
 
 	private void updateAudioPan(double pan) {
 
-		RunSS.audioPlayer.setPan(pan);
+		SSUI.audioPlayer.setPan(pan);
 
 		lblMasterPan.setText("Master pan (" + (int) (pan) + "%)");
 	}
-
 }

@@ -3,19 +3,16 @@ package samplerSorter.macro.macrolist;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import samplerSorter.macro.MacroEditor;
 import samplerSorter.macro.MacroAction;
-import samplerSorter.macro.MacroLoader;
-import samplerSorter.logger.Logger;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import samplerSorter.macro.MacroEditor;
 
 public class MacroListUI extends JPanel {
 
@@ -35,6 +32,8 @@ public class MacroListUI extends JPanel {
 	 * Create the frame.
 	 */
 	public MacroListUI(MacroEditor m) {
+
+		this.m = m;
 
 		setBounds(0, 0, 355, 272);
 		setVisible(true);
@@ -59,10 +58,10 @@ public class MacroListUI extends JPanel {
 		columnpanel.setBackground(Color.gray);
 		borderlaoutpanel.add(columnpanel, BorderLayout.NORTH);
 
-		btnAdd = new JButton("Add");
+		btnAdd = new JButton("Add new macro");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				m.showMacroUI(null); //null because theres no panel to edit
+				m.showMacroListUI(null); //null because theres no panel to edit
 			}
 		});
 		btnAdd.setBounds(0, 247, 355, 25);
@@ -111,16 +110,12 @@ public class MacroListUI extends JPanel {
 
 	public void keyBindPanelIsClicked(MacroInfoPanel me) {
 
-		System.out.println(m);
-		System.out.println(me);
-		System.out.println(me.keyBind);
-
-		m.showMacroUI(me.keyBind); //null
+		m.showMacroListUI(me.keyBind); //null
 	}
 
-	public void removePanel(MacroInfoPanel toDelete) {
+	public void removePanel(MacroInfoPanel macroInfoPanel) {
 
-		columnpanel.remove(toDelete);
+		columnpanel.remove(macroInfoPanel);
 		refreshInfoPanel();
 
 	}

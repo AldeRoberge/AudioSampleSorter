@@ -75,6 +75,13 @@ public class MacroLoader {
 		serialise();
 	}
 
+	public void removeMacro(MacroAction keyBind, MacroInfoPanel me) {
+		keyBinds.remove(keyBind);
+		macroEditor.macroListUI.removePanel(me);
+
+		serialise();
+	}
+
 	private void createNewFileAndStoreDefaultKeyBinds() {
 
 		File f = new File(SAVED_MACROS_FILENAME);
@@ -109,7 +116,6 @@ public class MacroLoader {
 	}
 
 	public void serialise() {
-		Logger.logInfo(TAG, "Serialising");
 
 		try {
 			FileOutputStream fos = new FileOutputStream(SAVED_MACROS_FILENAME);
@@ -118,12 +124,11 @@ public class MacroLoader {
 			oos.close();
 			fos.close();
 		} catch (IOException ioe) {
+			Logger.logInfo(TAG, "Error while serialising");
 			ioe.printStackTrace();
 		}
-	}
 
-	public void removeKeyBind(MacroAction keyBind) {
-		keyBinds.remove(keyBind);
+		Logger.logInfo(TAG, "Serialising complete");
 	}
 
 }

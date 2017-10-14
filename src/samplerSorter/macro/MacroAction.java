@@ -19,4 +19,8 @@ public class MacroAction implements Serializable {
 		return keys.toString() + " " + actionsToPerform.toString();
 	}
 
+	public void clearKeys() {
+		keys = new ArrayList<Key>();
+	}
+
 }

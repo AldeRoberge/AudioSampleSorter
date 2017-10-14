@@ -18,7 +18,7 @@ public class MacroActionEditPanel extends JPanel {
 
 	MacroEditorUI k;
 
-	Action keyBind;
+	Action action;
 
 	/**
 	 * 
@@ -26,7 +26,7 @@ public class MacroActionEditPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	public MacroActionEditPanel(Action action, MacroEditorUI k) {
-		this.keyBind = action;
+		this.action = action;
 		this.k = k;
 
 		setPreferredSize(new Dimension(337, 24));
