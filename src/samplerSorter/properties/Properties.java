@@ -37,6 +37,7 @@ public class Properties {
 
 	//RunSS PlayOnClickChbkx and on SoundPanel click, to check if the sound should be played
 	public static Property PLAY_ON_CLICK = new Property("PLAY_ON_CLICK", TRUE, e);
+<<<<<<< HEAD
 
 	//RunSS PlayOnClickChbkx and on SoundPanel click, to check if the sound should be played
 	public static Property THEME = new Property("THEME", "Nimbus", e);
@@ -51,6 +52,8 @@ public class Properties {
 	
 
 	//
+=======
+>>>>>>> e79edf06f91b91693f6e330a3935515b00f4ab1c
 
 	/**public static String SORT_BY_KEY = "SORT_BY";
 	public static Property SORT_BY = new Property(SORT_BY_KEY, SORT_BY_NAME, e);*/

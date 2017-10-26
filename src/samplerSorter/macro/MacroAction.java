@@ -22,6 +22,7 @@ public class MacroAction implements Serializable {
 		return keys.toString() + " " + actionsToPerform.toString();
 	}
 
+<<<<<<< HEAD
 	//Used by MacroEditorUI when the edit macro Jtextpanel is clicked to reset the keys
 	public void clearKeys() {
 		keys = new ArrayList<Key>();
@@ -38,5 +39,10 @@ public class MacroAction implements Serializable {
 	
 	
 	
+=======
+	public void clearKeys() {
+		keys = new ArrayList<Key>();
+	}
+>>>>>>> e79edf06f91b91693f6e330a3935515b00f4ab1c
 
 }

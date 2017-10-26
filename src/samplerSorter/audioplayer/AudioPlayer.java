@@ -6,14 +6,21 @@ package samplerSorter.audioplayer;
 
 import java.util.Map;
 
+<<<<<<< HEAD
 import javax.sound.sampled.SourceDataLine;
 
+=======
+>>>>>>> e79edf06f91b91693f6e330a3935515b00f4ab1c
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
+<<<<<<< HEAD
 import samplerSorter.UI.Sound;
+=======
+import samplerSorter.Sound;
+>>>>>>> e79edf06f91b91693f6e330a3935515b00f4ab1c
 import samplerSorter.logger.Logger;
 import samplerSorter.properties.Properties;
 
@@ -32,6 +39,7 @@ public class AudioPlayer implements BasicPlayerListener {
 	private boolean isStopped;
 	private boolean isPaused;
 
+<<<<<<< HEAD
 	//
 
 	private Map audioInfo = null;
@@ -49,6 +57,8 @@ public class AudioPlayer implements BasicPlayerListener {
 		audioVis.setStatus(newStatus);
 	}
 
+=======
+>>>>>>> e79edf06f91b91693f6e330a3935515b00f4ab1c
 	public AudioPlayer() {
 		Logger.logInfo(TAG, "Initialising AudioPlayer (this, BasicPlayer and BasicController)");
 
@@ -62,7 +72,10 @@ public class AudioPlayer implements BasicPlayerListener {
 		// It means that this object will be notified on BasicPlayer
 		// events such as : opened(...), progress(...), stateUpdated(...)
 		player.addBasicPlayerListener(this);
+<<<<<<< HEAD
 
+=======
+>>>>>>> e79edf06f91b91693f6e330a3935515b00f4ab1c
 	}
 
 	public void playNewSound(Sound sound) {
@@ -107,6 +120,7 @@ public class AudioPlayer implements BasicPlayerListener {
 	 * @param properties audio stream properties.
 	 */
 	public void opened(Object stream, Map properties) {
+<<<<<<< HEAD
 		audioInfo = properties;
 	}
 
@@ -119,19 +133,56 @@ public class AudioPlayer implements BasicPlayerListener {
 			getVisualizer().analyzer.writeDSP(pcmdata);
 		}
 
+=======
+		// Pay attention to properties. It's useful to get duration, 
+		// bitrate, channels, even tag such as ID3v2.
+		/*System.out.println("opened : " + properties.toString());
+		
+		//test
+		
+		Iterator it = properties.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry) it.next();
+			System.out.println(pair.getKey() + " = " + pair.getValue());
+			it.remove(); // avoids a ConcurrentModificationException
+		}**/
+	}
+
+	/**
+	 * Progress callback while playing.
+	 * 
+	 * This method is called severals time per seconds while playing.
+	 * properties map includes audio format features such as
+	 * instant bitrate, microseconds position, current frame number, ... 
+	 * 
+	 * @param bytesread from encoded stream.
+	 * @param microseconds elapsed (<b>reseted after a seek !</b>).
+	 * @param pcmdata PCM samples.
+	 * @param properties audio stream parameters.
+	 */
+	public void progress(int bytesread, long microseconds, byte[] pcmdata, Map properties) {
+		// Pay attention to properties. It depends on underlying JavaSound SPI
+		// MP3SPI provides mp3.equalizer.
+
+		//System.out.println("progress : " + properties.toString());
+>>>>>>> e79edf06f91b91693f6e330a3935515b00f4ab1c
 	}
 
 	/**
 	 * Notification callback for basicplayer events such as opened, eom ...
 	 *  
+<<<<<<< HEAD
 	 *  A copy of javazoom.jlgui.player.amp.processStateUpdated(BasicPlayerEvent event)
 	 *  
+=======
+>>>>>>> e79edf06f91b91693f6e330a3935515b00f4ab1c
 	 * @param event
 	 */
 	public void stateUpdated(BasicPlayerEvent event) {
 		// Notification of BasicPlayer states (opened, playing, end of media, ...)
 		System.out.println("stateUpdated : " + event.toString());
 
+<<<<<<< HEAD
 		int state = event.getCode();
 
 		if (event.getCode() == BasicPlayerEvent.STOPPED) {
@@ -181,6 +232,20 @@ public class AudioPlayer implements BasicPlayerListener {
 		//javazoom.jlgui.player.amp.PlayerUI
 		//processStateUpdated(BasicPlayerEvent event)
 
+=======
+		if (event.getCode() == BasicPlayerEvent.STOPPED) {
+			isStopped = true;
+		} else if (event.getCode() == BasicPlayerEvent.PAUSED) {
+			isPaused = true;
+		} else if (event.getCode() == BasicPlayerEvent.PLAYING) {
+			isPaused = false;
+			isStopped = false;
+		} else if (event.getCode() == BasicPlayerEvent.RESUMED) {
+			isPaused = false;
+			isStopped = false;
+		}
+
+>>>>>>> e79edf06f91b91693f6e330a3935515b00f4ab1c
 	}
 
 	@Override

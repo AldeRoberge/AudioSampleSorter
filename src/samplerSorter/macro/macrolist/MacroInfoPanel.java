@@ -82,6 +82,7 @@ public class MacroInfoPanel extends JPanel {
 			}
 		});
 	}
+<<<<<<< HEAD
 
 	public void updateText() {
 		lblKey.setText(Util.keysToString("", keyBind.keys, ""));
@@ -101,5 +102,11 @@ public class MacroInfoPanel extends JPanel {
 
 		}
 
+=======
+
+	public void updateText() {
+		lblKey.setText(Util.keysToString("", keyBind.keys, ""));
+		labelAction.setText(keyBind.actionsToPerform.size() + " action");
+>>>>>>> e79edf06f91b91693f6e330a3935515b00f4ab1c
 	}
 }
