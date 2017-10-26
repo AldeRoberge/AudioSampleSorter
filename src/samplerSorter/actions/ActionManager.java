@@ -2,8 +2,9 @@ package samplerSorter.actions;
 
 import java.util.ArrayList;
 
-import samplerSorter.SamplerSorter;
-import samplerSorter.actions.type.impl.PlayAction;
+import samplerSorter.actions.type.PlayAction;
+import samplerSorter.actions.type.RenameAction;
+import samplerSorter.actions.type.SimpleUIAction;
 
 public class ActionManager {
 
@@ -12,8 +13,25 @@ public class ActionManager {
 	 */
 	public static ArrayList<Action> actions = new ArrayList<Action>();
 
-	public static void init(SamplerSorter s) {
-		actions.add(new PlayAction());
+	public static void init() {
+
+		//Simple UI Actions
+		
+		SimpleUIAction.init();
+
+		for (SimpleUIAction sUIa : SimpleUIAction.UIActions) {
+			addAction(sUIa);
+		}
+		
+		//Other Actions
+
+		addAction(new PlayAction());
+		addAction(new RenameAction());
+
+	}
+
+	public static void addAction(Action a) {
+		actions.add(a);
 	}
 
 }

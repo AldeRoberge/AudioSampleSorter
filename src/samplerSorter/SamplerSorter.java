@@ -65,7 +65,7 @@ public class SamplerSorter extends JFrame {
 	 * Create the frame.
 	 */
 	public SamplerSorter() {
-		ActionManager.init(this);
+		ActionManager.init();
 		
 		setBackground(Color.WHITE);
 

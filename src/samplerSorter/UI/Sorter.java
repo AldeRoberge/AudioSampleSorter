@@ -20,7 +20,7 @@ import samplerSorter.SamplerSorter;
 import samplerSorter.actions.ActionManager;
 import samplerSorter.audioplayer.AudioPlayer;
 import samplerSorter.logger.Logger;
-import samplerSorter.macro.global.GlobalMacroKeyListener;
+import samplerSorter.macro.GlobalMacroKeyListener;
 import samplerSorter.properties.Properties;
 import samplerSorter.properties.RelativeLocationManager;
 import samplerSorter.util.ExtensionFilter;

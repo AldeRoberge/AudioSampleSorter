@@ -21,14 +21,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import samplerSorter.UI.other.Container;
 import samplerSorter.actions.Action;
 import samplerSorter.actions.ActionManager;
 import samplerSorter.macro.Key;
 import samplerSorter.macro.MacroAction;
 import samplerSorter.macro.MacroEditor;
 import samplerSorter.macro.MacroLoader;
+import samplerSorter.macro.macroedit.actionCustomizer.ActionEditor;
 import samplerSorter.macro.macrolist.MacroListUI;
 import samplerSorter.logger.Logger;
+import samplerSorter.util.Icons;
 import samplerSorter.util.Util;
 import javax.swing.JScrollPane;
 
@@ -59,8 +62,10 @@ public class MacroEditorUI extends JPanel {
 
 	public static JScrollPane scrollPane;
 
-	private static ArrayList<Action> actions = new ArrayList<Action>();
-	private static ArrayList<MacroActionEditPanel> macroActionEditPanels = new ArrayList<MacroActionEditPanel>();
+	private ArrayList<Action> actions = new ArrayList<Action>();
+	private ArrayList<MacroActionEditPanel> macroActionEditPanels = new ArrayList<MacroActionEditPanel>();
+
+	public ActionEditor actionEditor = new ActionEditor();
 
 	public void onHide() {
 		isListenningForKeyInputs = false;
@@ -73,6 +78,8 @@ public class MacroEditorUI extends JPanel {
 	 * Create the frame.
 	 */
 	public MacroEditorUI(MacroEditor m) {
+
+		actionEditor.setVisible(true);
 
 		this.m = m;
 
@@ -129,7 +136,14 @@ public class MacroEditorUI extends JPanel {
 		add(txtTest);
 		txtTest.setColumns(10);
 
+		//Populate the ComboBox
+
+		ActionManager.init();
+
+		Logger.logInfo(TAG, "Found " + ActionManager.actions.size() + " actions.");
+
 		Action[] array = ActionManager.actions.toArray(new Action[ActionManager.actions.size()]);
+
 		JComboBox<Action> comboBox = new JComboBox<Action>(array);
 		comboBox.setBounds(91, 61, 262, 22);
 		add(comboBox);
@@ -288,7 +302,7 @@ public class MacroEditorUI extends JPanel {
 		}
 	}
 
-	public static void refreshPanels() {
+	public void refreshPanels() {
 
 		for (MacroActionEditPanel logPanel : macroActionEditPanels) {
 			logPanel.validate();
@@ -308,11 +322,9 @@ public class MacroEditorUI extends JPanel {
 
 	public static Color hex2Rgb(String colorStr) {
 		//@formatter:off
-	    return new Color(
-	            Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
-	            Integer.valueOf( colorStr.substring( 3, 5 ), 16 ),
-	            Integer.valueOf( colorStr.substring( 5, 7 ), 16 ) );
-	  //@formatter:on
+		return new Color(Integer.valueOf(colorStr.substring(1, 3), 16), Integer.valueOf(colorStr.substring(3, 5), 16),
+				Integer.valueOf(colorStr.substring(5, 7), 16));
+		//@formatter:on
 	}
 
 	public void removeFromPanels(MacroActionEditPanel me) {

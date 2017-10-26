@@ -9,7 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-import samplerSorter.actions.type.impl.PlayAction;
+import samplerSorter.actions.type.PlayAction;
 import samplerSorter.logger.Logger;
 import samplerSorter.macro.macrolist.MacroInfoPanel;
 
@@ -75,11 +75,7 @@ public class MacroLoader {
 	}
 
 	public void removeMacro(MacroAction keyBind, MacroInfoPanel me) {
-<<<<<<< HEAD
 		macroActions.remove(keyBind);
-=======
-		keyBinds.remove(keyBind);
->>>>>>> e79edf06f91b91693f6e330a3935515b00f4ab1c
 		macroEditor.macroListUI.removePanel(me);
 
 		serialise();
