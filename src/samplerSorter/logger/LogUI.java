@@ -30,7 +30,9 @@ public class LogUI extends JPanel {
 	 * Create the frame.
 	 */
 	public LogUI() {
-		setBounds(0, 0, 500, 240);
+		
+		
+		setBounds(0, 0, 620, 400);
 		setVisible(true);
 		setLayout(new CardLayout(0, 0));
 
@@ -39,7 +41,7 @@ public class LogUI extends JPanel {
 		// list
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(15, 16, 550, 398);
+		scrollPane.setBounds(15, 16, 620, 398);
 		scrollPane.setAutoscrolls(true);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
@@ -64,6 +66,8 @@ public class LogUI extends JPanel {
 		e.error = "BETRAY";
 		
 		addLogInfoPanel(e);*/
+		
+		Logger.init(this);
 
 	}
 

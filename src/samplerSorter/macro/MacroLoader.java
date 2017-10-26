@@ -9,11 +9,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-import samplerSorter.actions.type.PlayAction;
-import samplerSorter.actions.type.RenameAction;
+import samplerSorter.actions.type.impl.PlayAction;
 import samplerSorter.logger.Logger;
 import samplerSorter.macro.macrolist.MacroInfoPanel;
-import samplerSorter.macro.macrolist.MacroListUI;
 
 public class MacroLoader {
 
@@ -21,7 +19,8 @@ public class MacroLoader {
 
 	public static final String SAVED_MACROS_FILENAME = "keyBinds.ss";
 
-	public ArrayList<MacroAction> keyBinds = new ArrayList<MacroAction>();
+	//Formelly known as 'keyBinds'
+	public static ArrayList<MacroAction> macroActions = new ArrayList<MacroAction>();
 
 	public MacroEditor macroEditor;
 
@@ -69,8 +68,15 @@ public class MacroLoader {
 	}
 
 	public void addNewMacro(MacroAction tmp) {
-		keyBinds.add(tmp);
+		macroActions.add(tmp);
 		macroEditor.macroListUI.addKeyBindInfoPanel(tmp);
+
+		serialise();
+	}
+
+	public void removeMacro(MacroAction keyBind, MacroInfoPanel me) {
+		macroActions.remove(keyBind);
+		macroEditor.macroListUI.removePanel(me);
 
 		serialise();
 	}
@@ -91,39 +97,39 @@ public class MacroLoader {
 
 		//Space = play
 
-		MacroAction k1 = new MacroAction();
-		k1.keys.add(new Key(KeyEvent.VK_SPACE));
-		k1.actionsToPerform.add(new PlayAction());
+		MacroAction defaultPlayAction = new MacroAction();
+		defaultPlayAction.keys.add(new Key(KeyEvent.VK_SPACE));
+		defaultPlayAction.actionsToPerform.add(new PlayAction());
 
-		addNewMacro(k1);
+		addNewMacro(defaultPlayAction);
 
 		//R = rename
 
-		MacroAction k2 = new MacroAction();
+		/**MacroAction k2 = new MacroAction();
 		k2.keys.add(new Key(KeyEvent.VK_R));
 		k2.actionsToPerform.add(new RenameAction());
+		
+		addNewMacro(k2);*/
 
 		//
 
-		addNewMacro(k2);
+		
 	}
 
 	public void serialise() {
-		Logger.logInfo(TAG, "Serialising");
 
 		try {
 			FileOutputStream fos = new FileOutputStream(SAVED_MACROS_FILENAME);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(keyBinds);
+			oos.writeObject(macroActions);
 			oos.close();
 			fos.close();
 		} catch (IOException ioe) {
+			Logger.logInfo(TAG, "Error while serialising");
 			ioe.printStackTrace();
 		}
-	}
 
-	public void removeKeyBind(MacroAction keyBind) {
-		keyBinds.remove(keyBind);
+		Logger.logInfo(TAG, "Serialising complete");
 	}
 
 }

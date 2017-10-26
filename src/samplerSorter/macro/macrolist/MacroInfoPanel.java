@@ -19,15 +19,11 @@ import java.awt.event.ActionEvent;
 
 public class MacroInfoPanel extends JPanel {
 
+	MacroEditor m;
+
 	public MacroInfoPanel me = this;
 
 	MacroAction keyBind;
-
-	MacroEditor m;
-
-	boolean isSelected = false;
-	public static final Color selectedBackGround = Color.RED;
-	public static final Color normalBackGround = Color.WHITE;
 
 	/**
 	 * 
@@ -41,12 +37,12 @@ public class MacroInfoPanel extends JPanel {
 		this.keyBind = keyBind;
 		this.m = m;
 
-		setPreferredSize(new Dimension(351, 67));
+		setPreferredSize(new Dimension(345, 67));
 		setLayout(null);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(5, 5, 340, 57);
+		panel.setBounds(5, 5, 333, 57);
 		add(panel);
 		panel.setLayout(null);
 
@@ -57,7 +53,7 @@ public class MacroInfoPanel extends JPanel {
 
 		labelAction = new JLabel("Actions");
 		labelAction.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
-		labelAction.setBounds(158, 0, 117, 57);
+		labelAction.setBounds(158, 0, 110, 57);
 		panel.add(labelAction);
 
 		btnNewButton = new JButton("X");
@@ -66,11 +62,14 @@ public class MacroInfoPanel extends JPanel {
 		btnNewButton.setMargin(new Insets(0, 0, 0, 0)); //allows for the 'X' to display even if theres not a lot of space around it
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				m.macroLoader.removeKeyBind(keyBind);
-				m.macroListUI.removePanel(me);
+
+				System.out.println("M : " + m);
+				System.out.println("M.macroloader : " + m.macroLoader);
+
+				m.macroLoader.removeMacro(keyBind, me);
 			}
 		});
-		btnNewButton.setBounds(287, 13, 41, 29);
+		btnNewButton.setBounds(280, 13, 41, 29);
 		panel.add(btnNewButton);
 
 		addMouseListener(new MouseAdapter() {
@@ -78,34 +77,29 @@ public class MacroInfoPanel extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
-				System.out.println(m);
-				System.out.println(m.macroListUI);
-				System.out.println(me);
-
 				m.macroListUI.keyBindPanelIsClicked(me);
-
-				isSelected = !isSelected;
-
-				if (isSelected) {
-
-					setBackground(selectedBackGround);
-					repaint();
-
-				} else {
-
-					setBackground(normalBackGround);
-					repaint();
-
-				}
 
 			}
 		});
 	}
 
 	public void updateText() {
-		System.out.println("Updating text " + keyBind.actionsToPerform.size());
-
 		lblKey.setText(Util.keysToString("", keyBind.keys, ""));
-		labelAction.setText(keyBind.actionsToPerform.size() + " action");
+
+		if (keyBind.actionsToPerform.size() > 1) {
+
+			labelAction.setText(keyBind.actionsToPerform.size() + " action");
+			labelAction.setToolTipText(keyBind.actionsToPerform.toString());
+
+		} else if (keyBind.actionsToPerform.size() == 1) {
+
+			labelAction.setText(keyBind.actionsToPerform.get(0).toString());
+
+		} else if (keyBind.actionsToPerform.size() == 0) {
+
+			labelAction.setText("No action");
+
+		}
+
 	}
 }

@@ -21,8 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import samplerSorter.actions.Action;
 import samplerSorter.actions.ActionManager;
-import samplerSorter.actions.type.Action;
 import samplerSorter.macro.Key;
 import samplerSorter.macro.MacroAction;
 import samplerSorter.macro.MacroEditor;
@@ -51,7 +51,6 @@ public class MacroEditorUI extends JPanel {
 	private JTextField txtTest;
 
 	public int keysPressedAndNotReleased = 0;
-	public ArrayList<Key> keysPressed = new ArrayList<Key>();
 
 	private boolean newKeyBind;
 
@@ -60,7 +59,8 @@ public class MacroEditorUI extends JPanel {
 
 	public static JScrollPane scrollPane;
 
-	private static ArrayList<MacroActionEditPanel> panels = new ArrayList<MacroActionEditPanel>();
+	private static ArrayList<Action> actions = new ArrayList<Action>();
+	private static ArrayList<MacroActionEditPanel> macroActionEditPanels = new ArrayList<MacroActionEditPanel>();
 
 	public void onHide() {
 		isListenningForKeyInputs = false;
@@ -84,18 +84,32 @@ public class MacroEditorUI extends JPanel {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if (newKeyBind) { //This is a new samplerSorter.macro being created
-					newKeyBind = false;
+				System.out.println("new keybind : " + newKeyBind);
 
+				if (newKeyBind) {
+					newKeyBind = false;
 					Logger.logInfo(TAG, "Creating new KeyBind");
 
-					m.macroLoader.addNewMacro(new MacroAction());
+					keyBindToEdit.actionsToPerform.clear();
+
+					m.macroLoader.addNewMacro(keyBindToEdit);
 				}
+
+				keyBindToEdit.actionsToPerform.clear();
+
+				for (Action action : actions) { //on save : 
+
+					//System.out.println(keyBindToEdit.toString());
+					//System.out.println(keyBindToEdit.actionsToPerform);
+
+					keyBindToEdit.actionsToPerform.add(action);
+				}
+
+				m.macroListUI.refreshInfoPanel();
 
 				m.macroLoader.serialise(); //just save
 
-				m.macroListUI.refreshInfoPanel();
-				m.showKeyBindPanel();
+				m.showMacroEditUI();
 			}
 		});
 		btnAdd.setBounds(0, 245, 365, 25);
@@ -116,7 +130,7 @@ public class MacroEditorUI extends JPanel {
 		txtTest.setColumns(10);
 
 		Action[] array = ActionManager.actions.toArray(new Action[ActionManager.actions.size()]);
-		JComboBox comboBox = new JComboBox(array);
+		JComboBox<Action> comboBox = new JComboBox<Action>(array);
 		comboBox.setBounds(91, 61, 262, 22);
 		add(comboBox);
 
@@ -124,7 +138,8 @@ public class MacroEditorUI extends JPanel {
 			public void actionPerformed(ActionEvent evt) {
 				if (comboBox.getSelectedItem() != null) {
 					Action selectedAction = (Action) comboBox.getSelectedItem();
-					addActionEditPanel(selectedAction);
+					addActionAndActionEditPanel(selectedAction);
+
 				}
 			}
 		});
@@ -153,7 +168,7 @@ public class MacroEditorUI extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (!isListenningForKeyInputs) {
-					keysPressed.clear();
+					keyBindToEdit.clearKeys();
 					txtTest.setText("Press any key");
 					Logger.logInfo(TAG, "Now listenning for key inputs");
 					isListenningForKeyInputs = true;
@@ -180,10 +195,10 @@ public class MacroEditorUI extends JPanel {
 						if (ke.getID() == KeyEvent.KEY_PRESSED) {
 							Key e = new Key(ke.getKeyCode());
 
-							if (!keysPressed.contains(e)) {
+							if (!keyBindToEdit.keys.contains(e)) {
 								keysPressedAndNotReleased++;
 
-								keysPressed.add(e);
+								keyBindToEdit.keys.add(e);
 
 								//Build string for field showing name of keys
 
@@ -197,6 +212,7 @@ public class MacroEditorUI extends JPanel {
 								isListenningForKeyInputs = false;
 								lblIsInEdit.setText("EDIT MODE = FALSE");
 								txtTest.setFont(RESULT_FONT_BOLD);
+
 							}
 
 							keysPressedAndNotReleased--;
@@ -214,34 +230,40 @@ public class MacroEditorUI extends JPanel {
 	}
 
 	public void changeKeyBindToEdit(MacroAction keyBindToEdit) {
-		this.keyBindToEdit = keyBindToEdit;
 
 		if (keyBindToEdit != null) {
+			newKeyBind = false;
+
 			for (Action a : keyBindToEdit.actionsToPerform) {
-				addActionEditPanel(a);
+				addActionAndActionEditPanel(a);
 			}
 
-			keysPressed = keyBindToEdit.keys;
-
-			updateTxtTest();
-
 		} else {
+			System.out.println("keyBindToEdit is null, creating new keyBind");
+
 			newKeyBind = true;
 			keyBindToEdit = new MacroAction();
+
 		}
+
+		this.keyBindToEdit = keyBindToEdit;
+
+		updateTxtTest();
 	}
 
 	private void updateTxtTest() {
-		txtTest.setText(Util.keysToString("[", keysPressed, "]"));
+		txtTest.setText(Util.keysToString("[", keyBindToEdit.keys, "]"));
 	}
 
 	// TODO : update this when adding fiels
-	public void addActionEditPanel(Action action) {
+	public void addActionAndActionEditPanel(Action action) {
 
 		MacroActionEditPanel infoPanel = new MacroActionEditPanel(action, this);
 
 		columnpanel.add(infoPanel);
-		panels.add(infoPanel);
+
+		actions.add(action);
+		macroActionEditPanels.add(infoPanel);
 
 		refreshPanels();
 
@@ -249,12 +271,16 @@ public class MacroEditorUI extends JPanel {
 
 	public void clearActionEditPanels() {
 		try {
-			for (Iterator<MacroActionEditPanel> iterator = panels.iterator(); iterator.hasNext();) {
+			for (Iterator<MacroActionEditPanel> iterator = macroActionEditPanels.iterator(); iterator.hasNext();) {
 				MacroActionEditPanel infoP = iterator.next();
 
 				iterator.remove();
 				columnpanel.remove(infoP);
 			}
+
+			actions.clear();
+
+			refreshPanels();
 
 		} catch (Exception e) {
 			Logger.logError(TAG, "Error in clearActionEditPanels", e);
@@ -264,7 +290,7 @@ public class MacroEditorUI extends JPanel {
 
 	public static void refreshPanels() {
 
-		for (MacroActionEditPanel logPanel : panels) {
+		for (MacroActionEditPanel logPanel : macroActionEditPanels) {
 			logPanel.validate();
 			logPanel.repaint();
 		}
@@ -291,8 +317,10 @@ public class MacroEditorUI extends JPanel {
 
 	public void removeFromPanels(MacroActionEditPanel me) {
 
+		actions.remove(me.action);
+
 		columnpanel.remove(me);
-		panels.remove(me);
+		macroActionEditPanels.remove(me);
 
 		refreshPanels();
 	}

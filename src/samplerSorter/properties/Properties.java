@@ -35,6 +35,21 @@ public class Properties {
 	//Main pan slider value
 	public static Property MAIN_PAN_SLIDER_VALUE = new Property("MAIN_PAN_SLIDER_VALUE", "50", e);
 
+	//RunSS PlayOnClickChbkx and on SoundPanel click, to check if the sound should be played
+	public static Property PLAY_ON_CLICK = new Property("PLAY_ON_CLICK", TRUE, e);
+
+	//RunSS PlayOnClickChbkx and on SoundPanel click, to check if the sound should be played
+	public static Property THEME = new Property("THEME", "Nimbus", e);
+
+	//Used by RunSS onJFileChooser to reset the location where the jfilechooser was
+	public static Property LOCATION_ON_SCREEN_X = new Property("LOCATION_ON_SCREEN_X", "0", e);
+	public static Property LOCATION_ON_SCREEN_Y = new Property("LOCATION_ON_SCREEN_Y", "0", e);
+	
+	
+	//Used by RunSS onJFileChooser to reset the location where the jfilechooser was
+	public static Property SPECTRUM_ANALYZER_STATUS = new Property("SPECTRUM_ANALYZER_STATUS", "oscillo", e);
+	
+
 	//
 
 	/**public static String SORT_BY_KEY = "SORT_BY";

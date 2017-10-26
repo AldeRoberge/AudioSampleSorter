@@ -25,6 +25,8 @@ public class MacroEditor {
 
 	private static final String TAG = "MacroEditor";
 
+	public boolean isVisible = false;
+	
 	private JFrame frame;
 
 	public MacroListUI macroListUI = new MacroListUI(this);
@@ -53,16 +55,19 @@ public class MacroEditor {
 	public void setVisible(boolean isVisible) {
 		Logger.logInfo(TAG, "MacroEditor set visible to " + isVisible + ".");
 		frame.setVisible(isVisible);
+		
+		this.isVisible = isVisible;
 	}
 
 	/**
 	 * Used by KeyBindUI press 'Add' -> MacroEditor change view to show -> NewMacroUI
 	 */
-	public void showMacroUI(MacroAction keyBindToEdit) {
-
-		frame.setContentPane(macroEditPanel);
+	public void showMacroListUI(MacroAction keyBindToEdit) {
 
 		changeTitle("Macro Editor");
+		frame.setIconImage(macroEditIcon);
+
+		frame.setContentPane(macroEditPanel);
 
 		macroListUI.onHide();
 
@@ -70,13 +75,12 @@ public class MacroEditor {
 		macroEditPanel.clearActionEditPanels(); //Clear all 'action edit panels' before adding the new ones
 		macroEditPanel.changeKeyBindToEdit(keyBindToEdit);
 
-		frame.setIconImage(macroEditIcon);
 	}
 
 	/**
 	 * Used by RunSS -> new MacroEditor() -> initialize()
 	 */
-	public void showKeyBindPanel() {
+	public void showMacroEditUI() {
 
 		changeTitle("List of Macros");
 
@@ -113,14 +117,15 @@ public class MacroEditor {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 374, 320);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
+		frame.setLocationRelativeTo(null); //middle of the screen
+		
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				setVisible(false);
 			}
 		});
 
-		showKeyBindPanel();
+		showMacroEditUI();
 	}
 
 }

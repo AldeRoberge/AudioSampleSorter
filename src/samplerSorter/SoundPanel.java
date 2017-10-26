@@ -27,29 +27,32 @@ public class SoundPanel extends JPanel {
 	boolean isPlaying = true;
 	boolean canResume = false;
 
+	private SoundPanel me = this;
+
 	public SoundPanel(Sound sound) {
 		this.sound = sound;
 
-		setBackground(new Color(48, 0, 89));
+		setBackground(Color.BLACK);
 
-		setPreferredSize(new Dimension(589, 75));
+		setPreferredSize(new Dimension(579, 58));
 		setLayout(null);
 
+		JPanel containerPanel = new JPanel();
+		containerPanel.setBackground(new Color(48, 0, 89));
+		containerPanel.setBounds(1, 1, 576, 56);
+		add(containerPanel);
+		containerPanel.setLayout(null);
+
 		lblFilename = new JLabel();
+		lblFilename.setBounds(12, 5, 552, 16);
+		containerPanel.add(lblFilename);
 		lblFilename.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblFilename.setForeground(Color.WHITE);
-		lblFilename.setBounds(12, 13, 484, 16);
-		add(lblFilename);
 
 		lblFileSize = new JLabel("File Size");
+		lblFileSize.setBounds(12, 34, 552, 16);
+		containerPanel.add(lblFileSize);
 		lblFileSize.setForeground(Color.WHITE);
-		lblFileSize.setBounds(12, 42, 134, 16);
-		add(lblFileSize);
-
-		//\u25BA PLAY
-		JButton btnNewButton = new JButton("\u25BA");
-		btnNewButton.setBounds(521, 13, 45, 45);
-		add(btnNewButton);
 		updateFilenameLabel();
 
 		addMouseListener(new MouseAdapter() {
@@ -57,10 +60,7 @@ public class SoundPanel extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
-				RunSS.audioPlayer.playNewSoundOrResume(sound);
-				
-				
-
+				SSUI.soundPanelIsClicked(me);
 
 			}
 		});
@@ -70,5 +70,19 @@ public class SoundPanel extends JPanel {
 	public void updateFilenameLabel() {
 		lblFilename.setText(sound.getName(Properties.DISPLAY_SOUND_SUFFIXES.isTrue()));
 		lblFileSize.setText(FileSizeToString.getFileSizeAsString(sound.file));
+	}
+
+	public void setSelected(boolean isSelected) {
+		if (isSelected) {
+
+			setBackground(Color.WHITE);
+
+			if (Properties.PLAY_ON_CLICK.isTrue()) {
+				SSUI.audioPlayer.playNewSoundOrResume(sound);
+			}
+
+		} else {
+			setBackground(Color.BLACK);
+		}
 	}
 }

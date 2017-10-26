@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import samplerSorter.actions.type.Action;
+import samplerSorter.actions.Action;
 
 public class MacroActionEditPanel extends JPanel {
 
@@ -18,7 +18,7 @@ public class MacroActionEditPanel extends JPanel {
 
 	MacroEditorUI k;
 
-	Action keyBind;
+	Action action;
 
 	/**
 	 * 
@@ -26,7 +26,7 @@ public class MacroActionEditPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	public MacroActionEditPanel(Action action, MacroEditorUI k) {
-		this.keyBind = action;
+		this.action = action;
 		this.k = k;
 
 		setPreferredSize(new Dimension(337, 24));

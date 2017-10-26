@@ -24,7 +24,7 @@
       <src_folder value="file://$MODULE_DIR$/src" expected_position="1" />
     </src_description>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_9" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/bin" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -201,6 +201,21 @@
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/jnativehook-2.1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://$MODULE_DIR$/lib/commons-configuration-1.10-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/commons-logging-1.2-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/lib/commons-configuration-1.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/commons-configuration-1.10-test-sources.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
   </component>
