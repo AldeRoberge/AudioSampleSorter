@@ -22,6 +22,7 @@ public class EditPropertyPanel extends JPanel {
 	private static final String TAG = "EditPropertyPanel";
 
 	public static final int WIDTH = 450;
+	public static final int HEIGHT = 44;
 
 	//
 
@@ -32,10 +33,9 @@ public class EditPropertyPanel extends JPanel {
 	public EditPropertyPanel(EditeableProperty property) {
 
 		propertyToEdit = property;
-		
-		setLayout(new FlowLayout(FlowLayout.LEFT)); //default layout
 
-		//BEGIN THE MADNESS, MOUHAHAHAHAHHA!
+		setSize(new Dimension(WIDTH, HEIGHT)); //default dimensions
+		setLayout(new FlowLayout(FlowLayout.LEFT)); //default layout
 
 		if (propertyToEdit.ID == EditeableProperty.BOOLEAN_ID) { //JCHECKBOX
 
@@ -54,11 +54,7 @@ public class EditPropertyPanel extends JPanel {
 			};
 			chckbxNewCheckBox.addActionListener(act);
 
-			this.setSize(new Dimension(WIDTH, 44));
-
 		} else if (propertyToEdit.ID == EditeableProperty.STRING_ID) { //JTEXTFIELD
-
-			setSize(new Dimension(450, 33));
 
 			JLabel lblPrefix = new JLabel(propertyToEdit.prefix);
 			lblPrefix.setBounds(12, 16, 56, 16);
@@ -74,8 +70,6 @@ public class EditPropertyPanel extends JPanel {
 		} else if (propertyToEdit.ID == EditeableProperty.INT_ID) { //JTEXTFIELD that only accepts ints
 
 			setLayout(new FlowLayout(FlowLayout.LEFT));
-
-			setSize(new Dimension(450, 33));
 
 			JLabel lblPrefix = new JLabel(propertyToEdit.prefix);
 			lblPrefix.setBounds(12, 16, 56, 16);
