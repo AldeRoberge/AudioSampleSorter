@@ -10,8 +10,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import samplerSorter.Constants;
 import samplerSorter.macro.MacroAction;
 import samplerSorter.macro.MacroEditor;
+import samplerSorter.util.Icons;
 import samplerSorter.util.Util;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -43,17 +45,18 @@ public class MacroInfoPanel extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(5, 5, 333, 57);
+		panel.setToolTipText("Click to edit");
 		add(panel);
 		panel.setLayout(null);
 
 		lblKey = new JLabel("Keys");
 		lblKey.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
-		lblKey.setBounds(12, 0, 117, 57);
+		lblKey.setBounds(12, 0, 110, 57);
 		panel.add(lblKey);
 
 		labelAction = new JLabel("Actions");
 		labelAction.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
-		labelAction.setBounds(158, 0, 110, 57);
+		labelAction.setBounds(134, 0, 110, 57);
 		panel.add(labelAction);
 
 		btnNewButton = new JButton("X");
@@ -72,15 +75,19 @@ public class MacroInfoPanel extends JPanel {
 		btnNewButton.setBounds(280, 13, 41, 29);
 		panel.add(btnNewButton);
 
-		addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-
+		JButton button = new JButton();
+		button.setIcon(Icons.SETTINGS);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				m.macroListUI.keyBindPanelIsClicked(me);
-
 			}
 		});
+		button.setMargin(new Insets(0, 0, 0, 0));
+		button.setForeground(Constants.SICK_PURPLE);
+		button.setFont(new Font("Tahoma", Font.BOLD, 13));
+		button.setBounds(234, 13, 41, 29);
+		panel.add(button);
+
 	}
 
 	public void updateText() {
@@ -88,7 +95,7 @@ public class MacroInfoPanel extends JPanel {
 
 		if (keyBind.actionsToPerform.size() > 1) {
 
-			labelAction.setText(keyBind.actionsToPerform.size() + " action");
+			labelAction.setText(keyBind.actionsToPerform.size() + " actions");
 			labelAction.setToolTipText(keyBind.actionsToPerform.toString());
 
 		} else if (keyBind.actionsToPerform.size() == 1) {

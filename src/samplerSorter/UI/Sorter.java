@@ -179,12 +179,15 @@ public class Sorter extends JPanel {
 	private void basicSelect(SoundPanel me) {
 
 		if (selectedSoundPanels.contains(me)) { // is selected (unselect)
-			Logger.logInfo(TAG, "selectedSoundPanels contains me");
-
+			if (me.isPlaying) {
+				me.stop();
+			}
+			
 			selectedSoundPanels.remove(me);
 			me.setSelected(false);
+			
+			
 		} else { // is not selected (select)
-			Logger.logInfo(TAG, "selectedSoundPanels does not contain me");
 
 			for (SoundPanel s : selectedSoundPanels) {
 				s.setSelected(false);

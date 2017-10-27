@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import samplerSorter.actions.type.PlayAction;
 import samplerSorter.actions.type.RenameAction;
 import samplerSorter.actions.type.SimpleUIAction;
+import samplerSorter.actions.type.TestAction;
 
 public class ActionManager {
 
@@ -27,6 +28,7 @@ public class ActionManager {
 
 		addAction(new PlayAction());
 		addAction(new RenameAction());
+		addAction(new TestAction());
 
 	}
 

@@ -28,7 +28,6 @@ import samplerSorter.macro.Key;
 import samplerSorter.macro.MacroAction;
 import samplerSorter.macro.MacroEditor;
 import samplerSorter.macro.MacroLoader;
-import samplerSorter.macro.macroedit.actionCustomizer.ActionEditor;
 import samplerSorter.macro.macrolist.MacroListUI;
 import samplerSorter.logger.Logger;
 import samplerSorter.util.Icons;
@@ -78,8 +77,6 @@ public class MacroEditorUI extends JPanel {
 	 * Create the frame.
 	 */
 	public MacroEditorUI(MacroEditor m) {
-
-		actionEditor.setVisible(true);
 
 		this.m = m;
 

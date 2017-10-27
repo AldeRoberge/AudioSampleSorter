@@ -19,8 +19,12 @@ public class EditeableProperty<V> implements Serializable {
 	public static final int STRING_ID = 1;
 	public static final int INT_ID = 2;
 	public static final int FILE_CHOOSER_ID = 3;
+	public static final int MANY_FILES_CHOOSER_ID = 4;
+	public static final int DIRECTORY_CHOOSER_ID = 5;
 
 	//
+
+	public String prefix; //used by buttons, jcheckbox, etc
 
 	public int ID = -1;
 	private V value;
@@ -30,7 +34,8 @@ public class EditeableProperty<V> implements Serializable {
 	 * @param defaultValue value to begin with
 	 * @param prefix prefix (label) before edit component (JCheckBox, JTextArea...)
 	 */
-	public EditeableProperty(V defaultValue, String prefix) {
+	public EditeableProperty(V defaultValue, String pref) {
+		prefix = pref;
 		value = defaultValue;
 
 		if (defaultValue instanceof Boolean) {

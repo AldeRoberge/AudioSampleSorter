@@ -43,7 +43,6 @@ public class LogUI extends JPanel {
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(15, 16, 620, 398);
 		scrollPane.setAutoscrolls(true);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
 
 		borderlaoutpanel = new JPanel();

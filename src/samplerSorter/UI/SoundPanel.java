@@ -95,10 +95,16 @@ public class SoundPanel extends JPanel {
 	public void play() {
 		sorter.audioPlayer.playNewSoundOrResume(sound);
 	}
+	
+	public void stop() {
+		sorter.audioPlayer.pause();
+	}
 
 	@Override
 	public String toString() {
 		return "SoundPanel [sound=" + sound + ", lblFilename=" + lblFilename + ", lblFileSize=" + lblFileSize + "]";
 	}
+
+	
 
 }
