@@ -1,12 +1,14 @@
 package samplerSorter;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.Console;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 
@@ -17,22 +19,19 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSplitPane;
 
 import samplerSorter.UI.Sorter;
+import samplerSorter.UI.other.Container;
 import samplerSorter.UI.other.CreditsPanel;
 import samplerSorter.actions.ActionManager;
-import samplerSorter.audioplayer.AudioPlayer;
-import samplerSorter.audioplayer.AudioVisualizer;
 import samplerSorter.audioplayer.SpectrumTimeAnalyzer;
-import samplerSorter.UI.other.Container;
 import samplerSorter.logger.LogUI;
 import samplerSorter.logger.Logger;
 import samplerSorter.macro.MacroEditor;
+import samplerSorter.properties.Properties;
 import samplerSorter.properties.SettingsUI;
 import samplerSorter.util.Icons;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import java.awt.BorderLayout;
 
 public class SamplerSorter extends JFrame {
 
@@ -66,7 +65,7 @@ public class SamplerSorter extends JFrame {
 	 */
 	public SamplerSorter() {
 		ActionManager.init();
-		
+
 		setBackground(Color.WHITE);
 
 		setTitle("SamplerSorter | Ultimate");
@@ -189,7 +188,15 @@ public class SamplerSorter extends JFrame {
 		mnHelp.add(mntmAbout);
 
 		JSplitPane splitPane = new JSplitPane();
-		splitPane.setDividerLocation(33);
+		splitPane.setDividerLocation(Properties.SPLITPANE_DIVIDERLOCATION.getValueAsInt());
+
+		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent pce) {
+				Properties.SPLITPANE_DIVIDERLOCATION.setNewValue((((Integer) pce.getNewValue()).intValue()) + "");
+			}
+		});
+
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 
@@ -204,42 +211,42 @@ public class SamplerSorter extends JFrame {
 
 			@Override
 			public void windowOpened(WindowEvent e) {
-				sorter.changeGlobalKeyListenerState(true);
+				sorter.globalKeyListener.isListenningForGlobalInputs = true;
 			}
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				sorter.changeGlobalKeyListenerState(false);
+				sorter.globalKeyListener.isListenningForGlobalInputs = false;
 			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
-				sorter.changeGlobalKeyListenerState(false);
+				sorter.globalKeyListener.isListenningForGlobalInputs = false;
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				sorter.changeGlobalKeyListenerState(true);
+				sorter.globalKeyListener.isListenningForGlobalInputs = true;
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				sorter.changeGlobalKeyListenerState(true);
+				sorter.globalKeyListener.isListenningForGlobalInputs = true;
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				sorter.changeGlobalKeyListenerState(false);
+				sorter.globalKeyListener.isListenningForGlobalInputs = false;
 			}
 
 			@Override
 			public void windowGainedFocus(WindowEvent e) {
-				sorter.changeGlobalKeyListenerState(true);
+				sorter.globalKeyListener.isListenningForGlobalInputs = true;
 			}
 
 			@Override
 			public void windowLostFocus(WindowEvent e) {
-				sorter.changeGlobalKeyListenerState(false);
+				sorter.globalKeyListener.isListenningForGlobalInputs = false;
 			}
 
 		});

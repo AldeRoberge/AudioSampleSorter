@@ -19,8 +19,6 @@ public class EditeableProperty<V> implements Serializable {
 	public static final int STRING_ID = 1;
 	public static final int INT_ID = 2;
 	public static final int FILE_CHOOSER_ID = 3;
-	public static final int MANY_FILES_CHOOSER_ID = 4;
-	public static final int DIRECTORY_CHOOSER_ID = 5;
 
 	//
 

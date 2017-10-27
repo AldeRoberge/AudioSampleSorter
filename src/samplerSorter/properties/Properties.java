@@ -44,11 +44,11 @@ public class Properties {
 	//Used by RunSS onJFileChooser to reset the location where the jfilechooser was
 	public static Property LOCATION_ON_SCREEN_X = new Property("LOCATION_ON_SCREEN_X", "0", e);
 	public static Property LOCATION_ON_SCREEN_Y = new Property("LOCATION_ON_SCREEN_Y", "0", e);
-	
-	
+
 	//Used by RunSS onJFileChooser to reset the location where the jfilechooser was
 	public static Property SPECTRUM_ANALYZER_STATUS = new Property("SPECTRUM_ANALYZER_STATUS", "oscillo", e);
-	
+
+	public static Property SPLITPANE_DIVIDERLOCATION = new Property("SPLITPANE_DIVIDERLOCATION", "200", e);
 
 	//
 

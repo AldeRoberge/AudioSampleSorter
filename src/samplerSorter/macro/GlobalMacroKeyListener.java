@@ -55,10 +55,6 @@ public class GlobalMacroKeyListener implements NativeKeyListener {
 
 	}
 
-	public void changeListeningState(boolean newListeningState) {
-		isListenningForGlobalInputs = newListeningState;
-	}
-
 	/**
 	 * NativeKeyListener released keys
 	 */

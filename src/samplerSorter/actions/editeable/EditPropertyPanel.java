@@ -29,8 +29,10 @@ public class EditPropertyPanel extends JPanel {
 
 	//
 
-	public EditPropertyPanel(EditeableProperty propertyToEdit) {
+	public EditPropertyPanel(EditeableProperty property) {
 
+		propertyToEdit = property;
+		
 		setLayout(new FlowLayout(FlowLayout.LEFT)); //default layout
 
 		//BEGIN THE MADNESS, MOUHAHAHAHAHHA!
@@ -63,6 +65,8 @@ public class EditPropertyPanel extends JPanel {
 			add(lblPrefix);
 
 			JTextField stringInputField = new JTextField();
+			stringInputField.setEnabled(true);
+			stringInputField.setEditable(true);
 			stringInputField.setBounds(80, 13, 135, 22);
 			stringInputField.setColumns(10);
 			add(stringInputField);
@@ -78,6 +82,8 @@ public class EditPropertyPanel extends JPanel {
 			add(lblPrefix);
 
 			JTextField intInputField = new JTextField();
+			intInputField.setEnabled(true);
+			intInputField.setEditable(true);
 			intInputField.setBounds(80, 13, 135, 22);
 			intInputField.setColumns(10);
 			add(intInputField);

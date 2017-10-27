@@ -297,9 +297,7 @@ public class Sorter extends JPanel {
 
 	}
 
-	public void changeGlobalKeyListenerState(boolean b) {
-		globalKeyListener.changeListeningState(b);
-	}
+
 
 	public void selectAll() {
 		// TODO Auto-generated method stub
