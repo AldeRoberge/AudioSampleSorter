@@ -4,21 +4,21 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
-import samplerSorter.util.WriteToFile;
+import samplerSorter.util.file.WriteToFile;
 
 public class Logger {
 
-	public static LogUI panel;
+	private static LogUI panel;
 
 	private static ArrayList<Log> bufferedLogs = new ArrayList<Log>();
 
-	public static final int IMPORTANT_INFO = 0;
-	public static final int WARNING = 1;
-	public static final int ERROR = 2;
+	private static final int IMPORTANT_INFO = 0;
+	private static final int WARNING = 1;
+	private static final int ERROR = 2;
 
-	public static final String IMPORTANT_INFO_NAME = "Information";
-	public static final String WARNING_NAME = "Warning";
-	public static final String ERROR_NAME = "Fatal Error";
+	private static final String IMPORTANT_INFO_NAME = "Information";
+	private static final String WARNING_NAME = "Warning";
+	private static final String ERROR_NAME = "Fatal Error";
 
 	public static void init(LogUI panel) {
 		Logger.panel = panel;
@@ -51,7 +51,7 @@ public class Logger {
 	/***
 	 * Exception is nulleable
 	 */
-	public static void logWarning(String tag, String message, Exception e) { // log warning with exception
+	public static void logWarning(String tag, String message, Throwable e) { // log warning with exception
 
 		log(WARNING, tag, message, e);
 	}
@@ -64,7 +64,7 @@ public class Logger {
 	/***
 	 * Exception is nulleable
 	 */
-	public static void logError(String tag, String message, Exception e) { // log error with exception
+	public static void logError(String tag, String message, Throwable e) { // log error with exception
 
 		log(ERROR, tag, message, e);
 	}
@@ -73,7 +73,7 @@ public class Logger {
 	 * Exception is nulleable
 	 * DO NOT use this method for logging, use LogError and LogInfo
 	 */
-	private static void log(int severityLevel, String tag, String message, Exception e) {
+	private static void log(int severityLevel, String tag, String message, Throwable e) {
 		System.out.println("[" + tag + "] " + message);
 
 		Timestamp now = new Timestamp(new Date().getTime());
@@ -123,7 +123,7 @@ public class Logger {
 		logFileWriter.write(e.toString());
 	}
 
-	public static String sTTS(Exception e) {
+	private static String sTTS(Throwable e) {
 		// convert the stacktrace to a string with \n
 		StringBuilder sb = new StringBuilder(e.toString());
 		for (StackTraceElement ste : e.getStackTrace()) {

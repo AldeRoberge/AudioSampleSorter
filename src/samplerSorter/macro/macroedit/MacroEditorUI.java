@@ -21,17 +21,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import samplerSorter.UI.other.Container;
-import samplerSorter.actions.Action;
-import samplerSorter.actions.ActionManager;
+import samplerSorter.action.ActionManager;
+import samplerSorter.action.type.Action;
+import samplerSorter.logger.Logger;
 import samplerSorter.macro.Key;
 import samplerSorter.macro.MacroAction;
 import samplerSorter.macro.MacroEditor;
-import samplerSorter.macro.MacroLoader;
-import samplerSorter.macro.macrolist.MacroListUI;
-import samplerSorter.logger.Logger;
-import samplerSorter.util.Icons;
-import samplerSorter.util.Util;
+import samplerSorter.util.key.KeysToString;
+
 import javax.swing.JScrollPane;
 
 public class MacroEditorUI extends JPanel {
@@ -40,26 +37,24 @@ public class MacroEditorUI extends JPanel {
 
 	//
 
-	MacroAction keyBindToEdit;
+	private MacroAction keyBindToEdit;
 
 	//
 
-	public static final Font RESULT_FONT_PLAIN = new Font("Segoe UI Light", Font.PLAIN, 20);
-	public static final Font RESULT_FONT_BOLD = new Font("Segoe UI Light", Font.BOLD, 20);
+	private static final Font RESULT_FONT_PLAIN = new Font("Segoe UI Light", Font.PLAIN, 20);
+	private static final Font RESULT_FONT_BOLD = new Font("Segoe UI Light", Font.BOLD, 20);
 
-	public MacroEditor m;
-
-	public boolean isListenningForKeyInputs = false;
+	private boolean isListenningForKeyInputs = false;
 	private JTextField txtTest;
 
-	public int keysPressedAndNotReleased = 0;
+	private int keysPressedAndNotReleased = 0;
 
 	private boolean newKeyBind;
 
-	static JPanel columnpanel = new JPanel();
-	static JPanel borderlaoutpanel;
+	private static JPanel columnpanel = new JPanel();
+	private static JPanel borderlaoutpanel;
 
-	public static JScrollPane scrollPane;
+	private static JScrollPane scrollPane;
 
 	private ArrayList<Action> actions = new ArrayList<Action>();
 	private ArrayList<MacroActionEditPanel> macroActionEditPanels = new ArrayList<MacroActionEditPanel>();
@@ -77,8 +72,6 @@ public class MacroEditorUI extends JPanel {
 	 * Create the frame.
 	 */
 	public MacroEditorUI(MacroEditor m) {
-
-		this.m = m;
 
 		setBounds(0, 0, 365, 272);
 		setVisible(true);
@@ -263,11 +256,11 @@ public class MacroEditorUI extends JPanel {
 	}
 
 	private void updateTxtTest() {
-		txtTest.setText(Util.keysToString("[", keyBindToEdit.keys, "]"));
+		txtTest.setText(KeysToString.keysToString("[", keyBindToEdit.keys, "]"));
 	}
 
 	// TODO : update this when adding fiels
-	public void addActionAndActionEditPanel(Action action) {
+	void addActionAndActionEditPanel(Action action) {
 
 		MacroActionEditPanel infoPanel = new MacroActionEditPanel(action, this);
 
@@ -299,7 +292,7 @@ public class MacroEditorUI extends JPanel {
 		}
 	}
 
-	public void refreshPanels() {
+	void refreshPanels() {
 
 		for (MacroActionEditPanel logPanel : macroActionEditPanels) {
 			logPanel.validate();

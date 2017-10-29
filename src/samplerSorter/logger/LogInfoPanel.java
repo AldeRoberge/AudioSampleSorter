@@ -12,10 +12,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import samplerSorter.util.PrettyTimeStatic;
+import samplerSorter.util.ui.PrettyTimeStatic;
+
 import java.awt.Font;
 
-public class LogInfoPanel extends JPanel {
+class LogInfoPanel extends JPanel {
 
 	// prettytime formats time
 

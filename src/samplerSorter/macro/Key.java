@@ -5,9 +5,9 @@ import java.io.Serializable;
 
 public class Key implements Serializable {
 
-	//Like KeyEvent, but with less stuff in it, cauz yknow, reinventing the wheel is cool
+	//Like KeyEvent, but with less stuff in it (cauz yknow, reinventing the wheel is cool)
 
-	public int keyCode;
+	private int keyCode;
 	public String keyName;
 
 	public Key(int keyCode) {

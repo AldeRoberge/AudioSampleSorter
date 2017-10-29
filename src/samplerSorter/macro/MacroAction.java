@@ -3,8 +3,8 @@ package samplerSorter.macro;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import samplerSorter.UI.SoundPanel;
-import samplerSorter.actions.Action;
+import samplerSorter.GUI.soundpanel.SoundPanel;
+import samplerSorter.action.type.Action;
 
 /**
  * MacroAction
@@ -27,17 +27,13 @@ public class MacroAction implements Serializable {
 	public void clearKeys() {
 		keys = new ArrayList<Key>();
 	}
-	
-	
+
 	public void performActions(ArrayList<SoundPanel> toPerform) {
 		for (SoundPanel p : toPerform) {
 			for (Action a : actionsToPerform) {
-				
+
 			}
 		}
 	}
-	
-	
-	
 
 }

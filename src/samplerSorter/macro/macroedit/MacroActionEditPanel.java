@@ -10,13 +10,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import samplerSorter.actions.Action;
+import samplerSorter.action.type.Action;
 
 public class MacroActionEditPanel extends JPanel {
 
-	public MacroActionEditPanel me = this;
-
-	MacroEditorUI k;
+	private MacroActionEditPanel me = this;
 
 	Action action;
 
@@ -27,7 +25,6 @@ public class MacroActionEditPanel extends JPanel {
 
 	public MacroActionEditPanel(Action action, MacroEditorUI k) {
 		this.action = action;
-		this.k = k;
 
 		setPreferredSize(new Dimension(337, 24));
 		setLayout(null);

@@ -218,5 +218,6 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="basicplayer3.0" level="project" />
   </component>
 </module>

@@ -12,11 +12,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import samplerSorter.actions.Action;
-import samplerSorter.actions.editeable.EditPropertyPanel;
-import samplerSorter.actions.editeable.EditeableProperty;
+import samplerSorter.action.editable.EditPropertyPanel;
+import samplerSorter.action.editable.EditeableProperty;
+import samplerSorter.action.type.Action;
 import samplerSorter.logger.Logger;
-import java.awt.Window.Type;
 
 //See MacroEditorUI
 
@@ -24,10 +23,10 @@ public class ActionEditor extends JFrame {
 
 	private static final String TAG = "ActionEditorPanel";
 
-	static JPanel columnpanel = new JPanel();
-	static JPanel borderlaoutpanel;
+	private static JPanel columnPanel = new JPanel();
+	private static JPanel borderLayoutPanel;
 
-	public static JScrollPane scrollPane;
+	private static JScrollPane scrollPane;
 
 	private static ArrayList<EditPropertyPanel> allValueEditorPanels = new ArrayList<EditPropertyPanel>();
 
@@ -54,14 +53,14 @@ public class ActionEditor extends JFrame {
 		scrollPane.setAutoscrolls(true);
 		contentPane.add(scrollPane);
 
-		borderlaoutpanel = new JPanel();
-		scrollPane.setViewportView(borderlaoutpanel);
-		borderlaoutpanel.setLayout(new BorderLayout(0, 0));
+		borderLayoutPanel = new JPanel();
+		scrollPane.setViewportView(borderLayoutPanel);
+		borderLayoutPanel.setLayout(new BorderLayout(0, 0));
 
-		columnpanel = new JPanel();
-		columnpanel.setLayout(new GridLayout(0, 1, 0, 1));
-		columnpanel.setBackground(Color.gray);
-		borderlaoutpanel.add(columnpanel, BorderLayout.NORTH);
+		columnPanel = new JPanel();
+		columnPanel.setLayout(new GridLayout(0, 1, 0, 1));
+		columnPanel.setBackground(Color.gray);
+		borderLayoutPanel.add(columnPanel, BorderLayout.NORTH);
 
 		// end
 
@@ -77,7 +76,7 @@ public class ActionEditor extends JFrame {
 		for (EditeableProperty a : e.getEditeableProperties()) {
 			EditPropertyPanel infoPanel = new EditPropertyPanel(a);
 
-			columnpanel.add(infoPanel);
+			columnPanel.add(infoPanel);
 			allValueEditorPanels.add(infoPanel);
 
 			refreshInfoPanels();
@@ -85,7 +84,7 @@ public class ActionEditor extends JFrame {
 
 	}
 
-	public static void refreshInfoPanels() {
+	private static void refreshInfoPanels() {
 
 		for (EditPropertyPanel logPanel : allValueEditorPanels) {
 
@@ -94,24 +93,24 @@ public class ActionEditor extends JFrame {
 
 		}
 
-		columnpanel.validate();
-		columnpanel.repaint();
+		columnPanel.validate();
+		columnPanel.repaint();
 
-		borderlaoutpanel.validate();
-		borderlaoutpanel.repaint();
+		borderLayoutPanel.validate();
+		borderLayoutPanel.repaint();
 
 		scrollPane.validate();
 		scrollPane.repaint();
 
 	}
 
-	public void clear() {
+	void clear() {
 		try {
 			for (Iterator<EditPropertyPanel> iterator = allValueEditorPanels.iterator(); iterator.hasNext();) {
 				EditPropertyPanel editPropertyPanel = iterator.next();
 
 				iterator.remove();
-				columnpanel.remove(editPropertyPanel);
+				columnPanel.remove(editPropertyPanel);
 			}
 
 			refreshInfoPanels();

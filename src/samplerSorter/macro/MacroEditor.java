@@ -8,8 +8,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 
 import samplerSorter.macro.macrolist.MacroListUI;
-import samplerSorter.macro.macroedit.MacroEditorUI;
 import samplerSorter.logger.Logger;
+import samplerSorter.macro.macroedit.MacroEditorUI;
 
 import java.awt.Toolkit;
 
@@ -25,18 +25,16 @@ public class MacroEditor {
 
 	private static final String TAG = "MacroEditor";
 
-	public boolean isVisible = false;
-	
 	private JFrame frame;
 
 	public MacroListUI macroListUI = new MacroListUI(this);
-	public MacroEditorUI macroEditPanel = new MacroEditorUI(this);
+	private MacroEditorUI macroEditPanel = new MacroEditorUI(this);
 
 	public MacroLoader macroLoader = new MacroLoader(this);
 
-	Image macroEditIcon = Toolkit.getDefaultToolkit().getImage(
+	private Image macroEditIcon = Toolkit.getDefaultToolkit().getImage(
 			MacroEditor.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Indent-Black@2x.png"));
-	Image macroListIcon = Toolkit.getDefaultToolkit().getImage(
+	private Image macroListIcon = Toolkit.getDefaultToolkit().getImage(
 			MacroEditor.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Justify-Black.png"));
 
 	public static void run() {
@@ -55,8 +53,6 @@ public class MacroEditor {
 	public void setVisible(boolean isVisible) {
 		Logger.logInfo(TAG, "MacroEditor set visible to " + isVisible + ".");
 		frame.setVisible(isVisible);
-		
-		this.isVisible = isVisible;
 	}
 
 	/**
@@ -96,7 +92,7 @@ public class MacroEditor {
 	/**
 	 * Used by RunSS -> new MacroEditor() -> initialize()
 	 */
-	public void changeTitle(String newTitle) {
+	void changeTitle(String newTitle) {
 		Logger.logInfo(TAG, "New mode : " + newTitle + ".");
 		frame.setTitle(newTitle);
 	}

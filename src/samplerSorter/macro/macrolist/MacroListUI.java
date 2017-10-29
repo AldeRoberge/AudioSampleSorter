@@ -18,15 +18,14 @@ public class MacroListUI extends JPanel {
 
 	private static final String TAG = "LogUI";
 
-	public MacroEditor m;
+	private MacroEditor m;
 
-	static JPanel columnpanel = new JPanel();
-	static JPanel borderlaoutpanel;
+	private static JPanel columnpanel = new JPanel();
+	private static JPanel borderlaoutpanel;
 
-	public JScrollPane scrollPane;
+	private JScrollPane scrollPane;
 
 	private ArrayList<MacroInfoPanel> panels = new ArrayList<MacroInfoPanel>();
-	private JButton btnAdd;
 
 	/**
 	 * Create the frame.
@@ -58,7 +57,7 @@ public class MacroListUI extends JPanel {
 		columnpanel.setBackground(Color.gray);
 		borderlaoutpanel.add(columnpanel, BorderLayout.NORTH);
 
-		btnAdd = new JButton("Add new macro");
+		JButton btnAdd = new JButton("Add new macro");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				m.showMacroListUI(null); //null because theres no panel to edit

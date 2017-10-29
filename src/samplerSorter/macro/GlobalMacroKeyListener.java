@@ -11,9 +11,8 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
-import samplerSorter.actions.Action;
-import samplerSorter.actions.HistoryAction;
-import samplerSorter.util.NativeKeyEventToKey;
+import samplerSorter.action.type.Action;
+import samplerSorter.util.key.NativeKeyEventToKey;
 
 //Call GlobalScreen.unregisterNativeHook(); to remove (unneeded here)
 
@@ -23,7 +22,7 @@ public class GlobalMacroKeyListener implements NativeKeyListener {
 
 	public boolean isListenningForGlobalInputs = true;
 
-	public ArrayList<Key> pressedKeys = new ArrayList<Key>();
+	private ArrayList<Key> pressedKeys = new ArrayList<Key>();
 
 	private static GlobalMacroKeyListener me;
 
@@ -104,7 +103,7 @@ public class GlobalMacroKeyListener implements NativeKeyListener {
 	/**
 	 * @param pressedKey KeyEvent.VK_SHIFT
 	 */
-	public boolean keyIsPressed(int keyCodeOfPressedKey) {
+	boolean keyIsPressed(int keyCodeOfPressedKey) {
 		return pressedKeys.contains(new Key(keyCodeOfPressedKey));
 	}
 
@@ -131,12 +130,9 @@ public class GlobalMacroKeyListener implements NativeKeyListener {
 			// If the MacroAction's keys are globaly pressed
 			if (keysArePressed(m.keys)) {
 
-				System.out.println("M's key is pressed");
+				System.out.println(m + " key is pressed");
 
 				for (Action action : m.actionsToPerform) {
-
-					HistoryAction h = new HistoryAction(action);
-					h.begin();
 
 				}
 
@@ -159,11 +155,7 @@ public class GlobalMacroKeyListener implements NativeKeyListener {
 
 		}
 
-		if (current == required) {
-			return true;
-		} else {
-			return false;
-		}
+		return current == required;
 
 	}
 

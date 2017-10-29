@@ -4,26 +4,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import samplerSorter.Constants;
+import samplerSorter.constants.Constants;
+import samplerSorter.constants.Icons;
 import samplerSorter.macro.MacroAction;
 import samplerSorter.macro.MacroEditor;
-import samplerSorter.util.Icons;
-import samplerSorter.util.Util;
+import samplerSorter.util.key.KeysToString;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class MacroInfoPanel extends JPanel {
 
-	MacroEditor m;
-
-	public MacroInfoPanel me = this;
+	private MacroInfoPanel me = this;
 
 	MacroAction keyBind;
 
@@ -33,11 +30,9 @@ public class MacroInfoPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel lblKey;
 	private JLabel labelAction;
-	private JButton btnNewButton;
 
 	public MacroInfoPanel(MacroAction keyBind, MacroEditor m) {
 		this.keyBind = keyBind;
-		this.m = m;
 
 		setPreferredSize(new Dimension(345, 67));
 		setLayout(null);
@@ -59,7 +54,7 @@ public class MacroInfoPanel extends JPanel {
 		labelAction.setBounds(134, 0, 110, 57);
 		panel.add(labelAction);
 
-		btnNewButton = new JButton("X");
+		JButton btnNewButton = new JButton("X");
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton.setForeground(new Color(255, 0, 0));
 		btnNewButton.setMargin(new Insets(0, 0, 0, 0)); //allows for the 'X' to display even if theres not a lot of space around it
@@ -91,7 +86,7 @@ public class MacroInfoPanel extends JPanel {
 	}
 
 	public void updateText() {
-		lblKey.setText(Util.keysToString("", keyBind.keys, ""));
+		lblKey.setText(KeysToString.keysToString("", keyBind.keys, ""));
 
 		if (keyBind.actionsToPerform.size() > 1) {
 

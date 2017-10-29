@@ -9,20 +9,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-import samplerSorter.actions.type.PlayAction;
+import samplerSorter.action.type.sound.impl.PlayAction;
 import samplerSorter.logger.Logger;
 import samplerSorter.macro.macrolist.MacroInfoPanel;
 
 public class MacroLoader {
 
-	public static final String TAG = "MacroLoader";
+	private static final String TAG = "MacroLoader";
 
-	public static final String SAVED_MACROS_FILENAME = "keyBinds.ss";
+	private static final String SAVED_MACROS_FILENAME = "keyBinds.ss";
 
 	//Formelly known as 'keyBinds'
 	public static ArrayList<MacroAction> macroActions = new ArrayList<MacroAction>();
 
-	public MacroEditor macroEditor;
+	private MacroEditor macroEditor;
 
 	public MacroLoader(MacroEditor macroEditor) {
 		this.macroEditor = macroEditor;

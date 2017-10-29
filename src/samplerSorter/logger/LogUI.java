@@ -19,10 +19,10 @@ public class LogUI extends JPanel {
 
 	private static final String TAG = "LogUI";
 
-	static JPanel columnpanel = new JPanel();
-	static JPanel borderlaoutpanel;
+	private static JPanel columnpanel = new JPanel();
+	private static JPanel borderlaoutpanel;
 
-	public static JScrollPane scrollPane;
+	private static JScrollPane scrollPane;
 
 	private static ArrayList<LogInfoPanel> allLogInfoPanels = new ArrayList<LogInfoPanel>();
 
@@ -81,7 +81,7 @@ public class LogUI extends JPanel {
 		refreshInfoPanels();
 	}
 
-	public static void refreshInfoPanels() {
+	private static void refreshInfoPanels() {
 
 		for (LogInfoPanel logPanel : allLogInfoPanels) {
 

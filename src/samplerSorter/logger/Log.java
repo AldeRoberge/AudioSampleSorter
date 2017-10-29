@@ -2,7 +2,7 @@ package samplerSorter.logger;
 
 import java.sql.Timestamp;
 
-public class Log {
+class Log {
 
 	/**
 	 * IMPORTANT_INFO = 0; WARNING = 1; ERROR = 2;
