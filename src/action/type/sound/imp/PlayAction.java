@@ -17,9 +17,6 @@ public class PlayAction extends SoundAction {
 
 	@Override
 	public void perform(SoundPanel p) {
-		String TAG = "PlayAction";
-		Logger.logInfo(TAG, "Played.");
-
 		p.sound.play();
 	}
 

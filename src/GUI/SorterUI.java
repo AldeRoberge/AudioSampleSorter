@@ -40,14 +40,14 @@ public class SorterUI extends JFrame {
 	private static final String TAG = "SamplerSorter";
 	public Sorter sorter = new Sorter(); //Formelly known as SSUI
 
-	private static MacroEditor macroEditor = new MacroEditor();
+	private static MacroEditor macroEditor;
 
 	private Container console = new Container("Console", Icons.CONSOLE.getImage(), new LogUI(), true);
 	private Container settings = new Container("Settings", Icons.SETTINGS.getImage(), new SettingsUI(sorter), false);
 	private Container credits = new Container("Credits", Icons.ABOUT.getImage(), new CreditsPanel(), true);
-	
-	//The following is used in fileChooser.showOpenDialog(frame) to pass the icon to the file chooser
-	public static Container fileImporterIcon = new Container("This is dumb", Icons.IMPORT.getImage(), null, false);
+
+	public static Container fileImporterIcon = new Container("This should be used by fileChoosers to pass the icon",
+			Icons.IMPORT.getImage(), null, false);
 
 	private FileImporter fileImporter = new FileImporter(sorter);
 
@@ -71,11 +71,13 @@ public class SorterUI extends JFrame {
 	 * Create the frame.
 	 */
 	private SorterUI() {
+		ActionManager.init(this); //init actions
+		macroEditor = new MacroEditor(); //we must do this after initialising actions because it uses Actions in a combobox
+
 		BorderLayout borderLayout = (BorderLayout) getContentPane().getLayout();
 		borderLayout.setVgap(5);
 		borderLayout.setHgap(5);
 		setResizable(false);
-		ActionManager.init();
 
 		setBackground(Color.WHITE);
 
@@ -245,42 +247,42 @@ public class SorterUI extends JFrame {
 
 			@Override
 			public void windowOpened(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForGlobalInputs = true;
+				sorter.god.globalKeyListener.isListenningForGlobalInputs = true;
 			}
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForGlobalInputs = false;
+				sorter.god.globalKeyListener.isListenningForGlobalInputs = false;
 			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForGlobalInputs = false;
+				sorter.god.globalKeyListener.isListenningForGlobalInputs = false;
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForGlobalInputs = true;
+				sorter.god.globalKeyListener.isListenningForGlobalInputs = true;
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForGlobalInputs = true;
+				sorter.god.globalKeyListener.isListenningForGlobalInputs = true;
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForGlobalInputs = false;
+				sorter.god.globalKeyListener.isListenningForGlobalInputs = false;
 			}
 
 			@Override
 			public void windowGainedFocus(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForGlobalInputs = true;
+				sorter.god.globalKeyListener.isListenningForGlobalInputs = true;
 			}
 
 			@Override
 			public void windowLostFocus(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForGlobalInputs = false;
+				sorter.god.globalKeyListener.isListenningForGlobalInputs = false;
 			}
 
 		});

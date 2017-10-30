@@ -22,7 +22,7 @@ public class SoundPanel extends JPanel {
 
 	private static final Color SELECTED = Constants.SICK_PURPLE;
 	private static final Color UNSELECTED = Color.LIGHT_GRAY;
-	private static final Color UNSELECTED_LABEL = new Color(20, 20, 26); // Eigengrau :D
+	private static final Color UNSELECTED_LABEL = new Color(18, 18, 24); // Eigengrau :D
 
 	private static final long serialVersionUID = 1L;
 
@@ -86,14 +86,19 @@ public class SoundPanel extends JPanel {
 	}
 
 	//Dont call this directly, use Sorter. setSelected instead
-	public void setSelected(boolean isSelected) {
+	
+	/**
+	 * @param isSelected true = select, false = unselect
+	 * @param play true = playOrPause()
+	 */
+	public void setSelected(boolean isSelected, boolean play) {
 		if (isSelected) {
 
 			setBackground(SELECTED);
 			lblFilename.setForeground(SELECTED);
 			lblFileSize.setForeground(SELECTED);
 
-			if (Properties.PLAY_ON_CLICK.getValueAsBoolean()) {
+			if (play) {
 				sound.playOrPause();
 			}
 

@@ -22,7 +22,6 @@ import constants.Icons;
 import logger.Logger;
 import property.Properties;
 import util.file.ExtensionFilter;
-import util.ui.JFrameHideOnEscape;
 import util.ui.MiddleOfTheScreen;
 
 public class FileImporter extends JFrame {
@@ -179,8 +178,6 @@ public class FileImporter extends JFrame {
 			}
 		});
 		panel.add(btnImport);
-
-		JFrameHideOnEscape.addEscapeListener(this);
 
 	}
 

@@ -1,18 +1,15 @@
 package macro;
 
-import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-import macro.macrolist.MacroListUI;
-import util.ui.JFrameHideOnEscape;
 import logger.Logger;
 import macro.macroedit.MacroEditorUI;
-
-import java.awt.Toolkit;
+import macro.macrolist.MacroListUI;
 
 /**
  * This is the head of the Macro movement
@@ -99,7 +96,8 @@ public class MacroEditor {
 		Logger.logInfo(TAG, "Launching Macro Editor UI");
 
 		frame = new JFrame();
-		frame.setBounds(100, 100, 374, 320);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 360, 308);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.setLocationRelativeTo(null); //middle of the screen
 
@@ -111,7 +109,7 @@ public class MacroEditor {
 
 		showMacroEditUI();
 
-		JFrameHideOnEscape.addEscapeListener(frame);
+		
 	}
 
 }

@@ -11,7 +11,7 @@ import logger.Logger;
  * Thanks to http://www.oracle.com/technetwork/articles/java/juneau-generics-2255374.html
  */
 
-public class EditeableProperty<V> implements Serializable {
+public class EditeableProperty<V> implements Serializable, Cloneable {
 
 	private static final String TAG = "EditeableProperty";
 

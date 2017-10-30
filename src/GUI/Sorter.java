@@ -16,6 +16,8 @@ import GUI.soundpanel.SoundPanel;
 import audio.AudioPlayer;
 import logger.Logger;
 import macro.GlobalMacroKeyListener;
+import macro.GodManager;
+import property.Properties;
 
 public class Sorter extends JPanel {
 
@@ -30,7 +32,7 @@ public class Sorter extends JPanel {
 	private static JPanel borderlaoutpanel;
 	public JScrollPane scrollPane;
 
-	public GlobalMacroKeyListener globalKeyListener = GlobalMacroKeyListener.get();
+	public GodManager god = new GodManager(this);
 
 	public SoundPanelsSorter soundPanelSorter = new SoundPanelsSorter(this);
 
@@ -38,8 +40,6 @@ public class Sorter extends JPanel {
 	 * Create the panel.
 	 */
 	public Sorter() {
-
-		globalKeyListener.init();
 
 		setLayout(new BorderLayout(0, 0));
 
@@ -101,7 +101,7 @@ public class Sorter extends JPanel {
 
 	public void soundPanelIsLeftClicked(SoundPanel me) {
 
-		if (globalKeyListener.shiftIsPressed() && selectedSoundPanels.size() >= 1) {
+		if (god.shiftIsPressed() && selectedSoundPanels.size() >= 1) {
 
 			int targetPoint = soundPanels.indexOf(me);
 
@@ -130,7 +130,7 @@ public class Sorter extends JPanel {
 				for (int i = anchorPoint; i <= targetPoint; i++) {
 					System.out.println("Selecting " + i);
 
-					selectPanel(soundPanels.get(i));
+					selectPanel(soundPanels.get(i), false);
 				}
 
 			} else if (targetPoint < anchorPoint) {
@@ -140,7 +140,7 @@ public class Sorter extends JPanel {
 				for (int i = anchorPoint; i >= targetPoint; i--) {
 					System.out.println("Selecting " + i);
 
-					selectPanel(soundPanels.get(i));
+					selectPanel(soundPanels.get(i), false);
 				}
 
 			}
@@ -154,19 +154,14 @@ public class Sorter extends JPanel {
 			System.out.println("Is not selected, selecting!!!" + selectedSoundPanels.size());
 
 			selectedSoundPanels.add(me);
-			me.setSelected(true);
+			me.setSelected(true, Properties.PLAY_ON_CLICK.getValueAsBoolean());
 		}
 
 	}
 
-	private void selectPanel(SoundPanel soundPanel) {
-		soundPanel.setSelected(true);
+	private void selectPanel(SoundPanel soundPanel, boolean shouldPlay) {
+		soundPanel.setSelected(true, shouldPlay);
 		selectedSoundPanels.add(soundPanel);
-	}
-
-	private void unselectPanel(SoundPanel soundPanel) {
-		soundPanel.setSelected(false);
-		selectedSoundPanels.remove(soundPanel);
 	}
 
 	public void selectOrUnselectAllSoundPanels() {
@@ -175,7 +170,10 @@ public class Sorter extends JPanel {
 
 			unselectAllSoundPanels();
 		} else {
-			System.out.println("No panels are selected, selecting all");
+
+			System.out.println("Not all panels are selected, selecting all");
+
+			System.out.println("selectedSoundPanels.size() : " + selectedSoundPanels.size() + " " + soundPanels.size());
 
 			selectAllSoundPanels();
 		}
@@ -186,7 +184,7 @@ public class Sorter extends JPanel {
 			for (Iterator<SoundPanel> iterator = selectedSoundPanels.iterator(); iterator.hasNext();) {
 				SoundPanel soundPanel = iterator.next();
 				iterator.remove();
-				soundPanel.setSelected(false);
+				soundPanel.setSelected(false, false);
 			}
 		} catch (Exception e1) {
 			Logger.logError(TAG, "Error in removeInfoPanel", e1);
@@ -194,10 +192,22 @@ public class Sorter extends JPanel {
 		}
 	}
 
+	
+	private void unselectSoundPanel(SoundPanel soundPanel) {
+		if (selectedSoundPanels.contains(soundPanel)) {
+			selectedSoundPanels.remove(soundPanel);
+			soundPanel.setSelected(false, false);
+		} else {
+			Logger.logError(TAG, "Sound panel is not in selectedSoundPanels!");
+		}
+	}
+	
 	private void selectAllSoundPanels() {
+		unselectAllSoundPanels(); //avoid selecting all sound panels twice
+
 		try {
 			for (SoundPanel soundPanel : soundPanels) {
-				selectPanel(soundPanel);
+				selectPanel(soundPanel, false);
 			}
 		} catch (Exception e1) {
 			Logger.logError(TAG, "Error in removeInfoPanel", e1);
@@ -205,14 +215,33 @@ public class Sorter extends JPanel {
 		}
 	}
 
-	public void scrollUp() {
-		// TODO Auto-generated method stub
+	public void scroll(boolean scrollUp) {
+		if (selectedSoundPanels.size() == 1) {
+			int anchor = soundPanels.indexOf(selectedSoundPanels.get(0));
 
-	}
+			
 
-	public void scrollDown() {
-		// TODO Auto-generated method stub
+			SoundPanel panelToSelect = null;
 
+			if (scrollUp) {
+				if (anchor - 1 >= 0) {
+					panelToSelect = soundPanels.get(anchor - 1);
+				}
+
+			} else { //down...!
+
+				if (soundPanels.size() >= anchor + 1) {
+					panelToSelect = soundPanels.get(anchor + 1);
+				}
+
+			}
+
+			if (panelToSelect != null) {
+				unselectSoundPanel(soundPanels.get(anchor)); //same as unselectAllSoundPanels but more efficient
+				selectPanel(panelToSelect, Properties.PLAY_ON_CLICK.getValueAsBoolean());
+			}
+
+		}
 	}
 
 	public void selectAll() {

@@ -34,43 +34,44 @@ public class MacroInfoPanel extends JPanel {
 	public MacroInfoPanel(MacroAction keyBind, MacroEditor m) {
 		this.keyBind = keyBind;
 
-		setPreferredSize(new Dimension(345, 67));
+		setPreferredSize(new Dimension(337, 59));
 		setLayout(null);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(5, 5, 333, 57);
+		panel.setBounds(5, 5, 326, 49);
 		panel.setToolTipText("Click to edit");
 		add(panel);
 		panel.setLayout(null);
 
 		lblKey = new JLabel("Keys");
 		lblKey.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
-		lblKey.setBounds(12, 0, 110, 57);
+		lblKey.setBounds(12, 0, 108, 49);
 		panel.add(lblKey);
 
 		labelAction = new JLabel("Actions");
 		labelAction.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
-		labelAction.setBounds(134, 0, 110, 57);
+		labelAction.setBounds(124, 0, 108, 49);
 		panel.add(labelAction);
 
 		JButton btnNewButton = new JButton("X");
+		btnNewButton.setToolTipText("Remove");
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton.setForeground(new Color(255, 0, 0));
-		btnNewButton.setMargin(new Insets(0, 0, 0, 0)); //allows for the 'X' to display even if theres not a lot of space around it
+		btnNewButton.setMargin(new Insets(-5, -5, -5, -5)); //allows for the 'X' to display even if theres not a lot of space around it
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				System.out.println("M : " + m);
-				System.out.println("M.macroloader : " + m.macroLoader);
 
 				m.macroLoader.removeMacro(keyBind, me);
 			}
 		});
-		btnNewButton.setBounds(280, 13, 41, 29);
+		btnNewButton.setBounds(280, 7, 35, 35);
 		panel.add(btnNewButton);
 
 		JButton button = new JButton();
+		button.setToolTipText("Edit");
+		button.setBounds(234, 7, 35, 35);
+		panel.add(button);
 		button.setIcon(Icons.SETTINGS);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -80,8 +81,6 @@ public class MacroInfoPanel extends JPanel {
 		button.setMargin(new Insets(0, 0, 0, 0));
 		button.setForeground(Constants.SICK_PURPLE);
 		button.setFont(new Font("Tahoma", Font.BOLD, 13));
-		button.setBounds(234, 13, 41, 29);
-		panel.add(button);
 
 	}
 

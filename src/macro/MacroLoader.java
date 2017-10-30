@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import action.type.sound.imp.PlayAction;
+import action.type.ui.imp.SimpleUIAction;
 import logger.Logger;
 import macro.macrolist.MacroInfoPanel;
 
@@ -105,15 +106,29 @@ public class MacroLoader {
 
 		//R = rename
 
-		/**MacroAction k2 = new MacroAction();
-		k2.keys.add(new Key(KeyEvent.VK_R));
-		k2.actionsToPerform.add(new RenameAction());
-		
-		addNewMacro(k2);*/
+		MacroAction defaultSelectAllAction = new MacroAction();
+		defaultSelectAllAction.keys.add(new Key(KeyEvent.VK_CONTROL));
+		defaultSelectAllAction.keys.add(new Key(KeyEvent.VK_A));
+		defaultSelectAllAction.actionsToPerform.add(SimpleUIAction.SELECT_ALL);
+
+		addNewMacro(defaultSelectAllAction);
 
 		//
 
-		
+		MacroAction defaultScrollUpAction = new MacroAction();
+		defaultScrollUpAction.keys.add(new Key(KeyEvent.VK_UP));
+		defaultScrollUpAction.actionsToPerform.add(SimpleUIAction.SCROLL_UP);
+
+		addNewMacro(defaultScrollUpAction);
+
+		//
+
+		MacroAction defaultScrollDownAction = new MacroAction();
+		defaultScrollDownAction.keys.add(new Key(KeyEvent.VK_DOWN));
+		defaultScrollDownAction.actionsToPerform.add(SimpleUIAction.SCROLL_DOWN);
+
+		addNewMacro(defaultScrollDownAction);
+
 	}
 
 	public void serialise() {

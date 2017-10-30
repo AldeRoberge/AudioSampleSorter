@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -28,8 +29,6 @@ import macro.Key;
 import macro.MacroAction;
 import macro.MacroEditor;
 import util.key.KeysToString;
-
-import javax.swing.JScrollPane;
 
 public class MacroEditorUI extends JPanel {
 
@@ -45,7 +44,7 @@ public class MacroEditorUI extends JPanel {
 	private static final Font RESULT_FONT_BOLD = new Font("Segoe UI Light", Font.BOLD, 20);
 
 	private boolean isListenningForKeyInputs = false;
-	private JTextField txtTest;
+	private JTextField keyEditor;
 
 	private int keysPressedAndNotReleased = 0;
 
@@ -73,7 +72,7 @@ public class MacroEditorUI extends JPanel {
 	 */
 	public MacroEditorUI(MacroEditor m) {
 
-		setBounds(0, 0, 365, 272);
+		setBounds(0, 0, 365, 271);
 		setVisible(true);
 		setLayout(null);
 
@@ -109,32 +108,28 @@ public class MacroEditorUI extends JPanel {
 				m.showMacroEditUI();
 			}
 		});
-		btnAdd.setBounds(0, 245, 365, 25);
+		btnAdd.setBounds(12, 233, 341, 25);
 		add(btnAdd);
 
-		JLabel lblIsInEdit = new JLabel("EDIT MODE = FALSE");
-		lblIsInEdit.setBounds(12, 216, 148, 16);
-		add(lblIsInEdit);
-
-		txtTest = new JTextField("Click to edit");
-		txtTest.setToolTipText("Click to edit");
-		txtTest.setHorizontalAlignment(SwingConstants.CENTER);
-		txtTest.setFont(RESULT_FONT_PLAIN);
-		txtTest.setBackground(Color.decode("#FCFEFF")); //'Ultra Light Cyan'
-		txtTest.setEditable(false);
-		txtTest.setBounds(12, 13, 341, 35);
-		add(txtTest);
-		txtTest.setColumns(10);
+		keyEditor = new JTextField("Click to edit");
+		keyEditor.setToolTipText("Click to edit");
+		keyEditor.setHorizontalAlignment(SwingConstants.CENTER);
+		keyEditor.setFont(RESULT_FONT_PLAIN);
+		keyEditor.setBackground(Color.decode("#FCFEFF")); //'Ultra Light Cyan'
+		keyEditor.setEditable(false);
+		keyEditor.setBounds(12, 13, 341, 35);
+		keyEditor.setColumns(10);
+		add(keyEditor);
 
 		//Populate the ComboBox
 
-		ActionManager.init();
-
 		Logger.logInfo(TAG, "Found " + ActionManager.actions.size() + " actions.");
 
-		Action[] array = ActionManager.actions.toArray(new Action[ActionManager.actions.size()]);
+		JComboBox<Action> comboBox = new JComboBox<Action>();
+		for (Action a : ActionManager.actions) {
+			comboBox.addItem(a);
+		}
 
-		JComboBox<Action> comboBox = new JComboBox<Action>(array);
 		comboBox.setBounds(91, 61, 262, 22);
 		add(comboBox);
 
@@ -154,7 +149,7 @@ public class MacroEditorUI extends JPanel {
 
 		scrollPane = new JScrollPane();
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 96, 341, 107);
+		scrollPane.setBounds(12, 96, 341, 125);
 		scrollPane.setAutoscrolls(true);
 		// scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
@@ -168,16 +163,15 @@ public class MacroEditorUI extends JPanel {
 		columnpanel.setBackground(Color.gray);
 		borderlaoutpanel.add(columnpanel, BorderLayout.NORTH);
 
-		txtTest.addMouseListener(new MouseAdapter() {
+		keyEditor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (!isListenningForKeyInputs) {
 					keyBindToEdit.clearKeys();
-					txtTest.setText("Press any key");
+					keyEditor.setText("Press any key");
 					Logger.logInfo(TAG, "Now listenning for key inputs");
 					isListenningForKeyInputs = true;
-					lblIsInEdit.setText("EDIT MODE = TRUE");
-					txtTest.setFont(RESULT_FONT_PLAIN);
+					keyEditor.setFont(RESULT_FONT_PLAIN);
 				} else {
 					Logger.logInfo(TAG, "Already listenning for key inputs!");
 				}
@@ -214,8 +208,7 @@ public class MacroEditorUI extends JPanel {
 
 								Logger.logInfo(TAG, "Stopped listenning for events.");
 								isListenningForKeyInputs = false;
-								lblIsInEdit.setText("EDIT MODE = FALSE");
-								txtTest.setFont(RESULT_FONT_BOLD);
+								keyEditor.setFont(RESULT_FONT_BOLD);
 
 							}
 
@@ -256,7 +249,11 @@ public class MacroEditorUI extends JPanel {
 	}
 
 	private void updateTxtTest() {
-		txtTest.setText(KeysToString.keysToString("[", keyBindToEdit.keys, "]"));
+		if (keyBindToEdit.keys.size() > 0) {
+			keyEditor.setText(KeysToString.keysToString("[", keyBindToEdit.keys, "]"));
+		} else {
+			keyEditor.setText("Click to edit");
+		}
 	}
 
 	// TODO : update this when adding fiels

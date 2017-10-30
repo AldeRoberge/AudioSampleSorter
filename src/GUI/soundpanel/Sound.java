@@ -32,6 +32,8 @@ public class Sound {
 	}*/
 
 	public void play() {
+		System.out.println("Play!!!!!!!!!!");
+		
 		audioPlayer.playNewSoundOrResume(this);
 		isPlaying = true;
 	}

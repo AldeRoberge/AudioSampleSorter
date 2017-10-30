@@ -66,34 +66,42 @@ public class AudioPlayer implements BasicPlayerListener {
 	}
 
 	void playNewSound(Sound sound) {
-		this.currentSelectedSound = sound;
 
-		try {
-			// Open file, or URL or Stream (shoutcast) to play.
-			control.open(currentSelectedSound.file);
-			// control.open(new URL("http://yourshoutcastserver.com:8000"));
+		new Thread("Sound player") {
 
-			// Start playback in a thread.
-			control.play();
+			public void run() {
 
-			// Set Volume (0 to 1.0).
-			// setGain should be called after control.play().
+				currentSelectedSound = sound;
 
-			setVolume(currentAudioVolume);
-			setPan(currentAudioPan);
+				try {
+					// Open file, or URL or Stream (shoutcast) to play.
+					control.open(currentSelectedSound.file);
+					// control.open(new URL("http://yourshoutcastserver.com:8000"));
 
-			// If you want to pause/resume/pause the played file then
-			// write a Swing player and just call control.pause(),
-			// control.resume() or control.stop().			
-			// Use control.seek(bytesToSkip) to seek file
-			// (i.e. fast forward and rewind). seek feature will
-			// work only if underlying JavaSound SPI implements
-			// skip(...). True for MP3SPI (JavaZOOM) and SUN SPI's
-			// (WAVE, AU, AIFF).
+					// Start playback in a thread.
+					control.play();
 
-		} catch (BasicPlayerException e) {
-			e.printStackTrace();
-		}
+					// Set Volume (0 to 1.0).
+					// setGain should be called after control.play().
+
+					setVolume(currentAudioVolume);
+					setPan(currentAudioPan);
+
+					// If you want to pause/resume/pause the played file then
+					// write a Swing player and just call control.pause(),
+					// control.resume() or control.stop().			
+					// Use control.seek(bytesToSkip) to seek file
+					// (i.e. fast forward and rewind). seek feature will
+					// work only if underlying JavaSound SPI implements
+					// skip(...). True for MP3SPI (JavaZOOM) and SUN SPI's
+					// (WAVE, AU, AIFF).
+
+				} catch (BasicPlayerException e) {
+					e.printStackTrace();
+				}
+
+			}
+		}.start();
 	}
 
 	/**
@@ -178,7 +186,7 @@ public class AudioPlayer implements BasicPlayerListener {
 			newVisualizerStatus("End of media");
 
 			currentSelectedSound.isPlaying = false;
-			
+
 			//end of media reached
 		}
 
@@ -237,53 +245,46 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	public void playNewSoundOrResume(Sound sound) {
 
-		new Thread("Sound player") {
+		if (currentSelectedSound == null) {
+			playNewSound(sound);
+		} else {
 
-			public void run() {
+			if (currentSelectedSound.equals(sound)) {
 
-				if (currentSelectedSound == null) {
-					playNewSound(sound);
-				} else {
+				System.out.println("Current selected sound is this");
 
-					if (currentSelectedSound.equals(sound)) {
+				if (isStopped) { //stopped (play)
 
-						System.out.println("Current selected sound is this");
-
-						if (isStopped) { //stopped (play)
-
-							try {
-								control.play();
-							} catch (BasicPlayerException e) {
-								Logger.logError(TAG, "Could not play stopped sound " + sound);
-								e.printStackTrace();
-							}
-
-						} else if (isPaused) { //paused (resume)
-
-							try {
-								control.resume();
-							} catch (BasicPlayerException e) {
-								Logger.logError(TAG, "Could not resume paused sound " + sound);
-								e.printStackTrace();
-							}
-
-						} else { //playing (pause)
-
-							try {
-								control.pause();
-							} catch (BasicPlayerException e) {
-								Logger.logError(TAG, "Could not pause playing sound " + sound);
-								e.printStackTrace();
-							}
-
-						}
-					} else {
-						playNewSound(sound);
+					try {
+						control.play();
+					} catch (BasicPlayerException e) {
+						Logger.logError(TAG, "Could not play stopped sound " + sound);
+						e.printStackTrace();
 					}
-				}
 
+				} else if (isPaused) { //paused (resume)
+
+					try {
+						control.resume();
+					} catch (BasicPlayerException e) {
+						Logger.logError(TAG, "Could not resume paused sound " + sound);
+						e.printStackTrace();
+					}
+
+				} else { //playing (pause)
+
+					try {
+						control.pause();
+					} catch (BasicPlayerException e) {
+						Logger.logError(TAG, "Could not pause playing sound " + sound);
+						e.printStackTrace();
+					}
+
+				}
+			} else {
+				playNewSound(sound);
 			}
-		}.start();
+		}
 
 	}
 

@@ -9,10 +9,16 @@ import action.type.Action;
  * Don,t forget to hardcode them inside ActionManager
  *
  */
-public abstract class UIAction implements Action {
+public abstract class UIAction implements Action, Cloneable {
 
 	public abstract void perform(); //UI is called statically
 
 	public abstract void undo();
+
+	@Override
+	public UIAction clone() throws CloneNotSupportedException {
+		UIAction cloneA = (UIAction) super.clone();
+		return cloneA;
+	}
 
 }
