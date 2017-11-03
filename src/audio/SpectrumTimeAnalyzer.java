@@ -97,7 +97,6 @@ public class SpectrumTimeAnalyzer extends JPanel implements KJDigitalSignalProce
 	private float saColorScale;
 	private float saMultiplier;
 	private float saDecay = DEFAULT_SPECTRUM_ANALYSER_DECAY;
-	private float sad;
 	private SourceDataLine m_line = null;
 	// -- VU Meter
 	private float oldLeft;
@@ -141,7 +140,7 @@ public class SpectrumTimeAnalyzer extends JPanel implements KJDigitalSignalProce
 		if (line != null)
 			m_line = line;
 		if (dsp == null) {
-			dsp = new KJDigitalSignalProcessingAudioDataConsumer(2048, fps);
+			dsp = new KJDigitalSignalProcessingAudioDataConsumer(4096, fps);
 			dsp.add(this);
 		}
 		if ((dsp != null) && (m_line != null)) {

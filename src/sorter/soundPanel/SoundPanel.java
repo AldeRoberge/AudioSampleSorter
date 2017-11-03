@@ -1,4 +1,4 @@
-package GUI.soundpanel;
+package sorter.soundPanel;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -13,13 +13,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import GUI.Sorter;
 import constants.Constants;
 import property.Properties;
+import sorter.Sorter;
 import util.file.FileSizeToString;
 
 public class SoundPanel extends JPanel {
-
+	
 	private static final Color SELECTED = Constants.SICK_PURPLE;
 	private static final Color UNSELECTED = Color.LIGHT_GRAY;
 	private static final Color UNSELECTED_LABEL = new Color(18, 18, 24); // Eigengrau :D
@@ -34,6 +34,7 @@ public class SoundPanel extends JPanel {
 	private JLabel lblFileSize;
 
 	private SoundPanel me = this;
+	public boolean selected;
 
 	public SoundPanel(Sound sound, Sorter s) {
 		this.sorter = s;
@@ -41,7 +42,7 @@ public class SoundPanel extends JPanel {
 
 		setBackground(UNSELECTED);
 
-		setPreferredSize(new Dimension(579, 48));
+		setPreferredSize(new Dimension(579, 47));
 		setLayout(null);
 
 		JPanel containerPanel = new JPanel();
@@ -67,16 +68,14 @@ public class SoundPanel extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
-				if (SwingUtilities.isLeftMouseButton(e)) {
+				if (SwingUtilities.isLeftMouseButton(e)) { //right click is handled by DefaultContextMenu
 					sorter.soundPanelIsLeftClicked(me);
-				} else if (SwingUtilities.isRightMouseButton(e)) {
-					sorter.soundPanelIsRightClicked(me);
 				}
 
 			}
 		});
 
-		DefaultContextMenu.addDefaultContextMenu(this);
+		//SoundPanelContextMenu.addDefaultContextMenu(this); TODO
 
 	}
 
@@ -86,19 +85,17 @@ public class SoundPanel extends JPanel {
 	}
 
 	//Dont call this directly, use Sorter. setSelected instead
-	
-	/**
-	 * @param isSelected true = select, false = unselect
-	 * @param play true = playOrPause()
-	 */
-	public void setSelected(boolean isSelected, boolean play) {
+
+	public void updateIsSelected(boolean isSelected, boolean shouldPlay) {
+		selected = isSelected;
+		
 		if (isSelected) {
 
 			setBackground(SELECTED);
 			lblFilename.setForeground(SELECTED);
 			lblFileSize.setForeground(SELECTED);
 
-			if (play) {
+			if (shouldPlay) {
 				sound.playOrPause();
 			}
 
@@ -125,7 +122,6 @@ public class SoundPanel extends JPanel {
 		try {
 			Desktop.getDesktop().open(getFile().getParentFile());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

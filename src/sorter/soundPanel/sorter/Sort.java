@@ -1,4 +1,4 @@
-package GUI.soundPanelSorter;
+package sorter.soundPanel.sorter;
 
 public class Sort {
 	public int ID;

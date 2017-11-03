@@ -13,10 +13,9 @@ import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
-import GUI.soundpanel.Sound;
-import constants.CursorManager;
 import logger.Logger;
 import property.Properties;
+import sorter.soundPanel.Sound;
 
 public class AudioPlayer implements BasicPlayerListener {
 
@@ -138,7 +137,6 @@ public class AudioPlayer implements BasicPlayerListener {
 	 */
 	public void stateUpdated(BasicPlayerEvent event) {
 		// Notification of BasicPlayer states (opened, playing, end of media, ...)
-		//System.out.println("stateUpdated : " + event.toString());
 
 		int state = event.getCode();
 
@@ -157,7 +155,6 @@ public class AudioPlayer implements BasicPlayerListener {
 			isPaused = true;
 
 		} else if (event.getCode() == BasicPlayerEvent.PLAYING) {
-			CursorManager.changeCursor(audioVis.analyzer, CursorManager.handCursor);
 
 			newVisualizerStatus("Playing");
 
@@ -178,7 +175,7 @@ public class AudioPlayer implements BasicPlayerListener {
 			isPaused = false;
 			isStopped = false;
 		} else if (state == BasicPlayerEvent.OPENING) {
-			CursorManager.changeCursor(audioVis.analyzer, CursorManager.waitCursor);
+
 			newVisualizerStatus("Buffering");
 
 			//buffering
@@ -250,8 +247,6 @@ public class AudioPlayer implements BasicPlayerListener {
 		} else {
 
 			if (currentSelectedSound.equals(sound)) {
-
-				System.out.println("Current selected sound is this");
 
 				if (isStopped) { //stopped (play)
 

@@ -3,8 +3,9 @@ package macro;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import GUI.soundpanel.SoundPanel;
 import action.type.Action;
+import key.Key;
+import sorter.soundPanel.SoundPanel;
 
 /**
  * MacroAction

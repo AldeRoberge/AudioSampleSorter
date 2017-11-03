@@ -1,4 +1,4 @@
-package GUI.other;
+package sorter.other;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
@@ -40,6 +40,16 @@ public class CreditsPanel extends JPanel {
 			e1.printStackTrace();
 		}
 		scrollPane.setViewportView(textPane);
+
+		
+		
+		/**JFXPanel jfxPanel = new JFXPanel(); // Scrollable JCompenent
+		Platform.runLater(() -> { // FX components need to be managed by JavaFX
+			WebView webView = new WebView();
+			webView.getEngine().loadContent("<html> Hello World!");
+			webView.getEngine().load("http://www.stackoverflow.com/");
+			jfxPanel.setScene(new Scene(webView));
+		});*/
 
 	}
 

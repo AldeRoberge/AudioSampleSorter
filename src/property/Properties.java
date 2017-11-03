@@ -1,6 +1,6 @@
 package property;
 
-import GUI.soundPanelSorter.SoundPanelsSorter;
+import sorter.soundPanel.sorter.SoundPanelSorter;
 
 public class Properties {
 
@@ -15,9 +15,11 @@ public class Properties {
 	public static final String TRUE = "TRUE";
 	public static final String FALSE = "FALSE";
 
+	public static final Property FIRST_LAUNCH = new Property("FIRST_LAUNCH", TRUE, e);
+
 	// SORT_BY types
 
-	public static Property SORT_BY = new Property("SORT_BY", SoundPanelsSorter.sortByName.name, e);
+	public static Property SORT_BY = new Property("SORT_BY", SoundPanelSorter.sortByName.name, e);
 	public static Property ASCENDING = new Property("SORT_ASCENDING", TRUE, e);
 
 	// 
@@ -43,7 +45,7 @@ public class Properties {
 	//Used by RunSS onJFileChooser to reset the location where the jfilechooser was
 	public static Property SPECTRUM_ANALYZER_STATUS = new Property("SPECTRUM_ANALYZER_STATUS", "oscillo", e);
 
-	public static Property SPLITPANE_DIVIDERLOCATION = new Property("SPLITPANE_DIVIDERLOCATION", "200", e);
+	public static Property HORIZONTAL_SPLITPANE_DIVIDERLOCATION = new Property("SPLITPANE_DIVIDERLOCATION", "200", e);
 
 	//
 

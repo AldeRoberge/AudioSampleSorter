@@ -1,7 +1,7 @@
 package history;
 
-import GUI.soundpanel.SoundPanel;
 import action.type.Action;
+import sorter.soundPanel.SoundPanel;
 
 public class Event {
 

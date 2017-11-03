@@ -1,4 +1,4 @@
-package GUI.soundpanel;
+package sorter.soundPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 
 //From https://stackoverflow.com/questions/766956/how-do-i-create-a-right-click-context-menu-in-java-swing
 
-class DefaultContextMenu extends JPopupMenu {
+class SoundPanelContextMenu extends JPopupMenu {
 
 	private JMenuItem play;
 	private JMenuItem remove;
@@ -19,7 +19,7 @@ class DefaultContextMenu extends JPopupMenu {
 
 	private SoundPanel soundPanel;
 
-	private DefaultContextMenu() {
+	private SoundPanelContextMenu() {
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
 		addPopupMenuItems();
@@ -32,15 +32,6 @@ class DefaultContextMenu extends JPopupMenu {
 				KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		play.addActionListener(event -> soundPanel.sound.playOrPause());
 		add(play);
-
-		remove = new JMenuItem("Remove");
-		remove.setEnabled(true);
-		remove.setAccelerator(
-				KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		remove.addActionListener(event -> soundPanel.sorter.removeSoundPanel(soundPanel));
-		add(remove);
-
-		add(new JSeparator());
 
 		openFileLocation = new JMenuItem("Open file location");
 		openFileLocation.setEnabled(false);
@@ -100,7 +91,7 @@ class DefaultContextMenu extends JPopupMenu {
 		soundPanel = (SoundPanel) event.getSource();
 		soundPanel.requestFocus();
 
-		boolean enableUndo = true;
+		/**boolean enableUndo = true;
 		boolean enableRedo = true;
 		boolean openFileLocatio2n = true;
 		boolean enableDelete = false;
@@ -109,14 +100,14 @@ class DefaultContextMenu extends JPopupMenu {
 		play.setEnabled(enableUndo);
 		remove.setEnabled(enableRedo);
 		openFileLocation.setEnabled(openFileLocatio2n);
-		delete.setEnabled(enableDelete);
+		delete.setEnabled(enableDelete);*/
 
 		// Shows the popup menu
 		show(soundPanel, event.getX(), event.getY());
 	}
 
 	public static void addDefaultContextMenu(SoundPanel component) {
-		DefaultContextMenu defaultContextMenu = new DefaultContextMenu();
+		SoundPanelContextMenu defaultContextMenu = new SoundPanelContextMenu();
 		defaultContextMenu.addTo(component);
 	}
 }

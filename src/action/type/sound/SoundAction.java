@@ -1,7 +1,7 @@
 package action.type.sound;
 
-import GUI.soundpanel.SoundPanel;
 import action.type.Action;
+import sorter.soundPanel.SoundPanel;
 
 public abstract class SoundAction implements Action, Cloneable {
 

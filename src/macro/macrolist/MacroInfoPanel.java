@@ -85,7 +85,10 @@ public class MacroInfoPanel extends JPanel {
 	}
 
 	public void updateText() {
-		lblKey.setText(KeysToString.keysToString("", keyBind.keys, ""));
+		String lblKeyText = KeysToString.keysToString("", keyBind.keys, "");
+
+		lblKey.setText(lblKeyText);
+		lblKey.setToolTipText(lblKeyText); //in case its cut off
 
 		if (keyBind.actionsToPerform.size() > 1) {
 

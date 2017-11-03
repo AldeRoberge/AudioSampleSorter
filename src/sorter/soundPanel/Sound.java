@@ -1,4 +1,4 @@
-package GUI.soundpanel;
+package sorter.soundPanel;
 
 import java.io.File;
 
@@ -32,8 +32,6 @@ public class Sound {
 	}*/
 
 	public void play() {
-		System.out.println("Play!!!!!!!!!!");
-		
 		audioPlayer.playNewSoundOrResume(this);
 		isPlaying = true;
 	}

@@ -12,8 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import GUI.SorterUI;
 import logger.Logger;
+import sorter.SorterUI;
+import sorter.fileImport.FileImporter;
 
 /**
  * See ActionEditor
@@ -100,9 +101,7 @@ public class EditPropertyPanel extends JPanel {
 			btnOpenFileBrowser.setToolTipText("Open file browser");
 			btnOpenFileBrowser.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (chooser.showOpenDialog(SorterUI.fileImporterIcon) == JFileChooser.APPROVE_OPTION) {
-						System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
-						System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
+					if (chooser.showOpenDialog(FileImporter.fileImporterParent) == JFileChooser.APPROVE_OPTION) {
 
 						String directory = chooser.getCurrentDirectory().toString();
 

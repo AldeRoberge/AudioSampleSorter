@@ -28,15 +28,7 @@ public class Logger {
 	private Logger() {
 	}
 
-	/**
-	 * This is used as a backup if database fails
-	 */
 	private WriteToFile logFileWriter = new WriteToFile("log.txt");
-
-	/**
-	 * Logger is for logging serious info, warnings, or errors. Saves to a DB
-	 * file and a text file.
-	 */
 
 	public static void logInfo(String tag, String message) { // log info
 
@@ -48,9 +40,6 @@ public class Logger {
 		log(WARNING, tag, message, null);
 	}
 
-	/***
-	 * Exception is nulleable
-	 */
 	public static void logWarning(String tag, String message, Throwable e) { // log warning with exception
 
 		log(WARNING, tag, message, e);
@@ -61,9 +50,6 @@ public class Logger {
 		log(ERROR, tag, message, null);
 	}
 
-	/***
-	 * Exception is nulleable
-	 */
 	public static void logError(String tag, String message, Throwable e) { // log error with exception
 
 		log(ERROR, tag, message, e);
@@ -74,7 +60,11 @@ public class Logger {
 	 * DO NOT use this method for logging, use LogError and LogInfo
 	 */
 	private static void log(int severityLevel, String tag, String message, Throwable e) {
-		System.out.println("[" + tag + "] " + message);
+		if (severityLevel <= 1) {
+			System.out.println("[" + tag + "] " + message);
+		} else {
+			System.err.println("[" + tag + "] " + message);
+		}
 
 		Timestamp now = new Timestamp(new Date().getTime());
 
@@ -104,7 +94,6 @@ public class Logger {
 			panel.addLogInfoPanel(log);
 		}
 
-		//PrettyTimeStatic.prettyTime.format(new Date(log.time.getTime()))
 	}
 
 	public static String logTypeToString(int type) {
@@ -123,10 +112,13 @@ public class Logger {
 		logFileWriter.write(e.toString());
 	}
 
-	private static String sTTS(Throwable e) {
-		// convert the stacktrace to a string with \n
-		StringBuilder sb = new StringBuilder(e.toString());
-		for (StackTraceElement ste : e.getStackTrace()) {
+	/**
+	 * @return t's stacktrace to a string with \n
+	 */
+	private static String sTTS(Throwable t) {
+
+		StringBuilder sb = new StringBuilder(t.toString());
+		for (StackTraceElement ste : t.getStackTrace()) {
 			sb.append("\n\tat ");
 			sb.append(ste);
 		}

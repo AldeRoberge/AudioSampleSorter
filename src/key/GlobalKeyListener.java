@@ -1,4 +1,4 @@
-package macro;
+package key;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -11,32 +11,36 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
-import GUI.SorterUI;
 import action.type.Action;
 import action.type.sound.SoundAction;
 import action.type.ui.UIAction;
+import macro.MacroAction;
+import macro.MacroLoader;
+import sorter.Sorter;
+import sorter.SorterUI;
+import sorter.soundPanel.SoundPanel;
 import util.key.NativeKeyEventToKey;
 
 //Call GlobalScreen.unregisterNativeHook(); to remove (unneeded here)
 
-public class GlobalMacroKeyListener implements NativeKeyListener {
+public class GlobalKeyListener implements NativeKeyListener {
 
 	private static final String TAG = "GlobalMacroKeyListener";
 
-	public boolean isListenningForGlobalInputs = true;
+	public boolean isListenningForInputs = true; //only true when the frame is visible
 
 	private ArrayList<Key> pressedKeys = new ArrayList<Key>();
 
-	private GodManager god;
+	private Sorter sorter;
 
-	private static GlobalMacroKeyListener me;
+	private static GlobalKeyListener me;
 
 	/**
 	 * @return self, creates if not already instantiated
 	 */
-	public static GlobalMacroKeyListener get() {
+	public static GlobalKeyListener get() {
 		if (me == null) {
-			me = new GlobalMacroKeyListener();
+			me = new GlobalKeyListener();
 		}
 		return me;
 	}
@@ -46,13 +50,64 @@ public class GlobalMacroKeyListener implements NativeKeyListener {
 	 */
 	public void nativeKeyPressed(NativeKeyEvent ke) {
 
-		if (isListenningForGlobalInputs) { //is not minimized and is focused
+		if (isListenningForInputs) { //is not minimized and is focused
 
 			Key e = NativeKeyEventToKey.getJavaKeyEvent(ke);
 			if (!pressedKeys.contains(e)) {
 				pressedKeys.add(e);
 
-				checkForBinds();
+				//CHECK FOR BINDS
+
+				//For every registered MacroActions
+				for (MacroAction m : MacroLoader.macroActions) {
+
+					// If the MacroAction's keys are globaly pressed
+					if (keysArePressed(m.keys)) {
+
+						//PERFORM ACTIONS
+
+						for (Action action : m.actionsToPerform) {
+
+							if (action instanceof UIAction) {
+
+								logger.Logger.logInfo(TAG, "Action is instanceof UIAction");
+
+								UIAction act = (UIAction) action;
+
+								UIAction clonedAction = null;
+
+								try {
+									clonedAction = act.clone();
+								} catch (CloneNotSupportedException e1) {
+									e1.printStackTrace();
+								}
+
+								clonedAction.perform();
+
+							} else if (action instanceof SoundAction) {
+
+								logger.Logger.logInfo(TAG, "Action is instanceof SoundAction");
+
+								SoundAction act = (SoundAction) action;
+
+								SoundAction clonedAction = null;
+								try {
+									clonedAction = act.clone();
+								} catch (CloneNotSupportedException e2) {
+									e2.printStackTrace();
+								}
+
+								for (SoundPanel sp : sorter.selectedSoundPanels) {
+									clonedAction.perform(sp);
+								}
+
+							} else {
+								logger.Logger.logError(TAG, "Invalid type of action!");
+							}
+						}
+					}
+
+				}
 			}
 
 		}
@@ -73,8 +128,9 @@ public class GlobalMacroKeyListener implements NativeKeyListener {
 	public void nativeKeyTyped(NativeKeyEvent arg0) { // left intentionally blank
 	}
 
-	public void init(GodManager god) {
-		this.god = god;
+	public void init(Sorter s) {
+
+		this.sorter = s;
 
 		try {
 			GlobalScreen.registerNativeHook();
@@ -125,22 +181,6 @@ public class GlobalMacroKeyListener implements NativeKeyListener {
 		return true;
 	}
 
-	private void checkForBinds() {
-
-		//For every registered MacroActions
-		for (MacroAction m : MacroLoader.macroActions) {
-
-			// If the MacroAction's keys are globaly pressed
-			if (keysArePressed(m.keys)) {
-				System.out.println("Key is/are pressed");
-				
-				god.performActions(m.actionsToPerform);
-			}
-
-		}
-
-	}
-
 	public boolean keyCombinaisonIsPressed(ArrayList<Key> requiredKeys) {
 		final int required = requiredKeys.size();
 		int current = 0;
@@ -156,6 +196,14 @@ public class GlobalMacroKeyListener implements NativeKeyListener {
 
 		return current == required;
 
+	}
+
+	public boolean shiftIsPressed() {
+		return keyIsPressed(KeyEvent.VK_SHIFT);
+	}
+
+	public boolean ctrlIsPressed() {
+		return keyIsPressed(KeyEvent.VK_CONTROL);
 	}
 
 }

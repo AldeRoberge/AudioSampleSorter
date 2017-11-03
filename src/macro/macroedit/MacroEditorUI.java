@@ -24,8 +24,8 @@ import javax.swing.SwingConstants;
 
 import action.ActionManager;
 import action.type.Action;
+import key.Key;
 import logger.Logger;
-import macro.Key;
 import macro.MacroAction;
 import macro.MacroEditor;
 import util.key.KeysToString;
@@ -72,7 +72,7 @@ public class MacroEditorUI extends JPanel {
 	 */
 	public MacroEditorUI(MacroEditor m) {
 
-		setBounds(0, 0, 365, 271);
+		setBounds(0, 0, 355, 271);
 		setVisible(true);
 		setLayout(null);
 
@@ -80,35 +80,33 @@ public class MacroEditorUI extends JPanel {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				System.out.println("new keybind : " + newKeyBind);
+				if (!keyBindToEdit.keys.isEmpty()) { //if keybind are left empty, dont save
 
-				if (newKeyBind) {
-					newKeyBind = false;
-					Logger.logInfo(TAG, "Creating new KeyBind");
+					if (newKeyBind) {
+						newKeyBind = false;
+						Logger.logInfo(TAG, "Creating new KeyBind");
+
+						keyBindToEdit.actionsToPerform.clear();
+
+						m.macroLoader.addNewMacro(keyBindToEdit);
+					}
 
 					keyBindToEdit.actionsToPerform.clear();
 
-					m.macroLoader.addNewMacro(keyBindToEdit);
+					for (Action action : actions) {
+						keyBindToEdit.actionsToPerform.add(action);
+					}
+
+					m.macroListUI.refreshInfoPanel();
+
+					m.macroLoader.serialise(); //just save
+
 				}
-
-				keyBindToEdit.actionsToPerform.clear();
-
-				for (Action action : actions) { //on save : 
-
-					//System.out.println(keyBindToEdit.toString());
-					//System.out.println(keyBindToEdit.actionsToPerform);
-
-					keyBindToEdit.actionsToPerform.add(action);
-				}
-
-				m.macroListUI.refreshInfoPanel();
-
-				m.macroLoader.serialise(); //just save
 
 				m.showMacroEditUI();
 			}
 		});
-		btnAdd.setBounds(12, 233, 341, 25);
+		btnAdd.setBounds(12, 233, 330, 25);
 		add(btnAdd);
 
 		keyEditor = new JTextField("Click to edit");
@@ -117,7 +115,7 @@ public class MacroEditorUI extends JPanel {
 		keyEditor.setFont(RESULT_FONT_PLAIN);
 		keyEditor.setBackground(Color.decode("#FCFEFF")); //'Ultra Light Cyan'
 		keyEditor.setEditable(false);
-		keyEditor.setBounds(12, 13, 341, 35);
+		keyEditor.setBounds(12, 13, 330, 35);
 		keyEditor.setColumns(10);
 		add(keyEditor);
 
@@ -130,7 +128,7 @@ public class MacroEditorUI extends JPanel {
 			comboBox.addItem(a);
 		}
 
-		comboBox.setBounds(91, 61, 262, 22);
+		comboBox.setBounds(91, 61, 251, 22);
 		add(comboBox);
 
 		comboBox.addActionListener(new ActionListener() {
@@ -149,7 +147,7 @@ public class MacroEditorUI extends JPanel {
 
 		scrollPane = new JScrollPane();
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 96, 341, 125);
+		scrollPane.setBounds(12, 96, 330, 125);
 		scrollPane.setAutoscrolls(true);
 		// scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
@@ -236,7 +234,8 @@ public class MacroEditorUI extends JPanel {
 			}
 
 		} else {
-			System.out.println("keyBindToEdit is null, creating new keyBind");
+
+			Logger.logInfo(TAG, "Creating new keyBind : " + keyBindToEdit);
 
 			newKeyBind = true;
 			keyBindToEdit = new MacroAction();

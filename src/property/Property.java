@@ -24,22 +24,28 @@ public class Property {
 	}
 
 	//String (default)
-	public void setNewValue(String value) {
+	public String setNewValue(String value) {
 		e.savePropertyValue(key, value);
 		this.value = value;
+		
+		return value;
 	}
 
 	//Integer (converted to String)
-	public void setNewValue(int i) {
+	public int setNewValue(int i) {
 		e.savePropertyValue(key, i + "");
 		this.value = i + "";
+		
+		return i;
 	}
 
 	//Boolean (converted to String)
-	public void setNewValue(Boolean value) {
+	public boolean setNewValue(Boolean value) {
 		String booleanStringValue = Boolean.toString(value).toUpperCase();
 		e.savePropertyValue(key, booleanStringValue);
 		this.value = booleanStringValue;
+		
+		return value;
 	}
 
 	public boolean getValueAsBoolean() {

@@ -1,4 +1,4 @@
-package macro;
+package key;
 
 import java.awt.event.KeyEvent;
 import java.io.Serializable;

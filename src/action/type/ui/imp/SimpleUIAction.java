@@ -2,12 +2,12 @@ package action.type.ui.imp;
 
 import java.util.ArrayList;
 
-import GUI.SorterUI;
-import GUI.Sorter;
 import action.editable.EditeableProperty;
 import action.type.Action;
 import action.type.ui.UIAction;
 import logger.Logger;
+import sorter.Sorter;
+import sorter.SorterUI;
 
 public class SimpleUIAction extends UIAction {
 
@@ -79,15 +79,15 @@ public class SimpleUIAction extends UIAction {
 		case SHOW_CREDITS_UI_ID:
 			break;
 		case SHOW_MACRO_UI_ID:
-			samplerSorter.showEditMacrosUI();
+			samplerSorter.showEditMacros(true);
 			break;
 		case SHOW_SETTINGS_UI_ID:
-			samplerSorter.showSettings();
+			samplerSorter.showSettings(true);
 			break;
 		case SHOW_CONSOLE_ID:
 			break;
 		case SELECT_ALL_ID:
-			sorter.selectOrUnselectAllSoundPanels();
+			sorter.performSelectAll();
 			break;
 		default:
 			Logger.logError(name, "Invalid ID " + ID + " for SimpleUIAction");
@@ -110,15 +110,15 @@ public class SimpleUIAction extends UIAction {
 		case SHOW_CREDITS_UI_ID:
 			break;
 		case SHOW_MACRO_UI_ID:
-			samplerSorter.showEditMacrosUI();
+			samplerSorter.showEditMacros(false);
 			break;
 		case SHOW_SETTINGS_UI_ID:
-			samplerSorter.showSettings();
+			samplerSorter.showSettings(false);
 			break;
 		case SHOW_CONSOLE_ID:
 			break;
 		case SELECT_ALL_ID:
-			sorter.selectOrUnselectAllSoundPanels();
+			sorter.performSelectAll();
 			break;
 		default:
 			Logger.logError(name, "Invalid ID " + ID + " for SimpleUIAction");

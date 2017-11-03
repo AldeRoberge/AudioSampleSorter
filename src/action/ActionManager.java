@@ -2,12 +2,12 @@ package action;
 
 import java.util.ArrayList;
 
-import GUI.SorterUI;
 import action.type.Action;
 import action.type.sound.imp.PlayAction;
 import action.type.sound.imp.RenameAction;
 import action.type.sound.imp.TestAction;
 import action.type.ui.imp.SimpleUIAction;
+import sorter.SorterUI;
 
 public class ActionManager {
 

@@ -57,9 +57,7 @@ public class FileNameUtil {
 
 		int lastDirSeparator = filename.lastIndexOf(DIRECTORY_SEPARATOR);
 
-		if (lastDirSeparator > extensionPos) {
-			System.out.println(
-					"A directory separator appears after the file extension, assuming there is no file extension");
+		if (lastDirSeparator > extensionPos) { //"A directory separator appears after the file extension, assuming there is no file extension"
 			return -1;
 		}
 

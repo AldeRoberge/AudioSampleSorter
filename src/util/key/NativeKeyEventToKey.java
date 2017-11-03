@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
 
-import macro.Key;
+import key.Key;
 
 public class NativeKeyEventToKey {
 

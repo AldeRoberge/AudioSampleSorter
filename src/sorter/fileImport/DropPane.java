@@ -1,4 +1,4 @@
-package GUI;
+package sorter.fileImport;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,6 +19,7 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TooManyListenersException;
 
@@ -26,6 +27,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import property.Properties;
 
 /**
  * Thanks to https://stackoverflow.com/questions/13597233/how-to-drag-and-drop-files-from-a-directory-in-java
@@ -114,22 +117,6 @@ public class DropPane extends JPanel {
 		}
 	}
 
-	protected void importFiles(final List<File> files) {
-		Runnable run = new Runnable() {
-			@Override
-			public void run() {
-
-				for (File f : files) {
-
-					fileImporter.addFileToImport(f);
-
-				}
-
-			}
-		};
-		SwingUtilities.invokeLater(run);
-	}
-
 	protected class DropTargetHandler implements DropTargetListener {
 
 		protected void processDrag(DropTargetDragEvent dtde) {
@@ -174,9 +161,9 @@ public class DropPane extends JPanel {
 				dtde.acceptDrop(dtde.getDropAction());
 				try {
 
-					List transferData = (List) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+					List<File> transferData = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 					if (transferData != null && transferData.size() > 0) {
-						importFiles(transferData);
+						fileImporter.importAll(transferData);
 						dtde.dropComplete(true);
 					}
 
@@ -211,7 +198,7 @@ public class DropPane extends JPanel {
 		int nbFiles = fileImporter.getTotalFilesToImport();
 
 		if (nbFiles == 0) {
-			message.setText("Drag and drop files here to import");
+			message.setText("Drag and drop folders and audio files here");
 		} else if (nbFiles == 1) {
 			message.setText("Importing " + nbFiles + " file");
 		} else {

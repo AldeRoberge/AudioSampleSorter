@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import action.type.sound.imp.PlayAction;
 import action.type.ui.imp.SimpleUIAction;
+import key.Key;
 import logger.Logger;
 import macro.macrolist.MacroInfoPanel;
 

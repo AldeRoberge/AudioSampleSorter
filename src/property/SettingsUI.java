@@ -12,7 +12,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import GUI.Sorter;
+import sorter.Sorter;
 import util.ui.MiddleOfTheScreen;
 
 public class SettingsUI extends JPanel {

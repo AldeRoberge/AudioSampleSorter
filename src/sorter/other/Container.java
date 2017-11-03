@@ -1,4 +1,4 @@
-package GUI.other;
+package sorter.other;
 
 import java.awt.Image;
 import java.awt.event.WindowAdapter;

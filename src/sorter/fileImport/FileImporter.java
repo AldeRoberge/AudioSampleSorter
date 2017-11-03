@@ -1,4 +1,4 @@
-package GUI;
+package sorter.fileImport;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -9,6 +9,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.BoxLayout;
@@ -21,6 +23,8 @@ import javax.swing.border.EmptyBorder;
 import constants.Icons;
 import logger.Logger;
 import property.Properties;
+import sorter.Sorter;
+import sorter.other.Container;
 import util.file.ExtensionFilter;
 import util.ui.MiddleOfTheScreen;
 
@@ -36,17 +40,8 @@ public class FileImporter extends JFrame {
 	private DropPane dropPanel;
 	private JButton btnImport;
 
-	public void addFileToImport(File f) {
-		if (!filesToImport.contains(f) && filesToAllow.accept(f)) {
-			filesToImport.add(f);
-
-			dropPanel.updateMessage();
-		}
-	}
-
-	public int getTotalFilesToImport() {
-		return filesToImport.size();
-	}
+	public static Container fileImporterParent = new Container("This is used to pass the icon to the fileChooser",
+			Icons.IMPORT.getImage(), null, false);
 
 	/**
 	 * Only used to test
@@ -69,8 +64,6 @@ public class FileImporter extends JFrame {
 	 */
 	public FileImporter(Sorter s) {
 
-		setLocation(MiddleOfTheScreen.getLocationFor(this));
-
 		this.sorter = s;
 
 		setIconImage(Icons.IMPORT.getImage());
@@ -80,11 +73,16 @@ public class FileImporter extends JFrame {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
+				filesToImport.clear();
+				dropPanel.updateMessage();
 				setVisible(false);
 			}
 		});
 
 		setBounds(100, 100, 553, 262);
+
+		setLocation(MiddleOfTheScreen.getLocationFor(this));
+
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -130,11 +128,8 @@ public class FileImporter extends JFrame {
 				chooser.setAcceptAllFileFilterUsed(false);
 				chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
-				if (chooser.showOpenDialog(SorterUI.fileImporterIcon) == JFileChooser.APPROVE_OPTION) {
+				if (chooser.showOpenDialog(fileImporterParent) == JFileChooser.APPROVE_OPTION) {
 					btnImport.requestFocus();
-
-					System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
-					System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
 
 					String directory = chooser.getCurrentDirectory().toString();
 
@@ -142,20 +137,7 @@ public class FileImporter extends JFrame {
 
 					File[] files = chooser.getSelectedFiles();
 
-					System.out.println(files.length);
-
-					for (File file : files) { //we do this because the user might choose more than 1 folder
-						if (file.isDirectory()) {
-
-							int totalResultFiles = getAllFiles(file.getAbsolutePath(),
-									Properties.INCLUDE_SUBFOLDERS.getValueAsBoolean(), 0);
-
-							System.out.println("We got " + totalResultFiles + " files!");
-
-						} else {
-							addFileToImport(file);
-						}
-					}
+					importAll(Arrays.asList(files));
 
 					//
 				} else {
@@ -163,6 +145,7 @@ public class FileImporter extends JFrame {
 				}
 
 			}
+
 		});
 		panel.add(btnOpenFileBrowser);
 
@@ -170,10 +153,12 @@ public class FileImporter extends JFrame {
 		btnImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (filesToImport.size() > 0) {
+
 					sorter.importNewFiles(filesToImport);
 					filesToImport.clear();
 					setVisible(false);
 					dropPanel.updateMessage();
+
 				}
 			}
 		});
@@ -181,7 +166,22 @@ public class FileImporter extends JFrame {
 
 	}
 
-	private int getAllFiles(String directoryName, boolean includeSubfolders, int totalOfFiles) {
+	void importAll(List<File> transferData) {
+
+		for (File file : transferData) { //we do this because the user might choose more than 1 folder
+			if (file.isDirectory()) {
+
+				int totalResultFiles = getAllFiles(file.getAbsolutePath(),
+						Properties.INCLUDE_SUBFOLDERS.getValueAsBoolean(), 0);
+
+			} else {
+				addFileToImport(file);
+			}
+		}
+
+	}
+
+	int getAllFiles(String directoryName, boolean includeSubfolders, int totalOfFiles) {
 
 		System.out.println(
 				"Getting all files for directory : " + directoryName + ", including subfolders : " + includeSubfolders);
@@ -203,6 +203,18 @@ public class FileImporter extends JFrame {
 		}
 		return totalOfFiles;
 
+	}
+
+	public void addFileToImport(File f) {
+		if (!filesToImport.contains(f) && filesToAllow.accept(f)) {
+			filesToImport.add(f);
+
+			dropPanel.updateMessage();
+		}
+	}
+
+	public int getTotalFilesToImport() {
+		return filesToImport.size();
 	}
 
 }

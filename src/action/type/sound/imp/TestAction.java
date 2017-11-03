@@ -3,11 +3,11 @@ package action.type.sound.imp;
 import java.io.File;
 import java.util.ArrayList;
 
-import GUI.Sorter;
-import GUI.soundpanel.SoundPanel;
 import action.editable.EditeableProperty;
 import action.type.Action;
 import action.type.sound.SoundAction;
+import sorter.Sorter;
+import sorter.soundPanel.SoundPanel;
 
 public class TestAction extends SoundAction {
 
@@ -44,7 +44,6 @@ public class TestAction extends SoundAction {
 
 	@Override
 	public void perform(SoundPanel p) {
-		System.out.println("Hey hey hey!");
 	}
 
 }

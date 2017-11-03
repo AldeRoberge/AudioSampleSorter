@@ -1,8 +1,8 @@
 package action.type.sound.imp;
 
-import GUI.soundpanel.SoundPanel;
 import action.type.sound.SoundAction;
 import logger.Logger;
+import sorter.soundPanel.SoundPanel;
 
 public class PlayAction extends SoundAction {
 

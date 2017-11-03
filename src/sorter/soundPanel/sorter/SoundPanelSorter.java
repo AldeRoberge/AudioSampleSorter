@@ -1,4 +1,4 @@
-package GUI.soundPanelSorter;
+package sorter.soundPanel.sorter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,12 +6,12 @@ import java.util.Comparator;
 
 import org.apache.commons.io.FilenameUtils;
 
-import GUI.Sorter;
-import GUI.soundpanel.SoundPanel;
 import logger.Logger;
 import property.Properties;
+import sorter.Sorter;
+import sorter.soundPanel.SoundPanel;
 
-public class SoundPanelsSorter {
+public class SoundPanelSorter {
 
 	private static final String TAG = "SoundPanelsSorter";
 
@@ -19,7 +19,6 @@ public class SoundPanelsSorter {
 	public static final Sort sortByDateModified = new Sort(1, "Date modified");
 	public static final Sort sortByExtension = new Sort(2, "Type");
 	public static final Sort sortBySize = new Sort(3, "Size");
-
 	public static ArrayList<Sort> sortByTypes = new ArrayList<Sort>();
 
 	static {
@@ -43,22 +42,35 @@ public class SoundPanelsSorter {
 
 	//
 
-	public boolean ascending = Properties.ASCENDING.getValueAsBoolean();
+	public boolean ascending = Properties.ASCENDING.getValueAsBoolean(); //is switched on click (re-click)
 	public Sort currentSort = getSortByName(Properties.SORT_BY.getValue());
 
 	Sorter sorter;
 
-	public SoundPanelsSorter(Sorter s) {
+	public SoundPanelSorter(Sorter s) {
 		this.sorter = s;
 	}
 
 	public void sortBy(Sort s) {
+
+		if (currentSort.equals(s)) {
+			ascending = Properties.ASCENDING.setNewValue(!ascending);
+		}
+
+		currentSort = s;
+
 		if (s.equals(sortByName)) {
 
 			Collections.sort(sorter.soundPanels, new Comparator<SoundPanel>() {
 				@Override
 				public int compare(SoundPanel o1, SoundPanel o2) {
-					return o1.getFile().getName().compareTo(o2.getFile().getName());
+
+					if (ascending) {
+						return o1.getFile().getName().compareTo(o2.getFile().getName());
+					} else {
+						return o1.getFile().getName().compareTo(o2.getFile().getName());
+					}
+
 				}
 			});
 
@@ -67,7 +79,13 @@ public class SoundPanelsSorter {
 
 				@Override
 				public int compare(SoundPanel o1, SoundPanel o2) {
-					return Long.compare(o1.getFile().lastModified(), o2.getFile().lastModified());
+
+					if (ascending) {
+						return Long.compare(o1.getFile().lastModified(), o2.getFile().lastModified());
+					} else {
+						return o2.getFile().getName().compareTo(o1.getFile().getName());
+					}
+
 				}
 
 			});
@@ -77,10 +95,13 @@ public class SoundPanelsSorter {
 			Collections.sort(sorter.soundPanels, new Comparator<SoundPanel>() {
 				@Override
 				public int compare(SoundPanel o1, SoundPanel o2) {
-					System.out.println(o1.getFile().getName());
+					if (ascending) {
+						return FilenameUtils.getExtension(o1.getFile().getName())
+								.compareTo(FilenameUtils.getExtension(o2.getFile().getName()));
+					} else {
+						return o2.getFile().getName().compareTo(o1.getFile().getName());
+					}
 
-					return FilenameUtils.getExtension(o1.getFile().getName())
-							.compareTo(FilenameUtils.getExtension(o2.getFile().getName()));
 				}
 			});
 
@@ -89,9 +110,12 @@ public class SoundPanelsSorter {
 			Collections.sort(sorter.soundPanels, new Comparator<SoundPanel>() {
 				@Override
 				public int compare(SoundPanel o1, SoundPanel o2) {
-					System.out.println(o1.getFile().getName());
+					if (ascending) {
 
-					return Long.compare(o1.getFile().length(), o1.getFile().length());
+						return Long.compare(o1.getFile().length(), o1.getFile().length());
+					} else {
+						return o2.getFile().getName().compareTo(o1.getFile().getName());
+					}
 
 				}
 			});
@@ -102,4 +126,5 @@ public class SoundPanelsSorter {
 
 		sorter.clearAndRepopulatePanels();
 	}
+
 }

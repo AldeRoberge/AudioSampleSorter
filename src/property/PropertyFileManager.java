@@ -18,7 +18,7 @@ public class PropertyFileManager {
 	}
 
 	public void savePropertyValue(String key, String value) {
-		Logger.logInfo(TAG, "Saving property " + key + " with value " + value + "...");
+		Logger.logInfo(TAG, "Saving property " + key + " with value " + value + ".");
 
 		PropertiesConfiguration config;
 		try {
@@ -32,7 +32,7 @@ public class PropertyFileManager {
 	}
 
 	public String getPropertyValue(String key, String defaultValue) {
-		Logger.logInfo(TAG, "Getting property " + key + "...");
+		Logger.logInfo(TAG, "Getting property " + key + ".");
 
 		try {
 			PropertiesConfiguration config = new PropertiesConfiguration(fileName);
