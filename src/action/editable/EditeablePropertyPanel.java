@@ -11,15 +11,16 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import logger.Logger;
-import sorter.SorterUI;
 import sorter.fileImport.FileImporter;
 
 /**
  * See ActionEditor
  */
-public class EditPropertyPanel extends JPanel {
+public class EditeablePropertyPanel extends JPanel {
 
 	private static final String TAG = "EditPropertyPanel";
 
@@ -32,7 +33,7 @@ public class EditPropertyPanel extends JPanel {
 
 	//
 
-	public EditPropertyPanel(EditeableProperty property) {
+	public EditeablePropertyPanel(EditeableProperty property) {
 
 		propertyToEdit = property;
 
@@ -62,11 +63,42 @@ public class EditPropertyPanel extends JPanel {
 			lblPrefix.setBounds(12, 16, 56, 16);
 			add(lblPrefix);
 
+			System.out.println("Generated");
+
 			JTextField stringInputField = new JTextField();
-			stringInputField.setEnabled(true);
-			stringInputField.setEditable(true);
 			stringInputField.setBounds(80, 13, 135, 22);
 			stringInputField.setColumns(10);
+
+			System.out.println(stringInputField.isEditable());
+			stringInputField.grabFocus();
+			System.out.println(stringInputField.isFocusable());
+
+			
+			stringInputField.getDocument().addDocumentListener(new DocumentListener() {
+
+			    @Override
+			    public void removeUpdate(DocumentEvent e) {
+			        // TODO Auto-generated method stub
+			    }
+
+			    @Override
+			    public void insertUpdate(DocumentEvent e) {
+			        // TODO Auto-generated method stub  
+			    }
+
+			    @Override
+			    public void changedUpdate(DocumentEvent e) {
+			        // TODO Auto-generated method stub
+			    }
+			});
+			
+			stringInputField.addActionListener(new ActionListener() {
+
+				public void actionPerformed(ActionEvent ev) {
+					System.out.println("ehhhh");
+				}
+			});
+
 			add(stringInputField);
 
 		} else if (propertyToEdit.ID == EditeableProperty.INT_ID) { //JTEXTFIELD that only accepts ints
@@ -78,10 +110,16 @@ public class EditPropertyPanel extends JPanel {
 			add(lblPrefix);
 
 			JTextField intInputField = new JTextField();
-			intInputField.setEnabled(true);
-			intInputField.setEditable(true);
 			intInputField.setBounds(80, 13, 135, 22);
 			intInputField.setColumns(10);
+
+			intInputField.addActionListener(new ActionListener() {
+
+				public void actionPerformed(ActionEvent ev) {
+					System.out.println("ehhhh");
+				}
+			});
+
 			add(intInputField);
 
 		} else if (propertyToEdit.ID == EditeableProperty.FILE_CHOOSER_ID) { //JFILECHOOSER

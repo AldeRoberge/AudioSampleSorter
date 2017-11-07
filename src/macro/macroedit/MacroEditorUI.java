@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import action.ActionManager;
+import action.editable.EditeablePropertyEditor;
 import action.type.Action;
 import key.Key;
 import logger.Logger;
@@ -58,7 +59,7 @@ public class MacroEditorUI extends JPanel {
 	private ArrayList<Action> actions = new ArrayList<Action>();
 	private ArrayList<MacroActionEditPanel> macroActionEditPanels = new ArrayList<MacroActionEditPanel>();
 
-	public ActionEditor actionEditor = new ActionEditor();
+	public EditeablePropertyEditor actionEditor = new EditeablePropertyEditor();
 
 	public void onHide() {
 		isListenningForKeyInputs = false;
@@ -80,7 +81,7 @@ public class MacroEditorUI extends JPanel {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if (!keyBindToEdit.keys.isEmpty()) { //if keybind are left empty, dont save
+				if (!keyBindToEdit.keys.isEmpty()) { //if keybinds are left empty, dont save
 
 					if (newKeyBind) {
 						newKeyBind = false;
@@ -235,7 +236,7 @@ public class MacroEditorUI extends JPanel {
 
 		} else {
 
-			Logger.logInfo(TAG, "Creating new keyBind : " + keyBindToEdit);
+			Logger.logInfo(TAG, "Creating new keyBind");
 
 			newKeyBind = true;
 			keyBindToEdit = new MacroAction();

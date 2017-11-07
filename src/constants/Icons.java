@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.io.File;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import logger.Logger;
@@ -26,6 +27,7 @@ public class Icons {
 	public static final ImageIcon CONSOLE;
 	public static final ImageIcon MACROS;
 	public static final ImageIcon DOT;
+	public static final ImageIcon QUESTION;
 
 	public static ImageDimension cursorDimension = new ImageDimension(20, 20);
 	public static ImageDimension defaultDimensions = new ImageDimension(16, 16);
@@ -40,7 +42,7 @@ public class Icons {
 		MACROS = createImageIcon("keyboard.png");
 		SOFTWARE_ICON = createImageIcon("software_icon.png", softwareIconDimensions);
 		DOT = createImageIcon("dot.png", new ImageDimension(10, 10));
-
+		QUESTION = createImageIcon("question_mark.png");
 	}
 
 	private static ImageIcon createImageIcon(String path) {

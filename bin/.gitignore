@@ -1,15 +1,2 @@
-/action/
-/audio/
-/constants/
-/history/
-/key/
-/logger/
-/macro/
-/property/
 /util/
-/GUI/
-/SplashScreen$TestPane.class
-/SplashScreen.class
-/animatedCursor/
-/sampleSorter/
-/sorter/
+/MacroLoader.class

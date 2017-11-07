@@ -28,12 +28,8 @@ public class EditeableProperty<V> implements Serializable, Cloneable {
 	private V value;
 
 	// Pass type in as parameter to constructor
-	/**
-	 * @param defaultValue value to begin with
-	 * @param prefix prefix (label) before edit component (JCheckBox, JTextArea...)
-	 */
-	public EditeableProperty(V defaultValue, String pref) {
-		prefix = pref;
+	public EditeableProperty(V defaultValue, String label) {
+		prefix = label;
 		value = defaultValue;
 
 		if (defaultValue instanceof Boolean) {

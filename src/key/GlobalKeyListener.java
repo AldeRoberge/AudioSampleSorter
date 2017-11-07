@@ -191,11 +191,10 @@ public class GlobalKeyListener implements NativeKeyListener {
 					current++;
 				}
 			}
-
 		}
-
+		
 		return current == required;
-
+		
 	}
 
 	public boolean shiftIsPressed() {

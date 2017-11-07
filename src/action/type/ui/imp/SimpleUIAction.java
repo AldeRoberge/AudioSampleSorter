@@ -33,12 +33,12 @@ public class SimpleUIAction extends UIAction {
 	public static final SimpleUIAction SHOW_CONSOLE = new SimpleUIAction(SHOW_CONSOLE_ID, "Show Console");
 	public static final SimpleUIAction SELECT_ALL = new SimpleUIAction(SELECT_ALL_ID, "Select all");
 
-	private static SorterUI samplerSorter;
+	private static SorterUI sampleSorter;
 	private static Sorter sorter;
 
 	public static void init(SorterUI s) {
-		samplerSorter = s;
-		sorter = samplerSorter.sorter;
+		sampleSorter = s;
+		sorter = sampleSorter.sorter;
 
 		UIActions.add(SCROLL_UP);
 		UIActions.add(SCROLL_DOWN);
@@ -79,10 +79,10 @@ public class SimpleUIAction extends UIAction {
 		case SHOW_CREDITS_UI_ID:
 			break;
 		case SHOW_MACRO_UI_ID:
-			samplerSorter.showEditMacros(true);
+			sampleSorter.showEditMacros(true);
 			break;
 		case SHOW_SETTINGS_UI_ID:
-			samplerSorter.showSettings(true);
+			sampleSorter.showSettings(true);
 			break;
 		case SHOW_CONSOLE_ID:
 			break;
@@ -110,10 +110,10 @@ public class SimpleUIAction extends UIAction {
 		case SHOW_CREDITS_UI_ID:
 			break;
 		case SHOW_MACRO_UI_ID:
-			samplerSorter.showEditMacros(false);
+			sampleSorter.showEditMacros(false);
 			break;
 		case SHOW_SETTINGS_UI_ID:
-			samplerSorter.showSettings(false);
+			sampleSorter.showSettings(false);
 			break;
 		case SHOW_CONSOLE_ID:
 			break;

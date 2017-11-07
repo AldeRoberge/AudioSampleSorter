@@ -1,2 +1,2 @@
-# SamplerSorter
-A simple pure Java sampler sorter
+# SampleSorter
+A simple pure Java sample sorter

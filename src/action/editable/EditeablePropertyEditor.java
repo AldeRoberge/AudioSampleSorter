@@ -1,4 +1,4 @@
-package macro.macroedit;
+package action.editable;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -12,14 +12,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import action.editable.EditPropertyPanel;
-import action.editable.EditeableProperty;
 import action.type.Action;
 import logger.Logger;
+import java.awt.Toolkit;
 
 //See MacroEditorUI
 
-public class ActionEditor extends JFrame {
+public class EditeablePropertyEditor extends JFrame {
 
 	private static final String TAG = "ActionEditorPanel";
 
@@ -28,21 +27,24 @@ public class ActionEditor extends JFrame {
 
 	private static JScrollPane scrollPane;
 
-	private static ArrayList<EditPropertyPanel> allValueEditorPanels = new ArrayList<EditPropertyPanel>();
+	private static ArrayList<EditeablePropertyPanel> allValueEditorPanels = new ArrayList<EditeablePropertyPanel>();
 
 	/**
 	 * Create the frame.
 	 */
-	public ActionEditor() {
+	public EditeablePropertyEditor() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(EditeablePropertyEditor.class
+				.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Paste-Black@2x.png")));
 		setTitle("ActionEditor");
 
 		JPanel contentPane = new JPanel();
 
 		contentPane.setBounds(0, 0, 620, 400);
-		contentPane.setVisible(true);
 		contentPane.setLayout(new CardLayout(0, 0));
 
 		this.setMinimumSize(new Dimension(390, 200));
+
+		contentPane.setVisible(true);
 
 		// scrolleable list
 
@@ -58,13 +60,15 @@ public class ActionEditor extends JFrame {
 		borderLayoutPanel.setLayout(new BorderLayout(0, 0));
 
 		columnPanel = new JPanel();
-		columnPanel.setLayout(new GridLayout(0, 1, 0, 1));
-		columnPanel.setBackground(Color.gray);
+		columnPanel.setLayout(new GridLayout(0, 1, 0, 0));
+		columnPanel.setBackground(Color.red);
 		borderLayoutPanel.add(columnPanel, BorderLayout.NORTH);
 
 		// end
 
 		setContentPane(contentPane);
+
+		pack();
 
 	}
 
@@ -74,10 +78,10 @@ public class ActionEditor extends JFrame {
 		clear();
 
 		for (EditeableProperty a : e.getEditeableProperties()) {
-			EditPropertyPanel infoPanel = new EditPropertyPanel(a);
+			EditeablePropertyPanel infoPanel = new EditeablePropertyPanel(a);
 
-			columnPanel.add(infoPanel);
 			allValueEditorPanels.add(infoPanel);
+			columnPanel.add(infoPanel);
 
 			refreshInfoPanels();
 		}
@@ -86,7 +90,7 @@ public class ActionEditor extends JFrame {
 
 	private static void refreshInfoPanels() {
 
-		for (EditPropertyPanel logPanel : allValueEditorPanels) {
+		for (EditeablePropertyPanel logPanel : allValueEditorPanels) {
 
 			logPanel.validate();
 			logPanel.repaint();
@@ -106,8 +110,8 @@ public class ActionEditor extends JFrame {
 
 	void clear() {
 		try {
-			for (Iterator<EditPropertyPanel> iterator = allValueEditorPanels.iterator(); iterator.hasNext();) {
-				EditPropertyPanel editPropertyPanel = iterator.next();
+			for (Iterator<EditeablePropertyPanel> iterator = allValueEditorPanels.iterator(); iterator.hasNext();) {
+				EditeablePropertyPanel editPropertyPanel = iterator.next();
 
 				iterator.remove();
 				columnPanel.remove(editPropertyPanel);

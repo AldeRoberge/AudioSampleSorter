@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
@@ -27,7 +28,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import action.ActionManager;
 import constants.Constants;
 import constants.Icons;
-import key.GlobalKeyListener;
 import logger.LogUI;
 import logger.Logger;
 import macro.MacroEditor;
@@ -42,7 +42,7 @@ import util.ui.MiddleOfTheScreen;
 
 public class SorterUI extends JFrame {
 
-	private static final String TAG = "SamplerSorter";
+	private static final String TAG = "SampleSorter";
 	public Sorter sorter = new Sorter(); //Formelly known as SSUI
 
 	private static MacroEditor macroEditor;
@@ -78,7 +78,20 @@ public class SorterUI extends JFrame {
 		setBackground(Color.WHITE);
 
 		setTitle("SampleSorter | Ultimate");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent we) {
+				String ObjButtons[] = { "Yes", "No" };
+				int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, Icons.QUESTION, ObjButtons,
+						ObjButtons[1]);
+				if (PromptResult == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
+			}
+		});
+
 		setBounds(100, 100, 655, 493);
 		setLocation(MiddleOfTheScreen.getLocationFor(this));
 
@@ -121,7 +134,7 @@ public class SorterUI extends JFrame {
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 
-		// File : Import
+		// File, Import
 
 		JMenuItem mntmImport = new JMenuItem(new AbstractAction("Import audio files...") {
 			public void actionPerformed(ActionEvent e) {
@@ -133,11 +146,11 @@ public class SorterUI extends JFrame {
 		mntmImport.setIcon(Icons.IMPORT);
 		mnFile.add(mntmImport);
 
-		// File : Separator
+		// File (Separator)
 
 		mnFile.addSeparator();
 
-		// File : Exit
+		//File, Exit
 
 		JMenuItem mnExit = new JMenuItem(new AbstractAction("Exit") {
 			public void actionPerformed(ActionEvent e) {
@@ -148,7 +161,7 @@ public class SorterUI extends JFrame {
 		mnExit.setIcon(Icons.EXIT);
 		mnFile.add(mnExit);
 
-		/** Edit */
+		//Edit
 
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
@@ -162,7 +175,7 @@ public class SorterUI extends JFrame {
 		mntmMacros.setIcon(Icons.MACROS);
 		mnEdit.add(mntmMacros);
 
-		// Edit : Settings
+		//Edit, Settings
 
 		JMenuItem mntmSettings = new JMenuItem(new AbstractAction("Settings") {
 			public void actionPerformed(ActionEvent e) {
@@ -173,12 +186,12 @@ public class SorterUI extends JFrame {
 		mntmSettings.setIcon(Icons.SETTINGS);
 		mnEdit.add(mntmSettings);
 
-		/** Help */
+		//View
 
 		JMenu mnView = new JMenu("View");
 		menuBar.add(mnView);
 
-		//Sort by
+		//View, Sort by
 
 		JMenu mnSortBy = new JMenu("Sort by");
 		mnView.add(mnSortBy);
@@ -207,7 +220,7 @@ public class SorterUI extends JFrame {
 
 		}
 
-		//
+		//Help
 
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
@@ -231,6 +244,8 @@ public class SorterUI extends JFrame {
 		mntmAbout.setIcon(Icons.ABOUT);
 		mnHelp.add(mntmAbout);
 
+		/** End of menus */
+
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setDividerLocation(Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION.getValueAsInt());
 
@@ -246,10 +261,6 @@ public class SorterUI extends JFrame {
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 
 		splitPane.setLeftComponent(sorter);
-
-		//splitPane.setRightComponent();
-
-		/** End of menus */
 
 		addWindowListener(new WindowAdapter() {
 

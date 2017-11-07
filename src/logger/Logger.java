@@ -48,6 +48,9 @@ public class Logger {
 	public static void logError(String tag, String message) { // log error
 
 		log(ERROR, tag, message, null);
+
+		new Exception(message).printStackTrace();
+
 	}
 
 	public static void logError(String tag, String message, Throwable e) { // log error with exception
