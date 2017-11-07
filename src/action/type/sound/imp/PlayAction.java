@@ -1,10 +1,10 @@
 package action.type.sound.imp;
 
-import action.type.sound.SoundAction;
-import logger.Logger;
-import sorter.soundPanel.SoundPanel;
+import java.io.File;
 
-public class PlayAction extends SoundAction {
+import action.type.sound.FileAction;
+
+public class PlayAction extends FileAction {
 
 	@Override
 	public String toString() {
@@ -16,8 +16,8 @@ public class PlayAction extends SoundAction {
 	}
 
 	@Override
-	public void perform(SoundPanel p) {
-		p.sound.play();
+	public void perform(File p) {
+		//p.sound.play();
 	}
 
 }

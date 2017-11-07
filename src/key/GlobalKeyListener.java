@@ -12,13 +12,12 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
 import action.type.Action;
-import action.type.sound.SoundAction;
+import action.type.sound.FileAction;
 import action.type.ui.UIAction;
 import macro.MacroAction;
 import macro.MacroLoader;
 import sorter.Sorter;
 import sorter.SorterUI;
-import sorter.soundPanel.SoundPanel;
 import util.key.NativeKeyEventToKey;
 
 //Call GlobalScreen.unregisterNativeHook(); to remove (unneeded here)
@@ -84,22 +83,22 @@ public class GlobalKeyListener implements NativeKeyListener {
 
 								clonedAction.perform();
 
-							} else if (action instanceof SoundAction) {
+							} else if (action instanceof FileAction) {
 
 								logger.Logger.logInfo(TAG, "Action is instanceof SoundAction");
 
-								SoundAction act = (SoundAction) action;
+								FileAction act = (FileAction) action;
 
-								SoundAction clonedAction = null;
+								FileAction clonedAction = null;
 								try {
 									clonedAction = act.clone();
 								} catch (CloneNotSupportedException e2) {
 									e2.printStackTrace();
 								}
 
-								for (SoundPanel sp : sorter.selectedSoundPanels) {
+								/**for (SoundPanel sp : sorter.selectedSoundPanels) {
 									clonedAction.perform(sp);
-								}
+								}*/
 
 							} else {
 								logger.Logger.logError(TAG, "Invalid type of action!");

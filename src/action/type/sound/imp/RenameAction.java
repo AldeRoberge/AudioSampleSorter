@@ -4,11 +4,10 @@ import java.io.File;
 import java.util.ArrayList;
 
 import action.editable.EditeableProperty;
-import action.type.sound.SoundAction;
+import action.type.sound.FileAction;
 import sorter.Sorter;
-import sorter.soundPanel.SoundPanel;
 
-public class RenameAction extends SoundAction {
+public class RenameAction extends FileAction {
 
 	@Override
 	public String toString() {
@@ -41,7 +40,7 @@ public class RenameAction extends SoundAction {
 	}
 
 	@Override
-	public void perform(SoundPanel p) {
+	public void perform(File p) {
 		// TODO Auto-generated method stub
 
 	}

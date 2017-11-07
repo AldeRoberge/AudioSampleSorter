@@ -44,7 +44,7 @@ public class SettingsUI extends JPanel {
 		ActionListener displayFileExtensionsAction = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				Properties.DISPLAY_SOUND_SUFFIXES.setNewValue(chckbxNewCheckBox.isSelected());
-				sorter.refreshInfoPanels();
+				//sorter.refreshInfoPanels();
 			}
 		};
 		chckbxNewCheckBox.addActionListener(displayFileExtensionsAction);

@@ -18,7 +18,6 @@
 package util;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -46,7 +45,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -56,39 +54,13 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 
+import constants.Constants;
+import constants.Icons;
 import util.file.FileSizeToString;
 
 /**
-A basic File Manager.  Requires 1.6+ for the Desktop &amp; SwingWorker
-classes, amongst other minor things.
-
-Includes support classes FileTableModel &amp; FileTreeCellRenderer.
-
-TODO Bugs
-<ul>
-<li>Still throws occasional AIOOBEs and NPEs, so some update on
-the EDT must have been missed.
-<li>Fix keyboard focus issues - especially when functions like
-rename/delete etc. are called that update nodes &amp; file lists.
-<li>Needs more testing in general.
-
-TODO Functionality
-<li>Implement Read/Write/Execute checkboxes
-<li>Implement Copy
-<li>Extra prompt for directory delete (camickr suggestion)
-<li>Add File/Directory fields to FileTableModel
-<li>Double clicking a directory in the table, should update the tree
-<li>Move progress bar?
-<li>Add other file display modes (besides table) in CardLayout?
-<li>Menus + other cruft?
-<li>Implement history/back
-<li>Allow multiple selection
-<li>Add file search
-</ul>
-
+Credits : 
 @author Andrew Thompson
 @version 2011-06-01
 */
@@ -96,8 +68,10 @@ public class FileManager {
 
 	/** Title of the application */
 	public static final String APP_TITLE = "FileManager";
+	
 	/** Used to open/edit/print files. */
 	private Desktop desktop;
+	
 	/** Provides nice icons and names for files. */
 	private FileSystemView fileSystemView;
 
@@ -110,6 +84,7 @@ public class FileManager {
 	/** Directory listing */
 	private JTable table;
 	private JProgressBar progressBar;
+	
 	/** Table model for File[]. */
 	private FileTableModel fileTableModel;
 	private ListSelectionListener listSelectionListener;
@@ -140,10 +115,13 @@ public class FileManager {
 			//fileTableModel = new FileTableModel();
 
 			table = new JTable();
+
 			table.setRowSelectionAllowed(true);
 			table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			table.setAutoCreateRowSorter(true);
 			table.setShowVerticalLines(false);
+
+			table.setSelectionBackground(Constants.SICK_PURPLE);
 
 			listSelectionListener = new ListSelectionListener() {
 				@Override
@@ -347,10 +325,9 @@ public class FileManager {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					// Significantly improves the look of the output in
-					// terms of the file names returned by FileSystemView!
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				} catch (Exception weTried) {
+					weTried.printStackTrace();
 				}
 				JFrame f = new JFrame(APP_TITLE);
 				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -358,15 +335,7 @@ public class FileManager {
 				FileManager fileManager = new FileManager();
 				f.setContentPane(fileManager.getGui());
 
-				try {
-					URL urlBig = fileManager.getClass().getResource("fm-icon-32x32.png");
-					URL urlSmall = fileManager.getClass().getResource("fm-icon-16x16.png");
-					ArrayList<Image> images = new ArrayList<Image>();
-					images.add(ImageIO.read(urlBig));
-					images.add(ImageIO.read(urlSmall));
-					f.setIconImages(images);
-				} catch (Exception weTried) {
-				}
+				f.setIconImage(Icons.SOFTWARE_ICON.getImage());
 
 				f.pack();
 				f.setLocationByPlatform(true);
@@ -451,37 +420,27 @@ class FileTableModel extends AbstractTableModel {
 	}
 }
 
-/** A TreeCellRenderer for a File. */
-class FileTreeCellRenderer extends DefaultTreeCellRenderer {
+/*
+ * table.setDefaultRenderer(Object.class, new CustomTableCellRenderer());
+ 
+ after that :
+ 
+ class CustomTableCellRenderer extends DefaultTableCellRenderer {
+ 
 
-	private FileSystemView fileSystemView;
-
-	private JLabel label;
-
-	FileTreeCellRenderer() {
-		label = new JLabel();
-		label.setOpaque(true);
-		fileSystemView = FileSystemView.getFileSystemView();
-	}
+	public static final DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
 
 	@Override
-	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
-			boolean leaf, int row, boolean hasFocus) {
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+			int row, int column) {
+		Component c = DEFAULT_RENDERER.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-		File file = (File) node.getUserObject();
-		label.setIcon(fileSystemView.getSystemIcon(file));
-		label.setText(fileSystemView.getSystemDisplayName(file));
-		label.setToolTipText(file.getPath());
-
-		if (selected) {
-			label.setBackground(backgroundSelectionColor);
-			label.setForeground(textSelectionColor);
+		if (isSelected) {
+			c.setBackground(Color.red);
 		} else {
-			label.setBackground(backgroundNonSelectionColor);
-			label.setForeground(textNonSelectionColor);
+			c.setForeground(Color.black);
+			c.setBackground(Color.white);
 		}
-
-		return label;
+		return c;
 	}
-}
+}**/

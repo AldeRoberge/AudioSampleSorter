@@ -1,9 +1,8 @@
 package property;
 
-import sorter.soundPanel.sorter.SoundPanelSorter;
-
 public class Properties {
 
+	//Properties are stored in this file : 
 	private static final String fileName = "ss.properties";
 
 	// 
@@ -15,14 +14,8 @@ public class Properties {
 	public static final String TRUE = "TRUE";
 	public static final String FALSE = "FALSE";
 
-	public static final Property FIRST_LAUNCH = new Property("FIRST_LAUNCH", TRUE, e);
-
-	// SORT_BY types
-
-	public static Property SORT_BY = new Property("SORT_BY", SoundPanelSorter.sortByName.name, e);
-	public static Property ASCENDING = new Property("SORT_ASCENDING", TRUE, e);
-
-	// 
+	//Checked before launching the UI, if set to TRUE will open Credits
+	public static Property FIRST_LAUNCH = new Property("FIRST_LAUNCH", TRUE, e);
 
 	//RunSS UI checkBox 'include subfolders'
 	public static Property INCLUDE_SUBFOLDERS = new Property("INCLUDE_SUBFOLDERS", TRUE, e);
@@ -46,10 +39,5 @@ public class Properties {
 	public static Property SPECTRUM_ANALYZER_STATUS = new Property("SPECTRUM_ANALYZER_STATUS", "oscillo", e);
 
 	public static Property HORIZONTAL_SPLITPANE_DIVIDERLOCATION = new Property("SPLITPANE_DIVIDERLOCATION", "200", e);
-
-	//
-
-	/**public static String SORT_BY_KEY = "SORT_BY";
-	public static Property SORT_BY = new Property(SORT_BY_KEY, SORT_BY_NAME, e);*/
 
 }

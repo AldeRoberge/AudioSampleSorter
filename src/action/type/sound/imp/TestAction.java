@@ -4,12 +4,10 @@ import java.io.File;
 import java.util.ArrayList;
 
 import action.editable.EditeableProperty;
-import action.type.Action;
-import action.type.sound.SoundAction;
+import action.type.sound.FileAction;
 import sorter.Sorter;
-import sorter.soundPanel.SoundPanel;
 
-public class TestAction extends SoundAction {
+public class TestAction extends FileAction {
 
 	@Override
 	public String toString() {
@@ -43,7 +41,7 @@ public class TestAction extends SoundAction {
 	}
 
 	@Override
-	public void perform(SoundPanel p) {
+	public void perform(File p) {
 	}
 
 }

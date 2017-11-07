@@ -107,28 +107,9 @@ public class MacroLoader {
 
 		//R = rename
 
-		MacroAction defaultSelectAllAction = new MacroAction();
-		defaultSelectAllAction.keys.add(new Key(KeyEvent.VK_CONTROL));
-		defaultSelectAllAction.keys.add(new Key(KeyEvent.VK_A));
-		defaultSelectAllAction.actionsToPerform.add(SimpleUIAction.SELECT_ALL);
-
-		addNewMacro(defaultSelectAllAction);
-
-		//
-
-		MacroAction defaultScrollUpAction = new MacroAction();
-		defaultScrollUpAction.keys.add(new Key(KeyEvent.VK_UP));
-		defaultScrollUpAction.actionsToPerform.add(SimpleUIAction.SCROLL_UP);
-
-		addNewMacro(defaultScrollUpAction);
-
-		//
-
-		MacroAction defaultScrollDownAction = new MacroAction();
-		defaultScrollDownAction.keys.add(new Key(KeyEvent.VK_DOWN));
-		defaultScrollDownAction.actionsToPerform.add(SimpleUIAction.SCROLL_DOWN);
-
-		addNewMacro(defaultScrollDownAction);
+		//UP ArrowKey is reserved
+		//CTRL + A is reserved
+		//DOWN ArrowKey is reserved
 
 	}
 

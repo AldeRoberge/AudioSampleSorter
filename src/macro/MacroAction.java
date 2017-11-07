@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import action.type.Action;
 import key.Key;
-import sorter.soundPanel.SoundPanel;
 
 /**
  * MacroAction
