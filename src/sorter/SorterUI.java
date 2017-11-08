@@ -3,12 +3,13 @@ package sorter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
@@ -17,15 +18,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.SwingUtilities;
+import javax.swing.JTable;
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import action.ActionManager;
+import audio.AudioPlayer;
 import constants.Constants;
 import constants.Icons;
+import key.GlobalKeyListener;
 import logger.LogUI;
 import logger.Logger;
 import macro.MacroEditor;
@@ -34,42 +36,69 @@ import property.SettingsUI;
 import sorter.fileImport.FileImporter;
 import sorter.other.Container;
 import sorter.other.CreditsPanel;
+import util.FileManager;
+import util.FileVisualiser;
+import util.FileInformation;
+import util.ToolBar;
 import util.ui.MiddleOfTheScreen;
 
 public class SorterUI extends JFrame {
 
-	private static final String TAG = "SampleSorter";
-	public Sorter sorter = new Sorter(); //Formelly known as SSUI
+	private static final String TAG = Constants.SOFTWARE_NAME;
 
-	private static MacroEditor macroEditor;
+	public MacroEditor macroEditor;
+
+	public FileVisualiser openFileManager = new FileVisualiser();
 
 	private Container console = new Container("Console", Icons.CONSOLE.getImage(), new LogUI(), true);
-	private Container settings = new Container("Settings", Icons.SETTINGS.getImage(), new SettingsUI(sorter), false);
+	private Container settings = new Container("Settings", Icons.SETTINGS.getImage(),
+			new SettingsUI(openFileManager.getAudioPlayer()), false);
 	private Container credits = new Container("Credits", Icons.ABOUT.getImage(), new CreditsPanel(), true);
 
-	private FileImporter fileImporter = new FileImporter(sorter);
+	public FileManager fMan = new FileManager(openFileManager);
 
-	JMenuItem ascending;
-	JMenuItem descending;
+	private FileImporter fileImporter = new FileImporter(fMan);
+
+	public GlobalKeyListener globalKeyListener;
+
+	//Actual UI
+
+	public ToolBar toolBar = new ToolBar();
 
 	/**
 	 * Create the frame.
 	 */
 	public SorterUI() {
 
+		System.setProperty("sun.awt.noerasebackground", "true"); //Suposed to reduce flicker on manual window resize
+
 		ActionManager.init(this); //init actions
+
 		macroEditor = new MacroEditor(); //we must do this after initialising actions because it uses Actions in a combobox
 
-		BorderLayout borderLayout = (BorderLayout) getContentPane().getLayout();
-		borderLayout.setVgap(5);
-		borderLayout.setHgap(5);
-		setResizable(false);
+		//Init children components
+		globalKeyListener = GlobalKeyListener.get();
+		globalKeyListener.init(this);
 
+		//
+
+		setResizable(true);
 		setBackground(Color.WHITE);
-
-		setTitle("SampleSorter | Ultimate");
-
+		setTitle(Constants.SOFTWARE_NAME);
+		setBounds(100, 100, 655, 493);
+		setSize(new Dimension(605, 500));
+		setIconImage(Icons.SOFTWARE_ICON.getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setLocation(MiddleOfTheScreen.getLocationFor(this));
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception weTried) {
+			weTried.printStackTrace();
+		}
+
+		//
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent we) {
@@ -82,37 +111,6 @@ public class SorterUI extends JFrame {
 				}
 			}
 		});
-
-		setBounds(100, 100, 655, 493);
-		setLocation(MiddleOfTheScreen.getLocationFor(this));
-
-		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-			if (info.getName().equals("Nimbus")) {
-				Logger.logInfo(TAG, "Updating theme...");
-
-				try {
-					UIManager.setLookAndFeel(info.getClassName());
-				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-						| UnsupportedLookAndFeelException e) {
-					Logger.logError(TAG, "Error while setting new theme");
-					e.printStackTrace();
-				}
-
-				// Refresh the UI
-
-				//This is experimental TODO
-				for (Window w : SorterUI.getOwnerlessWindows()) {
-					SwingUtilities.updateComponentTreeUI(w);
-				}
-			}
-		}
-
-		//
-
-		setSize(new Dimension(605, 500));
-		revalidate();
-
-		setIconImage(Icons.SOFTWARE_ICON.getImage());
 
 		/** Menu bar */
 
@@ -176,11 +174,6 @@ public class SorterUI extends JFrame {
 		mntmSettings.setIcon(Icons.SETTINGS);
 		mnEdit.add(mntmSettings);
 
-		//View
-
-		JMenu mnView = new JMenu("View");
-		menuBar.add(mnView);
-
 		//Help
 
 		JMenu mnHelp = new JMenu("Help");
@@ -200,16 +193,19 @@ public class SorterUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				showCredits(true);
 			}
-
 		});
 		mntmAbout.setIcon(Icons.ABOUT);
 		mnHelp.add(mntmAbout);
 
+		getContentPane().add(openFileManager, BorderLayout.SOUTH);
+
 		/** End of menus */
 
-		JSplitPane splitPane = new JSplitPane();
-		splitPane.setDividerLocation(Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION.getValueAsInt());
+		//
 
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		splitPane.setResizeWeight(0.90);
+		splitPane.setDividerLocation(Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION.getValueAsInt());
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent pce) {
@@ -217,68 +213,78 @@ public class SorterUI extends JFrame {
 						.setNewValue((((Integer) pce.getNewValue()).intValue()) + "");
 			}
 		});
+		BorderLayout borderLayout = (BorderLayout) fMan.getLayout();
+		borderLayout.setVgap(1);
+		borderLayout.setHgap(1);
 
-		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		//fMan
+		splitPane.setTopComponent(fMan);
+
+		//
+
+		JPanel conta = new JPanel();
+
+		splitPane.setBottomComponent(conta);
+		conta.setLayout(new BorderLayout(0, 0));
+
+		conta.add(toolBar, BorderLayout.SOUTH);
+
+		conta.add(openFileManager.getPlayer(), BorderLayout.CENTER);
+
+		fMan.setFocusable(true);
+		fMan.grabFocus();
+		System.out.println(fMan.hasFocus());
+
 		getContentPane().add(splitPane, BorderLayout.CENTER);
-
-		splitPane.setLeftComponent(sorter);
 
 		addWindowListener(new WindowAdapter() {
 
 			@Override
 			public void windowOpened(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForInputs = true;
+
+				globalKeyListener.isListenningForInputs = true;
 			}
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForInputs = false;
+				globalKeyListener.isListenningForInputs = false;
 			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForInputs = false;
+				globalKeyListener.isListenningForInputs = false;
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForInputs = true;
+				globalKeyListener.isListenningForInputs = true;
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForInputs = true;
+				globalKeyListener.isListenningForInputs = true;
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForInputs = false;
+				globalKeyListener.isListenningForInputs = false;
 			}
 
 			@Override
 			public void windowGainedFocus(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForInputs = true;
+				globalKeyListener.isListenningForInputs = true;
 			}
 
 			@Override
 			public void windowLostFocus(WindowEvent e) {
-				sorter.globalKeyListener.isListenningForInputs = false;
+				globalKeyListener.isListenningForInputs = false;
 			}
-
 		});
-
-		JPanel panel = new JPanel();
-		panel.setBackground(Constants.SICK_PURPLE);
-		splitPane.setRightComponent(panel);
-		panel.setLayout(new BorderLayout(0, 0));
-
-		panel.add(sorter.audioPlayer.getVisualizer().analyzer, BorderLayout.CENTER);
 
 		if (Properties.FIRST_LAUNCH.getValueAsBoolean()) {
 			Properties.FIRST_LAUNCH.setNewValue(false);
 			showCredits(true);
 		}
-
 	}
 
 	void showCredits(boolean show) {
@@ -296,4 +302,7 @@ public class SorterUI extends JFrame {
 	void showConsole(boolean show) {
 		console.setVisible(show);
 	}
+
+	
+
 }

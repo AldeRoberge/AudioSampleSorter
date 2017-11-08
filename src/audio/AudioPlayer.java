@@ -4,6 +4,7 @@
  */
 package audio;
 
+import java.io.File;
 import java.util.Map;
 
 import javax.sound.sampled.SourceDataLine;
@@ -15,7 +16,6 @@ import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 import logger.Logger;
 import property.Properties;
-import sorter.soundPanel.Sound;
 
 public class AudioPlayer implements BasicPlayerListener {
 
@@ -26,7 +26,7 @@ public class AudioPlayer implements BasicPlayerListener {
 	private double currentAudioVolume = Properties.MAIN_VOLUME_SLIDER_VALUE.getValueAsInt(); //stored between 0 and 100 (converted in setVolume())
 	private double currentAudioPan = Properties.MAIN_PAN_SLIDER_VALUE.getValueAsInt(); //stored between 0 and 100 (converted in setGain())
 
-	private Sound currentSelectedSound;
+	private File currentSelectedSound;
 
 	private boolean isStopped;
 	private boolean isPaused;
@@ -64,17 +64,19 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	}
 
-	void playNewSound(Sound sound) {
+	void playNewSound(File sound) {
 
 		new Thread("Sound player") {
 
 			public void run() {
 
+				System.out.println("4");
+
 				currentSelectedSound = sound;
 
 				try {
 					// Open file, or URL or Stream (shoutcast) to play.
-					control.open(currentSelectedSound.file);
+					control.open(currentSelectedSound);
 					// control.open(new URL("http://yourshoutcastserver.com:8000"));
 
 					// Start playback in a thread.
@@ -97,7 +99,10 @@ public class AudioPlayer implements BasicPlayerListener {
 
 				} catch (BasicPlayerException e) {
 					e.printStackTrace();
+					System.err.println("Error!");
 				}
+
+				System.out.println("5");
 
 			}
 		}.start();
@@ -182,7 +187,7 @@ public class AudioPlayer implements BasicPlayerListener {
 		} else if (state == BasicPlayerEvent.EOM) { /*-- End Of Media reached --*/
 			newVisualizerStatus("End of media");
 
-			currentSelectedSound.isPlaying = false;
+			//currentSelectedSound.isPlaying = false;
 
 			//end of media reached
 		}
@@ -240,9 +245,13 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	}
 
-	public void playNewSoundOrResume(Sound sound) {
+	public void playNewSoundOrResume(File sound) {
+
+		System.out.println("0");
 
 		if (currentSelectedSound == null) {
+			System.out.println("1");
+
 			playNewSound(sound);
 		} else {
 
@@ -277,6 +286,8 @@ public class AudioPlayer implements BasicPlayerListener {
 
 				}
 			} else {
+				System.out.println("Playing new sound...");
+
 				playNewSound(sound);
 			}
 		}

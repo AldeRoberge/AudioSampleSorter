@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import action.editable.EditeableProperty;
 import action.type.sound.FileAction;
-import sorter.Sorter;
 
 public class RenameAction extends FileAction {
 
@@ -15,8 +14,6 @@ public class RenameAction extends FileAction {
 	}
 
 	private String TAG = "RenameAction";
-
-	Sorter sorter;
 
 	private EditeableProperty<Boolean> promptOnRename = new EditeableProperty<Boolean>(true, "Prompt on rename");
 	private EditeableProperty<String> newName = new EditeableProperty<String>("NewFileName", "New name");

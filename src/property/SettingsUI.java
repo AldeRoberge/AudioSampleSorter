@@ -12,7 +12,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import sorter.Sorter;
+import audio.AudioPlayer;
 import util.ui.MiddleOfTheScreen;
 
 public class SettingsUI extends JPanel {
@@ -24,13 +24,14 @@ public class SettingsUI extends JPanel {
 
 	private JCheckBox chckbxIncludeSubfoldersInSearch;
 
-	private Sorter sorter;
+	private AudioPlayer audioPlayer;
 
 	/**
 	 * Create the panel.
 	 */
-	public SettingsUI(Sorter s) {
-		this.sorter = s;
+	public SettingsUI(AudioPlayer a) {
+
+		this.audioPlayer = a;
 
 		setLayout(null);
 
@@ -142,14 +143,14 @@ public class SettingsUI extends JPanel {
 
 	private void updateAudioVolume(double volume) {
 
-		sorter.audioPlayer.setVolume(volume);
+		audioPlayer.setVolume(volume);
 
 		lblMasterVolume.setText("Master volume (" + (int) (volume) + "%)");
 	}
 
 	private void updateAudioPan(double pan) {
 
-		sorter.audioPlayer.setPan(pan);
+		audioPlayer.setPan(pan);
 
 		lblMasterPan.setText("Master pan (" + (int) (pan) + "%)");
 	}

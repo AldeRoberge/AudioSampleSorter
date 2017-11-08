@@ -2,7 +2,6 @@ package sorter.fileImport;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -21,50 +20,32 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import constants.Icons;
+import fileTypes.FileTypes;
 import logger.Logger;
 import property.Properties;
-import sorter.Sorter;
 import sorter.other.Container;
-import util.file.ExtensionFilter;
+import util.FileManager;
 import util.ui.MiddleOfTheScreen;
 
 public class FileImporter extends JFrame {
 
 	protected static final String TAG = "FileImporter";
-	private Sorter sorter;
-
-	ExtensionFilter filesToAllow = new ExtensionFilter("Audio Files (*.aiff, *.au, *.mp3, *.ogg, *.mp4, *.wav)",
-			new String[] { ".aiff", ".au", ".mp3", ".ogg", ".mp4", ".wav" });
 
 	private ArrayList<File> filesToImport = new ArrayList<File>();
 	private DropPane dropPanel;
 	private JButton btnImport;
 
+	private FileManager fMan;
+
 	public static Container fileImporterParent = new Container("This is used to pass the icon to the fileChooser",
 			Icons.IMPORT.getImage(), null, false);
 
 	/**
-	 * Only used to test
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FileImporter frame = new FileImporter(new Sorter());
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
-	public FileImporter(Sorter s) {
+	public FileImporter(FileManager fMan) {
 
-		this.sorter = s;
+		this.fMan = fMan;
 
 		setIconImage(Icons.IMPORT.getImage());
 		setTitle("Import");
@@ -121,7 +102,7 @@ public class FileImporter extends JFrame {
 				// Format supported by AudioPlayer :
 				// WAV, AU, AIFF ,MP3 and Ogg Vorbis files
 
-				chooser.setFileFilter(filesToAllow);
+				chooser.setFileFilter(FileTypes.AUDIO_FILES);
 
 				chooser.setMultiSelectionEnabled(true); // shift + click to select multiple files
 				chooser.setPreferredSize(new Dimension(800, 600));
@@ -154,7 +135,7 @@ public class FileImporter extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (filesToImport.size() > 0) {
 
-					sorter.importNewFiles(filesToImport);
+					fMan.importFiles(filesToImport);
 					filesToImport.clear();
 					setVisible(false);
 					dropPanel.updateMessage();
@@ -206,7 +187,7 @@ public class FileImporter extends JFrame {
 	}
 
 	public void addFileToImport(File f) {
-		if (!filesToImport.contains(f) && filesToAllow.accept(f)) {
+		if (!filesToImport.contains(f) && FileTypes.AUDIO_FILES.accept(f)) {
 			filesToImport.add(f);
 
 			dropPanel.updateMessage();

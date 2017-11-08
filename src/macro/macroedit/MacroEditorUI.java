@@ -22,6 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.jnativehook.keyboard.NativeKeyEvent;
+
 import action.ActionManager;
 import action.editable.EditeablePropertyEditor;
 import action.type.Action;
@@ -30,6 +32,7 @@ import logger.Logger;
 import macro.MacroAction;
 import macro.MacroEditor;
 import util.key.KeysToString;
+import util.key.NativeKeyEventToKey;
 
 public class MacroEditorUI extends JPanel {
 
@@ -45,7 +48,7 @@ public class MacroEditorUI extends JPanel {
 	private static final Font RESULT_FONT_BOLD = new Font("Segoe UI Light", Font.BOLD, 20);
 
 	private boolean isListenningForKeyInputs = false;
-	private JTextField keyEditor;
+	private JTextField keyEditorImputBox;
 
 	private int keysPressedAndNotReleased = 0;
 
@@ -110,15 +113,15 @@ public class MacroEditorUI extends JPanel {
 		btnAdd.setBounds(12, 233, 330, 25);
 		add(btnAdd);
 
-		keyEditor = new JTextField("Click to edit");
-		keyEditor.setToolTipText("Click to edit");
-		keyEditor.setHorizontalAlignment(SwingConstants.CENTER);
-		keyEditor.setFont(RESULT_FONT_PLAIN);
-		keyEditor.setBackground(Color.decode("#FCFEFF")); //'Ultra Light Cyan'
-		keyEditor.setEditable(false);
-		keyEditor.setBounds(12, 13, 330, 35);
-		keyEditor.setColumns(10);
-		add(keyEditor);
+		keyEditorImputBox = new JTextField("Click to edit");
+		keyEditorImputBox.setToolTipText("Click to edit");
+		keyEditorImputBox.setHorizontalAlignment(SwingConstants.CENTER);
+		keyEditorImputBox.setFont(RESULT_FONT_PLAIN);
+		keyEditorImputBox.setBackground(Color.decode("#FCFEFF")); //'Ultra Light Cyan'
+		keyEditorImputBox.setEditable(false);
+		keyEditorImputBox.setBounds(12, 13, 330, 35);
+		keyEditorImputBox.setColumns(10);
+		add(keyEditorImputBox);
 
 		//Populate the ComboBox
 
@@ -162,67 +165,63 @@ public class MacroEditorUI extends JPanel {
 		columnpanel.setBackground(Color.gray);
 		borderlaoutpanel.add(columnpanel, BorderLayout.NORTH);
 
-		keyEditor.addMouseListener(new MouseAdapter() {
+		keyEditorImputBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (!isListenningForKeyInputs) {
 					keyBindToEdit.clearKeys();
-					keyEditor.setText("Press any key");
+					keyEditorImputBox.setText("Press any key");
 					Logger.logInfo(TAG, "Now listenning for key inputs");
 					isListenningForKeyInputs = true;
-					keyEditor.setFont(RESULT_FONT_PLAIN);
+					keyEditorImputBox.setFont(RESULT_FONT_PLAIN);
 				} else {
 					Logger.logInfo(TAG, "Already listenning for key inputs!");
 				}
 			}
 		});
 
-		// end
+	}
 
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+	/**
+	 * This is a work-around the previous keyboard register hook thing
+	 *  that caused both the JTable and the PropertyEditor to not receive imputs.
+	 */
+	public void globalKeyBoardImput(NativeKeyEvent ke, boolean isPressed) {
 
-			@Override
-			public boolean dispatchKeyEvent(KeyEvent ke) {
-				synchronized (MacroEditorUI.class) {
+		Key e = NativeKeyEventToKey.getJavaKeyEvent(ke);
 
-					if (isListenningForKeyInputs) {
-						/**System.out.println("Event ID : " + ke.getID());
-						System.out.println("Key Code " + ke.getKeyCode());*/
+		if (isListenningForKeyInputs) {
 
-						if (ke.getID() == KeyEvent.KEY_PRESSED) {
-							Key e = new Key(ke.getKeyCode());
+			if (isPressed) {
 
-							if (!keyBindToEdit.keys.contains(e)) {
-								keysPressedAndNotReleased++;
+				if (!keyBindToEdit.keys.contains(e)) {
+					System.out.println("Key pressed");
 
-								keyBindToEdit.keys.add(e);
+					keyBindToEdit.keys.add(e);
 
-								//Build string for field showing name of keys
+					keysPressedAndNotReleased++;
 
-								updateTxtTest();
+					//Build string for field showing name of keys
 
-							}
-						} else if (ke.getID() == KeyEvent.KEY_RELEASED) {
-							if (keysPressedAndNotReleased == 1) { //is last key to be released
-
-								Logger.logInfo(TAG, "Stopped listenning for events.");
-								isListenningForKeyInputs = false;
-								keyEditor.setFont(RESULT_FONT_BOLD);
-
-							}
-
-							keysPressedAndNotReleased--;
-
-						}
-
-					}
+					updateImputBoxText();
 
 				}
-				return true;
+			} else {
+				System.out.println("Key released");
+
+				if (keysPressedAndNotReleased == 1) { //is last key to be released
+
+					Logger.logInfo(TAG, "Stopped listenning for events.");
+					isListenningForKeyInputs = false;
+					keyEditorImputBox.setFont(RESULT_FONT_BOLD);
+
+				}
+
+				keysPressedAndNotReleased--;
+
 			}
 
-		});
-
+		}
 	}
 
 	public void changeKeyBindToEdit(MacroAction keyBindToEdit) {
@@ -245,14 +244,14 @@ public class MacroEditorUI extends JPanel {
 
 		this.keyBindToEdit = keyBindToEdit;
 
-		updateTxtTest();
+		updateImputBoxText();
 	}
 
-	private void updateTxtTest() {
+	private void updateImputBoxText() {
 		if (keyBindToEdit.keys.size() > 0) {
-			keyEditor.setText(KeysToString.keysToString("[", keyBindToEdit.keys, "]"));
+			keyEditorImputBox.setText(KeysToString.keysToString("[", keyBindToEdit.keys, "]"));
 		} else {
-			keyEditor.setText("Click to edit");
+			keyEditorImputBox.setText("Click to edit");
 		}
 	}
 

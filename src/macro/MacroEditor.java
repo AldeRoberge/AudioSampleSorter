@@ -26,7 +26,7 @@ public class MacroEditor {
 	private JFrame frame;
 
 	public MacroListUI macroListUI = new MacroListUI(this);
-	private MacroEditorUI macroEditPanel = new MacroEditorUI(this);
+	public MacroEditorUI macroEditPanel = new MacroEditorUI(this);
 
 	public MacroLoader macroLoader = new MacroLoader(this);
 

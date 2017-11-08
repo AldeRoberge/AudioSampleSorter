@@ -16,7 +16,6 @@ import action.type.sound.FileAction;
 import action.type.ui.UIAction;
 import macro.MacroAction;
 import macro.MacroLoader;
-import sorter.Sorter;
 import sorter.SorterUI;
 import util.key.NativeKeyEventToKey;
 
@@ -30,7 +29,7 @@ public class GlobalKeyListener implements NativeKeyListener {
 
 	private ArrayList<Key> pressedKeys = new ArrayList<Key>();
 
-	private Sorter sorter;
+	private SorterUI sorterUI;
 
 	private static GlobalKeyListener me;
 
@@ -49,9 +48,12 @@ public class GlobalKeyListener implements NativeKeyListener {
 	 */
 	public void nativeKeyPressed(NativeKeyEvent ke) {
 
+		transferToMacroEditor(ke, true);
+
 		if (isListenningForInputs) { //is not minimized and is focused
 
 			Key e = NativeKeyEventToKey.getJavaKeyEvent(ke);
+
 			if (!pressedKeys.contains(e)) {
 				pressedKeys.add(e);
 
@@ -113,10 +115,17 @@ public class GlobalKeyListener implements NativeKeyListener {
 
 	}
 
+	private void transferToMacroEditor(NativeKeyEvent ke, boolean isPressed) {
+		//Transfer imput to MacroEditor (fix for the JTable focus)
+		sorterUI.macroEditor.macroEditPanel.globalKeyBoardImput(ke, isPressed);
+	}
+
 	/**
 	 * NativeKeyListener released keys
 	 */
 	public void nativeKeyReleased(NativeKeyEvent ke) {
+
+		transferToMacroEditor(ke, false);
 
 		Key e = NativeKeyEventToKey.getJavaKeyEvent(ke);
 		pressedKeys.remove(e);
@@ -127,9 +136,9 @@ public class GlobalKeyListener implements NativeKeyListener {
 	public void nativeKeyTyped(NativeKeyEvent arg0) { // left intentionally blank
 	}
 
-	public void init(Sorter s) {
+	public void init(SorterUI s) {
 
-		this.sorter = s;
+		this.sorterUI = s;
 
 		try {
 			GlobalScreen.registerNativeHook();
@@ -191,9 +200,9 @@ public class GlobalKeyListener implements NativeKeyListener {
 				}
 			}
 		}
-		
+
 		return current == required;
-		
+
 	}
 
 	public boolean shiftIsPressed() {

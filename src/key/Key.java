@@ -7,7 +7,7 @@ public class Key implements Serializable {
 
 	//Like KeyEvent, but with less stuff in it (cauz yknow, reinventing the wheel is cool)
 
-	private int keyCode;
+	public int keyCode;
 	public String keyName;
 
 	public Key(int keyCode) {

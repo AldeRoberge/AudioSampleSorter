@@ -3,10 +3,8 @@ package action.type.ui.imp;
 import java.util.ArrayList;
 
 import action.editable.EditeableProperty;
-import action.type.Action;
 import action.type.ui.UIAction;
 import logger.Logger;
-import sorter.Sorter;
 import sorter.SorterUI;
 
 public class SimpleUIAction extends UIAction {
@@ -27,11 +25,9 @@ public class SimpleUIAction extends UIAction {
 	public static final SimpleUIAction SHOW_SETTINGS_UI = new SimpleUIAction(SHOW_SETTINGS_UI_ID, "Edit Settings");
 	public static final SimpleUIAction SHOW_CONSOLE = new SimpleUIAction(SHOW_CONSOLE_ID, "Show Console");
 	private static SorterUI sampleSorter;
-	private static Sorter sorter;
 
 	public static void init(SorterUI s) {
 		sampleSorter = s;
-		sorter = sampleSorter.sorter;
 
 		UIActions.add(SHOW_CREDITS_UI);
 		UIActions.add(SHOW_MACRO_UI);
