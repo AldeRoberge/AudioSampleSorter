@@ -24,10 +24,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
-import constants.Icons;
+import constants.icons.Icons;
 import logger.Logger;
 import sorter.SorterUI;
 
@@ -35,7 +33,7 @@ public class SplashScreen {
 
 	private static final String IMAGE_LOCATION = new File(".").getAbsolutePath() + "/res/splashScreen/";
 
-	public static String subText = "Click to launch";
+	public static String subText = "(Alpha) Ultimate 1.0";
 	public static Font subTextFont = new Font("Calibri Light", Font.PLAIN, 20);
 
 	public static TimerTask close;
@@ -81,19 +79,17 @@ public class SplashScreen {
 					@Override
 					public void run() {
 						float previousOpacity = 0;
-						float increments = 0.1f;
+						float increments = 0.2f;
 						boolean go = true;
 
-						while (go) {
-							previousOpacity = frame.getOpacity();
-
+						while (go) { //gradually show software
 							if ((previousOpacity + increments) >= 1) {
 								go = false;
 								frame.setOpacity(1f);
 							} else {
 								frame.setOpacity(frame.getOpacity() + increments);
+								previousOpacity = frame.getOpacity() + increments;
 							}
-
 						}
 					}
 				}.start();
@@ -145,6 +141,8 @@ public class SplashScreen {
 							startTime = -1;
 							((Timer) e.getSource()).stop();
 							alpha = 0f;
+
+							close.run();
 						} else {
 							alpha = 1f - ((float) duration / (float) RUNNING_TIME);
 						}
@@ -158,7 +156,7 @@ public class SplashScreen {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 
-					if (mouseOver == false) {
+					if (!mouseOver) {
 						go();
 						mouseOver = true;
 					}
@@ -211,15 +209,14 @@ public class SplashScreen {
 			g2d.setComposite(AlphaComposite.SrcAtop.derive(1f));
 			g2d.drawImage(textImage, 0, 0, getWidth(), getHeight(), this);
 
-			if (mouseOver) {
+			//String
 
-				g.setColor(Color.WHITE);
-				g.setFont(subTextFont);
+			g.setColor(Color.WHITE);
+			g.setFont(subTextFont);
 
-				Rectangle bottom = new Rectangle(0, getPreferredSize().height - 50, getPreferredSize().width, 20);
+			Rectangle bottom = new Rectangle(0, getPreferredSize().height - 50, getPreferredSize().width, 20);
 
-				drawCenteredString(g, subText, bottom, subTextFont);
-			}
+			drawCenteredString(g, subText, bottom, subTextFont);
 
 			g2d.dispose();
 

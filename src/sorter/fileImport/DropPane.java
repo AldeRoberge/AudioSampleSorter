@@ -19,7 +19,6 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.TooManyListenersException;
 
@@ -27,8 +26,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
-import property.Properties;
 
 /**
  * Thanks to https://stackoverflow.com/questions/13597233/how-to-drag-and-drop-files-from-a-directory-in-java

@@ -62,8 +62,9 @@ public class GlobalKeyListener implements NativeKeyListener {
 				//For every registered MacroActions
 				for (MacroAction m : MacroLoader.macroActions) {
 
-					// If the MacroAction's keys are globaly pressed
-					if (keysArePressed(m.keys)) {
+					//If m has keys, otherwise it will trigger every key presses
+					//If the MacroAction's keys are globaly pressed
+					if (!m.keys.isEmpty() && keysArePressed(m.keys)) {
 
 						//PERFORM ACTIONS
 
@@ -107,12 +108,9 @@ public class GlobalKeyListener implements NativeKeyListener {
 							}
 						}
 					}
-
 				}
 			}
-
 		}
-
 	}
 
 	private void transferToMacroEditor(NativeKeyEvent ke, boolean isPressed) {

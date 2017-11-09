@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import constants.Constants;
-import constants.Icons;
+import constants.icons.Icons;
 import macro.MacroAction;
 import macro.MacroEditor;
 import util.key.KeysToString;
@@ -28,8 +28,8 @@ public class MacroInfoPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JLabel lblKey;
-	private JLabel labelAction;
+	private JLabel labelShortcut;
+	private JLabel labelDescription;
 
 	public MacroInfoPanel(MacroAction keyBind, MacroEditor m) {
 		this.keyBind = keyBind;
@@ -40,69 +40,79 @@ public class MacroInfoPanel extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(5, 5, 326, 49);
-		panel.setToolTipText("Click to edit");
 		add(panel);
 		panel.setLayout(null);
 
-		lblKey = new JLabel("Keys");
-		lblKey.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
-		lblKey.setBounds(12, 0, 108, 49);
-		panel.add(lblKey);
+		labelShortcut = new JLabel("Keys");
+		labelShortcut.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
+		labelShortcut.setBounds(12, 0, 108, 49);
+		panel.add(labelShortcut);
 
-		labelAction = new JLabel("Actions");
-		labelAction.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
-		labelAction.setBounds(124, 0, 108, 49);
-		panel.add(labelAction);
+		labelDescription = new JLabel("Actions");
+		labelDescription.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
+		labelDescription.setBounds(124, 0, 108, 49);
+		panel.add(labelDescription);
 
-		JButton btnNewButton = new JButton("X");
-		btnNewButton.setToolTipText("Remove");
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton.setForeground(new Color(255, 0, 0));
-		btnNewButton.setMargin(new Insets(-5, -5, -5, -5)); //allows for the 'X' to display even if theres not a lot of space around it
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton buttonDelete = new JButton("X");
+		buttonDelete.setToolTipText("Delete");
+		buttonDelete.setFont(new Font("Tahoma", Font.BOLD, 13));
+		buttonDelete.setForeground(new Color(255, 0, 0));
+		buttonDelete.setMargin(new Insets(-5, -5, -5, -5)); //allows for the 'X' to display even if theres not a lot of space around it
+		buttonDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				m.macroLoader.removeMacro(keyBind, me);
 			}
 		});
-		btnNewButton.setBounds(280, 7, 35, 35);
-		panel.add(btnNewButton);
+		buttonDelete.setBounds(280, 7, 35, 35);
+		panel.add(buttonDelete);
 
-		JButton button = new JButton();
-		button.setToolTipText("Edit");
-		button.setBounds(234, 7, 35, 35);
-		panel.add(button);
-		button.setIcon(Icons.SETTINGS);
-		button.addActionListener(new ActionListener() {
+		JButton buttonEdit = new JButton();
+		buttonEdit.setToolTipText("Edit");
+		buttonEdit.setBounds(234, 7, 35, 35);
+		panel.add(buttonEdit);
+		buttonEdit.setIcon(Icons.SETTINGS);
+		buttonEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				m.macroListUI.keyBindPanelIsClicked(me);
 			}
 		});
-		button.setMargin(new Insets(0, 0, 0, 0));
-		button.setForeground(Constants.SICK_PURPLE);
-		button.setFont(new Font("Tahoma", Font.BOLD, 13));
+		buttonEdit.setMargin(new Insets(0, 0, 0, 0));
+		buttonEdit.setForeground(Constants.SICK_PURPLE);
+		buttonEdit.setFont(new Font("Tahoma", Font.BOLD, 13));
 
 	}
 
+	//Called by refreshInfoPanel(), which is called on addKeyBindInfoPanel
 	public void updateText() {
 		String lblKeyText = KeysToString.keysToString("", keyBind.keys, "");
 
-		lblKey.setText(lblKeyText);
-		lblKey.setToolTipText(lblKeyText); //in case its cut off
+		labelShortcut.setText(lblKeyText);
+		labelShortcut.setToolTipText(lblKeyText); //in case its cut off
 
-		if (keyBind.actionsToPerform.size() > 1) {
+		if (keyBind.actionsToPerform.size() >= 1) {
+			labelDescription.setToolTipText(keyBind.actionsToPerform.toString());
+		}
 
-			labelAction.setText(keyBind.actionsToPerform.size() + " actions");
-			labelAction.setToolTipText(keyBind.actionsToPerform.toString());
+		if (keyBind.name != null) { //display the name if it has one
 
-		} else if (keyBind.actionsToPerform.size() == 1) {
+			labelDescription.setText(keyBind.name);
 
-			labelAction.setText(keyBind.actionsToPerform.get(0).toString());
+		} else {
 
-		} else if (keyBind.actionsToPerform.size() == 0) {
+			if (keyBind.actionsToPerform.size() > 1) {
 
-			labelAction.setText("No action");
+				labelDescription.setText(keyBind.actionsToPerform.size() + " actions");
 
+			} else if (keyBind.actionsToPerform.size() == 1) {
+
+				labelDescription.setText(keyBind.actionsToPerform.get(0).toString());
+
+			} else if (keyBind.actionsToPerform.size() == 0) {
+
+				labelDescription.setText("No action");
+
+			}
 		}
 
 	}

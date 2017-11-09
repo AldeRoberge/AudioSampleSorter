@@ -63,35 +63,29 @@ public class EditeablePropertyPanel extends JPanel {
 			lblPrefix.setBounds(12, 16, 56, 16);
 			add(lblPrefix);
 
-			System.out.println("Generated");
-
 			JTextField stringInputField = new JTextField();
 			stringInputField.setBounds(80, 13, 135, 22);
 			stringInputField.setColumns(10);
-
-			System.out.println(stringInputField.isEditable());
 			stringInputField.grabFocus();
-			System.out.println(stringInputField.isFocusable());
 
-			
 			stringInputField.getDocument().addDocumentListener(new DocumentListener() {
 
-			    @Override
-			    public void removeUpdate(DocumentEvent e) {
-			        // TODO Auto-generated method stub
-			    }
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					// TODO Auto-generated method stub
+				}
 
-			    @Override
-			    public void insertUpdate(DocumentEvent e) {
-			        // TODO Auto-generated method stub  
-			    }
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					// TODO Auto-generated method stub  
+				}
 
-			    @Override
-			    public void changedUpdate(DocumentEvent e) {
-			        // TODO Auto-generated method stub
-			    }
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					// TODO Auto-generated method stub
+				}
 			});
-			
+
 			stringInputField.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent ev) {

@@ -4,11 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -33,6 +30,7 @@ import macro.MacroAction;
 import macro.MacroEditor;
 import util.key.KeysToString;
 import util.key.NativeKeyEventToKey;
+import javax.swing.ImageIcon;
 
 public class MacroEditorUI extends JPanel {
 
@@ -60,9 +58,10 @@ public class MacroEditorUI extends JPanel {
 	private static JScrollPane scrollPane;
 
 	private ArrayList<Action> actions = new ArrayList<Action>();
-	private ArrayList<MacroActionEditPanel> macroActionEditPanels = new ArrayList<MacroActionEditPanel>();
+	private ArrayList<MacroActionPanel> macroActionEditPanels = new ArrayList<MacroActionPanel>();
 
 	public EditeablePropertyEditor actionEditor = new EditeablePropertyEditor();
+	private JTextField titleEditor;
 
 	public void onHide() {
 		isListenningForKeyInputs = false;
@@ -84,28 +83,24 @@ public class MacroEditorUI extends JPanel {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if (!keyBindToEdit.keys.isEmpty()) { //if keybinds are left empty, dont save
-
-					if (newKeyBind) {
-						newKeyBind = false;
-						Logger.logInfo(TAG, "Creating new KeyBind");
-
-						keyBindToEdit.actionsToPerform.clear();
-
-						m.macroLoader.addNewMacro(keyBindToEdit);
-					}
+				if (newKeyBind) {
+					newKeyBind = false;
+					Logger.logInfo(TAG, "Creating new KeyBind");
 
 					keyBindToEdit.actionsToPerform.clear();
 
-					for (Action action : actions) {
-						keyBindToEdit.actionsToPerform.add(action);
-					}
-
-					m.macroListUI.refreshInfoPanel();
-
-					m.macroLoader.serialise(); //just save
-
+					m.macroLoader.addNewMacro(keyBindToEdit);
 				}
+
+				keyBindToEdit.actionsToPerform.clear();
+
+				for (Action action : actions) {
+					keyBindToEdit.actionsToPerform.add(action);
+				}
+
+				m.macroListUI.refreshInfoPanel();
+
+				m.macroLoader.serialise(); //just save
 
 				m.showMacroEditUI();
 			}
@@ -114,12 +109,12 @@ public class MacroEditorUI extends JPanel {
 		add(btnAdd);
 
 		keyEditorImputBox = new JTextField("Click to edit");
-		keyEditorImputBox.setToolTipText("Click to edit");
+		keyEditorImputBox.setToolTipText("Shortcut");
 		keyEditorImputBox.setHorizontalAlignment(SwingConstants.CENTER);
 		keyEditorImputBox.setFont(RESULT_FONT_PLAIN);
 		keyEditorImputBox.setBackground(Color.decode("#FCFEFF")); //'Ultra Light Cyan'
 		keyEditorImputBox.setEditable(false);
-		keyEditorImputBox.setBounds(12, 13, 330, 35);
+		keyEditorImputBox.setBounds(12, 185, 330, 35);
 		keyEditorImputBox.setColumns(10);
 		add(keyEditorImputBox);
 
@@ -128,11 +123,12 @@ public class MacroEditorUI extends JPanel {
 		Logger.logInfo(TAG, "Found " + ActionManager.actions.size() + " actions.");
 
 		JComboBox<Action> comboBox = new JComboBox<Action>();
+		comboBox.setToolTipText("Add action");
 		for (Action a : ActionManager.actions) {
 			comboBox.addItem(a);
 		}
 
-		comboBox.setBounds(91, 61, 251, 22);
+		comboBox.setBounds(12, 74, 330, 22);
 		add(comboBox);
 
 		comboBox.addActionListener(new ActionListener() {
@@ -145,13 +141,9 @@ public class MacroEditorUI extends JPanel {
 			}
 		});
 
-		JLabel lblAction = new JLabel("Add action :");
-		lblAction.setBounds(12, 64, 83, 16);
-		add(lblAction);
-
 		scrollPane = new JScrollPane();
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 96, 330, 125);
+		scrollPane.setBounds(12, 109, 330, 63);
 		scrollPane.setAutoscrolls(true);
 		// scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
@@ -164,6 +156,30 @@ public class MacroEditorUI extends JPanel {
 		columnpanel.setLayout(new GridLayout(0, 1, 0, 1));
 		columnpanel.setBackground(Color.gray);
 		borderlaoutpanel.add(columnpanel, BorderLayout.NORTH);
+
+		titleEditor = new JTextField();
+		titleEditor.setToolTipText("Click to edit title");
+		titleEditor.setFont(new Font("Segoe UI Historic", Font.PLAIN, 20));
+		titleEditor.setText("Title");
+		titleEditor.setHorizontalAlignment(SwingConstants.CENTER);
+		titleEditor.setBounds(72, 13, 270, 48);
+
+		titleEditor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("New title : " + titleEditor.getText());
+				keyBindToEdit.name = titleEditor.getText();
+			}
+		});
+
+		add(titleEditor);
+		titleEditor.setColumns(10);
+
+		JButton btnIcon = new JButton("");
+		btnIcon.setToolTipText("Click to edit icon");
+		btnIcon.setIcon(new ImageIcon(MacroEditorUI.class
+				.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Justify-Black.png")));
+		btnIcon.setBounds(12, 13, 48, 48);
+		add(btnIcon);
 
 		keyEditorImputBox.addMouseListener(new MouseAdapter() {
 			@Override
@@ -182,56 +198,20 @@ public class MacroEditorUI extends JPanel {
 
 	}
 
-	/**
-	 * This is a work-around the previous keyboard register hook thing
-	 *  that caused both the JTable and the PropertyEditor to not receive imputs.
-	 */
-	public void globalKeyBoardImput(NativeKeyEvent ke, boolean isPressed) {
-
-		Key e = NativeKeyEventToKey.getJavaKeyEvent(ke);
-
-		if (isListenningForKeyInputs) {
-
-			if (isPressed) {
-
-				if (!keyBindToEdit.keys.contains(e)) {
-					System.out.println("Key pressed");
-
-					keyBindToEdit.keys.add(e);
-
-					keysPressedAndNotReleased++;
-
-					//Build string for field showing name of keys
-
-					updateImputBoxText();
-
-				}
-			} else {
-				System.out.println("Key released");
-
-				if (keysPressedAndNotReleased == 1) { //is last key to be released
-
-					Logger.logInfo(TAG, "Stopped listenning for events.");
-					isListenningForKeyInputs = false;
-					keyEditorImputBox.setFont(RESULT_FONT_BOLD);
-
-				}
-
-				keysPressedAndNotReleased--;
-
-			}
-
-		}
-	}
-
 	public void changeKeyBindToEdit(MacroAction keyBindToEdit) {
+
+		//if keyBindToEdit is null, it means MacroListUI wants us to create a new keyBind
 
 		if (keyBindToEdit != null) {
 			newKeyBind = false;
 
+			Logger.logInfo(TAG, "Editing existing keybind");
+
 			for (Action a : keyBindToEdit.actionsToPerform) {
 				addActionAndActionEditPanel(a);
 			}
+
+			titleEditor.setText(keyBindToEdit.name);
 
 		} else {
 
@@ -239,6 +219,8 @@ public class MacroEditorUI extends JPanel {
 
 			newKeyBind = true;
 			keyBindToEdit = new MacroAction();
+
+			titleEditor.setText("Title");
 
 		}
 
@@ -255,10 +237,47 @@ public class MacroEditorUI extends JPanel {
 		}
 	}
 
+	/**
+	 * This is a work-around the previous keyboard register hook thing
+	 *  that caused both the JTable and the PropertyEditor to not receive imputs.
+	 */
+	public void globalKeyBoardImput(NativeKeyEvent ke, boolean isPressed) {
+
+		Key e = NativeKeyEventToKey.getJavaKeyEvent(ke);
+
+		if (isListenningForKeyInputs) {
+
+			if (isPressed) {
+
+				if (!keyBindToEdit.keys.contains(e)) {
+					keyBindToEdit.keys.add(e);
+
+					keysPressedAndNotReleased++;
+
+					//Build string for field showing name of keys
+
+					updateImputBoxText();
+
+				}
+			} else {
+				if (keysPressedAndNotReleased == 1) { //is last key to be released
+
+					Logger.logInfo(TAG, "Stopped listenning for events.");
+					isListenningForKeyInputs = false;
+					keyEditorImputBox.setFont(RESULT_FONT_BOLD);
+
+				}
+
+				keysPressedAndNotReleased--;
+
+			}
+		}
+	}
+
 	// TODO : update this when adding fiels
 	void addActionAndActionEditPanel(Action action) {
 
-		MacroActionEditPanel infoPanel = new MacroActionEditPanel(action, this);
+		MacroActionPanel infoPanel = new MacroActionPanel(action, this);
 
 		columnpanel.add(infoPanel);
 
@@ -271,8 +290,8 @@ public class MacroEditorUI extends JPanel {
 
 	public void clearActionEditPanels() {
 		try {
-			for (Iterator<MacroActionEditPanel> iterator = macroActionEditPanels.iterator(); iterator.hasNext();) {
-				MacroActionEditPanel infoP = iterator.next();
+			for (Iterator<MacroActionPanel> iterator = macroActionEditPanels.iterator(); iterator.hasNext();) {
+				MacroActionPanel infoP = iterator.next();
 
 				iterator.remove();
 				columnpanel.remove(infoP);
@@ -290,7 +309,7 @@ public class MacroEditorUI extends JPanel {
 
 	void refreshPanels() {
 
-		for (MacroActionEditPanel logPanel : macroActionEditPanels) {
+		for (MacroActionPanel logPanel : macroActionEditPanels) {
 			logPanel.validate();
 			logPanel.repaint();
 		}
@@ -313,7 +332,7 @@ public class MacroEditorUI extends JPanel {
 		//@formatter:on
 	}
 
-	public void removeFromPanels(MacroActionEditPanel me) {
+	public void removeFromPanels(MacroActionPanel me) {
 
 		actions.remove(me.action);
 

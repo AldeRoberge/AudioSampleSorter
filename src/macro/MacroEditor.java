@@ -45,7 +45,7 @@ public class MacroEditor {
 	 */
 	public void showMacroListUI(MacroAction keyBindToEdit) {
 
-		changeTitle("Macro Editor");
+		changeTitle("Edit Macro");
 		frame.setIconImage(macroEditIcon);
 
 		frame.setContentPane(macroEditPanel);

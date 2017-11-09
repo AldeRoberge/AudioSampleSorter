@@ -1,7 +1,7 @@
 package util;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.File;
 import java.util.Date;
@@ -10,8 +10,6 @@ import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileSystemView;
 
@@ -55,6 +53,8 @@ public class FileInformation extends JPanel {
 		for (int ii = 0; ii < count; ii++) {
 			fileDetailsLabels.getComponent(ii).setEnabled(false);
 		}
+
+		setPreferredSize(new Dimension(450, 100)); //gives some extra space
 
 		setLayout(new BorderLayout(3, 3));
 		add(fileMainDetails, BorderLayout.CENTER);

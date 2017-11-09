@@ -45,7 +45,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 import constants.Constants;
-import constants.Icons;
+import constants.icons.Icons;
+import util.file.FileSizeToString;
 
 /**
 Credits : 
@@ -53,12 +54,6 @@ Credits :
 @version 2011-06-01
 */
 public class FileManager extends JPanel {
-
-	/** Title of the application */
-	public static final String APP_TITLE = Constants.SOFTWARE_NAME;
-
-	/** Used to open/edit/print files. */
-	private Desktop desktop;
 
 	/** Provides nice icons and names for files. */
 	private FileSystemView fileSystemView;
@@ -68,7 +63,6 @@ public class FileManager extends JPanel {
 
 	/** Directory listing */
 	private JTable table;
-	private JProgressBar progressBar;
 
 	//
 
@@ -78,19 +72,17 @@ public class FileManager extends JPanel {
 	private boolean cellSizesSet = false;
 	private int rowIconPadding = 6;
 
-	/** :) */
-
-	private FileVisualiser openFileManager;
-
 	public FileManager(FileVisualiser openFileManager) {
 
-		this.openFileManager = openFileManager;
+		/* :) */
+		FileVisualiser openFileManager1 = openFileManager;
 
 		setLayout(new BorderLayout(3, 3));
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		fileSystemView = FileSystemView.getFileSystemView();
-		desktop = Desktop.getDesktop();
+		/* Used to open/edit/print files. */
+		Desktop desktop = Desktop.getDesktop();
 
 		JPanel detailView = new JPanel(new BorderLayout(3, 3));
 
@@ -111,8 +103,6 @@ public class FileManager extends JPanel {
 			public void valueChanged(ListSelectionEvent lse) {
 
 				if (!lse.getValueIsAdjusting()) {//This line prevents double events (firing twice)
-					System.out.println("Value changed");
-
 					int row = table.getSelectionModel().getLeadSelectionIndex();
 					openFileManager.setFileSelected(((FileTableModel) table.getModel()).getFile(row));
 				}
@@ -131,7 +121,7 @@ public class FileManager extends JPanel {
 		add(detailView, BorderLayout.CENTER);
 
 		JPanel simpleOutput = new JPanel(new BorderLayout(3, 3));
-		progressBar = new JProgressBar();
+		JProgressBar progressBar = new JProgressBar();
 		simpleOutput.add(progressBar, BorderLayout.EAST);
 		progressBar.setVisible(false);
 
@@ -143,12 +133,6 @@ public class FileManager extends JPanel {
 		test.add(new File("C:\\Users\\4LDE\\Music\\Drum Kits\\Sorted\\Cymbals\\Cymbal_02.wav"));
 		setTableData(test);
 
-	}
-
-	private void showThrowable(Throwable t) {
-		t.printStackTrace();
-		JOptionPane.showMessageDialog(this, t.toString(), t.getMessage(), JOptionPane.ERROR_MESSAGE);
-		repaint();
 	}
 
 	public void importFiles(ArrayList<File> filesToImport) {
@@ -215,7 +199,7 @@ public class FileManager extends JPanel {
 				} catch (Exception weTried) {
 					weTried.printStackTrace();
 				}
-				JFrame f = new JFrame(APP_TITLE);
+				JFrame f = new JFrame(Constants.SOFTWARE_NAME);
 				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 				FileManager fileManager = new FileManager(new FileVisualiser());
@@ -254,7 +238,7 @@ class FileTableModel extends AbstractTableModel {
 		case 2:
 			return file.getPath();
 		case 3:
-			return file.length();
+			return FileSizeToString.getFileSizeAsString(file);
 		case 4:
 			return file.lastModified();
 		default:

@@ -3,6 +3,8 @@ package macro;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.swing.Icon;
+
 import action.type.Action;
 import key.Key;
 
@@ -12,6 +14,11 @@ import key.Key;
  */
 
 public class MacroAction implements Serializable {
+
+	//UI information
+
+	public String name;
+	public Icon icon;
 
 	//Keys required to be pressed to trigger the event
 	public ArrayList<Key> keys = new ArrayList<Key>();

@@ -19,7 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import constants.Icons;
+import constants.icons.Icons;
 import fileTypes.FileTypes;
 import logger.Logger;
 import property.Properties;
@@ -35,8 +35,6 @@ public class FileImporter extends JFrame {
 	private DropPane dropPanel;
 	private JButton btnImport;
 
-	private FileManager fMan;
-
 	public static Container fileImporterParent = new Container("This is used to pass the icon to the fileChooser",
 			Icons.IMPORT.getImage(), null, false);
 
@@ -45,7 +43,7 @@ public class FileImporter extends JFrame {
 	 */
 	public FileImporter(FileManager fMan) {
 
-		this.fMan = fMan;
+		FileManager fMan1 = fMan;
 
 		setIconImage(Icons.IMPORT.getImage());
 		setTitle("Import");

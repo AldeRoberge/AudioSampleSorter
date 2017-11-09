@@ -70,8 +70,6 @@ public class AudioPlayer implements BasicPlayerListener {
 
 			public void run() {
 
-				System.out.println("4");
-
 				currentSelectedSound = sound;
 
 				try {
@@ -101,8 +99,6 @@ public class AudioPlayer implements BasicPlayerListener {
 					e.printStackTrace();
 					System.err.println("Error!");
 				}
-
-				System.out.println("5");
 
 			}
 		}.start();
@@ -247,11 +243,7 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	public void playNewSoundOrResume(File sound) {
 
-		System.out.println("0");
-
 		if (currentSelectedSound == null) {
-			System.out.println("1");
-
 			playNewSound(sound);
 		} else {
 

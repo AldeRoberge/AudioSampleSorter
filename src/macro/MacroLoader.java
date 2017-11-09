@@ -10,7 +10,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import action.type.sound.imp.PlayAction;
-import action.type.ui.imp.SimpleUIAction;
 import key.Key;
 import logger.Logger;
 import macro.macrolist.MacroInfoPanel;
@@ -21,7 +20,6 @@ public class MacroLoader {
 
 	private static final String SAVED_MACROS_FILENAME = "keyBinds.ss";
 
-	//Formelly known as 'keyBinds'
 	public static ArrayList<MacroAction> macroActions = new ArrayList<MacroAction>();
 
 	private MacroEditor macroEditor;

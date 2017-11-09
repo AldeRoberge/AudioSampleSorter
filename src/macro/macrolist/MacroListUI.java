@@ -35,7 +35,7 @@ public class MacroListUI extends JPanel {
 		this.m = m;
 
 		setBounds(0, 0, 355, 272);
-		setVisible(true);
+
 		setLayout(null);
 
 		// scrolleable list
@@ -45,10 +45,9 @@ public class MacroListUI extends JPanel {
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 355, 248);
 		scrollPane.setAutoscrolls(true);
-		// scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		add(scrollPane);
-
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		add(scrollPane);
 
 		borderlaoutpanel = new JPanel();
 		scrollPane.setViewportView(borderlaoutpanel);
@@ -59,7 +58,7 @@ public class MacroListUI extends JPanel {
 		columnpanel.setBackground(Color.gray);
 		borderlaoutpanel.add(columnpanel, BorderLayout.NORTH);
 
-		JButton btnAdd = new JButton("Add new macro");
+		JButton btnAdd = new JButton("Create new macro");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				m.showMacroListUI(null); //null because theres no panel to edit
@@ -68,9 +67,11 @@ public class MacroListUI extends JPanel {
 		btnAdd.setBounds(0, 247, 355, 25);
 		add(btnAdd);
 
+		setVisible(true);
 	}
 
 	public void onShow() {
+		refreshInfoPanel();
 	}
 
 	public void onHide() {
@@ -84,7 +85,7 @@ public class MacroListUI extends JPanel {
 		columnpanel.add(infoPanel);
 		panels.add(infoPanel);
 
-		refreshInfoPanel();
+		//refreshInfoPanel(); TODO this removed might cause bugs
 
 	}
 

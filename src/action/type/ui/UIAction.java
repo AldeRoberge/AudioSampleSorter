@@ -17,8 +17,12 @@ public abstract class UIAction implements Action, Cloneable {
 
 	@Override
 	public UIAction clone() throws CloneNotSupportedException {
-		UIAction cloneA = (UIAction) super.clone();
-		return cloneA;
+		return (UIAction) super.clone();
+
+		/** equivalent of
+		 * UIAction cloneA = (UIAction) super.clone();
+		 return cloneA;
+		 */
 	}
 
 }

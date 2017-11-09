@@ -12,8 +12,7 @@ public abstract class FileAction implements Action, Cloneable {
 
 	@Override
 	public FileAction clone() throws CloneNotSupportedException {
-		FileAction cloneA = (FileAction) super.clone();
-		return cloneA;
+		return (FileAction) super.clone();
 	}
 
 }

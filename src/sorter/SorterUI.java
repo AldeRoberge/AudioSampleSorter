@@ -8,8 +8,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
@@ -18,15 +16,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTable;
 import javax.swing.UIManager;
 
 import action.ActionManager;
-import audio.AudioPlayer;
 import constants.Constants;
-import constants.Icons;
+import constants.icons.IconLoader;
+import constants.icons.Icons;
 import key.GlobalKeyListener;
 import logger.LogUI;
 import logger.Logger;
@@ -38,7 +34,6 @@ import sorter.other.Container;
 import sorter.other.CreditsPanel;
 import util.FileManager;
 import util.FileVisualiser;
-import util.FileInformation;
 import util.ToolBar;
 import util.ui.MiddleOfTheScreen;
 
@@ -71,6 +66,8 @@ public class SorterUI extends JFrame {
 	public SorterUI() {
 
 		System.setProperty("sun.awt.noerasebackground", "true"); //Suposed to reduce flicker on manual window resize
+
+		IconLoader.init();
 
 		ActionManager.init(this); //init actions
 
@@ -231,10 +228,6 @@ public class SorterUI extends JFrame {
 
 		conta.add(openFileManager.getPlayer(), BorderLayout.CENTER);
 
-		fMan.setFocusable(true);
-		fMan.grabFocus();
-		System.out.println(fMan.hasFocus());
-
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 
 		addWindowListener(new WindowAdapter() {
@@ -302,7 +295,5 @@ public class SorterUI extends JFrame {
 	void showConsole(boolean show) {
 		console.setVisible(show);
 	}
-
-	
 
 }

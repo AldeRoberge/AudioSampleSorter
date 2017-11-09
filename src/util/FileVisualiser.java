@@ -32,7 +32,7 @@ public class FileVisualiser extends FileInformation {
 		setFileDetails(file);
 
 		if (FileTypes.AUDIO_FILES.accept(file)) {
-			System.out.println("File is a sound file!");
+			Logger.logInfo(TAG, "File is a sound file!");
 			audPlayer.playNewSoundOrResume(file);
 			//TODO change playerContainer to contain audPlayer
 		} else if (FileTypes.VIDEO_FILES.accept(file)) {
