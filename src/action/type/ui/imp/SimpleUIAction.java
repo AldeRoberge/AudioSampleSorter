@@ -15,10 +15,10 @@ public class SimpleUIAction extends UIAction {
 
 	public static ArrayList<SimpleUIAction> UIActions = new ArrayList<SimpleUIAction>();
 
-	private static final int SHOW_CREDITS_UI_ID = 2;
-	private static final int SHOW_MACRO_UI_ID = 3;
-	private static final int SHOW_SETTINGS_UI_ID = 4;
-	private static final int SHOW_CONSOLE_ID = 5;
+	private static final int SHOW_CREDITS_UI_ID = 0;
+	private static final int SHOW_MACRO_UI_ID = 1;
+	private static final int SHOW_SETTINGS_UI_ID = 2;
+	private static final int SHOW_CONSOLE_ID = 3;
 
 	public static final SimpleUIAction SHOW_CREDITS_UI = new SimpleUIAction(SHOW_MACRO_UI_ID, "Show Credits");
 	public static final SimpleUIAction SHOW_MACRO_UI = new SimpleUIAction(SHOW_MACRO_UI_ID, "Edit Macros");
@@ -57,14 +57,16 @@ public class SimpleUIAction extends UIAction {
 		switch (ID) {
 
 		case SHOW_CREDITS_UI_ID:
+			sampleSorter.showCredits();
 			break;
 		case SHOW_MACRO_UI_ID:
-			sampleSorter.showEditMacros(true);
+			sampleSorter.showEditMacros();
 			break;
 		case SHOW_SETTINGS_UI_ID:
-			sampleSorter.showSettings(true);
+			sampleSorter.showSettings();
 			break;
 		case SHOW_CONSOLE_ID:
+			sampleSorter.showConsole();
 			break;
 		default:
 			Logger.logError(name, "Invalid ID " + ID + " for SimpleUIAction");
@@ -75,23 +77,7 @@ public class SimpleUIAction extends UIAction {
 
 	@Override
 	public void undo() {
-		switch (ID) {
-
-		case SHOW_CREDITS_UI_ID:
-			break;
-		case SHOW_MACRO_UI_ID:
-			sampleSorter.showEditMacros(false);
-			break;
-		case SHOW_SETTINGS_UI_ID:
-			sampleSorter.showSettings(false);
-			break;
-		case SHOW_CONSOLE_ID:
-			break;
-		default:
-			Logger.logError(name, "Invalid ID " + ID + " for SimpleUIAction");
-			break;
-
-		}
+		perform();
 	}
 
 	@Override

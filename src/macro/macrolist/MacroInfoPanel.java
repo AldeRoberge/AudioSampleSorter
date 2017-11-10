@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import constants.Constants;
+import constants.icons.IconLoader;
 import constants.icons.Icons;
 import macro.MacroAction;
 import macro.MacroEditor;
@@ -17,6 +18,7 @@ import util.key.KeysToString;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class MacroInfoPanel extends JPanel {
 
@@ -28,30 +30,31 @@ public class MacroInfoPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JLabel labelShortcut;
-	private JLabel labelDescription;
+	private JLabel labelActions;
+	private JLabel labelTitle;
 
 	public MacroInfoPanel(MacroAction keyBind, MacroEditor m) {
 		this.keyBind = keyBind;
 
-		setPreferredSize(new Dimension(337, 59));
+		setPreferredSize(new Dimension(343, 59));
 		setLayout(null);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(5, 5, 326, 49);
+		panel.setBounds(5, 5, 332, 49);
 		add(panel);
 		panel.setLayout(null);
 
-		labelShortcut = new JLabel("Keys");
-		labelShortcut.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
-		labelShortcut.setBounds(12, 0, 108, 49);
-		panel.add(labelShortcut);
+		labelActions = new JLabel("Actions");
+		labelActions.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelActions.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
+		labelActions.setBounds(132, 0, 92, 49);
+		panel.add(labelActions);
 
-		labelDescription = new JLabel("Actions");
-		labelDescription.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
-		labelDescription.setBounds(124, 0, 108, 49);
-		panel.add(labelDescription);
+		labelTitle = new JLabel("Title and Icon");
+		labelTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
+		labelTitle.setBounds(12, 0, 122, 49);
+		panel.add(labelTitle);
 
 		JButton buttonDelete = new JButton("X");
 		buttonDelete.setToolTipText("Delete");
@@ -64,12 +67,12 @@ public class MacroInfoPanel extends JPanel {
 				m.macroLoader.removeMacro(keyBind, me);
 			}
 		});
-		buttonDelete.setBounds(280, 7, 35, 35);
+		buttonDelete.setBounds(290, 7, 35, 35);
 		panel.add(buttonDelete);
 
 		JButton buttonEdit = new JButton();
 		buttonEdit.setToolTipText("Edit");
-		buttonEdit.setBounds(234, 7, 35, 35);
+		buttonEdit.setBounds(247, 7, 35, 35);
 		panel.add(buttonEdit);
 		buttonEdit.setIcon(Icons.SETTINGS);
 		buttonEdit.addActionListener(new ActionListener() {
@@ -85,34 +88,35 @@ public class MacroInfoPanel extends JPanel {
 
 	//Called by refreshInfoPanel(), which is called on addKeyBindInfoPanel
 	public void updateText() {
-		String lblKeyText = KeysToString.keysToString("", keyBind.keys, "");
-
-		labelShortcut.setText(lblKeyText);
-		labelShortcut.setToolTipText(lblKeyText); //in case its cut off
-
-		if (keyBind.actionsToPerform.size() >= 1) {
-			labelDescription.setToolTipText(keyBind.actionsToPerform.toString());
-		}
+		String keysShortcut = KeysToString.keysToString("", keyBind.keys, "");
 
 		if (keyBind.name != null) { //display the name if it has one
-
-			labelDescription.setText(keyBind.name);
-
+			labelTitle.setText(keyBind.name);
 		} else {
+			labelTitle.setText(keysShortcut);
+		}
 
-			if (keyBind.actionsToPerform.size() > 1) {
+		if (keyBind.iconPath != null) {
+			labelTitle.setIcon(IconLoader.getIconFromKey(keyBind.iconPath));
+		} else {
+			labelActions.setText(keysShortcut);
+			labelActions.setToolTipText(keysShortcut); //in case its cut off
+		}
 
-				labelDescription.setText(keyBind.actionsToPerform.size() + " actions");
+		if (keyBind.actionsToPerform.size() > 1) {
 
-			} else if (keyBind.actionsToPerform.size() == 1) {
+			labelActions.setText(keyBind.actionsToPerform.size() + " actions");
+			labelActions.setToolTipText(keyBind.actionsToPerform.toString());
 
-				labelDescription.setText(keyBind.actionsToPerform.get(0).toString());
+		} else if (keyBind.actionsToPerform.size() == 1) {
 
-			} else if (keyBind.actionsToPerform.size() == 0) {
+			labelActions.setText(keyBind.actionsToPerform.get(0).toString());
+			labelActions.setToolTipText(keyBind.actionsToPerform.toString());
 
-				labelDescription.setText("No action");
+		} else if (keyBind.actionsToPerform.size() == 0) {
 
-			}
+			labelActions.setText("No action");
+
 		}
 
 	}

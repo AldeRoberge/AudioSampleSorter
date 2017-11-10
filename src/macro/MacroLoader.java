@@ -20,7 +20,7 @@ public class MacroLoader {
 
 	private static final String SAVED_MACROS_FILENAME = "keyBinds.ss";
 
-	public static ArrayList<MacroAction> macroActions = new ArrayList<MacroAction>();
+	public ArrayList<MacroAction> macroActions = new ArrayList<MacroAction>();
 
 	private MacroEditor macroEditor;
 

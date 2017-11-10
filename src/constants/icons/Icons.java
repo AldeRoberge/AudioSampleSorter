@@ -23,20 +23,26 @@ public class Icons {
 	public static final ImageIcon MACROS;
 	public static final ImageIcon DOT;
 	public static final ImageIcon QUESTION;
+	public static final ImageIcon FLOATING_LOADING_BAR;
+
+	public static final ImageIcon ICON_CHOOSER;
 
 	public static ImageDimension defaultDimensions = new ImageDimension(16, 16);
 	public static ImageDimension softwareIconDimensions = new ImageDimension(64, 64);
 
 	static {
+		SOFTWARE_ICON = createImageIcon(LOCATION + "software_icon.png", softwareIconDimensions);
 		SETTINGS = createImageIcon(LOCATION + "cog.png");
 		IMPORT = createImageIcon(LOCATION + "folder-upload.png");
 		ABOUT = createImageIcon(LOCATION + "info.png");
 		EXIT = createImageIcon(LOCATION + "exit.png");
 		CONSOLE = createImageIcon(LOCATION + "menu.png");
 		MACROS = createImageIcon(LOCATION + "keyboard.png");
-		SOFTWARE_ICON = createImageIcon(LOCATION + "software_icon.png", softwareIconDimensions);
 		DOT = createImageIcon(LOCATION + "dot.png", new ImageDimension(10, 10));
 		QUESTION = createImageIcon(LOCATION + "question_mark.png");
+
+		FLOATING_LOADING_BAR = SOFTWARE_ICON;
+		ICON_CHOOSER = createImageIcon(LOCATION + "question_mark.png");
 	}
 
 	private static ImageIcon createImageIcon(String path) {

@@ -2,6 +2,7 @@ package sorter;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -16,6 +17,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 
@@ -58,26 +60,27 @@ public class SorterUI extends JFrame {
 
 	//Actual UI
 
-	public ToolBar toolBar = new ToolBar();
+	public ToolBar toolBar;
 
 	/**
 	 * Create the frame.
 	 */
 	public SorterUI() {
 
-		System.setProperty("sun.awt.noerasebackground", "true"); //Suposed to reduce flicker on manual window resize
-
-		IconLoader.init();
-
 		ActionManager.init(this); //init actions
 
-		macroEditor = new MacroEditor(); //we must do this after initialising actions because it uses Actions in a combobox
+		macroEditor = new MacroEditor(); //We do this after initialising ActionManager because it uses its static Actions in a combobox (macroEditUI)
 
-		//Init children components
+		toolBar = macroEditor.getToolBar();
+
+		//we do this after initialising macroEditor because we use its macroLoader to populate it
+
 		globalKeyListener = GlobalKeyListener.get();
 		globalKeyListener.init(this);
 
 		//
+
+		System.setProperty("sun.awt.noerasebackground", "true"); //Suposed to reduce flicker on manual window resize
 
 		setResizable(true);
 		setBackground(Color.WHITE);
@@ -153,7 +156,7 @@ public class SorterUI extends JFrame {
 
 		JMenuItem mntmMacros = new JMenuItem(new AbstractAction("Edit Macros") {
 			public void actionPerformed(ActionEvent e) {
-				showEditMacros(true);
+				showEditMacros();
 			}
 
 		});
@@ -164,7 +167,7 @@ public class SorterUI extends JFrame {
 
 		JMenuItem mntmSettings = new JMenuItem(new AbstractAction("Settings") {
 			public void actionPerformed(ActionEvent e) {
-				showSettings(true);
+				showSettings();
 			}
 
 		});
@@ -178,7 +181,7 @@ public class SorterUI extends JFrame {
 
 		JMenuItem mntmConsole = new JMenuItem(new AbstractAction("Debugger Console") {
 			public void actionPerformed(ActionEvent e) {
-				showConsole(true);
+				showConsole();
 			}
 		});
 		mntmConsole.setIcon(Icons.CONSOLE);
@@ -188,7 +191,7 @@ public class SorterUI extends JFrame {
 
 		JMenuItem mntmAbout = new JMenuItem(new AbstractAction("About") {
 			public void actionPerformed(ActionEvent e) {
-				showCredits(true);
+				showCredits();
 			}
 		});
 		mntmAbout.setIcon(Icons.ABOUT);
@@ -224,7 +227,9 @@ public class SorterUI extends JFrame {
 		splitPane.setBottomComponent(conta);
 		conta.setLayout(new BorderLayout(0, 0));
 
-		conta.add(toolBar, BorderLayout.SOUTH);
+		JScrollPane toolBarContainer = new JScrollPane();
+		conta.add(toolBarContainer, BorderLayout.SOUTH);
+		toolBarContainer.setViewportView(toolBar);
 
 		conta.add(openFileManager.getPlayer(), BorderLayout.CENTER);
 
@@ -274,26 +279,36 @@ public class SorterUI extends JFrame {
 			}
 		});
 
+		toolBar.repopulate();
+
 		if (Properties.FIRST_LAUNCH.getValueAsBoolean()) {
 			Properties.FIRST_LAUNCH.setNewValue(false);
-			showCredits(true);
+			showCredits();
 		}
 	}
 
-	void showCredits(boolean show) {
-		credits.setVisible(show);
+	public void showCredits() {
+		toggleVisibility(credits);
 	}
 
-	public void showEditMacros(boolean show) {
-		macroEditor.setVisible(show);
+	public void showEditMacros() {
+		toggleVisibility(macroEditor);
 	}
 
-	public void showSettings(boolean show) {
-		settings.setVisible(show);
+	public void showSettings() {
+		toggleVisibility(settings);
 	}
 
-	void showConsole(boolean show) {
-		console.setVisible(show);
+	public void showConsole() {
+		toggleVisibility(console);
+	}
+
+	public void toggleVisibility(Component c) {
+		if (c.isVisible()) {
+			c.setVisible(false);
+		} else {
+			c.setVisible(true);
+		}
 	}
 
 }

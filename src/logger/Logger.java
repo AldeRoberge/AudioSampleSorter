@@ -49,6 +49,11 @@ public class Logger {
 
 		log(ERROR, tag, message, null);
 
+	}
+
+	public static void logErrorAndPrintstackTrace(String tag, String message) { // log error
+
+		log(ERROR, tag, message, null);
 		new Exception(message).printStackTrace();
 
 	}

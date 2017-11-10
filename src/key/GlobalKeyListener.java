@@ -60,53 +60,14 @@ public class GlobalKeyListener implements NativeKeyListener {
 				//CHECK FOR BINDS
 
 				//For every registered MacroActions
-				for (MacroAction m : MacroLoader.macroActions) {
+				for (MacroAction m : sorterUI.macroEditor.macroLoader.macroActions) {
 
 					//If m has keys, otherwise it will trigger every key presses
 					//If the MacroAction's keys are globaly pressed
 					if (!m.keys.isEmpty() && keysArePressed(m.keys)) {
 
 						//PERFORM ACTIONS
-
-						for (Action action : m.actionsToPerform) {
-
-							if (action instanceof UIAction) {
-
-								logger.Logger.logInfo(TAG, "Action is instanceof UIAction");
-
-								UIAction act = (UIAction) action;
-
-								UIAction clonedAction = null;
-
-								try {
-									clonedAction = act.clone();
-								} catch (CloneNotSupportedException e1) {
-									e1.printStackTrace();
-								}
-
-								clonedAction.perform();
-
-							} else if (action instanceof FileAction) {
-
-								logger.Logger.logInfo(TAG, "Action is instanceof SoundAction");
-
-								FileAction act = (FileAction) action;
-
-								FileAction clonedAction = null;
-								try {
-									clonedAction = act.clone();
-								} catch (CloneNotSupportedException e2) {
-									e2.printStackTrace();
-								}
-
-								/**for (SoundPanel sp : sorter.selectedSoundPanels) {
-									clonedAction.perform(sp);
-								}*/
-
-							} else {
-								logger.Logger.logError(TAG, "Invalid type of action!");
-							}
-						}
+						m.perform();
 					}
 				}
 			}
@@ -146,7 +107,7 @@ public class GlobalKeyListener implements NativeKeyListener {
 		}
 
 		// Get the logger for "org.jnativehook" and set the level to off.
-		Logger.getLogger(GlobalScreen.class.getPackage().getName()).setLevel(Level.OFF);
+		Logger.getLogger(GlobalScreen.class.getPackage().getName()).setLevel(Level.WARNING);
 
 		// Change the level for all handlers attached to the default logger.
 		Handler[] handlers = Logger.getLogger("").getHandlers();

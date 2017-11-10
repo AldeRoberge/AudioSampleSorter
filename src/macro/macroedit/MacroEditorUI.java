@@ -11,30 +11,37 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
 
 import action.ActionManager;
 import action.editable.EditeablePropertyEditor;
 import action.type.Action;
+import constants.icons.IconLoader;
 import key.Key;
 import logger.Logger;
 import macro.MacroAction;
 import macro.MacroEditor;
 import util.key.KeysToString;
 import util.key.NativeKeyEventToKey;
-import javax.swing.ImageIcon;
 
-public class MacroEditorUI extends JPanel {
+public class MacroEditorUI extends JPanel implements GetIcon {
 
 	private static final String TAG = "LogUI";
+
+	private IconChooser iconChooser = new IconChooser();
+
+	private MacroEditorUI me = this;
 
 	//
 
@@ -62,6 +69,7 @@ public class MacroEditorUI extends JPanel {
 
 	public EditeablePropertyEditor actionEditor = new EditeablePropertyEditor();
 	private JTextField titleEditor;
+	private JButton iconButton;
 
 	public void onHide() {
 		isListenningForKeyInputs = false;
@@ -83,6 +91,8 @@ public class MacroEditorUI extends JPanel {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
+				m.getToolBar().repopulate();
+
 				if (newKeyBind) {
 					newKeyBind = false;
 					Logger.logInfo(TAG, "Creating new KeyBind");
@@ -90,6 +100,7 @@ public class MacroEditorUI extends JPanel {
 					keyBindToEdit.actionsToPerform.clear();
 
 					m.macroLoader.addNewMacro(keyBindToEdit);
+
 				}
 
 				keyBindToEdit.actionsToPerform.clear();
@@ -108,7 +119,7 @@ public class MacroEditorUI extends JPanel {
 		btnAdd.setBounds(12, 233, 330, 25);
 		add(btnAdd);
 
-		keyEditorImputBox = new JTextField("Click to edit");
+		keyEditorImputBox = new JTextField("Click to edit shortcut");
 		keyEditorImputBox.setToolTipText("Shortcut");
 		keyEditorImputBox.setHorizontalAlignment(SwingConstants.CENTER);
 		keyEditorImputBox.setFont(RESULT_FONT_PLAIN);
@@ -128,7 +139,7 @@ public class MacroEditorUI extends JPanel {
 			comboBox.addItem(a);
 		}
 
-		comboBox.setBounds(12, 74, 330, 22);
+		comboBox.setBounds(12, 58, 330, 22);
 		add(comboBox);
 
 		comboBox.addActionListener(new ActionListener() {
@@ -143,13 +154,14 @@ public class MacroEditorUI extends JPanel {
 
 		scrollPane = new JScrollPane();
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 109, 330, 63);
+		scrollPane.setBounds(12, 93, 330, 79);
 		scrollPane.setAutoscrolls(true);
 		// scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
 
 		borderlaoutpanel = new JPanel();
 		scrollPane.setViewportView(borderlaoutpanel);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		borderlaoutpanel.setLayout(new BorderLayout(0, 0));
 
 		columnpanel = new JPanel();
@@ -158,11 +170,34 @@ public class MacroEditorUI extends JPanel {
 		borderlaoutpanel.add(columnpanel, BorderLayout.NORTH);
 
 		titleEditor = new JTextField();
+		titleEditor.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				updateName();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				updateName();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+			}
+
+			public void updateName() {
+				if (keyBindToEdit != null) { //sometimes is triggered on software launch
+					keyBindToEdit.name = titleEditor.getText();
+				}
+			}
+		});
+
 		titleEditor.setToolTipText("Click to edit title");
-		titleEditor.setFont(new Font("Segoe UI Historic", Font.PLAIN, 20));
+		titleEditor.setFont(new Font("Segoe UI Light", Font.BOLD, 20));
 		titleEditor.setText("Title");
 		titleEditor.setHorizontalAlignment(SwingConstants.CENTER);
-		titleEditor.setBounds(72, 13, 270, 48);
+		titleEditor.setBounds(56, 13, 286, 32);
 
 		titleEditor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -174,12 +209,23 @@ public class MacroEditorUI extends JPanel {
 		add(titleEditor);
 		titleEditor.setColumns(10);
 
-		JButton btnIcon = new JButton("");
-		btnIcon.setToolTipText("Click to edit icon");
-		btnIcon.setIcon(new ImageIcon(MacroEditorUI.class
-				.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Justify-Black.png")));
-		btnIcon.setBounds(12, 13, 48, 48);
-		add(btnIcon);
+		//
+
+		iconButton = new JButton();
+		iconButton.setIcon(new ImageIcon(MacroEditorUI.class
+				.getResource("/com/sun/deploy/uitoolkit/impl/fx/ui/resources/image/graybox_error.png")));
+
+		iconButton.setFocusable(false); //Removes the stupid 'selected' border
+		iconButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				iconChooser.getIcon(me);
+			}
+		});
+
+		//
+
+		iconButton.setBounds(12, 13, 32, 32);
+		add(iconButton);
 
 		keyEditorImputBox.addMouseListener(new MouseAdapter() {
 			@Override
@@ -212,6 +258,13 @@ public class MacroEditorUI extends JPanel {
 			}
 
 			titleEditor.setText(keyBindToEdit.name);
+
+			if (keyBindToEdit.iconPath != null) {
+
+				System.out.println("Setting icon : " + keyBindToEdit.iconPath);
+				iconButton.setIcon(IconLoader.getIconFromKey(keyBindToEdit.iconPath));
+
+			}
 
 		} else {
 
@@ -341,4 +394,11 @@ public class MacroEditorUI extends JPanel {
 
 		refreshPanels();
 	}
+
+	@Override
+	public void GetResponse(Icon icon, String iconPath) {
+		keyBindToEdit.iconPath = iconPath;
+		iconButton.setIcon(icon);
+	}
+
 }

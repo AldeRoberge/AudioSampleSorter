@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import logger.Logger;
 import macro.macroedit.MacroEditorUI;
 import macro.macrolist.MacroListUI;
+import util.ToolBar;
 
 /**
  * This is the head of the Macro movement
@@ -19,11 +20,9 @@ import macro.macrolist.MacroListUI;
  *
  */
 
-public class MacroEditor {
+public class MacroEditor extends JFrame {
 
 	private static final String TAG = "MacroEditor";
-
-	private JFrame frame;
 
 	public MacroListUI macroListUI = new MacroListUI(this);
 	public MacroEditorUI macroEditPanel = new MacroEditorUI(this);
@@ -35,10 +34,7 @@ public class MacroEditor {
 	private Image macroListIcon = Toolkit.getDefaultToolkit().getImage(
 			MacroEditor.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Justify-Black.png"));
 
-	public void setVisible(boolean isVisible) {
-		Logger.logInfo(TAG, "MacroEditor set visible to " + isVisible + ".");
-		frame.setVisible(isVisible);
-	}
+	private ToolBar toolBar = new ToolBar(this);
 
 	/**
 	 * Used by KeyBindUI press 'Add' -> MacroEditor change view to show -> NewMacroUI
@@ -46,16 +42,15 @@ public class MacroEditor {
 	public void showMacroListUI(MacroAction keyBindToEdit) {
 
 		changeTitle("Edit Macro");
-		frame.setIconImage(macroEditIcon);
+		setIconImage(macroEditIcon);
 
-		frame.setContentPane(macroEditPanel);
+		setContentPane(macroEditPanel);
 
 		macroListUI.onHide();
 
 		macroEditPanel.onShow();
 		macroEditPanel.clearActionEditPanels(); //Clear all 'action edit panels' before adding the new ones
 		macroEditPanel.changeKeyBindToEdit(keyBindToEdit);
-
 	}
 
 	/**
@@ -65,13 +60,12 @@ public class MacroEditor {
 
 		changeTitle("List of Macros");
 
-		frame.setContentPane(macroListUI);
+		setContentPane(macroListUI);
 
 		macroListUI.onShow();
 		macroEditPanel.onHide();
 
-		frame.setIconImage(macroListIcon);
-
+		setIconImage(macroListIcon);
 	}
 
 	/**
@@ -79,7 +73,7 @@ public class MacroEditor {
 	 */
 	void changeTitle(String newTitle) {
 		Logger.logInfo(TAG, "New mode : " + newTitle + ".");
-		frame.setTitle(newTitle);
+		setTitle(newTitle);
 	}
 
 	/**
@@ -90,18 +84,17 @@ public class MacroEditor {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialize the contents of the 
 	 */
 	private void initialize() {
 		Logger.logInfo(TAG, "Launching Macro Editor UI");
 
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 360, 308);
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.setLocationRelativeTo(null); //middle of the screen
+		setResizable(false);
+		setBounds(100, 100, 360, 308);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setLocationRelativeTo(null); //middle of the screen
 
-		frame.addWindowListener(new WindowAdapter() {
+		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				setVisible(false);
 			}
@@ -109,7 +102,10 @@ public class MacroEditor {
 
 		showMacroEditUI();
 
-		
+	}
+
+	public ToolBar getToolBar() {
+		return toolBar;
 	}
 
 }
