@@ -25,7 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import constants.icons.Icons;
+import global.icons.Icons;
 import logger.Logger;
 import sorter.SorterUI;
 

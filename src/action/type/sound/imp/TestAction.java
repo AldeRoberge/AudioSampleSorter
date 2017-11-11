@@ -10,7 +10,7 @@ public class TestAction extends FileAction {
 
 	@Override
 	public String toString() {
-		return "TestAction";
+		return "Test";
 	}
 
 	private String TAG = "RenameAction";
@@ -39,6 +39,16 @@ public class TestAction extends FileAction {
 
 	@Override
 	public void perform(File p) {
+	}
+
+	@Override
+	public String getDescription() {
+		return "Test action used to test features";
+	}
+
+	@Override
+	public boolean canBePerformedOnMultipleFiles() {
+		return false;
 	}
 
 }

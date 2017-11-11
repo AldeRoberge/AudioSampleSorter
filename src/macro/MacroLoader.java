@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import action.type.sound.imp.PlayAction;
-import key.Key;
+import global.keys.Key;
 import logger.Logger;
 import macro.macrolist.MacroInfoPanel;
 

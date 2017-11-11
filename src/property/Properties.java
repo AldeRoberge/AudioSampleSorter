@@ -30,7 +30,7 @@ public class Properties {
 	public static Property MAIN_VOLUME_SLIDER_VALUE = new Property("MAIN_VOLUME_SLIDER_VALUE", "100", e);
 
 	//Main pan slider value
-	public static Property MAIN_PAN_SLIDER_VALUE = new Property("MAIN_PAN_SLIDER_VALUE", "50", e);
+	public static Property MAIN_PAN_SLIDER_VALUE = new Property("MAIN_PAN_SLIDER_VALUE", "20", e);
 
 	//RunSS PlayOnClickChbkx and on SoundPanel click, to check if the sound should be played
 	public static Property PLAY_ON_CLICK = new Property("PLAY_ON_CLICK", TRUE, e);

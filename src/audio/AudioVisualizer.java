@@ -5,7 +5,7 @@ import java.awt.Color;
 
 import javax.swing.JPanel;
 
-import constants.Constants;
+import global.Constants;
 import property.Properties;
 
 public class AudioVisualizer {

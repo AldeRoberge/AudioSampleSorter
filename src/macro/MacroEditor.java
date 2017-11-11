@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import logger.Logger;
 import macro.macroedit.MacroEditorUI;
 import macro.macrolist.MacroListUI;
-import util.ToolBar;
+import sorter.ToolBar;
 
 /**
  * This is the head of the Macro movement

@@ -6,11 +6,18 @@ import action.type.Action;
 
 public class Event {
 
+	boolean hasBeenUndone = false;
+	
 	public Action action;
 	public File file;
 
-	public String descriptionOfEvent;
-
-	//An event needs to be performed on a HistoricEvent
+	public Event(Action action, File file) { //
+		this.action = action;
+		this.file = file;
+	}
+	
+	public Event(Action action) { //UI actions have no files
+		this.action = action;
+	}
 
 }

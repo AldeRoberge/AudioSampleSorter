@@ -8,7 +8,7 @@ public class Property {
 
 	private PropertyFileManager e; //property file manager used to save and get values on updates
 
-	private String key; //public static final name in Properties
+	private String key; //name in Properties
 	private String value; //current value
 	private String defaultValue;
 

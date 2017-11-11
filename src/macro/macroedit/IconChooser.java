@@ -22,8 +22,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import constants.icons.IconLoader;
-import constants.icons.Icons;
+import global.icons.IconLoader;
+import global.icons.Icons;
 import logger.Logger;
 
 public class IconChooser extends JFrame {

@@ -18,10 +18,6 @@ public class RenameAction extends FileAction {
 	private EditeableProperty<Boolean> promptOnRename = new EditeableProperty<Boolean>(true, "Prompt on rename");
 	private EditeableProperty<String> newName = new EditeableProperty<String>("NewFileName", "New name");
 
-	public void init(File f) {
-
-	}
-
 	@Override
 	public ArrayList<EditeableProperty> getEditeableProperties() {
 		ArrayList<EditeableProperty> editeableProperties = new ArrayList<EditeableProperty>();
@@ -40,6 +36,16 @@ public class RenameAction extends FileAction {
 	public void perform(File p) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public String getDescription() {
+		return "Renames the selected file";
+	}
+
+	@Override
+	public boolean canBePerformedOnMultipleFiles() {
+		return false;
 	}
 
 }

@@ -19,12 +19,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import constants.icons.Icons;
-import fileTypes.FileTypes;
+import global.icons.Icons;
 import logger.Logger;
 import property.Properties;
+import sorter.FileManager;
 import sorter.other.Container;
-import util.FileManager;
+import util.file.FileTypes;
 import util.ui.MiddleOfTheScreen;
 
 public class FileImporter extends JFrame {

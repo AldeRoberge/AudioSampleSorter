@@ -1,5 +1,6 @@
 package macro;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -8,7 +9,9 @@ import javax.swing.Icon;
 import action.type.Action;
 import action.type.sound.FileAction;
 import action.type.ui.UIAction;
-import key.Key;
+import global.keys.Key;
+import history.Event;
+import history.EventManager;
 
 /**
  * MacroAction
@@ -38,13 +41,12 @@ public class MacroAction implements Serializable {
 		keys = new ArrayList<Key>();
 	}
 
-	public void perform() {
-
+	public void perform() { //this needs to be here rather than in globalKeyListener to allow UI buttons to be pressed
 		for (Action action : actionsToPerform) {
 
 			if (action instanceof UIAction) {
 
-				logger.Logger.logInfo(TAG, "Action is instanceof UIAction");
+				logger.Logger.logInfo(TAG, "This action is an instanceof UIAction");
 
 				UIAction act = (UIAction) action;
 				UIAction clonedAction = null;
@@ -57,9 +59,11 @@ public class MacroAction implements Serializable {
 
 				clonedAction.perform();
 
+				EventManager.performEvent(new Event(clonedAction));
+
 			} else if (action instanceof FileAction) {
 
-				logger.Logger.logInfo(TAG, "Action is instanceof SoundAction");
+				logger.Logger.logInfo(TAG, "This action is an instanceof SoundAction");
 
 				FileAction act = (FileAction) action;
 				FileAction clonedAction = null;
@@ -69,13 +73,16 @@ public class MacroAction implements Serializable {
 					e2.printStackTrace();
 				}
 
-				/**for (SoundPanel sp : sorter.selectedSoundPanels) {
-					clonedAction.perform(sp);
+				/**for (File file : SorterUI.) {
+					EventManager.performEvent(new Event(clonedAction, file));
 				}*/
 
 			} else {
 				logger.Logger.logError(TAG, "Invalid type of action!");
 			}
+
+			//if 
+
 		}
 	}
 }

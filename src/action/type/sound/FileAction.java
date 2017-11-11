@@ -8,7 +8,7 @@ public abstract class FileAction implements Action, Cloneable {
 
 	public abstract void perform(File p);
 
-	public abstract void undo();
+	public abstract boolean canBePerformedOnMultipleFiles();
 
 	@Override
 	public FileAction clone() throws CloneNotSupportedException {

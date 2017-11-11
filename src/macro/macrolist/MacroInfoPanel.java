@@ -8,9 +8,9 @@ import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import constants.Constants;
-import constants.icons.IconLoader;
-import constants.icons.Icons;
+import global.Constants;
+import global.icons.IconLoader;
+import global.icons.Icons;
 import macro.MacroAction;
 import macro.MacroEditor;
 import util.key.KeysToString;

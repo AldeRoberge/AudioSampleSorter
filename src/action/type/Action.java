@@ -22,6 +22,8 @@ public interface Action extends Serializable {
 
 	public abstract String toString(); //used by ComboBox inside MacorEditorUI
 
+	public abstract String getDescription();
+
 	public default boolean isEditeable() { //used by MacroActionEditPanel (Edit button) to know if there is editeableProperties inside the action
 		return (getEditeableProperties() != null);
 	}

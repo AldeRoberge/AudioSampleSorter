@@ -2,7 +2,7 @@ package util.key;
 
 import java.util.ArrayList;
 
-import key.Key;
+import global.keys.Key;
 
 public class KeysToString {
 

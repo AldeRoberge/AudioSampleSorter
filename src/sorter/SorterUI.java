@@ -22,10 +22,10 @@ import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 
 import action.ActionManager;
-import constants.Constants;
-import constants.icons.IconLoader;
-import constants.icons.Icons;
-import key.GlobalKeyListener;
+import global.Constants;
+import global.icons.IconLoader;
+import global.icons.Icons;
+import global.keys.GlobalKeyListener;
 import logger.LogUI;
 import logger.Logger;
 import macro.MacroEditor;
@@ -34,9 +34,6 @@ import property.SettingsUI;
 import sorter.fileImport.FileImporter;
 import sorter.other.Container;
 import sorter.other.CreditsPanel;
-import util.FileManager;
-import util.FileVisualiser;
-import util.ToolBar;
 import util.ui.MiddleOfTheScreen;
 
 public class SorterUI extends JFrame {

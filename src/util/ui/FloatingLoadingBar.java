@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import constants.icons.Icons;
+import global.icons.Icons;
 
 import java.awt.Window.Type;
 import javax.swing.JProgressBar;

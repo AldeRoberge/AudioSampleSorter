@@ -85,4 +85,34 @@ public class SimpleUIAction extends UIAction {
 		return null;
 	}
 
+	@Override
+	public String getDescription() {
+
+		String answer = "Toggles visibility of ";
+
+		switch (ID) {
+		case SHOW_CREDITS_UI_ID:
+			answer += "credits";
+			break;
+		case SHOW_MACRO_UI_ID:
+			answer += "macros";
+			break;
+		case SHOW_SETTINGS_UI_ID:
+			answer += "settings";
+			break;
+		case SHOW_CONSOLE_ID:
+			answer += "debugger console";
+			break;
+		default:
+			Logger.logError(name, "Invalid ID " + ID + " for SimpleUIAction");
+			answer = "Invalid SimpleUIAction";
+			break;
+
+		}
+
+		answer += ".";
+
+		return answer;
+	}
+
 }
