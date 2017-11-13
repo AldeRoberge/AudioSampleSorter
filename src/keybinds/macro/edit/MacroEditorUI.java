@@ -30,7 +30,7 @@ import key.KeysToString;
 import key.NativeKeyEventToKey;
 import keybinds.action.Action;
 import keybinds.action.ActionManager;
-import keybinds.action.editeable.EditeablePropertyEditor;
+import keybinds.action.editable.EditablePropertyEditor;
 import keybinds.keys.Key;
 import keybinds.macro.MacroAction;
 import keybinds.macro.MacroEditor;
@@ -67,7 +67,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 	private ArrayList<Action> actions = new ArrayList<Action>();
 	private ArrayList<MacroActionPanel> macroActionEditPanels = new ArrayList<MacroActionPanel>();
 
-	public EditeablePropertyEditor actionEditor = new EditeablePropertyEditor();
+	public EditablePropertyEditor actionEditor = new EditablePropertyEditor();
 	private JTextField titleEditor;
 	private JButton iconButton;
 

@@ -1,15 +1,12 @@
 package sorter.ui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JToolBar;
-
 import global.icons.IconLoader;
-import keybinds.MacroLoader;
 import keybinds.macro.MacroAction;
 import keybinds.macro.MacroEditor;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ToolBar extends JToolBar {
 
@@ -19,7 +16,7 @@ public class ToolBar extends JToolBar {
 
 		System.out.println("Repopulating");
 
-		removeAll(); //emptys all the components
+		removeAll(); //empties all the components
 		repaint();
 
 		for (MacroAction macroAction : m.macroLoader.macroActions) {

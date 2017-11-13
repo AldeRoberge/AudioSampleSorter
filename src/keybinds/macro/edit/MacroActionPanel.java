@@ -1,16 +1,11 @@
 package keybinds.macro.edit;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
+import keybinds.action.Action;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import keybinds.action.Action;
 
 public class MacroActionPanel extends JPanel {
 
@@ -53,7 +48,7 @@ public class MacroActionPanel extends JPanel {
 		panel.add(btnNewButton);
 
 		JButton btnEdit = new JButton("Edit");
-		btnEdit.setEnabled(action.isEditeable());
+		btnEdit.setEnabled(action.isEditable());
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				k.actionEditor.changeAction(action);

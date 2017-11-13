@@ -3,7 +3,7 @@ package keybinds.action.type.file.impl;
 import java.io.File;
 import java.util.ArrayList;
 
-import keybinds.action.editeable.EditeableProperty;
+import keybinds.action.editable.EditableProperty;
 import keybinds.action.type.file.FileAction;
 
 public class RenameAction extends FileAction {
@@ -15,15 +15,15 @@ public class RenameAction extends FileAction {
 
 	private String TAG = "RenameAction";
 
-	private EditeableProperty<Boolean> promptOnRename = new EditeableProperty<Boolean>(true, "Prompt on rename");
-	private EditeableProperty<String> newName = new EditeableProperty<String>("NewFileName", "New name");
+	private EditableProperty<Boolean> promptOnRename = new EditableProperty<Boolean>(true, "Prompt on rename");
+	private EditableProperty<String> newName = new EditableProperty<String>("NewFileName", "New name");
 
 	@Override
-	public ArrayList<EditeableProperty> getEditeableProperties() {
-		ArrayList<EditeableProperty> editeableProperties = new ArrayList<EditeableProperty>();
-		editeableProperties.add(promptOnRename);
-		editeableProperties.add(newName);
-		return editeableProperties;
+	public ArrayList<EditableProperty> getEditableProperties() {
+		ArrayList<EditableProperty> editableProperties = new ArrayList<EditableProperty>();
+		editableProperties.add(promptOnRename);
+		editableProperties.add(newName);
+		return editableProperties;
 	}
 
 	@Override

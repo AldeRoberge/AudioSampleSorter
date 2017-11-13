@@ -1,4 +1,4 @@
-package keybinds.action.editeable;
+package keybinds.action.editable;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,7 +20,7 @@ import sorter.ui.FileImporter;
 /**
  * See ActionEditor
  */
-public class EditeablePropertyPanel extends JPanel {
+public class EditablePropertyPanel extends JPanel {
 
 	private static final String TAG = "EditPropertyPanel";
 
@@ -29,18 +29,18 @@ public class EditeablePropertyPanel extends JPanel {
 
 	//
 
-	private EditeableProperty propertyToEdit;
+	private EditableProperty propertyToEdit;
 
 	//
 
-	public EditeablePropertyPanel(EditeableProperty property) {
+	public EditablePropertyPanel(EditableProperty property) {
 
 		propertyToEdit = property;
 
-		setSize(new Dimension(WIDTH, HEIGHT)); //default dimensions
-		setLayout(new FlowLayout(FlowLayout.LEFT)); //default layout
+		setSize(new Dimension(WIDTH, HEIGHT)); // default dimensions
+		setLayout(new FlowLayout(FlowLayout.LEFT)); // default layout
 
-		if (propertyToEdit.ID == EditeableProperty.BOOLEAN_ID) { //JCHECKBOX
+		if (propertyToEdit.ID == EditableProperty.BOOLEAN_ID) { // JCHECKBOX
 
 			setLayout(null);
 
@@ -57,7 +57,7 @@ public class EditeablePropertyPanel extends JPanel {
 			};
 			chckbxNewCheckBox.addActionListener(act);
 
-		} else if (propertyToEdit.ID == EditeableProperty.STRING_ID) { //JTEXTFIELD
+		} else if (propertyToEdit.ID == EditableProperty.STRING_ID) { // JTEXTFIELD
 
 			JLabel lblPrefix = new JLabel(propertyToEdit.prefix);
 			lblPrefix.setBounds(12, 16, 56, 16);
@@ -77,7 +77,7 @@ public class EditeablePropertyPanel extends JPanel {
 
 				@Override
 				public void insertUpdate(DocumentEvent e) {
-					// TODO Auto-generated method stub  
+					// TODO Auto-generated method stub
 				}
 
 				@Override
@@ -95,7 +95,10 @@ public class EditeablePropertyPanel extends JPanel {
 
 			add(stringInputField);
 
-		} else if (propertyToEdit.ID == EditeableProperty.INT_ID) { //JTEXTFIELD that only accepts ints
+		} else if (propertyToEdit.ID == EditableProperty.INT_ID) { // JTEXTFIELD
+																	// that only
+																	// accepts
+																	// ints
 
 			setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -116,9 +119,9 @@ public class EditeablePropertyPanel extends JPanel {
 
 			add(intInputField);
 
-		} else if (propertyToEdit.ID == EditeableProperty.FILE_CHOOSER_ID) { //JFILECHOOSER
+		} else if (propertyToEdit.ID == EditableProperty.FILE_CHOOSER_ID) { // JFILECHOOSER
 
-			//Select a single file/folder
+			// Select a single file/folder
 
 			JFileChooser chooser = new JFileChooser();
 			chooser.setMultiSelectionEnabled(false);

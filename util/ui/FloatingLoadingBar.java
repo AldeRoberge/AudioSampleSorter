@@ -10,9 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import global.icons.Icons;
 
-import java.awt.Window.Type;
 import javax.swing.JProgressBar;
-import java.awt.Toolkit;
 
 public class FloatingLoadingBar extends JFrame {
 	private JProgressBar progressBar;

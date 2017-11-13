@@ -1,17 +1,17 @@
 package keybinds.action;
 
-import java.util.ArrayList;
-
 import keybinds.action.type.file.impl.PlayAction;
 import keybinds.action.type.file.impl.RenameAction;
 import keybinds.action.type.file.impl.TestAction;
 import keybinds.action.type.ui.impl.SimpleUIAction;
 import sorter.SorterUI;
 
+import java.util.ArrayList;
+
 public class ActionManager {
 
 	/**
-	 * Used by MacroEditorUI to populate the 'add action' combobox
+	 * Used by MacroEditorUI to populate the 'add action' comboBox
 	 * Default actions are handled in MacroLoader
 	 */
 	public static ArrayList<Action> actions = new ArrayList<Action>();

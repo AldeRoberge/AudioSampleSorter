@@ -1,4 +1,4 @@
-package keybinds.action.editeable;
+package keybinds.action.editable;
 
 import java.io.File;
 import java.io.Serializable;
@@ -11,9 +11,9 @@ import global.logger.Logger;
  * Thanks to http://www.oracle.com/technetwork/articles/java/juneau-generics-2255374.html
  */
 
-public class EditeableProperty<V> implements Serializable, Cloneable {
+public class EditableProperty<V> implements Serializable, Cloneable {
 
-	private static final String TAG = "EditeableProperty";
+	private static final String TAG = "EditableProperty";
 
 	public static final int BOOLEAN_ID = 0;
 	public static final int STRING_ID = 1;
@@ -22,13 +22,13 @@ public class EditeableProperty<V> implements Serializable, Cloneable {
 
 	//
 
-	public String prefix; //used by buttons, jcheckbox, etc
+	public String prefix; //used by Buttons, CheckBoxes, etc
 
 	public int ID = -1;
 	private V value;
 
 	// Pass type in as parameter to constructor
-	public EditeableProperty(V defaultValue, String label) {
+	public EditableProperty(V defaultValue, String label) {
 		prefix = label;
 		value = defaultValue;
 

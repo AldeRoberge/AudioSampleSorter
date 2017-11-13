@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import keybinds.action.editeable.EditeableProperty;
+import keybinds.action.editable.EditableProperty;
 
 /**
  * Action is a single Action (rename, move, etc) to be performed on a SoundPanel
@@ -21,7 +21,7 @@ public interface Action extends Serializable {
 	public static final int STATE_DONE = 1;
 	public static final int STATE_UNDONE = 2;
 
-	public default ArrayList<EditeableProperty> getEditeableProperties() {
+	public default ArrayList<EditableProperty> getEditableProperties() {
 		return null;
 	}
 
@@ -35,11 +35,11 @@ public interface Action extends Serializable {
 
 	public abstract String getDescription();
 
-	public default boolean isEditeable() { // used by MacroActionEditPanel (Edit
+	public default boolean isEditable() { // used by MacroActionEditPanel (Edit
 											// button) to know if there is
-											// editeableProperties inside the
+											// editableProperties inside the
 											// action
-		return (getEditeableProperties() != null);
+		return (getEditableProperties() != null);
 	}
 
 }

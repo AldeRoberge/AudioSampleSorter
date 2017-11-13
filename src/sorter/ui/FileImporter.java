@@ -1,7 +1,14 @@
 package sorter.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import file.FileTypes;
+import global.icons.Icons;
+import global.logger.Logger;
+import property.Properties;
+import ui.MiddleOfTheScreen;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -10,20 +17,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.Action;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import file.FileTypes;
-import global.icons.Icons;
-import global.logger.Logger;
-import property.Properties;
-import ui.MiddleOfTheScreen;
 
 public class FileImporter extends JFrame {
 
@@ -40,8 +33,6 @@ public class FileImporter extends JFrame {
 	 * Create the frame.
 	 */
 	public FileImporter(FileManager fMan) {
-
-		FileManager fMan1 = fMan;
 
 		setIconImage(Icons.IMPORT.getImage());
 		setTitle("Import");
@@ -87,7 +78,7 @@ public class FileImporter extends JFrame {
 
 				chooser.setLocation(MiddleOfTheScreen.getLocationFor(chooser));
 
-				chooser.setCurrentDirectory(new File(Properties.LAST_OPENNED_LOCATION.getValue()));
+				chooser.setCurrentDirectory(new File(Properties.LAST_OPENED_LOCATION.getValue()));
 				chooser.setDialogTitle("Import folders and samples");
 				chooser.setApproveButtonText("Choose");
 
@@ -110,7 +101,7 @@ public class FileImporter extends JFrame {
 
 					String directory = chooser.getCurrentDirectory().toString();
 
-					Properties.LAST_OPENNED_LOCATION.setNewValue(directory);
+					Properties.LAST_OPENED_LOCATION.setNewValue(directory);
 
 					File[] files = chooser.getSelectedFiles();
 

@@ -1,25 +1,16 @@
-package keybinds.action.editeable;
-
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+package keybinds.action.editable;
 
 import global.logger.Logger;
 import keybinds.action.Action;
 
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 //See MacroEditorUI
 
-public class EditeablePropertyEditor extends JFrame {
+public class EditablePropertyEditor extends JFrame {
 
 	private static final String TAG = "ActionEditorPanel";
 
@@ -28,13 +19,13 @@ public class EditeablePropertyEditor extends JFrame {
 
 	private static JScrollPane scrollPane;
 
-	private static ArrayList<EditeablePropertyPanel> allValueEditorPanels = new ArrayList<EditeablePropertyPanel>();
+	private static ArrayList<EditablePropertyPanel> allValueEditorPanels = new ArrayList<EditablePropertyPanel>();
 
 	/**
 	 * Create the frame.
 	 */
-	public EditeablePropertyEditor() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(EditeablePropertyEditor.class
+	public EditablePropertyEditor() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(EditablePropertyEditor.class
 				.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Paste-Black@2x.png")));
 		setTitle("ActionEditor");
 
@@ -78,8 +69,8 @@ public class EditeablePropertyEditor extends JFrame {
 
 		clear();
 
-		for (EditeableProperty a : e.getEditeableProperties()) {
-			EditeablePropertyPanel infoPanel = new EditeablePropertyPanel(a);
+		for (EditableProperty<?> a : e.getEditableProperties()) {
+			EditablePropertyPanel infoPanel = new EditablePropertyPanel(a);
 
 			allValueEditorPanels.add(infoPanel);
 			columnPanel.add(infoPanel);
@@ -91,7 +82,7 @@ public class EditeablePropertyEditor extends JFrame {
 
 	private static void refreshInfoPanels() {
 
-		for (EditeablePropertyPanel logPanel : allValueEditorPanels) {
+		for (EditablePropertyPanel logPanel : allValueEditorPanels) {
 
 			logPanel.validate();
 			logPanel.repaint();
@@ -111,8 +102,8 @@ public class EditeablePropertyEditor extends JFrame {
 
 	void clear() {
 		try {
-			for (Iterator<EditeablePropertyPanel> iterator = allValueEditorPanels.iterator(); iterator.hasNext();) {
-				EditeablePropertyPanel editPropertyPanel = iterator.next();
+			for (Iterator<EditablePropertyPanel> iterator = allValueEditorPanels.iterator(); iterator.hasNext();) {
+				EditablePropertyPanel editPropertyPanel = iterator.next();
 
 				iterator.remove();
 				columnPanel.remove(editPropertyPanel);

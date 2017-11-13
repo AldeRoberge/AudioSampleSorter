@@ -4,18 +4,13 @@
  */
 package player;
 
-import java.io.File;
-import java.util.Map;
+import global.logger.Logger;
+import javazoom.jlgui.basicplayer.*;
+import property.Properties;
 
 import javax.sound.sampled.SourceDataLine;
-
-import global.logger.Logger;
-import javazoom.jlgui.basicplayer.BasicController;
-import javazoom.jlgui.basicplayer.BasicPlayer;
-import javazoom.jlgui.basicplayer.BasicPlayerEvent;
-import javazoom.jlgui.basicplayer.BasicPlayerException;
-import javazoom.jlgui.basicplayer.BasicPlayerListener;
-import property.Properties;
+import java.io.File;
+import java.util.Map;
 
 public class AudioPlayer implements BasicPlayerListener {
 
@@ -162,7 +157,7 @@ public class AudioPlayer implements BasicPlayerListener {
 			isPaused = false;
 			isStopped = false;
 
-			//anaylyzer
+			//analyzer
 			if (audioInfo.containsKey("basicplayer.sourcedataline")) {
 
 				getVisualizer().analyzer.setupDSP((SourceDataLine) audioInfo.get("basicplayer.sourcedataline"));

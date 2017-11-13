@@ -1,16 +1,13 @@
 package sorter.ui;
 
-import java.awt.BorderLayout;
-import java.io.IOException;
+import file.FileReader;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
-
-import file.FileReader;
+import java.awt.*;
+import java.io.IOException;
 
 public class CreditsPanel extends JPanel {
 
@@ -45,7 +42,7 @@ public class CreditsPanel extends JPanel {
 
 		
 		
-		/**JFXPanel jfxPanel = new JFXPanel(); // Scrollable JCompenent
+		/**JFXPanel jfxPanel = new JFXPanel(); // Scrollable JComponent
 		Platform.runLater(() -> { // FX components need to be managed by JavaFX
 			WebView webView = new WebView();
 			webView.getEngine().loadContent("<html> Hello World!");

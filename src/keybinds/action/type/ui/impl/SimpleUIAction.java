@@ -3,7 +3,7 @@ package keybinds.action.type.ui.impl;
 import java.util.ArrayList;
 
 import global.logger.Logger;
-import keybinds.action.editeable.EditeableProperty;
+import keybinds.action.editable.EditableProperty;
 import keybinds.action.type.ui.UIAction;
 import sorter.SorterUI;
 
@@ -81,7 +81,7 @@ public class SimpleUIAction extends UIAction {
 	}
 
 	@Override
-	public ArrayList<EditeableProperty> getEditeableProperties() {
+	public ArrayList<EditableProperty> getEditableProperties() {
 		return null;
 	}
 

@@ -1,16 +1,12 @@
 package sorter.ui;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import global.icons.Icons;
+import global.logger.Logger;
+import sorter.SorterUI;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -19,15 +15,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.TimerTask;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.Timer;
-
-import global.icons.Icons;
-import global.logger.Logger;
-import sorter.SorterUI;
 
 public class SplashScreen {
 
@@ -74,7 +61,7 @@ public class SplashScreen {
 				java.util.Timer timer = new java.util.Timer();
 				timer.schedule(close, 10000);
 
-				new Thread("threadedListenner") {
+				new Thread("threadedListener") {
 
 					@Override
 					public void run() {

@@ -1,27 +1,18 @@
 package ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-import javax.swing.border.LineBorder;
 
 public class ToastMessage extends JDialog {
 	private static final long serialVersionUID = 1L;
 
-	private int miliseconds;
+	private int milliseconds;
 
 	private ToastMessage(Component comp, String toDisplay, int time, Color backgroundColor, Color textColor) {
-		this.miliseconds = time;
+		this.milliseconds = time;
 		setUndecorated(true);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -51,7 +42,7 @@ public class ToastMessage extends JDialog {
 		new Thread() {
 			public void run() {
 				try {
-					Thread.sleep(miliseconds);
+					Thread.sleep(milliseconds);
 					dispose();
 				} catch (InterruptedException e) {
 					e.printStackTrace();

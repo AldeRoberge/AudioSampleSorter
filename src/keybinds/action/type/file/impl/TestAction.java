@@ -3,7 +3,7 @@ package keybinds.action.type.file.impl;
 import java.io.File;
 import java.util.ArrayList;
 
-import keybinds.action.editeable.EditeableProperty;
+import keybinds.action.editable.EditableProperty;
 import keybinds.action.type.file.FileAction;
 
 public class TestAction extends FileAction {
@@ -15,20 +15,20 @@ public class TestAction extends FileAction {
 
 	private String TAG = "RenameAction";
 
-	private EditeableProperty<Boolean> booleanTest = new EditeableProperty<>(true, "Prompt on rename");
-	private EditeableProperty<String> stringTest = new EditeableProperty<>("Hey", "New name");
-	private EditeableProperty<Integer> integerTest = new EditeableProperty<>(1, "Value");
-	private EditeableProperty<File> fileTest = new EditeableProperty<>(new File("."), "File");
+	private EditableProperty<Boolean> booleanTest = new EditableProperty<>(true, "Prompt on rename");
+	private EditableProperty<String> stringTest = new EditableProperty<>("Hey", "New name");
+	private EditableProperty<Integer> integerTest = new EditableProperty<>(1, "Value");
+	private EditableProperty<File> fileTest = new EditableProperty<>(new File("."), "File");
 
 	@Override
-	public ArrayList<EditeableProperty> getEditeableProperties() {
-		ArrayList<EditeableProperty> editeableProperties = new ArrayList<EditeableProperty>();
-		editeableProperties.add(booleanTest);
-		editeableProperties.add(stringTest);
-		editeableProperties.add(integerTest);
-		editeableProperties.add(fileTest);
+	public ArrayList<EditableProperty> getEditableProperties() {
+		ArrayList<EditableProperty> editableProperties = new ArrayList<EditableProperty>();
+		editableProperties.add(booleanTest);
+		editableProperties.add(stringTest);
+		editableProperties.add(integerTest);
+		editableProperties.add(fileTest);
 
-		return editeableProperties;
+		return editableProperties;
 	}
 
 	@Override

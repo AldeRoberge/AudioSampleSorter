@@ -17,35 +17,21 @@
  */
 package sorter.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.Dimension;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
+import file.FileSizeToString;
+import global.Constants;
+import global.icons.Icons;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
-
-import file.FileSizeToString;
-import global.Constants;
-import global.icons.Icons;
+import java.awt.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
 Credits : 
@@ -74,7 +60,6 @@ public class FileManager extends JPanel {
 	public FileManager(FileVisualiser openFileManager) {
 
 		/* :) */
-		FileVisualiser openFileManager1 = openFileManager;
 
 		setLayout(new BorderLayout(3, 3));
 		setBorder(new EmptyBorder(5, 5, 5, 5));

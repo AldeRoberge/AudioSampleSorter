@@ -21,7 +21,7 @@ public class Properties {
 	public static Property INCLUDE_SUBFOLDERS = new Property("INCLUDE_SUBFOLDERS", TRUE, e);
 
 	//RunSS JFileChooser uses this to restore the previous directory
-	public static Property LAST_OPENNED_LOCATION = new Property("LAST_OPENNED_LOCATION", "C:\\", e);
+	public static Property LAST_OPENED_LOCATION = new Property("LAST_OPENED_LOCATION", "C:\\", e);
 
 	//Set in Settings and checked by RunSS to know if .wav or .mp3 should be displayed in SoundPanel
 	public static Property DISPLAY_SOUND_SUFFIXES = new Property("DISPLAY_SOUND_SUFFIXES", TRUE, e);

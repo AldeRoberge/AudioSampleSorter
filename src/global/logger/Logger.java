@@ -24,7 +24,6 @@ public class Logger {
 		Logger.panel = panel;
 	}
 
-	@SuppressWarnings("unused")
 	private Logger() {
 	}
 

@@ -1,13 +1,12 @@
 package global.icons;
 
+import global.logger.Logger;
+import ui.FloatingLoadingBar;
+
+import javax.swing.*;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map.Entry;
-
-import javax.swing.ImageIcon;
-
-import global.logger.Logger;
-import ui.FloatingLoadingBar;
 
 public class IconLoader {
 
@@ -47,7 +46,7 @@ public class IconLoader {
 			Logger.logError(TAG, "getIconFromKey value is incorrect!" + value);
 		} else {
 			for (Entry<ImageIcon, String> map : pathAndImage.entrySet()) {
-				if (map.getValue().toString().equals(value)) {
+				if (map.getValue().equals(value)) {
 					key = map.getKey();
 				}
 			}

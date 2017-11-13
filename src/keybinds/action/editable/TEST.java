@@ -1,4 +1,4 @@
-package keybinds.action.editeable;
+package keybinds.action.editable;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -36,15 +36,15 @@ public class TEST extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		EditeableProperty<String> newName = new EditeableProperty<String>("NewFileName", "New name");
+		EditableProperty<String> newName = new EditableProperty<String>("NewFileName", "New name");
 
-		EditeablePropertyPanel panel = new EditeablePropertyPanel(newName);
+		EditablePropertyPanel panel = new EditablePropertyPanel(newName);
 		contentPane.add(panel, BorderLayout.CENTER);
 
-		EditeablePropertyPanel panel1 = new EditeablePropertyPanel(newName);
+		EditablePropertyPanel panel1 = new EditablePropertyPanel(newName);
 		contentPane.add(panel1, BorderLayout.NORTH);
 
-		EditeablePropertyPanel panel2 = new EditeablePropertyPanel(newName);
+		EditablePropertyPanel panel2 = new EditablePropertyPanel(newName);
 		contentPane.add(panel2, BorderLayout.SOUTH);
 
 	}

@@ -1,18 +1,16 @@
 package sorter.ui;
 
-import java.awt.Image;
+import ui.MiddleOfTheScreen;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import ui.MiddleOfTheScreen;
 
 public class Container extends JFrame {
 
 	/**
-	 * Panels contained in the Container need to be static. (Irrelevent to any other components)
+	 * Panels contained in the Container need to be static. (Irrelevant to any other components)
 	 * The Container setBounds(); to the content's bounds 
 	 */
 	public Container(String title, Image iconImage, JPanel content, boolean isResizeable) {
