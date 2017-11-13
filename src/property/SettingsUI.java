@@ -1,4 +1,4 @@
-package sorter.ui;
+package property;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +13,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import player.AudioPlayer;
-import property.Properties;
 import ui.MiddleOfTheScreen;
 
 public class SettingsUI extends JPanel {
@@ -69,7 +68,6 @@ public class SettingsUI extends JPanel {
 
 		int newVolumeValue = Properties.MAIN_VOLUME_SLIDER_VALUE.getValueAsInt();
 		updateAudioVolume(newVolumeValue);
-
 		volumeSlider.setValue(newVolumeValue);
 
 		volumeSlider.addChangeListener(new ChangeListener() {
@@ -100,7 +98,6 @@ public class SettingsUI extends JPanel {
 
 		int newPanValue = Properties.MAIN_PAN_SLIDER_VALUE.getValueAsInt();
 		updateAudioPan(newPanValue);
-
 		panSlider.setValue(newPanValue);
 
 		panSlider.addChangeListener(new ChangeListener() {
@@ -115,6 +112,8 @@ public class SettingsUI extends JPanel {
 
 		add(panSlider);
 
+		//
+
 		JCheckBox chckbxPlayAudioOn = new JCheckBox("Play Audio on Click");
 		chckbxPlayAudioOn.setSelected(Properties.PLAY_ON_CLICK.getValueAsBoolean());
 		chckbxPlayAudioOn.setBounds(22, 85, 147, 25);
@@ -126,19 +125,35 @@ public class SettingsUI extends JPanel {
 		chckbxPlayAudioOn.addActionListener(act);
 		add(chckbxPlayAudioOn);
 
+		//
+
 		chckbxIncludeSubfoldersInSearch = new JCheckBox("Include subfolders on import");
 		chckbxIncludeSubfoldersInSearch = new JCheckBox("Include subfolders on import");
 		chckbxIncludeSubfoldersInSearch.setToolTipText("Include folders inside the selected folders");
 		chckbxIncludeSubfoldersInSearch.setBounds(22, 145, 208, 25);
 		chckbxIncludeSubfoldersInSearch.setSelected(Properties.INCLUDE_SUBFOLDERS.getValueAsBoolean());
-		ActionListener actionListener = new ActionListener() {
+		ActionListener includeSubfoldersAction = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				Properties.INCLUDE_SUBFOLDERS.setNewValue(chckbxIncludeSubfoldersInSearch.isSelected());
 			}
 		};
-		chckbxIncludeSubfoldersInSearch.addActionListener(actionListener);
+		chckbxIncludeSubfoldersInSearch.addActionListener(includeSubfoldersAction);
 
 		add(chckbxIncludeSubfoldersInSearch);
+
+		//
+
+		JCheckBox chckbxPromptOnClose = new JCheckBox("Prompt on close");
+		chckbxPromptOnClose.setSelected(Properties.PROMPT_ON_EXIT.getValueAsBoolean());
+		chckbxPromptOnClose.setBounds(22, 175, 147, 25);
+		ActionListener changePromptOnClose = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				Properties.PROMPT_ON_EXIT.setNewValue(chckbxPromptOnClose.isSelected());
+				//sorter.refreshInfoPanels();
+			}
+		};
+		chckbxPromptOnClose.addActionListener(changePromptOnClose);
+		add(chckbxPromptOnClose);
 
 	}
 

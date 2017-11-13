@@ -17,26 +17,35 @@ import keybinds.action.editable.EditableProperty;
  */
 public interface Action extends Serializable {
 
-	public static final int STATE_WAITING = 0;
-	public static final int STATE_DONE = 1;
-	public static final int STATE_UNDONE = 2;
+	boolean hasBeenPerformed = false;
 
 	public default ArrayList<EditableProperty> getEditableProperties() {
 		return null;
 	}
 
-	public File file = new File("NULL");
+	/**
+	 * perform() is implemented by FileAction and UIAction (classes implementing Action)
+	 * Example : 
+	 * FileAction = perform(File f);
+	 * UIAction = perform();
+	 */
 
-	boolean hasBeenUndone = false;
+	public abstract void unperform(); // "undo"
 
-	public abstract void undo();
+	/**
+	 * Example of unperform() : 
+	 * 
+	 * public void unperform() {
+	 *     audioPlayer.stop(file);
+	 * }
+	 */
 
 	public abstract String toString(); // used by ComboBox inside MacorEditorUI
 
 	public abstract String getDescription();
 
 	public default boolean isEditable() { // used by MacroActionEditPanel (Edit
-											// button) to know if there is
+												// button) to know if there is
 											// editableProperties inside the
 											// action
 		return (getEditableProperties() != null);

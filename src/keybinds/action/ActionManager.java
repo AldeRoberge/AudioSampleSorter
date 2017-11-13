@@ -3,7 +3,7 @@ package keybinds.action;
 import keybinds.action.type.file.impl.PlayAction;
 import keybinds.action.type.file.impl.RenameAction;
 import keybinds.action.type.file.impl.TestAction;
-import keybinds.action.type.ui.impl.SimpleUIAction;
+import keybinds.action.type.ui.impl.ShowUIAction;
 import sorter.SorterUI;
 
 import java.util.ArrayList;
@@ -20,9 +20,9 @@ public class ActionManager {
 
 		// Simple UI Actions
 
-		SimpleUIAction.init(s);
+		ShowUIAction.init(s);
 
-		for (Action sUIa : SimpleUIAction.UIActions) {
+		for (Action sUIa : ShowUIAction.UIActions) {
 			addAction(sUIa);
 		}
 

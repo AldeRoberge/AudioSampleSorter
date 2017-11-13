@@ -56,8 +56,9 @@ public class MacroInfoPanel extends JPanel {
 		panel.add(labelTitle);
 
 		JButton buttonDelete = new JButton("X");
+		buttonDelete.setFocusable(false);
 		buttonDelete.setToolTipText("Delete");
-		buttonDelete.setFont(new Font("Tahoma", Font.BOLD, 13));
+		buttonDelete.setFont(new Font("Segoe UI Light", Font.BOLD, 13));
 		buttonDelete.setForeground(new Color(255, 0, 0));
 		buttonDelete.setMargin(new Insets(-5, -5, -5, -5)); //allows for the 'X' to display even if theres not a lot of space around it
 		buttonDelete.addActionListener(new ActionListener() {
@@ -70,9 +71,9 @@ public class MacroInfoPanel extends JPanel {
 		panel.add(buttonDelete);
 
 		JButton buttonEdit = new JButton();
-		buttonEdit.setToolTipText("Edit");
+		buttonEdit.setFocusable(false);
+		buttonEdit.setToolTipText("Edit actions");
 		buttonEdit.setBounds(247, 7, 35, 35);
-		panel.add(buttonEdit);
 		buttonEdit.setIcon(Icons.SETTINGS);
 		buttonEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -82,7 +83,7 @@ public class MacroInfoPanel extends JPanel {
 		buttonEdit.setMargin(new Insets(0, 0, 0, 0));
 		buttonEdit.setForeground(Constants.SICK_PURPLE);
 		buttonEdit.setFont(new Font("Tahoma", Font.BOLD, 13));
-
+		panel.add(buttonEdit);
 	}
 
 	//Called by refreshInfoPanel(), which is called on addKeyBindInfoPanel

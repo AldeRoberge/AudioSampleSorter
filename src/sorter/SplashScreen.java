@@ -1,8 +1,7 @@
-package sorter.ui;
+package sorter;
 
 import global.icons.Icons;
 import global.logger.Logger;
-import sorter.SorterUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -38,7 +37,7 @@ public class SplashScreen {
 			public void run() {
 
 				JFrame frame = new JFrame("SplashScreen");
-				frame.setIconImage(Icons.SOFTWARE_ICON.getImage());
+				frame.setIconImage(Icons.SOFTWARE.getImage());
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.add(new SplashScreenPane());
 				frame.setUndecorated(true);

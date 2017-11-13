@@ -1,10 +1,10 @@
 package keybinds.action.type.file.impl;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import keybinds.action.editable.EditableProperty;
 import keybinds.action.type.file.FileAction;
+
+import java.io.File;
+import java.util.ArrayList;
 
 public class RenameAction extends FileAction {
 
@@ -27,12 +27,6 @@ public class RenameAction extends FileAction {
 	}
 
 	@Override
-	public void undo() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void perform(File p) {
 		// TODO Auto-generated method stub
 
@@ -46,6 +40,12 @@ public class RenameAction extends FileAction {
 	@Override
 	public boolean canBePerformedOnMultipleFiles() {
 		return false;
+	}
+
+	@Override
+	public void unperform() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

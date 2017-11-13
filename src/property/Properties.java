@@ -16,6 +16,9 @@ public class Properties {
 
 	//Checked before launching the UI, if set to TRUE will open Credits
 	public static Property FIRST_LAUNCH = new Property("FIRST_LAUNCH", TRUE, e);
+	
+	//Prompt on close, are you sure to exit?
+	public static Property PROMPT_ON_EXIT = new Property("PROMPT_ON_EXIT", TRUE, e);
 
 	//RunSS UI checkBox 'include subfolders'
 	public static Property INCLUDE_SUBFOLDERS = new Property("INCLUDE_SUBFOLDERS", TRUE, e);

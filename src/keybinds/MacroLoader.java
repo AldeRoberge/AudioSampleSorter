@@ -9,9 +9,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import global.icons.Icons;
 import global.logger.Logger;
 import keybinds.action.type.file.impl.PlayAction;
-import keybinds.keys.Key;
+import keybinds.key.Key;
 import keybinds.macro.MacroAction;
 import keybinds.macro.MacroEditor;
 import keybinds.macro.list.MacroInfoPanel;
@@ -101,12 +102,14 @@ public class MacroLoader {
 
 		MacroAction defaultPlayAction = new MacroAction();
 		defaultPlayAction.keys.add(new Key(KeyEvent.VK_SPACE));
+		defaultPlayAction.iconPath = Icons.PLAY_ACTION;
 		defaultPlayAction.actionsToPerform.add(new PlayAction());
-
 		addNewMacro(defaultPlayAction);
 
 		//R = rename
-
+		
+		
+		
 		//UP ArrowKey is reserved
 		//CTRL + A is reserved
 		//DOWN ArrowKey is reserved

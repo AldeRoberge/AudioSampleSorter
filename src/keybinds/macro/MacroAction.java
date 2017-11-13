@@ -7,7 +7,7 @@ import keybinds.action.Action;
 import keybinds.action.type.file.FileAction;
 import keybinds.action.type.ui.UIAction;
 import keybinds.event.EventManager;
-import keybinds.keys.Key;
+import keybinds.key.Key;
 
 /**
  * MacroAction is key(s) to action(s)

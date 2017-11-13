@@ -13,36 +13,46 @@ public class Icons {
 
 	private static final String LOCATION = new File(".").getAbsolutePath() + "/res/icons/";
 
-	public static final ImageIcon SOFTWARE_ICON;
-
+	public static final ImageIcon SOFTWARE;
+	public static final ImageIcon ICON_CHOOSER;
 	public static final ImageIcon SETTINGS;
 	public static final ImageIcon IMPORT;
 	public static final ImageIcon ABOUT;
-	public static final ImageIcon EXIT;
 	public static final ImageIcon CONSOLE;
 	public static final ImageIcon MACROS;
-	public static final ImageIcon DOT;
+
+	public static final ImageIcon EXIT; //JMenuItem in File - Exit
 	public static final ImageIcon QUESTION;
 	public static final ImageIcon FLOATING_LOADING_BAR;
 
-	public static final ImageIcon ICON_CHOOSER;
+	//public static final ImageIcon DOT; //Previously used by JMenu to show a component as selected (hacked)
+
+	//Default action icons
+
+	public static final String PLAY_ACTION;
+
+	//Dimensions
 
 	public static ImageDimension defaultDimensions = new ImageDimension(16, 16);
 	public static ImageDimension softwareIconDimensions = new ImageDimension(64, 64);
 
 	static {
-		SOFTWARE_ICON = createImageIcon(LOCATION + "software_icon.png", softwareIconDimensions);
+		SOFTWARE = createImageIcon(LOCATION + "software_icon.png", softwareIconDimensions);
 		SETTINGS = createImageIcon(LOCATION + "cog.png");
 		IMPORT = createImageIcon(LOCATION + "folder-upload.png");
 		ABOUT = createImageIcon(LOCATION + "info.png");
 		EXIT = createImageIcon(LOCATION + "exit.png");
 		CONSOLE = createImageIcon(LOCATION + "menu.png");
 		MACROS = createImageIcon(LOCATION + "keyboard.png");
-		DOT = createImageIcon(LOCATION + "dot.png", new ImageDimension(10, 10));
+		//DOT = createImageIcon(LOCATION + "dot.png", new ImageDimension(10, 10));
 		QUESTION = createImageIcon(LOCATION + "question_mark.png");
 
-		FLOATING_LOADING_BAR = SOFTWARE_ICON;
+		FLOATING_LOADING_BAR = SOFTWARE;
 		ICON_CHOOSER = createImageIcon(LOCATION + "question_mark.png");
+
+		//Paths
+
+		PLAY_ACTION = LOCATION + "question_mark.png";
 	}
 
 	private static ImageIcon createImageIcon(String path) {

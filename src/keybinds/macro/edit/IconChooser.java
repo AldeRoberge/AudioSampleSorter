@@ -24,6 +24,7 @@ import javax.swing.border.EmptyBorder;
 import global.icons.IconLoader;
 import global.icons.Icons;
 import global.logger.Logger;
+import ui.MiddleOfTheScreen;
 
 public class IconChooser extends JFrame {
 
@@ -44,7 +45,7 @@ public class IconChooser extends JFrame {
 		setIconImage(Icons.ICON_CHOOSER.getImage());
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setLocationRelativeTo(null); //middle of the screen
+		setLocation(MiddleOfTheScreen.getLocationFor(this));
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -121,26 +122,30 @@ public class IconChooser extends JFrame {
 
 		for (ImageIcon i : IconLoader.pathAndImage.keySet()) {
 
-			System.out.println("Hey");
+			JPanel icon = new JPanel();
+			iconsPanel.add(icon);
 
-			JPanel panel_4 = new JPanel();
-			iconsPanel.add(panel_4);
-
-			JButton imageBtn = new JButton("New button");
-			imageBtn.setIcon(i);
-			imageBtn.setText(i.getDescription());
-			imageBtn.setFont(font);
-			imageBtn.addActionListener(new ActionListener() {
+			JButton selectThisIcon = new JButton();
+			selectThisIcon.setIcon(i);
+			selectThisIcon.setText(i.getDescription()); // Description is set to
+														// path in IconLoader
+			selectThisIcon.setFont(font);
+			selectThisIcon.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					waitingForAnswer.GetResponse(imageBtn.getIcon(), IconLoader.pathAndImage.get(i));
+					waitingForAnswer.GetResponse(selectThisIcon.getIcon(), IconLoader.pathAndImage.get(i));
 					setVisible(false);
 				}
 			});
-			panel_4.add(imageBtn);
+			icon.add(selectThisIcon);
 
 		}
 
 	}
+
+	/**
+	 * Use IconChooser.getIcon(this) when this implements GetIcon and it will
+	 * receive the icon with the GetResponse method
+	 */
 
 	public void getIcon(GetIcon g) {
 		waitingForAnswer = g;

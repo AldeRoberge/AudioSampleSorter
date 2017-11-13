@@ -18,8 +18,22 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	private BasicController control;
 
-	private double currentAudioVolume = Properties.MAIN_VOLUME_SLIDER_VALUE.getValueAsInt(); //stored between 0 and 100 (converted in setVolume())
-	private double currentAudioPan = Properties.MAIN_PAN_SLIDER_VALUE.getValueAsInt(); //stored between 0 and 100 (converted in setGain())
+	private double currentAudioVolume = Properties.MAIN_VOLUME_SLIDER_VALUE.getValueAsInt(); // stored
+																								// between
+																								// 0
+																								// and
+																								// 100
+																								// (converted
+																								// in
+																								// setVolume())
+	private double currentAudioPan = Properties.MAIN_PAN_SLIDER_VALUE.getValueAsInt(); // stored
+																						// between
+																						// 0
+																						// and
+																						// 100
+																						// (converted
+																						// in
+																						// setGain())
 
 	private File currentSelectedSound;
 
@@ -61,53 +75,63 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	void playNewSound(File sound) {
 
-		new Thread("Sound player") {
+		if (sound.exists()) {
 
-			public void run() {
+			new Thread("Sound player") {
 
-				currentSelectedSound = sound;
+				public void run() {
 
-				try {
-					// Open file, or URL or Stream (shoutcast) to play.
-					control.open(currentSelectedSound);
-					// control.open(new URL("http://yourshoutcastserver.com:8000"));
+					currentSelectedSound = sound;
 
-					// Start playback in a thread.
-					control.play();
+					try {
+						// Open file, or URL or Stream (shoutcast) to play.
+						control.open(currentSelectedSound);
+						// control.open(new
+						// URL("http://yourshoutcastserver.com:8000"));
 
-					// Set Volume (0 to 1.0).
-					// setGain should be called after control.play().
+						// Start playback in a thread.
+						control.play();
 
-					setVolume(currentAudioVolume);
-					setPan(currentAudioPan);
+						// Set Volume (0 to 1.0).
+						// setGain should be called after control.play().
 
-					// If you want to pause/resume/pause the played file then
-					// write a Swing player and just call control.pause(),
-					// control.resume() or control.stop().			
-					// Use control.seek(bytesToSkip) to seek file
-					// (i.e. fast forward and rewind). seek feature will
-					// work only if underlying JavaSound SPI implements
-					// skip(...). True for MP3SPI (JavaZOOM) and SUN SPI's
-					// (WAVE, AU, AIFF).
+						setVolume(currentAudioVolume);
+						setPan(currentAudioPan);
 
-				} catch (BasicPlayerException e) {
-					e.printStackTrace();
-					System.err.println("Error!");
+						// If you want to pause/resume/pause the played file
+						// then
+						// write a Swing player and just call control.pause(),
+						// control.resume() or control.stop().
+						// Use control.seek(bytesToSkip) to seek file
+						// (i.e. fast forward and rewind). seek feature will
+						// work only if underlying JavaSound SPI implements
+						// skip(...). True for MP3SPI (JavaZOOM) and SUN SPI's
+						// (WAVE, AU, AIFF).
+
+					} catch (BasicPlayerException e) {
+						e.printStackTrace();
+						System.err.println("Error!");
+					}
+
 				}
+			}.start();
 
-			}
-		}.start();
+		} else {
+			Logger.logError(TAG, "File doesn't exist!");
+		}
 	}
 
 	/**
 	 * Open callback, stream is ready to play.
 	 *
-	 * properties map includes audio format dependant features such as
-	 * bitrate, duration, frequency, channels, number of frames, vbr flag,
-	 * id3v2/id3v1 (for MP3 only), comments (for Ogg Vorbis), ... 
+	 * properties map includes audio format dependant features such as bitrate,
+	 * duration, frequency, channels, number of frames, vbr flag, id3v2/id3v1
+	 * (for MP3 only), comments (for Ogg Vorbis), ...
 	 *
-	 * @param stream could be File, URL or InputStream
-	 * @param properties audio stream properties.
+	 * @param stream
+	 *            could be File, URL or InputStream
+	 * @param properties
+	 *            audio stream properties.
 	 */
 	public void opened(Object stream, Map properties) {
 		audioInfo = properties;
@@ -126,13 +150,15 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	/**
 	 * Notification callback for basicplayer events such as opened, eom ...
-	 *  
-	 *  A copy of javazoom.jlgui.player.amp.processStateUpdated(BasicPlayerEvent event)
-	 *  
+	 * 
+	 * A copy of javazoom.jlgui.player.amp.processStateUpdated(BasicPlayerEvent
+	 * event)
+	 * 
 	 * @param event
 	 */
 	public void stateUpdated(BasicPlayerEvent event) {
-		// Notification of BasicPlayer states (opened, playing, end of media, ...)
+		// Notification of BasicPlayer states (opened, playing, end of media,
+		// ...)
 
 		int state = event.getCode();
 
@@ -141,7 +167,7 @@ public class AudioPlayer implements BasicPlayerListener {
 
 			isStopped = true;
 
-			//stop analyzer
+			// stop analyzer
 			getVisualizer().analyzer.stopDSP();
 			getVisualizer().analyzer.repaint();
 
@@ -157,7 +183,7 @@ public class AudioPlayer implements BasicPlayerListener {
 			isPaused = false;
 			isStopped = false;
 
-			//analyzer
+			// analyzer
 			if (audioInfo.containsKey("basicplayer.sourcedataline")) {
 
 				getVisualizer().analyzer.setupDSP((SourceDataLine) audioInfo.get("basicplayer.sourcedataline"));
@@ -174,18 +200,18 @@ public class AudioPlayer implements BasicPlayerListener {
 
 			newVisualizerStatus("Buffering");
 
-			//buffering
+			// buffering
 		} else if (state == BasicPlayerEvent.EOM) { /*-- End Of Media reached --*/
 			newVisualizerStatus("End of media");
 
-			//currentSelectedSound.isPlaying = false;
+			// currentSelectedSound.isPlaying = false;
 
-			//end of media reached
+			// end of media reached
 		}
 
-		//see
-		//javazoom.jlgui.player.amp.PlayerUI
-		//processStateUpdated(BasicPlayerEvent event)
+		// see
+		// javazoom.jlgui.player.amp.PlayerUI
+		// processStateUpdated(BasicPlayerEvent event)
 
 	}
 
@@ -193,7 +219,7 @@ public class AudioPlayer implements BasicPlayerListener {
 	public void setController(BasicController arg0) {
 	}
 
-	//Between 0 and 100, converted to 0 and 1
+	// Between 0 and 100, converted to 0 and 1
 	public void setVolume(double i) {
 		try {
 			control.setGain(i / 100);
@@ -244,7 +270,7 @@ public class AudioPlayer implements BasicPlayerListener {
 
 			if (currentSelectedSound.equals(sound)) {
 
-				if (isStopped) { //stopped (play)
+				if (isStopped) { // stopped (play)
 
 					try {
 						control.play();
@@ -253,7 +279,7 @@ public class AudioPlayer implements BasicPlayerListener {
 						e.printStackTrace();
 					}
 
-				} else if (isPaused) { //paused (resume)
+				} else if (isPaused) { // paused (resume)
 
 					try {
 						control.resume();
@@ -262,7 +288,7 @@ public class AudioPlayer implements BasicPlayerListener {
 						e.printStackTrace();
 					}
 
-				} else { //playing (pause)
+				} else { // playing (pause)
 
 					try {
 						control.pause();

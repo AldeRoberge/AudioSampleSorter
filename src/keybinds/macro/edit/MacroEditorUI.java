@@ -31,7 +31,7 @@ import key.NativeKeyEventToKey;
 import keybinds.action.Action;
 import keybinds.action.ActionManager;
 import keybinds.action.editable.EditablePropertyEditor;
-import keybinds.keys.Key;
+import keybinds.key.Key;
 import keybinds.macro.MacroAction;
 import keybinds.macro.MacroEditor;
 
@@ -53,9 +53,8 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 	private static final Font RESULT_FONT_BOLD = new Font("Segoe UI Light", Font.BOLD, 20);
 
 	private boolean isListenningForKeyInputs = false;
+	private ArrayList<Key> keysPressedAndNotReleased = new ArrayList<Key>();
 	private JTextField keyEditorImputBox;
-
-	private int keysPressedAndNotReleased = 0;
 
 	private boolean newKeyBind;
 
@@ -283,10 +282,14 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 	}
 
 	private void updateImputBoxText() {
-		if (keyBindToEdit.keys.size() > 0) {
-			keyEditorImputBox.setText(KeysToString.keysToString("[", keyBindToEdit.keys, "]"));
+		if (keyBindToEdit != null) {
+			if (keyBindToEdit.keys.size() > 0) {
+				keyEditorImputBox.setText(KeysToString.keysToString("[", keyBindToEdit.keys, "]"));
+			} else {
+				keyEditorImputBox.setText("Click to edit");
+			}
 		} else {
-			keyEditorImputBox.setText("Click to edit");
+			//Its a new keyBind, so do nothing
 		}
 	}
 
@@ -296,35 +299,44 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 	 */
 	public void globalKeyBoardImput(NativeKeyEvent ke, boolean isPressed) {
 
-		Key e = NativeKeyEventToKey.getJavaKeyEvent(ke);
+		Key k = NativeKeyEventToKey.getJavaKeyEvent(ke);
 
 		if (isListenningForKeyInputs) {
 
+			System.out.println("Keys waiting to be released : " + keysPressedAndNotReleased.size() + " " + isPressed);
+
 			if (isPressed) {
-
-				if (!keyBindToEdit.keys.contains(e)) {
-					keyBindToEdit.keys.add(e);
-
-					keysPressedAndNotReleased++;
-
-					//Build string for field showing name of keys
-
-					updateImputBoxText();
-
-				}
+				keyPressed(k);
 			} else {
-				if (keysPressedAndNotReleased == 1) { //is last key to be released
-
-					Logger.logInfo(TAG, "Stopped listenning for events.");
-					isListenningForKeyInputs = false;
-					keyEditorImputBox.setFont(RESULT_FONT_BOLD);
-
-				}
-
-				keysPressedAndNotReleased--;
-
+				keyReleased(k);
 			}
 		}
+
+		updateImputBoxText();
+	}
+
+	private void keyPressed(Key k) {
+		if (!keysPressedAndNotReleased.contains(k)) {
+			keysPressedAndNotReleased.add(k);
+
+			if (!keyBindToEdit.keys.contains(k)) {
+				keyBindToEdit.keys.add(k);
+			}
+		}
+	}
+
+	private void keyReleased(Key k) {
+
+		if (keysPressedAndNotReleased.contains(k)) {
+			keysPressedAndNotReleased.remove(k);
+		}
+
+		if (keysPressedAndNotReleased.size() == 0) { //no more keys to be released
+			Logger.logInfo(TAG, "Stopped listenning for events.");
+			isListenningForKeyInputs = false;
+			keyEditorImputBox.setFont(RESULT_FONT_BOLD);
+		}
+
 	}
 
 	// TODO : update this when adding fiels

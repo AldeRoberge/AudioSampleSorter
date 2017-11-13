@@ -1,4 +1,4 @@
-package keybinds.keys;
+package keybinds.key;
 
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
@@ -16,7 +16,6 @@ public class Key implements Serializable {
 	}
 
 	//Override equals so we can use .equals() appropriately
-
 	@Override
 	public boolean equals(Object o) {
 

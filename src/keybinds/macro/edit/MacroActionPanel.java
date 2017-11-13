@@ -35,17 +35,17 @@ public class MacroActionPanel extends JPanel {
 		lblAction.setBounds(12, 0, 150, 19);
 		panel.add(lblAction);
 
-		JButton btnNewButton = new JButton("X");
-		btnNewButton.setForeground(Color.RED);
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnRemove = new JButton("X");
+		btnRemove.setForeground(Color.RED);
+		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				k.removeFromPanels(me);
 			}
 		});
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton.setToolTipText("Remove");
-		btnNewButton.setBounds(283, -1, 41, 22);
-		panel.add(btnNewButton);
+		btnRemove.setFont(new Font("Segoe UI Light", Font.BOLD, 13));
+		btnRemove.setToolTipText("Remove");
+		btnRemove.setBounds(283, -1, 41, 22);
+		panel.add(btnRemove);
 
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.setEnabled(action.isEditable());

@@ -14,10 +14,6 @@ public class PlayAction extends FileAction {
 	public String TAG = "PlayAction";
 
 	@Override
-	public void undo() {
-	}
-
-	@Override
 	public void perform(File p) {
 		//p.sound.play();
 	}
@@ -30,6 +26,10 @@ public class PlayAction extends FileAction {
 	@Override
 	public boolean canBePerformedOnMultipleFiles() {
 		return false;
+	}
+
+	@Override
+	public void unperform() {
 	}
 
 }

@@ -26,15 +26,15 @@ import global.icons.Icons;
 import global.logger.LogUI;
 import global.logger.Logger;
 import keybinds.action.ActionManager;
-import keybinds.keys.GlobalKeyListener;
+import keybinds.key.GlobalKeyListener;
 import keybinds.macro.MacroEditor;
 import property.Properties;
+import property.SettingsUI;
 import sorter.ui.Container;
 import sorter.ui.CreditsPanel;
 import sorter.ui.FileImporter;
 import sorter.ui.FileManager;
 import sorter.ui.FileVisualiser;
-import sorter.ui.SettingsUI;
 import sorter.ui.ToolBar;
 import ui.MiddleOfTheScreen;
 
@@ -86,7 +86,7 @@ public class SorterUI extends JFrame {
 		setTitle(Constants.SOFTWARE_NAME);
 		setBounds(100, 100, 655, 493);
 		setSize(new Dimension(605, 500));
-		setIconImage(Icons.SOFTWARE_ICON.getImage());
+		setIconImage(Icons.SOFTWARE.getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocation(MiddleOfTheScreen.getLocationFor(this));
 
@@ -101,11 +101,16 @@ public class SorterUI extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent we) {
-				String ObjButtons[] = { "Yes", "No" };
-				int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit",
-						JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, Icons.QUESTION, ObjButtons,
-						ObjButtons[1]);
-				if (PromptResult == JOptionPane.YES_OPTION) {
+
+				if (Properties.PROMPT_ON_EXIT.getValueAsBoolean()) {
+					String ObjButtons[] = { "Yes", "No" };
+					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?",
+							JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, Icons.QUESTION, ObjButtons,
+							ObjButtons[1]);
+					if (PromptResult == JOptionPane.YES_OPTION) {
+						System.exit(0);
+					}
+				} else {
 					System.exit(0);
 				}
 			}
@@ -155,7 +160,7 @@ public class SorterUI extends JFrame {
 
 		JMenuItem mntmMacros = new JMenuItem(new AbstractAction("Edit Macros") {
 			public void actionPerformed(ActionEvent e) {
-				showEditMacros();
+				showEditMacros(true, true);
 			}
 
 		});
@@ -166,7 +171,7 @@ public class SorterUI extends JFrame {
 
 		JMenuItem mntmSettings = new JMenuItem(new AbstractAction("Settings") {
 			public void actionPerformed(ActionEvent e) {
-				showSettings();
+				showSettings(true, true);
 			}
 
 		});
@@ -180,7 +185,7 @@ public class SorterUI extends JFrame {
 
 		JMenuItem mntmConsole = new JMenuItem(new AbstractAction("Debugger Console") {
 			public void actionPerformed(ActionEvent e) {
-				showConsole();
+				showConsole(true, true);
 			}
 		});
 		mntmConsole.setIcon(Icons.CONSOLE);
@@ -190,7 +195,7 @@ public class SorterUI extends JFrame {
 
 		JMenuItem mntmAbout = new JMenuItem(new AbstractAction("About") {
 			public void actionPerformed(ActionEvent e) {
-				showCredits();
+				showCredits(true, true);
 			}
 		});
 		mntmAbout.setIcon(Icons.ABOUT);
@@ -282,32 +287,50 @@ public class SorterUI extends JFrame {
 
 		if (Properties.FIRST_LAUNCH.getValueAsBoolean()) {
 			Properties.FIRST_LAUNCH.setNewValue(false);
-			showCredits();
+			showCredits(true, true);
 		}
 	}
 
-	public void showCredits() {
-		toggleVisibility(credits);
+	/**
+	 * @param forceState enforce new visibility state (if is set to false, component will switch visibility)
+	 * @param newState new state of visiblity (if forceState set to false, newState is invalidated)
+	 * @return
+	 */
+	public boolean showCredits(boolean forceState, boolean newState) {
+		return toggleVisibility(credits, forceState, newState);
 	}
 
-	public void showEditMacros() {
-		toggleVisibility(macroEditor);
+	public boolean showEditMacros(boolean forceState, boolean newState) {
+		return toggleVisibility(macroEditor, forceState, newState);
 	}
 
-	public void showSettings() {
-		toggleVisibility(settings);
+	public boolean showSettings(boolean forceState, boolean newState) {
+		return toggleVisibility(settings, forceState, newState);
 	}
 
-	public void showConsole() {
-		toggleVisibility(console);
+	public boolean showConsole(boolean forceState, boolean newState) {
+		return toggleVisibility(console, forceState, newState);
 	}
 
-	public void toggleVisibility(Component c) {
-		if (c.isVisible()) {
-			c.setVisible(false);
+	/**
+	 * @param c Component to toggleVisibility on
+	 * @param forceState If we should force the new visiblity state
+	 * @param newState New state (true == set to visible)
+	 * @return returns the new state of the component (true == now visible)
+	 */
+	public boolean toggleVisibility(Component c, boolean forceState, boolean newState) {
+
+		if (forceState == true) {
+			c.setVisible(newState);
+			return newState;
 		} else {
-			c.setVisible(true);
+			if (c.isVisible()) {
+				c.setVisible(false);
+				return false;
+			} else {
+				c.setVisible(true);
+				return true;
+			}
 		}
 	}
-
 }

@@ -34,10 +34,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
-Credits : 
-@author Andrew Thompson
-@version 2011-06-01
-*/
+ * Credits :
+ * 
+ * @author Andrew Thompson
+ * @version 2011-06-01
+ */
 public class FileManager extends JPanel {
 
 	/** Provides nice icons and names for files. */
@@ -86,7 +87,8 @@ public class FileManager extends JPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent lse) {
 
-				if (!lse.getValueIsAdjusting()) {//This line prevents double events (firing twice)
+				if (!lse.getValueIsAdjusting()) {// This line prevents double
+													// events (firing twice)
 					int row = table.getSelectionModel().getLeadSelectionIndex();
 					openFileManager.setFileSelected(((FileTableModel) table.getModel()).getFile(row));
 				}
@@ -100,7 +102,7 @@ public class FileManager extends JPanel {
 		tableScroll.setPreferredSize(new Dimension((int) d.getWidth(), (int) d.getHeight() / 2));
 		detailView.add(tableScroll, BorderLayout.CENTER);
 
-		//detailView.add(fileView, BorderLayout.SOUTH);
+		// detailView.add(fileView, BorderLayout.SOUTH);
 
 		add(detailView, BorderLayout.CENTER);
 
@@ -147,13 +149,21 @@ public class FileManager extends JPanel {
 				if (!cellSizesSet) {
 					Icon icon = fileSystemView.getSystemIcon(files.get(0));
 
+					int rowHeight = 0;
+
+					if (icon == null) {// can happen because of an invalid file
+						rowHeight = 16;
+					} else {
+						rowHeight = icon.getIconHeight() + rowIconPadding;
+					}
+
 					// size adjustment to better account for icons
-					table.setRowHeight(icon.getIconHeight() + rowIconPadding);
+					table.setRowHeight(rowHeight);
 
 					setColumnWidth(0, -1);
-					//setColumnWidth(3, 60);
-					//table.getColumnModel().getColumn(3).setMaxWidth(120);
-					//setColumnWidth(4, -1);
+					// setColumnWidth(3, 60);
+					// table.getColumnModel().getColumn(3).setMaxWidth(120);
+					// setColumnWidth(4, -1);
 
 					cellSizesSet = true;
 				}
@@ -189,7 +199,7 @@ public class FileManager extends JPanel {
 				FileManager fileManager = new FileManager(new FileVisualiser());
 				f.setContentPane(fileManager);
 
-				f.setIconImage(Icons.SOFTWARE_ICON.getImage());
+				f.setIconImage(Icons.SOFTWARE.getImage());
 
 				f.pack();
 				f.setLocationByPlatform(true);

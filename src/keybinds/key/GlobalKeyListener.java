@@ -1,5 +1,6 @@
-package keybinds.keys;
+package keybinds.key;
 
+import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.logging.Handler;
@@ -44,6 +45,8 @@ public class GlobalKeyListener implements NativeKeyListener {
 	 */
 	public void nativeKeyPressed(NativeKeyEvent ke) {
 
+		global.logger.Logger.logError(TAG, "Key pressed");
+
 		transferToMacroEditor(ke, true);
 
 		if (isListenningForInputs) { //is not minimized and is focused
@@ -79,6 +82,8 @@ public class GlobalKeyListener implements NativeKeyListener {
 	 * NativeKeyListener released keys
 	 */
 	public void nativeKeyReleased(NativeKeyEvent ke) {
+
+		global.logger.Logger.logError(TAG, "Key released");
 
 		transferToMacroEditor(ke, false);
 

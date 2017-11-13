@@ -1,31 +1,16 @@
 package sorter.ui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
-import java.awt.Point;
-import java.awt.Rectangle;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
+import java.awt.dnd.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.TooManyListenersException;
-
-import javax.imageio.ImageIO;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  * Thanks to https://stackoverflow.com/questions/13597233/how-to-drag-and-drop-files-from-a-directory-in-java
@@ -122,20 +107,19 @@ public class DropPane extends JPanel {
 			} else {
 				dtde.rejectDrag();
 			}
+
+			SwingUtilities.invokeLater(new DragUpdate(true, dtde.getLocation()));
+			repaint();
 		}
 
 		@Override
 		public void dragEnter(DropTargetDragEvent dtde) {
 			processDrag(dtde);
-			SwingUtilities.invokeLater(new DragUpdate(true, dtde.getLocation()));
-			repaint();
 		}
 
 		@Override
 		public void dragOver(DropTargetDragEvent dtde) {
 			processDrag(dtde);
-			SwingUtilities.invokeLater(new DragUpdate(true, dtde.getLocation()));
-			repaint();
 		}
 
 		@Override
