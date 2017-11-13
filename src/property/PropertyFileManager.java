@@ -3,7 +3,7 @@ package property;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
-import logger.Logger;
+import global.logger.Logger;
 
 public class PropertyFileManager {
 

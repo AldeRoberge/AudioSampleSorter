@@ -5,7 +5,7 @@ import java.io.File;
 
 import javax.swing.ImageIcon;
 
-import logger.Logger;
+import global.logger.Logger;
 
 public class Icons {
 

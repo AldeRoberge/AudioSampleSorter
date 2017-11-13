@@ -1,6 +1,6 @@
 package property;
 
-import logger.Logger;
+import global.logger.Logger;
 
 public class Property {
 

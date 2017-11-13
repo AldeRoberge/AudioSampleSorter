@@ -21,20 +21,22 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 
-import action.ActionManager;
 import global.Constants;
-import global.icons.IconLoader;
 import global.icons.Icons;
-import global.keys.GlobalKeyListener;
-import logger.LogUI;
-import logger.Logger;
-import macro.MacroEditor;
+import global.logger.LogUI;
+import global.logger.Logger;
+import keybinds.action.ActionManager;
+import keybinds.keys.GlobalKeyListener;
+import keybinds.macro.MacroEditor;
 import property.Properties;
-import property.SettingsUI;
-import sorter.fileImport.FileImporter;
-import sorter.other.Container;
-import sorter.other.CreditsPanel;
-import util.ui.MiddleOfTheScreen;
+import sorter.ui.Container;
+import sorter.ui.CreditsPanel;
+import sorter.ui.FileImporter;
+import sorter.ui.FileManager;
+import sorter.ui.FileVisualiser;
+import sorter.ui.SettingsUI;
+import sorter.ui.ToolBar;
+import ui.MiddleOfTheScreen;
 
 public class SorterUI extends JFrame {
 

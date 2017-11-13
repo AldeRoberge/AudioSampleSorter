@@ -1,15 +1,13 @@
 package global.icons;
 
 import java.io.File;
-import java.text.Bidi;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 
-import logger.Logger;
-import util.ui.FloatingLoadingBar;
+import global.logger.Logger;
+import ui.FloatingLoadingBar;
 
 public class IconLoader {
 
