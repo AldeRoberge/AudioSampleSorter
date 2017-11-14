@@ -1,4 +1,4 @@
-package sorter.ui;
+package sorter.ui.fileImporter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -37,7 +37,7 @@ public class DropPane extends JPanel {
 		this.fileImporter = f;
 
 		try {
-			target = ImageIO.read(new File(Icons.CROSS.getPath()));
+			target = ImageIO.read(new File(Icons.CROSS.getImagePath()));
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

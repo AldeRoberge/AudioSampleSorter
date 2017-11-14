@@ -69,7 +69,7 @@ public class FileInformation extends JPanel {
 		fileName.setText(fileSystemView.getSystemDisplayName(file));
 		path.setText(file.getPath());
 		date.setText(new Date(file.lastModified()).toString());
-		size.setText(FileSizeToString.getFileSizeAsString(file));
+		size.setText(FileSizeToString.getFileSizeAsString(file) + " ( " + file.length() + " bytes)");
 
 		JFrame f = (JFrame) getTopLevelAncestor(); //will trace back to Sorter
 		if (f != null) {

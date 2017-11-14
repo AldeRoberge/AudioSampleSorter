@@ -118,7 +118,7 @@ public class MacroAction implements Serializable {
 	}
 
 	public String getIconPath() {
-		return icon.getPath();
+		return icon.getImagePath();
 	}
 
 	public void setIcon(StaticIcon icon) {

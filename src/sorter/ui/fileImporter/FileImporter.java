@@ -1,9 +1,11 @@
-package sorter.ui;
+package sorter.ui.fileImporter;
 
 import file.FileTypes;
 import global.icons.Icons;
 import global.logger.Logger;
 import property.Properties;
+import sorter.ui.Container;
+import sorter.ui.FileManager;
 import ui.MiddleOfTheScreen;
 
 import javax.swing.*;

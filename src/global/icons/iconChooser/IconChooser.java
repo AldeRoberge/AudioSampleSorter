@@ -1,4 +1,4 @@
-package keybinds.macro.edit;
+package global.icons.iconChooser;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import global.icons.Icons;
 import global.icons.StaticIcon;
 import global.logger.Logger;
+import keybinds.macro.edit.ToolBarButton;
 import ui.MiddleOfTheScreen;
 
 public class IconChooser extends JFrame {

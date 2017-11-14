@@ -20,12 +20,12 @@
 	<classpathentry kind="lib" path="lib/jorbis-0.0.15.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex0.9.7.jar"/>
 	<classpathentry kind="lib" path="lib/mp3spi1.9.4.jar"/>
-	<classpathentry kind="lib" path="lib/tritonus_share.jar"/>
 	<classpathentry kind="lib" path="lib/vorbisspi1.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-configuration-1.10-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/commons-configuration-1.10-sources.jar"/>
 	<classpathentry kind="lib" path="lib/commons-configuration-1.10-test-sources.jar"/>
 	<classpathentry kind="lib" path="lib/commons-configuration-1.10-tests.jar"/>
 	<classpathentry kind="lib" path="lib/istack-commons-runtime-2.13.jar"/>
+	<classpathentry kind="lib" path="lib/tritonus_share-0.3.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

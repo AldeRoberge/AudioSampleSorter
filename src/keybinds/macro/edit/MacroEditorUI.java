@@ -26,6 +26,8 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 
 import global.icons.Icons;
 import global.icons.StaticIcon;
+import global.icons.iconChooser.GetIcon;
+import global.icons.iconChooser.IconChooser;
 import global.logger.Logger;
 import key.KeysToString;
 import key.NativeKeyEventToKey;
@@ -201,7 +203,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 
 		titleEditor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("New title : " + titleEditor.getText());
+				//System.out.println("KeyBind has a new title : " + titleEditor.getText());
 				keyBindToEdit.setName(titleEditor.getText());
 			}
 		});
@@ -258,7 +260,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 
 			if (keyBindToEdit.getIcon() != null) {
 
-				System.out.println("Setting icon : " + keyBindToEdit.getIconPath());
+				//System.out.println("Setting icon : " + keyBindToEdit.getIconPath());
 				iconButton.setIcon(keyBindToEdit.getIcon());
 
 			}
@@ -300,8 +302,6 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		Key k = NativeKeyEventToKey.getJavaKeyEvent(ke);
 
 		if (isListenningForKeyInputs) {
-
-			System.out.println("Keys waiting to be released : " + keysPressedAndNotReleased.size() + " " + isPressed);
 
 			if (isPressed) {
 				keyPressed(k);

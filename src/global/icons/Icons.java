@@ -48,34 +48,24 @@ public class Icons {
 	//Paths
 
 	//Returned in case everything fails;
-	public static final StaticIcon DEFAULT_ICON = new StaticIcon("missing.png");
+	public static final StaticIcon DEFAULT_ICON = new StaticIcon(LOCATION_OF_ICONS + "missing.png");
 
-	public static final StaticIcon SOFTWARE_ICON = new StaticIcon("music-waves.png");
-	public static final StaticIcon PLAY = new StaticIcon("play-sign.png");
-	public static final StaticIcon ABOUT = new StaticIcon("question-sign.png");
-	public static final StaticIcon MACROS = new StaticIcon("keyboard.png");
-	public static final StaticIcon SETTINGS = new StaticIcon("cog-wheel-silhouette.png");
-	public static final StaticIcon CONSOLE = new StaticIcon("terminal.png");
-	public static final StaticIcon IMPORT = new StaticIcon("folder-plus.png");
-	public static final StaticIcon PENCIL = new StaticIcon("edit-interface-sign.png"); //used by IconChooser
-
-	//TODO
-	public static final StaticIcon EXIT = new StaticIcon("exit.png"); //used by IconChooser
-
-	//TODO
-	public static final StaticIcon ICON_CHOOSER = new StaticIcon("cogs.png"); //used by IconChooser
-
-	//TODO
-	public static final StaticIcon LOADING_BAR = new StaticIcon("spinner-of-dots.png"); //used by IconChooser
-
-	//TODO
-	public static final StaticIcon CROSS = new StaticIcon("download.png"); //used by IconChooser
+	public static final StaticIcon SOFTWARE_ICON = new StaticIcon(LOCATION_OF_ICONS + "music-waves.png");
+	public static final StaticIcon PLAY = new StaticIcon(LOCATION_OF_ICONS + "play-sign.png");
+	public static final StaticIcon ABOUT = new StaticIcon(LOCATION_OF_ICONS + "question-sign.png");
+	public static final StaticIcon MACROS = new StaticIcon(LOCATION_OF_ICONS + "keyboard.png");
+	public static final StaticIcon SETTINGS = new StaticIcon(LOCATION_OF_ICONS + "cog-wheel-silhouette.png");
+	public static final StaticIcon CONSOLE = new StaticIcon(LOCATION_OF_ICONS + "terminal.png");
+	public static final StaticIcon IMPORT = new StaticIcon(LOCATION_OF_ICONS + "folder-plus.png");
+	public static final StaticIcon PENCIL = new StaticIcon(LOCATION_OF_ICONS + "edit-interface-sign.png");
+	public static final StaticIcon EXIT = new StaticIcon(LOCATION_OF_ICONS + "exit.png");
+	public static final StaticIcon ICON_CHOOSER = new StaticIcon(LOCATION_OF_ICONS + "cogs.png");
+	public static final StaticIcon LOADING_BAR = new StaticIcon(LOCATION_OF_ICONS + "spinner-of-dots.png");
+	public static final StaticIcon CROSS = new StaticIcon(LOCATION_OF_ICONS + "download.png");
 
 	//
 
 	static ImageIcon createImageIcon(String path) {
-		Logger.logInfo(TAG, "Getting icon " + path + ".");
-
 		return scaleImage(new ImageIcon(path), defaultDimensions);
 	}
 
@@ -101,51 +91,5 @@ public class Icons {
 
 		return new ImageIcon(icon.getImage().getScaledInstance(nw, nh, Image.SCALE_SMOOTH));
 	}
-
-	/**
-	public static ImageIcon getIcon(String value) {
-		ImageIcon key = DEFAULT_ICON.getImageIcon();
-	
-		if (value == null || value.equals("")) {
-			Logger.logError(TAG, "getIconFromKey value is incorrect!" + value);
-		} else {
-			for (StaticIcon s : images) {
-			
-			
-			for (Entry<ImageIcon, String> map : images.entrySet()) {
-				if (map.getValue().equals(value)) {
-					key = map.getKey();
-				}
-			}
-		}
-		return key;
-	}
-	
-	public static ImageIcon getIconFromPath(String value) {
-		ImageIcon key = DEFAULT_ICON.getImageIcon();
-	
-		if (value == null || value.equals("")) {
-			Logger.logError(TAG, "getIconFromKey value is incorrect!" + value);
-		} else {
-			if (new File(value).exists()) {
-				return new ImageIcon(value);
-			}
-		}
-		return key;
-	}
-	
-	
-	public static String getIconPath(String value) {
-		if (value == null || value.equals("")) {
-			Logger.logError(TAG, "getIconPath value is incorrect!" + value);
-		} else {
-			for (Entry<ImageIcon, String> map : pathAndImage.entrySet()) {
-				if (map.getValue().equals(value)) {
-					return map.getValue();
-				}
-			}
-		}
-		return null;
-	}*/
 
 }

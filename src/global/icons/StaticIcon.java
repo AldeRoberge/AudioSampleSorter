@@ -1,20 +1,24 @@
 package global.icons;
 
 import java.awt.Image;
+import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 
-public class StaticIcon {
-	private String imageName;
+public class StaticIcon implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	private String imagePath;
 	private ImageIcon imageIcon;
 
-	public StaticIcon(String imageName) {
-		this.imageIcon = Icons.createImageIcon(Icons.LOCATION_OF_ICONS + imageName);
-		this.imageName = imageName;
+	public StaticIcon(String pathOfImage) {
+
+		this.imageIcon = Icons.createImageIcon(pathOfImage);
+		this.imagePath = pathOfImage;
 	}
 
-	public String getPath() {
-		return Icons.LOCATION_OF_ICONS + imageName;
+	public String getImagePath() {
+		return imagePath;
 	}
 
 	public Image getImage() {

@@ -1,4 +1,4 @@
-package keybinds.macro.edit;
+package global.icons.iconChooser;
 
 import javax.swing.Icon;
 

@@ -15,7 +15,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import global.logger.Logger;
-import sorter.ui.FileImporter;
+import sorter.ui.fileImporter.FileImporter;
 
 /**
  * See ActionEditor
@@ -89,7 +89,7 @@ public class EditablePropertyPanel extends JPanel {
 			stringInputField.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent ev) {
-					System.out.println("ehhhh");
+					System.out.println("Enter pressed");
 				}
 			});
 
@@ -113,7 +113,7 @@ public class EditablePropertyPanel extends JPanel {
 			intInputField.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent ev) {
-					System.out.println("ehhhh");
+					System.out.println("Enter pressed");
 				}
 			});
 

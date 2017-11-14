@@ -32,10 +32,10 @@ import property.Properties;
 import property.SettingsUI;
 import sorter.ui.Container;
 import sorter.ui.CreditsPanel;
-import sorter.ui.FileImporter;
 import sorter.ui.FileManager;
 import sorter.ui.FileVisualiser;
 import sorter.ui.ToolBar;
+import sorter.ui.fileImporter.FileImporter;
 import ui.MiddleOfTheScreen;
 
 public class SorterUI extends JFrame {

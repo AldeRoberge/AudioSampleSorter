@@ -20,6 +20,8 @@ package sorter.ui;
 import file.FileSizeToString;
 import global.Constants;
 import global.icons.Icons;
+import keybinds.macro.MacroAction;
+import serialiser.ObjectSerializer;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -40,6 +42,8 @@ import java.util.Date;
  * @version 2011-06-01
  */
 public class FileManager extends JPanel {
+
+	public ObjectSerializer<ArrayList<File>> importedFileSerialiser = new ObjectSerializer<ArrayList<File>>("imported.ser");
 
 	/** Provides nice icons and names for files. */
 	private FileSystemView fileSystemView;
@@ -88,7 +92,7 @@ public class FileManager extends JPanel {
 			public void valueChanged(ListSelectionEvent lse) {
 
 				if (!lse.getValueIsAdjusting()) {// This line prevents double
-													// events (firing twice)
+														// events (firing twice)
 					int row = table.getSelectionModel().getLeadSelectionIndex();
 					openFileManager.setFileSelected(((FileTableModel) table.getModel()).getFile(row));
 				}
@@ -113,11 +117,9 @@ public class FileManager extends JPanel {
 
 		add(simpleOutput, BorderLayout.SOUTH);
 
-		ArrayList<File> test = new ArrayList<File>();
-		test.add(new File("C:\\Users\\4LDE\\Music\\Music\\Bustin.mp3"));
-		test.add(new File("C:\\Users\\4LDE\\Music\\Drum Kits\\Sorted\\Cymbals\\Cymbal_01.wav"));
-		test.add(new File("C:\\Users\\4LDE\\Music\\Drum Kits\\Sorted\\Cymbals\\Cymbal_02.wav"));
-		setTableData(test);
+		if (!importedFileSerialiser.isNull()) {
+			setTableData(importedFileSerialiser.get());
+		}
 
 	}
 
@@ -133,6 +135,8 @@ public class FileManager extends JPanel {
 				newFiles.add(file);
 			}
 		}
+
+		importedFileSerialiser.set(filesToImport);
 
 		setTableData(newFiles);
 
