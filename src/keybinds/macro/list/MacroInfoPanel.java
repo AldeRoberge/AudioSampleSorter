@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import global.Constants;
-import global.icons.IconLoader;
 import global.icons.Icons;
 import key.KeysToString;
 import keybinds.macro.MacroAction;
@@ -74,7 +73,7 @@ public class MacroInfoPanel extends JPanel {
 		buttonEdit.setFocusable(false);
 		buttonEdit.setToolTipText("Edit actions");
 		buttonEdit.setBounds(247, 7, 35, 35);
-		buttonEdit.setIcon(Icons.SETTINGS);
+		buttonEdit.setIcon(Icons.SETTINGS.getImageIcon());
 		buttonEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				m.macroListUI.keyBindPanelIsClicked(me);
@@ -90,14 +89,14 @@ public class MacroInfoPanel extends JPanel {
 	public void updateText() {
 		String keysShortcut = KeysToString.keysToString("", keyBind.keys, "");
 
-		if (keyBind.name != null) { //display the name if it has one
-			labelTitle.setText(keyBind.name);
+		if (keyBind.getName() != null) { //display the name if it has one
+			labelTitle.setText(keyBind.getName());
 		} else {
 			labelTitle.setText(keysShortcut);
 		}
 
-		if (keyBind.iconPath != null) {
-			labelTitle.setIcon(IconLoader.getIconFromKey(keyBind.iconPath));
+		if (keyBind.getIcon() != null) {
+			labelTitle.setIcon(keyBind.getIcon());
 		} else {
 			labelActions.setText(keysShortcut);
 			labelActions.setToolTipText(keysShortcut); //in case its cut off

@@ -47,8 +47,7 @@ public class SorterUI extends JFrame {
 	public FileVisualiser openFileManager = new FileVisualiser();
 
 	private Container console = new Container("Console", Icons.CONSOLE.getImage(), new LogUI(), true);
-	private Container settings = new Container("Settings", Icons.SETTINGS.getImage(),
-			new SettingsUI(openFileManager.getAudioPlayer()), false);
+	private Container settings = new Container("Settings", Icons.SETTINGS.getImage(), new SettingsUI(openFileManager.getAudioPlayer()), false);
 	private Container credits = new Container("Credits", Icons.ABOUT.getImage(), new CreditsPanel(), true);
 
 	public FileManager fMan = new FileManager(openFileManager);
@@ -86,7 +85,7 @@ public class SorterUI extends JFrame {
 		setTitle(Constants.SOFTWARE_NAME);
 		setBounds(100, 100, 655, 493);
 		setSize(new Dimension(605, 500));
-		setIconImage(Icons.SOFTWARE.getImage());
+		setIconImage(Icons.SOFTWARE_ICON.getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocation(MiddleOfTheScreen.getLocationFor(this));
 
@@ -104,8 +103,7 @@ public class SorterUI extends JFrame {
 
 				if (Properties.PROMPT_ON_EXIT.getValueAsBoolean()) {
 					String ObjButtons[] = { "Yes", "No" };
-					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?",
-							JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, Icons.QUESTION, ObjButtons,
+					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, Icons.ABOUT.getImageIcon(), ObjButtons,
 							ObjButtons[1]);
 					if (PromptResult == JOptionPane.YES_OPTION) {
 						System.exit(0);
@@ -135,7 +133,7 @@ public class SorterUI extends JFrame {
 			}
 		});
 
-		mntmImport.setIcon(Icons.IMPORT);
+		mntmImport.setIcon(Icons.IMPORT.getImageIcon());
 		mnFile.add(mntmImport);
 
 		// File (Separator)
@@ -150,7 +148,7 @@ public class SorterUI extends JFrame {
 				System.exit(0);
 			}
 		});
-		mnExit.setIcon(Icons.EXIT);
+		mnExit.setIcon(Icons.EXIT.getImageIcon());
 		mnFile.add(mnExit);
 
 		//Edit
@@ -164,7 +162,7 @@ public class SorterUI extends JFrame {
 			}
 
 		});
-		mntmMacros.setIcon(Icons.MACROS);
+		mntmMacros.setIcon(Icons.MACROS.getImageIcon());
 		mnEdit.add(mntmMacros);
 
 		//Edit, Settings
@@ -175,7 +173,7 @@ public class SorterUI extends JFrame {
 			}
 
 		});
-		mntmSettings.setIcon(Icons.SETTINGS);
+		mntmSettings.setIcon(Icons.SETTINGS.getImageIcon());
 		mnEdit.add(mntmSettings);
 
 		//Help
@@ -188,7 +186,7 @@ public class SorterUI extends JFrame {
 				showConsole(true, true);
 			}
 		});
-		mntmConsole.setIcon(Icons.CONSOLE);
+		mntmConsole.setIcon(Icons.CONSOLE.getImageIcon());
 		mnHelp.add(mntmConsole);
 
 		// Help : About
@@ -198,7 +196,7 @@ public class SorterUI extends JFrame {
 				showCredits(true, true);
 			}
 		});
-		mntmAbout.setIcon(Icons.ABOUT);
+		mntmAbout.setIcon(Icons.ABOUT.getImageIcon());
 		mnHelp.add(mntmAbout);
 
 		getContentPane().add(openFileManager, BorderLayout.SOUTH);
@@ -213,8 +211,7 @@ public class SorterUI extends JFrame {
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent pce) {
-				Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION
-						.setNewValue((((Integer) pce.getNewValue()).intValue()) + "");
+				Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION.setNewValue((((Integer) pce.getNewValue()).intValue()) + "");
 			}
 		});
 		BorderLayout borderLayout = (BorderLayout) fMan.getLayout();

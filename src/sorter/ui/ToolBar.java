@@ -1,12 +1,14 @@
 package sorter.ui;
 
-import global.icons.IconLoader;
-import keybinds.macro.MacroAction;
-import keybinds.macro.MacroEditor;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JToolBar;
+
+import global.icons.Icons;
+import keybinds.macro.MacroAction;
+import keybinds.macro.MacroEditor;
 
 public class ToolBar extends JToolBar {
 
@@ -22,8 +24,8 @@ public class ToolBar extends JToolBar {
 		for (MacroAction macroAction : m.macroLoader.macroActions) {
 			JButton button = new JButton("Action");
 			try {
-				button.setIcon(IconLoader.getIconFromKey(macroAction.iconPath));
-				button.setText(macroAction.name);
+				button.setIcon(macroAction.getIcon());
+				button.setText(macroAction.getName());
 				button.setFocusable(false);
 
 				button.addActionListener(new ActionListener() {

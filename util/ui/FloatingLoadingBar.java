@@ -29,7 +29,7 @@ public class FloatingLoadingBar extends JFrame {
 	 * Create the frame.
 	 */
 	public FloatingLoadingBar() {
-		setIconImage(Icons.FLOATING_LOADING_BAR.getImage());
+		setIconImage(Toolkit.getDefaultToolkit().getImage(FloatingLoadingBar.class.getResource("/com/sun/javafx/scene/control/skin/modena/dialog-warning@2x.png")));
 		setTitle("Loading...");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -24,7 +24,8 @@ import javax.swing.event.DocumentListener;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
 
-import global.icons.IconLoader;
+import global.icons.Icons;
+import global.icons.StaticIcon;
 import global.logger.Logger;
 import key.KeysToString;
 import key.NativeKeyEventToKey;
@@ -187,7 +188,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 
 			public void updateName() {
 				if (keyBindToEdit != null) { //sometimes is triggered on software launch
-					keyBindToEdit.name = titleEditor.getText();
+					keyBindToEdit.setName(titleEditor.getText());
 				}
 			}
 		});
@@ -201,7 +202,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		titleEditor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("New title : " + titleEditor.getText());
-				keyBindToEdit.name = titleEditor.getText();
+				keyBindToEdit.setName(titleEditor.getText());
 			}
 		});
 
@@ -211,8 +212,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		//
 
 		iconButton = new JButton();
-		iconButton.setIcon(new ImageIcon(MacroEditorUI.class
-				.getResource("/com/sun/deploy/uitoolkit/impl/fx/ui/resources/image/graybox_error.png")));
+		iconButton.setIcon(new ImageIcon(MacroEditorUI.class.getResource("/com/sun/deploy/uitoolkit/impl/fx/ui/resources/image/graybox_error.png")));
 
 		iconButton.setFocusable(false); //Removes the stupid 'selected' border
 		iconButton.addActionListener(new ActionListener() {
@@ -256,12 +256,10 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 				addActionAndActionEditPanel(a);
 			}
 
-			titleEditor.setText(keyBindToEdit.name);
+			if (keyBindToEdit.getIcon() != null) {
 
-			if (keyBindToEdit.iconPath != null) {
-
-				System.out.println("Setting icon : " + keyBindToEdit.iconPath);
-				iconButton.setIcon(IconLoader.getIconFromKey(keyBindToEdit.iconPath));
+				System.out.println("Setting icon : " + keyBindToEdit.getIconPath());
+				iconButton.setIcon(keyBindToEdit.getIcon());
 
 			}
 
@@ -270,11 +268,11 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 			Logger.logInfo(TAG, "Creating new keyBind");
 
 			newKeyBind = true;
-			keyBindToEdit = new MacroAction();
-
-			titleEditor.setText("Title");
+			keyBindToEdit = new MacroAction("Title");
 
 		}
+
+		titleEditor.setText(keyBindToEdit.getName());
 
 		this.keyBindToEdit = keyBindToEdit;
 
@@ -392,8 +390,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 
 	public static Color hex2Rgb(String colorStr) {
 		//@formatter:off
-		return new Color(Integer.valueOf(colorStr.substring(1, 3), 16), Integer.valueOf(colorStr.substring(3, 5), 16),
-				Integer.valueOf(colorStr.substring(5, 7), 16));
+		return new Color(Integer.valueOf(colorStr.substring(1, 3), 16), Integer.valueOf(colorStr.substring(3, 5), 16), Integer.valueOf(colorStr.substring(5, 7), 16));
 		//@formatter:on
 	}
 
@@ -408,9 +405,9 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 	}
 
 	@Override
-	public void GetResponse(Icon icon, String iconPath) {
-		keyBindToEdit.iconPath = iconPath;
-		iconButton.setIcon(icon);
+	public void GetResponse(StaticIcon icon) { //Get response after asking IconChooser
+		keyBindToEdit.setIcon(icon);
+		iconButton.setIcon(icon.getImageIcon());
 	}
 
 }

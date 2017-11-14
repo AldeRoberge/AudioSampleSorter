@@ -2,6 +2,9 @@ package sorter.ui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import global.icons.Icons;
+
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -34,7 +37,7 @@ public class DropPane extends JPanel {
 		this.fileImporter = f;
 
 		try {
-			target = ImageIO.read(new File("res/plus_symbol.png"));
+			target = ImageIO.read(new File(Icons.CROSS.getPath()));
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

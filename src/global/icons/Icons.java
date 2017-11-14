@@ -1,61 +1,79 @@
 package global.icons;
 
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 
 import global.logger.Logger;
+import keybinds.event.EventFrame;
+import ui.FloatingLoadingBar;
 
 public class Icons {
 
+	//
+
 	private static final String TAG = "Icons";
 
-	private static final String LOCATION = new File(".").getAbsolutePath() + "/res/icons/";
+	//
 
-	public static final ImageIcon SOFTWARE;
-	public static final ImageIcon ICON_CHOOSER;
-	public static final ImageIcon SETTINGS;
-	public static final ImageIcon IMPORT;
-	public static final ImageIcon ABOUT;
-	public static final ImageIcon CONSOLE;
-	public static final ImageIcon MACROS;
+	public static final String LOCATION_OF_ICONS = new File(".").getAbsolutePath() + "/res/icons/";
 
-	public static final ImageIcon EXIT; //JMenuItem in File - Exit
-	public static final ImageIcon QUESTION;
-	public static final ImageIcon FLOATING_LOADING_BAR;
+	public static final ArrayList<StaticIcon> images = new ArrayList<StaticIcon>();
 
-	//public static final ImageIcon DOT; //Previously used by JMenu to show a component as selected (hacked)
+	public static final ImageDimension defaultDimensions = new ImageDimension(16, 16);
 
-	//Default action icons
+	static { //We do this to be able to pick an image with IconChooser
 
-	public static final String PLAY_ACTION;
+		FloatingLoadingBar loadingBar = new FloatingLoadingBar();
 
-	//Dimensions
+		File iconFolder = new File(LOCATION_OF_ICONS);
+		File[] allIcons = iconFolder.listFiles();
 
-	public static ImageDimension defaultDimensions = new ImageDimension(16, 16);
-	public static ImageDimension softwareIconDimensions = new ImageDimension(64, 64);
+		for (int i = 0; i < allIcons.length; i++) {
+			loadingBar.setCurrentProgress(i, allIcons.length);
 
-	static {
-		SOFTWARE = createImageIcon(LOCATION + "software_icon.png", softwareIconDimensions);
-		SETTINGS = createImageIcon(LOCATION + "cog.png");
-		IMPORT = createImageIcon(LOCATION + "folder-upload.png");
-		ABOUT = createImageIcon(LOCATION + "info.png");
-		EXIT = createImageIcon(LOCATION + "exit.png");
-		CONSOLE = createImageIcon(LOCATION + "menu.png");
-		MACROS = createImageIcon(LOCATION + "keyboard.png");
-		//DOT = createImageIcon(LOCATION + "dot.png", new ImageDimension(10, 10));
-		QUESTION = createImageIcon(LOCATION + "question_mark.png");
+			images.add(new StaticIcon(allIcons[i].getAbsolutePath()));
+		}
 
-		FLOATING_LOADING_BAR = SOFTWARE;
-		ICON_CHOOSER = createImageIcon(LOCATION + "question_mark.png");
-
-		//Paths
-
-		PLAY_ACTION = LOCATION + "question_mark.png";
+		loadingBar.end();
 	}
 
-	private static ImageIcon createImageIcon(String path) {
+	//
+
+	//Paths
+
+	//Returned in case everything fails;
+	public static final StaticIcon DEFAULT_ICON = new StaticIcon("missing.png");
+
+	public static final StaticIcon SOFTWARE_ICON = new StaticIcon("music-waves.png");
+	public static final StaticIcon PLAY = new StaticIcon("play-sign.png");
+	public static final StaticIcon ABOUT = new StaticIcon("question-sign.png");
+	public static final StaticIcon MACROS = new StaticIcon("keyboard.png");
+	public static final StaticIcon SETTINGS = new StaticIcon("cog-wheel-silhouette.png");
+	public static final StaticIcon CONSOLE = new StaticIcon("terminal.png");
+	public static final StaticIcon IMPORT = new StaticIcon("folder-plus.png");
+	public static final StaticIcon PENCIL = new StaticIcon("edit-interface-sign.png"); //used by IconChooser
+
+	//TODO
+	public static final StaticIcon EXIT = new StaticIcon("exit.png"); //used by IconChooser
+
+	//TODO
+	public static final StaticIcon ICON_CHOOSER = new StaticIcon("cogs.png"); //used by IconChooser
+
+	//TODO
+	public static final StaticIcon LOADING_BAR = new StaticIcon("spinner-of-dots.png"); //used by IconChooser
+
+	//TODO
+	public static final StaticIcon CROSS = new StaticIcon("download.png"); //used by IconChooser
+
+	//
+
+	static ImageIcon createImageIcon(String path) {
 		Logger.logInfo(TAG, "Getting icon " + path + ".");
 
 		return scaleImage(new ImageIcon(path), defaultDimensions);
@@ -83,5 +101,51 @@ public class Icons {
 
 		return new ImageIcon(icon.getImage().getScaledInstance(nw, nh, Image.SCALE_SMOOTH));
 	}
+
+	/**
+	public static ImageIcon getIcon(String value) {
+		ImageIcon key = DEFAULT_ICON.getImageIcon();
+	
+		if (value == null || value.equals("")) {
+			Logger.logError(TAG, "getIconFromKey value is incorrect!" + value);
+		} else {
+			for (StaticIcon s : images) {
+			
+			
+			for (Entry<ImageIcon, String> map : images.entrySet()) {
+				if (map.getValue().equals(value)) {
+					key = map.getKey();
+				}
+			}
+		}
+		return key;
+	}
+	
+	public static ImageIcon getIconFromPath(String value) {
+		ImageIcon key = DEFAULT_ICON.getImageIcon();
+	
+		if (value == null || value.equals("")) {
+			Logger.logError(TAG, "getIconFromKey value is incorrect!" + value);
+		} else {
+			if (new File(value).exists()) {
+				return new ImageIcon(value);
+			}
+		}
+		return key;
+	}
+	
+	
+	public static String getIconPath(String value) {
+		if (value == null || value.equals("")) {
+			Logger.logError(TAG, "getIconPath value is incorrect!" + value);
+		} else {
+			for (Entry<ImageIcon, String> map : pathAndImage.entrySet()) {
+				if (map.getValue().equals(value)) {
+					return map.getValue();
+				}
+			}
+		}
+		return null;
+	}*/
 
 }

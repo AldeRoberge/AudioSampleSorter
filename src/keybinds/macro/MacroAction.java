@@ -1,8 +1,12 @@
 package keybinds.macro;
 
+import java.awt.event.KeyEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.swing.Icon;
+
+import global.icons.StaticIcon;
 import keybinds.action.Action;
 import keybinds.action.type.file.FileAction;
 import keybinds.action.type.ui.UIAction;
@@ -18,13 +22,25 @@ public class MacroAction implements Serializable {
 	// UI information
 
 	private static final String TAG = "MacroAction";
-	public String name;
-	public String iconPath;
+	private String name;
+	private StaticIcon icon;
 
 	// Keys required to be pressed to trigger the event
 	public ArrayList<Key> keys = new ArrayList<Key>();
 
 	public ArrayList<Action> actionsToPerform = new ArrayList<Action>();
+
+	//Used by MacroLoader to instantiate basic actions
+	public MacroAction(String name, StaticIcon icon, Key key, Action action) {
+		this.name = name;
+		this.setIcon(icon);
+		keys.add(new Key(KeyEvent.VK_SPACE));
+		actionsToPerform.add(action);
+	}
+
+	public MacroAction(String name) {
+		this.name = name;
+	}
 
 	@Override
 	public String toString() {
@@ -38,7 +54,7 @@ public class MacroAction implements Serializable {
 	}
 
 	public void perform() { // this needs to be here rather than in
-							// globalKeyListener to allow UI buttons to be
+								// globalKeyListener to allow UI buttons to be
 							// pressed
 		for (Action action : actionsToPerform) {
 
@@ -84,4 +100,29 @@ public class MacroAction implements Serializable {
 
 		}
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Icon getIcon() {
+		if (icon == null) {
+			return null;
+		}
+
+		return icon.getImageIcon();
+	}
+
+	public String getIconPath() {
+		return icon.getPath();
+	}
+
+	public void setIcon(StaticIcon icon) {
+		this.icon = icon;
+	}
+
 }

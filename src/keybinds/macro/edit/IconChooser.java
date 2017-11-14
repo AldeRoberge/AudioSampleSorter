@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -21,8 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import global.icons.IconLoader;
 import global.icons.Icons;
+import global.icons.StaticIcon;
 import global.logger.Logger;
 import ui.MiddleOfTheScreen;
 
@@ -89,13 +88,11 @@ public class IconChooser extends JFrame {
 		btnOpenContainingFolder.setFont(font.deriveFont(Font.BOLD));
 		btnOpenContainingFolder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(contentPane,
-						"Opening the icon folder. \nIcons are loaded as 16x16 images that support transparency.\nIcons are stored in "
-								+ IconLoader.FOLDER_LOCATION
-								+ ".\nYou might have to reload the program to see your icon.");
+				JOptionPane.showMessageDialog(contentPane, "Opening the icon folder. \nIcons are loaded as 16x16 images that support transparency.\nIcons are stored in " + Icons.LOCATION_OF_ICONS
+						+ ".\nYou might have to reload the program to see your icon.");
 
 				try {
-					Desktop.getDesktop().open(new File(IconLoader.FOLDER_LOCATION));
+					Desktop.getDesktop().open(new File(Icons.LOCATION_OF_ICONS));
 				} catch (IOException e1) {
 					Logger.logError(TAG, "Could not open folder containing icon images!");
 					e1.printStackTrace();
@@ -105,7 +102,7 @@ public class IconChooser extends JFrame {
 		});
 		btnOpenContainingFolder.setBackground(Color.ORANGE);
 		btnOpenContainingFolder.setForeground(Color.BLACK);
-		btnOpenContainingFolder.setIcon(Icons.QUESTION);
+		btnOpenContainingFolder.setIcon(Icons.ABOUT.getImageIcon());
 		importPanel.add(btnOpenContainingFolder);
 
 		populate();
@@ -120,19 +117,18 @@ public class IconChooser extends JFrame {
 		iconsPanel.repaint();
 		iconsPanel.setLayout(new BoxLayout(iconsPanel, BoxLayout.Y_AXIS));
 
-		for (ImageIcon i : IconLoader.pathAndImage.keySet()) {
+		for (StaticIcon i : Icons.images) {
 
 			JPanel icon = new JPanel();
 			iconsPanel.add(icon);
 
-			JButton selectThisIcon = new JButton();
-			selectThisIcon.setIcon(i);
-			selectThisIcon.setText(i.getDescription()); // Description is set to
-														// path in IconLoader
+			ToolBarButton selectThisIcon = new ToolBarButton(i);
 			selectThisIcon.setFont(font);
 			selectThisIcon.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					waitingForAnswer.GetResponse(selectThisIcon.getIcon(), IconLoader.pathAndImage.get(i));
+					//selectThisIcon.getIcon(), 
+
+					waitingForAnswer.GetResponse(selectThisIcon.getStaticIcon());
 					setVisible(false);
 				}
 			});

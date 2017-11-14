@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import global.icons.Icons;
 import global.logger.Logger;
 import keybinds.action.type.file.impl.PlayAction;
+import keybinds.action.type.file.impl.RenameAction;
+import keybinds.action.type.ui.impl.ShowUIAction;
 import keybinds.key.Key;
 import keybinds.macro.MacroAction;
 import keybinds.macro.MacroEditor;
@@ -100,16 +102,17 @@ public class MacroLoader {
 
 		//Space = play
 
-		MacroAction defaultPlayAction = new MacroAction();
-		defaultPlayAction.keys.add(new Key(KeyEvent.VK_SPACE));
-		defaultPlayAction.iconPath = Icons.PLAY_ACTION;
-		defaultPlayAction.actionsToPerform.add(new PlayAction());
-		addNewMacro(defaultPlayAction);
+		addNewMacro(new MacroAction("Play", Icons.PLAY, new Key(KeyEvent.VK_SPACE), new PlayAction()));
+
+		addNewMacro(new MacroAction("Show Credits", Icons.ABOUT, new Key(KeyEvent.VK_F1), ShowUIAction.SHOW_CREDITS_UI));
+		addNewMacro(new MacroAction("Edit Macros", Icons.MACROS, new Key(KeyEvent.VK_F2), ShowUIAction.SHOW_MACRO_UI));
+		addNewMacro(new MacroAction("Edit Settings", Icons.SETTINGS, new Key(KeyEvent.VK_F3), ShowUIAction.SHOW_SETTINGS_UI));
+		addNewMacro(new MacroAction("Show Console", Icons.CONSOLE, new Key(KeyEvent.VK_F4), ShowUIAction.SHOW_CONSOLE));
+
+		addNewMacro(new MacroAction("Rename", Icons.PENCIL, new Key(KeyEvent.VK_R), new RenameAction()));
 
 		//R = rename
-		
-		
-		
+
 		//UP ArrowKey is reserved
 		//CTRL + A is reserved
 		//DOWN ArrowKey is reserved

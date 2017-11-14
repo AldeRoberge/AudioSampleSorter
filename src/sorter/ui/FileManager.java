@@ -199,7 +199,7 @@ public class FileManager extends JPanel {
 				FileManager fileManager = new FileManager(new FileVisualiser());
 				f.setContentPane(fileManager);
 
-				f.setIconImage(Icons.SOFTWARE.getImage());
+				f.setIconImage(Icons.SOFTWARE_ICON.getImage());
 
 				f.pack();
 				f.setLocationByPlatform(true);
