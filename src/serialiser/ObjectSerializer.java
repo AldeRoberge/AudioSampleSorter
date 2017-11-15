@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import global.logger.Logger;
+import logger.Logger;
 
 /**
  * @author VaypeNaysh

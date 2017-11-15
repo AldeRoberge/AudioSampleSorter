@@ -16,7 +16,7 @@ public class Properties {
 
 	//Checked before launching the UI, if set to TRUE will open Credits
 	public static Property FIRST_LAUNCH = new Property("FIRST_LAUNCH", TRUE, e);
-	
+
 	//Prompt on close, are you sure to exit?
 	public static Property PROMPT_ON_EXIT = new Property("PROMPT_ON_EXIT", TRUE, e);
 
@@ -29,11 +29,14 @@ public class Properties {
 	//Set in Settings and checked by RunSS to know if .wav or .mp3 should be displayed in SoundPanel
 	public static Property DISPLAY_SOUND_SUFFIXES = new Property("DISPLAY_SOUND_SUFFIXES", TRUE, e);
 
+	//Used by FileInformation to know wiether of not to display file date
+	public static Property DISPLAY_FILE_DATE = new Property("DISPLAY_FILE_DATE", FALSE, e);
+
 	//Used by Settings to adjust volume
-	public static Property MAIN_VOLUME_SLIDER_VALUE = new Property("MAIN_VOLUME_SLIDER_VALUE", "100", e);
+	public static Property MAIN_VOLUME_SLIDER_VALUE = new Property("MAIN_VOLUME_SLIDER_VALUE", "20", e);
 
 	//Main pan slider value
-	public static Property MAIN_PAN_SLIDER_VALUE = new Property("MAIN_PAN_SLIDER_VALUE", "20", e);
+	public static Property MAIN_PAN_SLIDER_VALUE = new Property("MAIN_PAN_SLIDER_VALUE", "50", e);
 
 	//RunSS PlayOnClickChbkx and on SoundPanel click, to check if the sound should be played
 	public static Property PLAY_ON_CLICK = new Property("PLAY_ON_CLICK", TRUE, e);

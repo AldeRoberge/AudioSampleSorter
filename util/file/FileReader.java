@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import global.logger.Logger;
+import logger.Logger;
 
 public class FileReader {
 

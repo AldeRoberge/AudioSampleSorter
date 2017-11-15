@@ -1,4 +1,6 @@
 # SampleSorter
 A simple pure Java sample sorter
 
-See credits.html (Help -> About) for more information
+##TODO
+
+"3 previously imported (duplicates) files have been discared"

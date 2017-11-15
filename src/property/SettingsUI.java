@@ -12,7 +12,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import player.AudioPlayer;
+import audioPlayer.AudioPlayer;
 import ui.MiddleOfTheScreen;
 
 public class SettingsUI extends JPanel {

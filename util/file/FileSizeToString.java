@@ -7,9 +7,11 @@ import java.io.File;
 public class FileSizeToString {
 
 	public static String getFileSizeAsString(File file) {
+		return getByteSizeAsString(file.length());
+	}
 
-		double bytes = file.length();
-		double kilobytes = (bytes / 1024);
+	public static String getByteSizeAsString(long l) {
+		double kilobytes = (l / 1024);
 		double megabytes = (kilobytes / 1024);
 		double gigabytes = (megabytes / 1024);
 
@@ -27,7 +29,7 @@ public class FileSizeToString {
 
 		} else {
 
-			return roundUp(bytes) + " B";
+			return roundUp(l) + " B";
 
 		}
 

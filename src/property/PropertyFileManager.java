@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
-import global.logger.Logger;
+import logger.Logger;
 
 public class PropertyFileManager {
 
