@@ -9,14 +9,15 @@ public class MiddleOfTheScreen {
 
 	static final Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
 
-	public static Point getLocationFor(int width, int height) {
-		return new Point(screenDimension.width / 2 - width / 2, screenDimension.height / 2 - height / 2);
+	/**
+	 * Keep in mind that setLocation should be called AFTER setBounds!
+	 */
+	public static Point getMiddleOfScreenLocationFor(Component e) {
+		return getMiddleOfScreenLocationFor(e.getWidth(), e.getHeight());
 	}
 
-	//Note : component.setLocation should be called after component.setBounds
-	
-	public static Point getLocationFor(Component e) {
-		return new Point(screenDimension.width / 2 - e.getWidth() / 2, screenDimension.height / 2 - e.getHeight() / 2);
+	public static Point getMiddleOfScreenLocationFor(int width, int height) {
+		return new Point(screenDimension.width / 2 - width / 2, screenDimension.height / 2 - height / 2);
 	}
 
 }

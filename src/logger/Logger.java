@@ -1,10 +1,10 @@
 package logger;
 
+import file.WriteToFile;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-
-import file.WriteToFile;
 
 public class Logger {
 

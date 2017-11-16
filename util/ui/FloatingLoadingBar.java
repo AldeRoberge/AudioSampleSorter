@@ -2,6 +2,9 @@ package ui;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import ass.constants.Constants;
+
 import java.awt.*;
 
 public class FloatingLoadingBar extends JFrame {
@@ -30,22 +33,21 @@ public class FloatingLoadingBar extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(FloatingLoadingBar.class.getResource("/com/sun/javafx/scene/control/skin/modena/dialog-warning@2x.png")));
 		setTitle("Loading...");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 480, 85);
-		setLocation(MiddleOfTheScreen.getLocationFor(this));
+		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
 		progressBar = new JProgressBar();
+		progressBar.setBackground(Color.WHITE);
+		progressBar.setForeground(Constants.SICK_PURPLE);
+		progressBar.setStringPainted(true);
 		contentPane.add(progressBar, BorderLayout.CENTER);
 
 		setVisible(true);
-	}
-
-	public void changeTitle(String newTitle) {
-		setTitle(newTitle);
 	}
 
 	public void changeIcon(Image image) {
