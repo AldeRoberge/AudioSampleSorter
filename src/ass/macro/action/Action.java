@@ -18,6 +18,10 @@ public interface Action extends Serializable {
 
 	boolean hasBeenPerformed = false;
 
+	public default boolean hasEditeableProperties() {
+		return !(getEditableProperties() == null);
+	}
+
 	public default ArrayList<EditableProperty> getEditableProperties() {
 		return null;
 	}

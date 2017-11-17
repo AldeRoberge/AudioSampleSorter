@@ -30,10 +30,8 @@ public class MacroEditor extends JFrame {
 
 	public MacroLoader macroLoader = new MacroLoader(this);
 
-	private Image macroEditIcon = Toolkit.getDefaultToolkit().getImage(
-			MacroEditor.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Indent-Black@2x.png"));
-	private Image macroListIcon = Toolkit.getDefaultToolkit().getImage(
-			MacroEditor.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Justify-Black.png"));
+	private Image macroEditIcon = Toolkit.getDefaultToolkit().getImage(MacroEditor.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Indent-Black@2x.png"));
+	private Image macroListIcon = Toolkit.getDefaultToolkit().getImage(MacroEditor.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Justify-Black.png"));
 
 	private ToolBar toolBar = new ToolBar(this);
 
@@ -42,7 +40,12 @@ public class MacroEditor extends JFrame {
 	 */
 	public void showMacroListUI(MacroAction keyBindToEdit) {
 
-		changeTitle("Edit Macro");
+		if (keyBindToEdit != null) {
+			changeTitle("Edit Macro");
+		} else {
+			changeTitle("New Macro");
+		}
+
 		setIconImage(macroEditIcon);
 
 		setContentPane(macroEditPanel);
@@ -90,7 +93,7 @@ public class MacroEditor extends JFrame {
 		Logger.logInfo(TAG, "Launching...");
 
 		setResizable(false);
-		setBounds(100, 100, 360, 308);
+		setBounds(100, 100, 360, 350);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null); //middle of the screen
 

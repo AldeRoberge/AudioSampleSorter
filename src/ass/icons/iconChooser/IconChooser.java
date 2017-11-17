@@ -3,6 +3,7 @@ package ass.icons.iconChooser;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -21,10 +22,11 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import ass.icons.Icons;
-import ass.icons.StaticIcon;
+import ass.icons.UserIcon;
 import ass.macro.ui.edit.ToolBarButton;
 import logger.Logger;
 import ui.MiddleOfTheScreen;
+import ui.WrapLayout;
 
 public class IconChooser extends JFrame {
 
@@ -57,7 +59,7 @@ public class IconChooser extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
 		JPanel content = new JPanel();
 		contentPane.add(content);
@@ -70,7 +72,7 @@ public class IconChooser extends JFrame {
 		iconsPanel = new JPanel();
 		iconsPanel.setBackground(SystemColor.textHighlightText);
 		iconScrollpane.setViewportView(iconsPanel);
-		iconsPanel.setLayout(new BoxLayout(iconsPanel, BoxLayout.Y_AXIS));
+		iconsPanel.setLayout(new WrapLayout());
 
 		JPanel importPanel = new JPanel();
 		importPanel.setBackground(SystemColor.control);
@@ -116,11 +118,11 @@ public class IconChooser extends JFrame {
 		iconsPanel.removeAll();
 		iconsPanel.revalidate();
 		iconsPanel.repaint();
-		iconsPanel.setLayout(new BoxLayout(iconsPanel, BoxLayout.Y_AXIS));
 
-		for (StaticIcon i : Icons.images) {
+		for (UserIcon i : Icons.images) {
 
 			JPanel icon = new JPanel();
+			icon.setLayout(new FlowLayout());
 			iconsPanel.add(icon);
 
 			ToolBarButton selectThisIcon = new ToolBarButton(i);

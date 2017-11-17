@@ -2,23 +2,23 @@ package ass.macro.ui.edit;
 
 import javax.swing.JButton;
 
-import ass.icons.StaticIcon;
+import ass.icons.UserIcon;
 
 public class ToolBarButton extends JButton {
 
-	private StaticIcon staticIcon;
+	private UserIcon staticIcon;
 
-	public ToolBarButton(StaticIcon i) {
+	public ToolBarButton(UserIcon i) {
 		super();
-		
+
 		staticIcon = i;
 
 		setIcon(staticIcon.getImageIcon());
-		setText(staticIcon.getImagePath());
+		setToolTipText(staticIcon.getImagePath());
 
 	}
 
-	public StaticIcon getStaticIcon() {
+	public UserIcon getStaticIcon() {
 		return staticIcon;
 	}
 

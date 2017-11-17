@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 public class EditablePropertyEditor extends JFrame {
 
-	private static final String TAG = "ActionEditorPanel";
+	private static final String TAG = "EditablePropertyEditor";
 
 	private static JPanel columnPanel = new JPanel();
 	private static JPanel borderLayoutPanel;
@@ -27,7 +27,7 @@ public class EditablePropertyEditor extends JFrame {
 	public EditablePropertyEditor() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(EditablePropertyEditor.class
 				.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Paste-Black@2x.png")));
-		setTitle("ActionEditor");
+		setTitle("Edit Action Property");
 
 		JPanel contentPane = new JPanel();
 

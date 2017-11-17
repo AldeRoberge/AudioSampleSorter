@@ -17,7 +17,7 @@ public class Icons {
 
 	public static final String LOCATION_OF_ICONS = new File(".").getAbsolutePath() + "/res/icons/";
 
-	public static final ArrayList<StaticIcon> images = new ArrayList<StaticIcon>();
+	public static final ArrayList<UserIcon> images = new ArrayList<UserIcon>();
 
 	static { //We do this to be able to pick an image with IconChooser
 
@@ -29,7 +29,7 @@ public class Icons {
 		for (int i = 0; i < allIcons.length; i++) {
 			loadingBar.setCurrentProgress(i, allIcons.length);
 
-			images.add(new StaticIcon(allIcons[i].getAbsolutePath()));
+			images.add(new UserIcon(allIcons[i].getAbsolutePath()));
 		}
 
 		loadingBar.end();
@@ -40,20 +40,20 @@ public class Icons {
 	//Paths
 
 	//Returned in case everything fails;
-	public static final StaticIcon DEFAULT_ICON = new StaticIcon(LOCATION_OF_ICONS + "missing.png");
+	public static final UserIcon DEFAULT_ICON = new UserIcon(LOCATION_OF_ICONS + "missing.png");
 
 	public static final ImageIcon SOFTWARE_ICON = new ImageIcon("res/icon.png");
-	public static final StaticIcon PLAY = new StaticIcon(LOCATION_OF_ICONS + "play-sign.png");
-	public static final StaticIcon ABOUT = new StaticIcon(LOCATION_OF_ICONS + "question-sign.png");
-	public static final StaticIcon MACROS = new StaticIcon(LOCATION_OF_ICONS + "keyboard.png");
-	public static final StaticIcon SETTINGS = new StaticIcon(LOCATION_OF_ICONS + "cog-wheel-silhouette.png");
-	public static final StaticIcon CONSOLE = new StaticIcon(LOCATION_OF_ICONS + "terminal.png");
-	public static final StaticIcon IMPORT = new StaticIcon(LOCATION_OF_ICONS + "folder-plus.png");
-	public static final StaticIcon PENCIL = new StaticIcon(LOCATION_OF_ICONS + "edit-interface-sign.png");
-	public static final StaticIcon EXIT = new StaticIcon(LOCATION_OF_ICONS + "exit.png");
-	public static final StaticIcon ICON_CHOOSER = new StaticIcon(LOCATION_OF_ICONS + "cogs.png");
-	public static final StaticIcon LOADING_BAR = new StaticIcon(LOCATION_OF_ICONS + "spinner-of-dots.png");
-	public static final StaticIcon CROSS = new StaticIcon(LOCATION_OF_ICONS + "download.png");
+	public static final UserIcon PLAY = new UserIcon(LOCATION_OF_ICONS + "play-sign.png");
+	public static final UserIcon ABOUT = new UserIcon(LOCATION_OF_ICONS + "question-sign.png");
+	public static final UserIcon MACROS = new UserIcon(LOCATION_OF_ICONS + "keyboard.png");
+	public static final UserIcon SETTINGS = new UserIcon(LOCATION_OF_ICONS + "cog-wheel-silhouette.png");
+	public static final UserIcon CONSOLE = new UserIcon(LOCATION_OF_ICONS + "terminal.png");
+	public static final UserIcon IMPORT = new UserIcon(LOCATION_OF_ICONS + "folder-plus.png");
+	public static final UserIcon PENCIL = new UserIcon(LOCATION_OF_ICONS + "edit-interface-sign.png");
+	public static final UserIcon EXIT = new UserIcon(LOCATION_OF_ICONS + "exit.png");
+	public static final UserIcon ICON_CHOOSER = new UserIcon(LOCATION_OF_ICONS + "cogs.png");
+	public static final UserIcon LOADING_BAR = new UserIcon(LOCATION_OF_ICONS + "spinner-of-dots.png");
+	public static final UserIcon CROSS = new UserIcon(LOCATION_OF_ICONS + "download.png");
 
 	//
 

@@ -36,16 +36,15 @@ public class TEST extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		EditableProperty<String> newName = new EditableProperty<String>("NewFileName", "New name");
+		EditableProperty<String> stringTest = new EditableProperty<String>("NewFileName", "New name");
 
-		EditablePropertyPanel panel = new EditablePropertyPanel(newName);
+		EditablePropertyPanel panel = new EditablePropertyPanel(stringTest);
 		contentPane.add(panel, BorderLayout.CENTER);
 
-		EditablePropertyPanel panel1 = new EditablePropertyPanel(newName);
-		contentPane.add(panel1, BorderLayout.NORTH);
+		EditableProperty<Integer> integerTest = new EditableProperty<Integer>(0, "New name");
 
-		EditablePropertyPanel panel2 = new EditablePropertyPanel(newName);
-		contentPane.add(panel2, BorderLayout.SOUTH);
+		EditablePropertyPanel panel1 = new EditablePropertyPanel(integerTest);
+		contentPane.add(panel1, BorderLayout.NORTH);
 
 	}
 

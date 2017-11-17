@@ -47,16 +47,17 @@ public class MacroActionPanel extends JPanel {
 		btnRemove.setBounds(283, -1, 41, 22);
 		panel.add(btnRemove);
 
-		JButton btnEdit = new JButton("Edit");
-		btnEdit.setEnabled(action.isEditable());
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				k.actionEditor.changeAction(action);
-				k.actionEditor.setVisible(true);
-			}
-		});
-		btnEdit.setBounds(208, -1, 70, 22);
-		panel.add(btnEdit);
-
+		if (action.hasEditeableProperties()) {
+			JButton btnEditProperty = new JButton("Edit");
+			btnEditProperty.setEnabled(action.isEditable());
+			btnEditProperty.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					k.propertyEditor.changeAction(action);
+					k.propertyEditor.setVisible(true);
+				}
+			});
+			btnEditProperty.setBounds(208, -1, 70, 22);
+			panel.add(btnEditProperty);
+		}
 	}
 }

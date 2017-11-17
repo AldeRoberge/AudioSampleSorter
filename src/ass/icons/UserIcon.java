@@ -4,7 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 
-public class StaticIcon implements Serializable {
+/**
+ * An icon stored on the user's disk
+ */
+public class UserIcon implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String imagePath;
@@ -14,11 +17,11 @@ public class StaticIcon implements Serializable {
     public static final int DEFAULT_HEIGHT = 16;
     public static final int DEFAULT_WIDTH = 16;
 
-    public StaticIcon(String pathOfImage) {
+    public UserIcon(String pathOfImage) {
         this(pathOfImage,DEFAULT_HEIGHT, DEFAULT_WIDTH);
     }
 
-    public StaticIcon(String pathOfImage, int height, int width) {
+    public UserIcon(String pathOfImage, int height, int width) {
         this.imageIcon = Icons.createImageIcon(pathOfImage, height, width);
         this.imagePath = pathOfImage;
     }

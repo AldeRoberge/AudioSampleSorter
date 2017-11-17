@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
-import ass.icons.StaticIcon;
+import ass.icons.UserIcon;
 import ass.macro.action.Action;
 import ass.macro.action.type.file.FileAction;
 import ass.macro.action.type.ui.UIAction;
@@ -24,17 +24,17 @@ public class MacroAction implements Serializable {
 
 	private static final String TAG = "MacroAction";
 	private String name;
-	private StaticIcon icon;
+	private UserIcon icon;
 
 	// Keys required to be pressed to trigger the event
 	public ArrayList<Key> keys = new ArrayList<Key>();
 
 	public ArrayList<Action> actionsToPerform = new ArrayList<Action>();
-	
-	public boolean showInToolbar;
+
+	public boolean showInToolbar = true;
 
 	//Used by MacroLoader to instantiate basic actions
-	public MacroAction(String name, StaticIcon icon, Key key, Action action) {
+	public MacroAction(String name, UserIcon icon, Key key, Action action) {
 		this.name = name;
 		this.setIcon(icon);
 		keys.add(new Key(KeyEvent.VK_SPACE));
@@ -124,7 +124,7 @@ public class MacroAction implements Serializable {
 		return icon.getImagePath();
 	}
 
-	public void setIcon(StaticIcon icon) {
+	public void setIcon(UserIcon icon) {
 		this.icon = icon;
 	}
 

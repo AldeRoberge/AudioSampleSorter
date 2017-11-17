@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -20,6 +22,8 @@ import logger.Logger;
 /**
  * See ActionEditor
  */
+
+@SuppressWarnings("unchecked")
 public class EditablePropertyPanel extends JPanel {
 
 	private static final String TAG = "EditPropertyPanel";
@@ -33,7 +37,7 @@ public class EditablePropertyPanel extends JPanel {
 
 	//
 
-	public EditablePropertyPanel(EditableProperty property) {
+	public EditablePropertyPanel(EditableProperty<?> property) {
 
 		propertyToEdit = property;
 
@@ -52,7 +56,7 @@ public class EditablePropertyPanel extends JPanel {
 			ActionListener act = new ActionListener() {
 				public void actionPerformed(ActionEvent actionEvent) {
 					Logger.logInfo(TAG, "setNewValue : boolean");
-					propertyToEdit.setValue(chckbxNewCheckBox.isSelected());
+					propertyToEdit.setValue((Boolean) chckbxNewCheckBox.isSelected());
 				}
 			};
 			chckbxNewCheckBox.addActionListener(act);
@@ -67,38 +71,34 @@ public class EditablePropertyPanel extends JPanel {
 			stringInputField.setBounds(80, 13, 135, 22);
 			stringInputField.setColumns(10);
 			stringInputField.grabFocus();
+			stringInputField.setText((String) propertyToEdit.getValue());
 
 			stringInputField.getDocument().addDocumentListener(new DocumentListener() {
 
 				@Override
 				public void removeUpdate(DocumentEvent e) {
-					// TODO Auto-generated method stub
+					updateValue();
 				}
 
 				@Override
 				public void insertUpdate(DocumentEvent e) {
-					// TODO Auto-generated method stub
+					updateValue();
 				}
 
 				@Override
 				public void changedUpdate(DocumentEvent e) {
-					// TODO Auto-generated method stub
+					updateValue();
 				}
-			});
 
-			stringInputField.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent ev) {
-					System.out.println("Enter pressed");
+				public void updateValue() {
+					propertyToEdit.setValue(stringInputField.getText());
 				}
+
 			});
 
 			add(stringInputField);
 
-		} else if (propertyToEdit.ID == EditableProperty.INT_ID) { // JTEXTFIELD
-																	// that only
-																	// accepts
-																	// ints
+		} else if (propertyToEdit.ID == EditableProperty.INT_ID) { // JTEXTFIELD that only accepts ints
 
 			setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -109,12 +109,39 @@ public class EditablePropertyPanel extends JPanel {
 			JTextField intInputField = new JTextField();
 			intInputField.setBounds(80, 13, 135, 22);
 			intInputField.setColumns(10);
+			intInputField.setText(propertyToEdit.getValue().toString());
 
-			intInputField.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent ev) {
-					System.out.println("Enter pressed");
+			intInputField.addKeyListener(new KeyAdapter() { //Consume non integers
+				public void keyTyped(KeyEvent e) {
+					char c = e.getKeyChar();
+					if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+						getToolkit().beep();
+						e.consume();
+					}
 				}
+			});
+
+			intInputField.getDocument().addDocumentListener(new DocumentListener() {
+
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					updateValue();
+				}
+
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					updateValue();
+				}
+
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					updateValue();
+				}
+
+				public void updateValue() {
+					propertyToEdit.setValue(Integer.parseInt((String) intInputField.getText()));
+				}
+
 			});
 
 			add(intInputField);

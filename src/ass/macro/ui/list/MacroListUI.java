@@ -34,7 +34,7 @@ public class MacroListUI extends JPanel {
 
 		this.m = m;
 
-		setBounds(0, 0, 355, 272);
+		setBounds(0, 0, 355, 310);
 
 		setLayout(null);
 
@@ -43,7 +43,7 @@ public class MacroListUI extends JPanel {
 		// list
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 355, 248);
+		scrollPane.setBounds(0, 0, 355, 286);
 		scrollPane.setAutoscrolls(true);
 		
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -64,7 +64,7 @@ public class MacroListUI extends JPanel {
 				m.showMacroListUI(null); //null because theres no panel to edit
 			}
 		});
-		btnAdd.setBounds(0, 247, 355, 25);
+		btnAdd.setBounds(0, 286, 355, 25);
 		add(btnAdd);
 
 		setVisible(true);

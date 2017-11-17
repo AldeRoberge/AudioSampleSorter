@@ -1,7 +1,7 @@
 package ass.icons.iconChooser;
 
-import ass.icons.StaticIcon;
+import ass.icons.UserIcon;
 
 public interface GetIcon {
-	void GetResponse(StaticIcon icon);
+	void GetResponse(UserIcon icon);
 }
