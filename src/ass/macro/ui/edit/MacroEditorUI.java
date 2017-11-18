@@ -94,8 +94,6 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				m.getToolBar().repopulate();
-
 				if (newKeyBind) {
 					newKeyBind = false;
 					Logger.logInfo(TAG, "Creating new KeyBind");
@@ -117,6 +115,8 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 				m.macroLoader.serialise(); //just save
 
 				m.showMacroEditUI();
+
+				m.getToolBar().repopulate();
 			}
 		});
 		btnAdd.setBounds(12, 272, 330, 25);

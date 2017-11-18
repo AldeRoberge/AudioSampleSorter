@@ -44,7 +44,6 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableRowSorter;
 
 import ass.constants.Constants;
 import ass.icons.Icons;
@@ -65,9 +64,6 @@ public class FileManager extends JPanel {
 
 	/** Provides nice icons and names for files. */
 	private FileSystemView fileSystemView;
-
-	/** currently selected File. */
-	private File currentFile;
 
 	/** Directory listing */
 	private JTable table;
@@ -92,7 +88,6 @@ public class FileManager extends JPanel {
 		JPanel detailView = new JPanel(new BorderLayout(3, 3));
 
 		table = new JTable();
-
 		table.setRowSelectionAllowed(true);
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.setAutoCreateRowSorter(true);
@@ -112,34 +107,37 @@ public class FileManager extends JPanel {
 			public void valueChanged(ListSelectionEvent e) {
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 
-				int firstIndex = e.getFirstIndex();
-				int lastIndex = e.getLastIndex();
 				boolean isAdjusting = e.getValueIsAdjusting();
-				Logger.logInfo(TAG, "Event for indexes " + firstIndex + " - " + lastIndex + "; isAdjusting is " + isAdjusting + "; selected indexes:");
 
 				if (!lsm.isSelectionEmpty()) {
 					// Find out which indexes are selected.
 					int minIndex = lsm.getMinSelectionIndex();
 					int maxIndex = lsm.getMaxSelectionIndex();
 
-					ArrayList<File> files = new ArrayList<File>();
+					ArrayList<File> selectedFiles = new ArrayList<File>();
 
 					for (int i = minIndex; i <= maxIndex; i++) {
 						if (lsm.isSelectedIndex(i)) {
 
-							files.add(((FileTableModel) table.getModel()).getFile(i));
+							//Fixes row being incorrect after sorting
+							int row = table.convertRowIndexToModel(i);
+
+							selectedFiles.add(fileTableModel.getFile(row));
+
+							//
 						}
 					}
 
 					if (!isAdjusting) {
-						if (files.size() == 1) { //amount of selected files == 1
+						if (selectedFiles.size() == 1) { //amount of selected files == 1
 
-							int row = table.getSelectionModel().getLeadSelectionIndex();
-							openFileManager.setSelectedFile(((FileTableModel) table.getModel()).getFile(row));
+							File selecteFiled = selectedFiles.get(0);
 
-						} else if (files.size() > 1) { //more than 1 selected file
+							openFileManager.setSelectedFile(selecteFiled);
 
-							openFileManager.setSelectedFiles(files);
+						} else if (selectedFiles.size() > 1) { //more than 1 selected file
+
+							openFileManager.setSelectedFiles(selectedFiles);
 
 						}
 					}
@@ -360,32 +358,5 @@ class CellRenderer extends DefaultTableCellRenderer {
 		this.setFont(this.getFont().deriveFont(Font.BOLD));
 		//}
 		return this;
-	}
-}
-
-class SharedListSelectionHandler implements ListSelectionListener {
-	private static final String TAG = "SharedListSelectionHandler";
-
-	public void valueChanged(ListSelectionEvent e) {
-		ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-
-		int firstIndex = e.getFirstIndex();
-		int lastIndex = e.getLastIndex();
-		boolean isAdjusting = e.getValueIsAdjusting();
-		Logger.logInfo(TAG, "Event for indexes " + firstIndex + " - " + lastIndex + "; isAdjusting is " + isAdjusting + "; selected indexes:");
-
-		if (lsm.isSelectionEmpty()) {
-			Logger.logInfo(TAG, " <none>");
-		} else {
-			// Find out which indexes are selected.
-			int minIndex = lsm.getMinSelectionIndex();
-			int maxIndex = lsm.getMaxSelectionIndex();
-			for (int i = minIndex; i <= maxIndex; i++) {
-				if (lsm.isSelectedIndex(i)) {
-					Logger.logInfo(TAG, " " + i);
-				}
-			}
-		}
-
 	}
 }

@@ -1,2 +1,2 @@
 # SampleSorter
-A simple and pure Java audio sample sorter
+A simple audio sample sorter
