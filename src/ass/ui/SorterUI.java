@@ -44,7 +44,7 @@ public class SorterUI extends JFrame {
 
 	public FileVisualiser openFileManager = new FileVisualiser();
 
-	private Container console = new Container("Console", Icons.CONSOLE.getImage(), new LogUI(), true);
+	private Container logger = new Container("Log", Icons.LOGGER.getImage(), new LogUI(), true);
 	private Container settings = new Container("Settings", Icons.SETTINGS.getImage(), new SettingsUI(openFileManager.getAudioPlayer()), false);
 	private Container credits = new Container("Credits", Icons.ABOUT.getImage(), new CreditsPanel(), true);
 
@@ -182,12 +182,12 @@ public class SorterUI extends JFrame {
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 
-		JMenuItem mntmConsole = new JMenuItem(new AbstractAction("Debugger Console") {
+		JMenuItem mntmConsole = new JMenuItem(new AbstractAction("Show Log") {
 			public void actionPerformed(ActionEvent e) {
-				showConsole(true, true);
+				showLogger(true, true);
 			}
 		});
-		mntmConsole.setIcon(Icons.CONSOLE.getImageIcon());
+		mntmConsole.setIcon(Icons.LOGGER.getImageIcon());
 		mnHelp.add(mntmConsole);
 
 		// Help : About
@@ -308,8 +308,8 @@ public class SorterUI extends JFrame {
 		return toggleVisibility(settings, forceState, newState);
 	}
 
-	public boolean showConsole(boolean forceState, boolean newState) {
-		return toggleVisibility(console, forceState, newState);
+	public boolean showLogger(boolean forceState, boolean newState) {
+		return toggleVisibility(logger, forceState, newState);
 	}
 
 	/**

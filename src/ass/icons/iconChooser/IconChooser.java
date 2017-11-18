@@ -19,14 +19,19 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import ass.icons.Icons;
 import ass.icons.UserIcon;
-import ass.macro.ui.edit.ToolBarButton;
 import logger.Logger;
 import ui.MiddleOfTheScreen;
 import ui.WrapLayout;
+import javax.swing.JLabel;
+import java.awt.Component;
+import javax.swing.Box;
 
 public class IconChooser extends JFrame {
 
@@ -39,6 +44,8 @@ public class IconChooser extends JFrame {
 
 	public final Font font = new Font("Segoe UI Light", Font.PLAIN, 13);
 
+	private String searchForValue = "";
+
 	/**
 	 * Create the frame.
 	 */
@@ -47,7 +54,6 @@ public class IconChooser extends JFrame {
 		setIconImage(Icons.ICON_CHOOSER.getImage());
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -56,6 +62,9 @@ public class IconChooser extends JFrame {
 		});
 
 		setBounds(100, 100, 450, 300);
+
+		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
+
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -66,6 +75,7 @@ public class IconChooser extends JFrame {
 		content.setLayout(new BorderLayout(0, 0));
 
 		JScrollPane iconScrollpane = new JScrollPane();
+		iconScrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		content.add(iconScrollpane, BorderLayout.CENTER);
 		iconScrollpane.getVerticalScrollBar().setUnitIncrement(16);
 
@@ -108,6 +118,53 @@ public class IconChooser extends JFrame {
 		btnOpenContainingFolder.setIcon(Icons.ABOUT.getImageIcon());
 		importPanel.add(btnOpenContainingFolder);
 
+		JPanel panel = new JPanel();
+		content.add(panel, BorderLayout.SOUTH);
+		panel.setLayout(new BorderLayout(0, 0));
+
+		JTextField searchFor = new JTextField();
+
+		searchFor.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				updateValue();
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				updateValue();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				updateValue();
+			}
+
+			public void updateValue() {
+				System.out.println(searchFor.getText());
+
+				searchForValue = searchFor.getText();
+
+				populate();
+			}
+
+		});
+
+		panel.add(searchFor);
+
+		JPanel panel_1 = new JPanel();
+		panel.add(panel_1, BorderLayout.WEST);
+
+		Component horizontalStrut = Box.createHorizontalStrut(5);
+		panel_1.add(horizontalStrut);
+
+		JLabel lblSearchForLabel = new JLabel("Search for :");
+		panel_1.add(lblSearchForLabel);
+
+		Component horizontalStrut_1 = Box.createHorizontalStrut(5);
+		panel_1.add(horizontalStrut_1);
+
 		populate();
 	}
 
@@ -121,21 +178,23 @@ public class IconChooser extends JFrame {
 
 		for (UserIcon i : Icons.images) {
 
-			JPanel icon = new JPanel();
-			icon.setLayout(new FlowLayout());
-			iconsPanel.add(icon);
+			if (i.containsString(searchForValue)) {
+				JPanel icon = new JPanel();
+				icon.setLayout(new FlowLayout());
+				iconsPanel.add(icon);
 
-			ToolBarButton selectThisIcon = new ToolBarButton(i);
-			selectThisIcon.setFont(font);
-			selectThisIcon.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					//selectThisIcon.getIcon(), 
+				IconChooserButton selectThisIcon = new IconChooserButton(i);
+				selectThisIcon.setFont(font);
+				selectThisIcon.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						//selectThisIcon.getIcon(), 
 
-					waitingForAnswer.GetResponse(selectThisIcon.getStaticIcon());
-					setVisible(false);
-				}
-			});
-			icon.add(selectThisIcon);
+						waitingForAnswer.GetResponse(selectThisIcon.getStaticIcon());
+						setVisible(false);
+					}
+				});
+				icon.add(selectThisIcon);
+			}
 
 		}
 

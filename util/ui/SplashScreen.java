@@ -158,12 +158,6 @@ public class SplashScreen {
 							((Timer) e.getSource()).stop();
 							alpha = 0f;
 
-							try {
-								Thread.sleep(1618);
-							} catch (InterruptedException e1) {
-								e1.printStackTrace();
-							}
-
 							close.run();
 						} else {
 							alpha = 1f - ((float) duration / (float) RUNNING_TIME);

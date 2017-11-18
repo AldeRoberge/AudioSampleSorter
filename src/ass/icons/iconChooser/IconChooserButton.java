@@ -1,14 +1,14 @@
-package ass.macro.ui.edit;
+package ass.icons.iconChooser;
 
 import javax.swing.JButton;
 
 import ass.icons.UserIcon;
 
-public class ToolBarButton extends JButton {
+public class IconChooserButton extends JButton {
 
 	private UserIcon staticIcon;
 
-	public ToolBarButton(UserIcon i) {
+	public IconChooserButton(UserIcon i) {
 		super();
 
 		staticIcon = i;

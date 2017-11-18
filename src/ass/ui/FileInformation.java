@@ -72,6 +72,9 @@ public class FileInformation extends JPanel {
 
 	/** Update the File details view with the details of this File. */
 	void setFileDetails(File file) {
+		
+		System.out.println(file.getName());
+		
 		//currentFile = file;
 		Icon icon = fileSystemView.getSystemIcon(file);
 		fileName.setIcon(icon);

@@ -7,8 +7,11 @@ import javax.swing.JPanel;
 
 import ass.constants.Constants;
 import ass.property.Properties;
+import logger.Logger;
 
 public class AudioVisualizer {
+
+	private static final String TAG = "AudioVisualizer";
 
 	private static String status;
 
@@ -19,7 +22,7 @@ public class AudioVisualizer {
 	public SpectrumTimeAnalyzer analyzer;
 
 	public void setStatus(String newStatus) {
-		System.out.println(newStatus);
+		Logger.logInfo(TAG, newStatus);
 		status = newStatus;
 	}
 
@@ -43,18 +46,18 @@ public class AudioVisualizer {
 		status = Properties.SPECTRUM_ANALYZER_STATUS.getValue();
 
 		switch (status) {
-			case OFF:
-				analyzer.setDisplayMode(SpectrumTimeAnalyzer.DISPLAY_MODE_OFF);
-				break;
-			case OSCILLO:
-				analyzer.setDisplayMode(SpectrumTimeAnalyzer.DISPLAY_MODE_SCOPE);
-				break;
-			case SPECTRUM:
-				analyzer.setDisplayMode(SpectrumTimeAnalyzer.DISPLAY_MODE_SPECTRUM_ANALYSER);
-				break;
-			default:
-				analyzer.setDisplayMode(SpectrumTimeAnalyzer.DISPLAY_MODE_SPECTRUM_ANALYSER);
-				break;
+		case OFF:
+			analyzer.setDisplayMode(SpectrumTimeAnalyzer.DISPLAY_MODE_OFF);
+			break;
+		case OSCILLO:
+			analyzer.setDisplayMode(SpectrumTimeAnalyzer.DISPLAY_MODE_SCOPE);
+			break;
+		case SPECTRUM:
+			analyzer.setDisplayMode(SpectrumTimeAnalyzer.DISPLAY_MODE_SPECTRUM_ANALYSER);
+			break;
+		default:
+			analyzer.setDisplayMode(SpectrumTimeAnalyzer.DISPLAY_MODE_SPECTRUM_ANALYSER);
+			break;
 		}
 
 		analyzer.setSpectrumAnalyserBandCount(19);

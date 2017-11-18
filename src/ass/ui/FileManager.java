@@ -17,23 +17,39 @@
  */
 package ass.ui;
 
-import file.FileSizeToString;
-import ass.constants.Constants;
-import ass.icons.Icons;
-import file.ObjectSerializer;
-import logger.Logger;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
-import java.awt.*;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
+import javax.swing.table.TableRowSorter;
+
+import ass.constants.Constants;
+import ass.icons.Icons;
+import file.ObjectSerializer;
+import logger.Logger;
 
 /**
  * Credits :
@@ -87,6 +103,9 @@ public class FileManager extends JPanel {
 		fileTableModel = new FileTableModel();
 		table.setModel(fileTableModel);
 
+		//set font bold for column 1 (see CellRenderer at the bottom of this class)
+		table.getColumnModel().getColumn(1).setCellRenderer(new CellRenderer());
+
 		listSelectionListener = new ListSelectionListener() {
 
 			@Override
@@ -98,13 +117,7 @@ public class FileManager extends JPanel {
 				boolean isAdjusting = e.getValueIsAdjusting();
 				Logger.logInfo(TAG, "Event for indexes " + firstIndex + " - " + lastIndex + "; isAdjusting is " + isAdjusting + "; selected indexes:");
 
-				if (isAdjusting == false) {
-
-				}
-
-				if (lsm.isSelectionEmpty()) {
-					Logger.logInfo(TAG, " <none>");
-				} else {
+				if (!lsm.isSelectionEmpty()) {
 					// Find out which indexes are selected.
 					int minIndex = lsm.getMinSelectionIndex();
 					int maxIndex = lsm.getMaxSelectionIndex();
@@ -113,7 +126,6 @@ public class FileManager extends JPanel {
 
 					for (int i = minIndex; i <= maxIndex; i++) {
 						if (lsm.isSelectedIndex(i)) {
-							Logger.logInfo(TAG, " " + i);
 
 							files.add(((FileTableModel) table.getModel()).getFile(i));
 						}
@@ -121,15 +133,14 @@ public class FileManager extends JPanel {
 
 					if (!isAdjusting) {
 						if (files.size() == 1) { //amount of selected files == 1
-							Logger.logInfo(TAG, "1 file");
 
 							int row = table.getSelectionModel().getLeadSelectionIndex();
-							openFileManager.setFileSelected(((FileTableModel) table.getModel()).getFile(row));
-						} else if (files.size() > 1) {
-							Logger.logInfo(TAG, "more than 1 file");
+							openFileManager.setSelectedFile(((FileTableModel) table.getModel()).getFile(row));
 
-							int row = table.getSelectionModel().getLeadSelectionIndex();
-							openFileManager.setFilesSelected(files);
+						} else if (files.size() > 1) { //more than 1 selected file
+
+							openFileManager.setSelectedFiles(files);
+
 						}
 					}
 
@@ -144,8 +155,6 @@ public class FileManager extends JPanel {
 		Dimension d = tableScroll.getPreferredSize();
 		tableScroll.setPreferredSize(new Dimension((int) d.getWidth(), (int) d.getHeight() / 2));
 		detailView.add(tableScroll, BorderLayout.CENTER);
-
-		// detailView.add(fileView, BorderLayout.SOUTH);
 
 		add(detailView, BorderLayout.CENTER);
 
@@ -203,7 +212,7 @@ public class FileManager extends JPanel {
 				table.getSelectionModel().addListSelectionListener(listSelectionListener);
 				if (!cellSizesSet) {
 
-					int rowHeight = 16;
+					int rowHeight = 32;
 
 					// size adjustment to better account for icons
 					table.setRowHeight(rowHeight); //TODO make this an editeable property
@@ -285,7 +294,7 @@ class FileTableModel extends AbstractTableModel {
 		case 2:
 			return file.getPath();
 		case 3:
-			return FileSizeToString.getFileSizeAsString(file);
+			return file.length();
 		case 4:
 			return file.lastModified();
 		default:
@@ -336,6 +345,22 @@ class FileTableModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
+}
+
+class CellRenderer extends DefaultTableCellRenderer {
+
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+		// if (value>17 value<26) {
+		this.setValue(table.getValueAt(row, column));
+		this.setFont(this.getFont().deriveFont(Font.BOLD));
+		//}
+		return this;
+	}
 }
 
 class SharedListSelectionHandler implements ListSelectionListener {

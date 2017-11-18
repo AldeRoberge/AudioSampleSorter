@@ -19,6 +19,8 @@ public class FileVisualiser extends FileInformation {
 
 	private AudioPlayer audPlayer = new AudioPlayer();
 
+	public static ArrayList<File> selectedFiles = new ArrayList<File>();
+
 	public FileVisualiser() {
 		super();
 
@@ -28,7 +30,10 @@ public class FileVisualiser extends FileInformation {
 		playerContainer.add(audPlayer.getVisualizer().analyzer, BorderLayout.CENTER);
 	}
 
-	public void setFileSelected(File file) {
+	public void setSelectedFile(File file) {
+
+		selectedFiles.clear();
+		selectedFiles.add(file);
 
 		setFileDetails(file);
 
@@ -46,11 +51,9 @@ public class FileVisualiser extends FileInformation {
 
 	}
 
-	public void setFilesSelected(ArrayList<File> files) {
-
+	public void setSelectedFiles(ArrayList<File> files) {
+		selectedFiles = files;
 		setFilesDetails(files);
-
-		//Do not play the sound
 
 	}
 

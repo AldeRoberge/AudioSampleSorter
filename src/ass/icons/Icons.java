@@ -47,7 +47,7 @@ public class Icons {
 	public static final UserIcon ABOUT = new UserIcon(LOCATION_OF_ICONS + "question-sign.png");
 	public static final UserIcon MACROS = new UserIcon(LOCATION_OF_ICONS + "keyboard.png");
 	public static final UserIcon SETTINGS = new UserIcon(LOCATION_OF_ICONS + "cog-wheel-silhouette.png");
-	public static final UserIcon CONSOLE = new UserIcon(LOCATION_OF_ICONS + "terminal.png");
+	public static final UserIcon LOGGER = new UserIcon(LOCATION_OF_ICONS + "terminal.png");
 	public static final UserIcon IMPORT = new UserIcon(LOCATION_OF_ICONS + "folder-plus.png");
 	public static final UserIcon PENCIL = new UserIcon(LOCATION_OF_ICONS + "edit-interface-sign.png");
 	public static final UserIcon EXIT = new UserIcon(LOCATION_OF_ICONS + "exit.png");

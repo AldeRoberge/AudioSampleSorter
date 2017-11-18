@@ -30,10 +30,11 @@ public class MacroActionPanel extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 
-		JLabel lblAction = new JLabel(action.toString());
-		lblAction.setFont(new Font("Segoe UI Light", Font.BOLD, 14));
-		lblAction.setBounds(12, 0, 150, 19);
-		panel.add(lblAction);
+		JLabel lblTitle = new JLabel(action.toString());
+		lblTitle.setFont(new Font("Segoe UI Light", Font.BOLD, 14));
+		lblTitle.setBounds(12, 0, 259, 19);
+		lblTitle.setToolTipText(action.getDescription());
+		panel.add(lblTitle);
 
 		JButton btnRemove = new JButton("X");
 		btnRemove.setForeground(Color.RED);

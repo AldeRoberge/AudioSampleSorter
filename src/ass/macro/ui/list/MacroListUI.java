@@ -45,7 +45,7 @@ public class MacroListUI extends JPanel {
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 355, 286);
 		scrollPane.setAutoscrolls(true);
-		
+
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		add(scrollPane);
 

@@ -6,22 +6,20 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.sun.istack.Nullable;
+
 public class Logger {
 
-	private static LogUI panel;
+	private static LogUI logUI;
 
-	private static ArrayList<Log> bufferedLogs = new ArrayList<Log>();
+	public static ArrayList<Log> bufferedLogs = new ArrayList<Log>();
 
-	private static final int IMPORTANT_INFO = 0;
-	private static final int WARNING = 1;
-	private static final int ERROR = 2;
-
-	private static final String IMPORTANT_INFO_NAME = "Information";
-	private static final String WARNING_NAME = "Warning";
-	private static final String ERROR_NAME = "Fatal Error";
-
+	/**
+	 * Used by the UI to create the logger after creating the LogUI panel
+	 * After creating LogUI, we do Logger.init(this);
+	 */
 	public static void init(LogUI panel) {
-		Logger.panel = panel;
+		Logger.logUI = panel;
 	}
 
 	private Logger() {
@@ -31,35 +29,35 @@ public class Logger {
 
 	public static void logInfo(String tag, String message) { // log info
 
-		log(IMPORTANT_INFO, tag, message, null);
+		log(Log.IMPORTANT_INFO, tag, message, null);
 	}
 
 	public static void logWarning(String tag, String message) { // log warning
 
-		log(WARNING, tag, message, null);
+		log(Log.WARNING, tag, message, null);
 	}
 
 	public static void logWarning(String tag, String message, Throwable e) { // log warning with exception
 
-		log(WARNING, tag, message, e);
+		log(Log.WARNING, tag, message, e);
 	}
 
 	public static void logError(String tag, String message) { // log error
 
-		log(ERROR, tag, message, null);
+		log(Log.ERROR, tag, message, null);
 
 	}
 
 	public static void logErrorAndPrintstackTrace(String tag, String message) { // log error
 
-		log(ERROR, tag, message, null);
+		log(Log.ERROR, tag, message, null);
 		new Exception(message).printStackTrace();
 
 	}
 
 	public static void logError(String tag, String message, Throwable e) { // log error with exception
 
-		log(ERROR, tag, message, e);
+		log(Log.ERROR, tag, message, e);
 	}
 
 	/***
@@ -73,46 +71,20 @@ public class Logger {
 			System.err.println("[" + tag + "] " + message);
 		}
 
-		Timestamp now = new Timestamp(new Date().getTime());
+		Log log = new Log(severityLevel, tag, message, sTTS(e));
 
-		Log log = new Log();
-		log.severity = severityLevel;
-		log.tag = tag;
-		log.message = message;
-		log.time = now;
-
-		if (e != null) {
-			log.error = sTTS(e);
-		} else {
-			log.error = "";
-		}
-
-		if (panel == null) {
+		if (logUI == null) {
 			bufferedLogs.add(log);
 		} else {
-			if (bufferedLogs.size() != 0) {
-				for (Log bufferedLog : bufferedLogs) {
-					panel.addLogInfoPanel(bufferedLog);
-				}
 
-				bufferedLogs.clear();
+			for (Log l : bufferedLogs) {
+				logUI.addLog(l);
 			}
+			bufferedLogs.clear();
 
-			panel.addLogInfoPanel(log);
+			logUI.addLog(log);
 		}
 
-	}
-
-	public static String logTypeToString(int type) {
-		if (type == IMPORTANT_INFO) {
-			return IMPORTANT_INFO_NAME;
-		} else if (type == WARNING) {
-			return WARNING_NAME;
-		} else if (type == ERROR) {
-			return ERROR_NAME;
-		}
-
-		return "Unkwon tag";
 	}
 
 	public void saveToFile(Log e) {
@@ -120,17 +92,22 @@ public class Logger {
 	}
 
 	/**
-	 * @return t's stacktrace to a string with \n
+	 * @return t's stacktrace to a string with \n, will return null if t is null
 	 */
 	private static String sTTS(Throwable t) {
 
-		StringBuilder sb = new StringBuilder(t.toString());
-		for (StackTraceElement ste : t.getStackTrace()) {
-			sb.append("\n\tat ");
-			sb.append(ste);
-		}
+		if (t == null) { //Quick fail
+			return null;
+		} else {
 
-		return sb.toString();
+			StringBuilder sb = new StringBuilder(t.toString());
+			for (StackTraceElement ste : t.getStackTrace()) {
+				sb.append("\n\tat ");
+				sb.append(ste);
+			}
+
+			return sb.toString();
+		}
 	}
 
 }
