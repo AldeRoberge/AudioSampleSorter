@@ -1,0 +1,310 @@
+package ass;
+
+import ass.ui.Credits;
+import ass.file.Manager;
+import ass.ui.Settings;
+import ass.file.ToolBar;
+import constants.Constants;
+import icons.Icons;
+import ass.keyboard.macro.MacroEditor;
+import ass.keyboard.macro.MacroLoader;
+import constants.Properties;
+import ui.BasicContainer;
+import logger.LogUI;
+import logger.Logger;
+import ui.MiddleOfTheScreen;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class ASS extends JFrame {
+
+	private static final String TAG = Constants.SOFTWARE_NAME;
+
+	public MacroEditor macroEditor = new MacroEditor();
+
+	public Manager fMan;
+
+	private BasicContainer logger = new BasicContainer("Log", Icons.LOGGER.getImage(), new LogUI(), true);
+	private BasicContainer settings;
+	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new Credits(), true);
+
+	public ToolBar toolBar = new ToolBar(macroEditor);
+
+	//Actual UI
+
+	/**
+	 * Create the frame.
+	 */
+	public ASS() {
+
+		fMan = new Manager();
+
+		MacroLoader.registerWaitingForMacroChanges(fMan);
+		MacroLoader.registerWaitingForMacroChanges(toolBar);
+
+		settings = new BasicContainer("Settings", Icons.SETTINGS.getImage(), new Settings(fMan), false);
+
+		//
+
+		System.setProperty("sun.awt.noerasebackground", "true"); //Suposed to reduce flicker on manual window resize
+
+		setResizable(true);
+		setBackground(Color.WHITE);
+		setTitle(Constants.SOFTWARE_NAME);
+		setBounds(100, 100, 655, 493);
+		setSize(new Dimension(605, 500));
+		setIconImage(Icons.SOFTWARE_ICON.getImage());
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
+
+		try {
+
+			UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Times New Roman", Font.BOLD, 14));
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+		} catch (Exception weTried) {
+			weTried.printStackTrace();
+		}
+
+		//
+
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent we) {
+
+				if (Properties.PROMPT_ON_EXIT.getValueAsBoolean()) {
+					String ObjButtons[] = { "Yes", "No" };
+					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+							Icons.ABOUT.getImageIcon(), ObjButtons, ObjButtons[1]);
+					if (PromptResult == JOptionPane.YES_OPTION) {
+						System.exit(0);
+					}
+				} else {
+					System.exit(0);
+				}
+			}
+		});
+
+		/** Menu bar */
+
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+
+		/** File */
+
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+
+		// File, Import
+
+		JMenuItem mntmImport = new JMenuItem(new AbstractAction("Import audio files...") {
+			public void actionPerformed(ActionEvent e) {
+				Logger.logInfo(TAG, "Importing...");
+				fMan.showFileImporter();
+			}
+		});
+
+		mntmImport.setIcon(Icons.IMPORT.getImageIcon());
+		mnFile.add(mntmImport);
+
+		// File (Separator)
+
+		mnFile.addSeparator();
+
+		//File, Exit
+
+		JMenuItem mnExit = new JMenuItem(new AbstractAction("Exit") {
+			public void actionPerformed(ActionEvent e) {
+				Logger.logInfo(TAG, "Exiting...");
+				System.exit(0);
+			}
+		});
+		mnExit.setIcon(Icons.EXIT.getImageIcon());
+		mnFile.add(mnExit);
+
+		//Edit
+
+		JMenu mnEdit = new JMenu("Edit");
+		menuBar.add(mnEdit);
+
+		JMenuItem mntmMacros = new JMenuItem(new AbstractAction("Edit Macros") {
+			public void actionPerformed(ActionEvent e) {
+				showEditMacros(true, true);
+			}
+
+		});
+		mntmMacros.setIcon(Icons.MACROS.getImageIcon());
+		mnEdit.add(mntmMacros);
+
+		//Edit, Settings
+
+		JMenuItem mntmSettings = new JMenuItem(new AbstractAction("Settings") {
+			public void actionPerformed(ActionEvent e) {
+				showSettings(true, true);
+			}
+
+		});
+		mntmSettings.setIcon(Icons.SETTINGS.getImageIcon());
+		mnEdit.add(mntmSettings);
+
+		//Help
+
+		JMenu mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
+
+		JMenuItem mntmConsole = new JMenuItem(new AbstractAction("Show Log") {
+			public void actionPerformed(ActionEvent e) {
+				showLogger(true, true);
+			}
+		});
+		mntmConsole.setIcon(Icons.LOGGER.getImageIcon());
+		mnHelp.add(mntmConsole);
+
+		// Help : About
+
+		JMenuItem mntmAbout = new JMenuItem(new AbstractAction("About") {
+			public void actionPerformed(ActionEvent e) {
+				showCredits(true, true);
+			}
+		});
+		mntmAbout.setIcon(Icons.ABOUT.getImageIcon());
+		mnHelp.add(mntmAbout);
+
+		getContentPane().add(fMan.fileVisualiser, BorderLayout.SOUTH);
+
+		/** End of menus */
+
+		//
+
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		splitPane.setResizeWeight(0.90);
+		splitPane.setDividerLocation(Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION.getValueAsInt());
+		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent pce) {
+				Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION.setNewValue((((Integer) pce.getNewValue()).intValue()) + "");
+			}
+		});
+		BorderLayout borderLayout = (BorderLayout) fMan.getLayout();
+		borderLayout.setVgap(1);
+		borderLayout.setHgap(1);
+
+		//fMan
+		splitPane.setTopComponent(fMan);
+
+		//
+
+		JPanel container = new JPanel();
+
+		splitPane.setBottomComponent(container);
+		container.setLayout(new BorderLayout(0, 0));
+
+		JScrollPane toolBarContainer = new JScrollPane();
+		toolBarContainer.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		toolBarContainer.setPreferredSize(new Dimension(10, 35));
+		container.add(toolBarContainer, BorderLayout.NORTH);
+		toolBarContainer.setViewportView(toolBar);
+
+		container.add(fMan.fileVisualiser.getPlayer(), BorderLayout.CENTER);
+
+		getContentPane().add(splitPane, BorderLayout.CENTER);
+
+		addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+
+				macroEditor.globalKeyListener.isListenningForInputs = true;
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				macroEditor.globalKeyListener.isListenningForInputs = false;
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				macroEditor.globalKeyListener.isListenningForInputs = false;
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				macroEditor.globalKeyListener.isListenningForInputs = true;
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				macroEditor.globalKeyListener.isListenningForInputs = true;
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				macroEditor.globalKeyListener.isListenningForInputs = false;
+			}
+
+			@Override
+			public void windowGainedFocus(WindowEvent e) {
+				macroEditor.globalKeyListener.isListenningForInputs = true;
+			}
+
+			@Override
+			public void windowLostFocus(WindowEvent e) {
+				macroEditor.globalKeyListener.isListenningForInputs = false;
+			}
+		});
+
+		if (Properties.FIRST_LAUNCH.getValueAsBoolean()) {
+			Properties.FIRST_LAUNCH.setNewValue(false);
+			showCredits(true, true);
+		}
+	}
+
+	/**
+	 * @param forceState enforce new visibility state (if is set to false, component will switch visibility)
+	 * @param newState new state of visiblity (if forceState set to false, newState is invalidated)
+	 * @return
+	 */
+	public boolean showCredits(boolean forceState, boolean newState) {
+		return toggleVisibility(credits, forceState, newState);
+	}
+
+	public boolean showEditMacros(boolean forceState, boolean newState) {
+		return toggleVisibility(macroEditor, forceState, newState);
+	}
+
+	public boolean showSettings(boolean forceState, boolean newState) {
+		return toggleVisibility(settings, forceState, newState);
+	}
+
+	public boolean showLogger(boolean forceState, boolean newState) {
+		return toggleVisibility(logger, forceState, newState);
+	}
+
+	/**
+	 * @param c Component to toggleVisibility on
+	 * @param forceState If we should force the new visiblity state
+	 * @param newState New state (true == set to visible)
+	 * @return returns the new state of the component (true == now visible)
+	 */
+	public boolean toggleVisibility(Component c, boolean forceState, boolean newState) {
+
+		if (forceState == true) {
+			c.setVisible(newState);
+			return newState;
+		} else {
+			if (c.isVisible()) {
+				c.setVisible(false);
+				return false;
+			} else {
+				c.setVisible(true);
+				return true;
+			}
+		}
+	}
+}

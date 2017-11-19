@@ -3,7 +3,7 @@ package ui;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import ass.constants.Constants;
+import constants.Constants;
 
 import java.awt.*;
 

@@ -2,7 +2,7 @@ package key;
 
 import java.util.ArrayList;
 
-import ass.macro.key.Key;
+import ass.keyboard.key.Key;
 
 public class KeysToString {
 

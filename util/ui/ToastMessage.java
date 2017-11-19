@@ -11,6 +11,9 @@ public class ToastMessage extends JDialog {
 
 	private int milliseconds;
 
+	/**
+	 * Unused
+	 */
 	private ToastMessage(Component comp, String toDisplay, int time, Color backgroundColor, Color textColor) {
 		this.milliseconds = time;
 		setUndecorated(true);

@@ -1,5 +1,4 @@
 package ass;
-
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -7,19 +6,22 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import ass.constants.Constants;
-import ass.icons.Icons;
-import ass.ui.SorterUI;
+import constants.Constants;
+import icons.Icons;
 import logger.Logger;
 import ui.SplashScreen;
 
+/**
+ * Runs ASS with the SplashScreen
+ *
+ */
 public class Run {
 
 	private static final String TAG = "Run";
 
 	public static void main(String[] args) {
 
-		SorterUI sorterUI = new SorterUI();
+		ASS ASS = new ASS();
 
 		final String IMAGE_LOCATION = new File(".").getAbsolutePath() + "/res/splashScreen/";
 		try {
@@ -29,14 +31,14 @@ public class Run {
 			BufferedImage textImage = ImageIO.read(new File(IMAGE_LOCATION + "/TITLE.png"));
 			Image icon = Icons.LOADING_BAR.getImage();
 
-			new SplashScreen(icon, inImage, outImage, textImage, Constants.SOFTWARE_NAME, sorterUI);
+			new SplashScreen(icon, inImage, outImage, textImage, Constants.SOFTWARE_NAME, ASS);
 
 		} catch (IOException e) {
 			Logger.logError(TAG, "Error with SplashScreen!");
 			e.printStackTrace();
-			Logger.logError(TAG, "Starting without splashScreen...");
+			Logger.logError(TAG, "Starting without SplashScreen...");
 
-			sorterUI.setVisible(true);
+			ASS.setVisible(true);
 		}
 	}
 }
