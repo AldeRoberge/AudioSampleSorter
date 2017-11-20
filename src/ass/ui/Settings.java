@@ -1,17 +1,21 @@
 package ass.ui;
 
-import ass.file.Manager;
-import ass.file.player.AudioPlayer;
-import constants.Properties;
-import ui.MiddleOfTheScreen;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import ass.file.Manager;
+import ass.file.player.AudioPlayer;
+import constants.Properties;
+import ui.MiddleOfTheScreen;
 
 public class Settings extends JPanel {
 

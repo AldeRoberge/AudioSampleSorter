@@ -3,11 +3,10 @@ package ass.keyboard.key;
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
 
+//A simple KeyEvent
 public class Key implements Serializable {
 
-	//Like KeyEvent, but with less stuff in it (cauz yknow, reinventing the wheel is cool)
-
-	public int keyCode;
+	private int keyCode;
 	public String keyName;
 
 	public Key(int keyCode) {

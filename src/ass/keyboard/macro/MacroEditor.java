@@ -1,15 +1,18 @@
 package ass.keyboard.macro;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+
+import ass.file.ToolBar;
 import ass.keyboard.key.GlobalKeyListener;
 import ass.keyboard.macro.edit.MacroEditorUI;
 import ass.keyboard.macro.list.MacroListUI;
 import logger.Logger;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 
 /**
  * MacroEditor is the head of the Macro movement
@@ -33,15 +36,17 @@ public class MacroEditor extends JFrame {
 
 	public GlobalKeyListener globalKeyListener;
 
+	private ToolBar toolBar = new ToolBar(this);
+
 	/**
 	 * Used by KeyBindUI press 'Add' -> MacroEditor change view to show -> NewMacroUI
 	 */
 	public void showMacroListUI(MacroAction keyBindToEdit) {
 
-		if (keyBindToEdit != null) {
-			changeTitle("Edit Macro");
-		} else {
+		if (keyBindToEdit == null) {
 			changeTitle("New Macro");
+		} else {
+			changeTitle("Edit Macro");
 		}
 
 		setIconImage(macroEditIcon);
@@ -110,6 +115,10 @@ public class MacroEditor extends JFrame {
 
 	public ArrayList<MacroAction> getAllMacroActions() {
 		return macroLoader.macroActions;
+	}
+
+	public ToolBar getToolbar() {
+		return toolBar;
 	}
 
 }

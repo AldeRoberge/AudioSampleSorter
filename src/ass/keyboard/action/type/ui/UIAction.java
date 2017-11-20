@@ -1,11 +1,11 @@
 package ass.keyboard.action.type.ui;
 
-import ass.keyboard.action.Action;
 import ass.ASS;
+import ass.keyboard.action.Action;
 
 public abstract class UIAction implements Action, Cloneable {
 
-	public ASS ASS;
+	protected ASS ASS;
 
 	public void init(ASS s) {
 		this.ASS = s;

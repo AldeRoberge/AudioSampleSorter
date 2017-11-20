@@ -1,8 +1,9 @@
 package logger;
 
-import javax.swing.JPanel;
-import javax.swing.BoxLayout;
 import java.awt.BorderLayout;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 public class LogUI extends JPanel {

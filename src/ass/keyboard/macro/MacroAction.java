@@ -1,17 +1,17 @@
 package ass.keyboard.macro;
 
-import icons.UserIcon;
-import ass.keyboard.action.Action;
-import ass.keyboard.action.type.file.FileAction;
-import ass.keyboard.action.type.ui.UIAction;
-import ass.keyboard.event.EventManager;
-import ass.keyboard.key.Key;
-import logger.Logger;
-
-import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import javax.swing.Icon;
+
+import ass.keyboard.action.Action;
+import ass.keyboard.action.type.file.FileAction;
+import ass.keyboard.action.type.ui.UIAction;
+import ass.keyboard.key.Key;
+import icons.UserIcon;
+import logger.Logger;
 
 /**
  * MacroAction is key(s) to action(s)
@@ -31,14 +31,16 @@ public class MacroAction implements Serializable {
 	public ArrayList<Action> actionsToPerform = new ArrayList<Action>();
 
 	public boolean showInToolbar = true;
+	public boolean showInMenu = true;
 
 	//Used by MacroLoader to instantiate basic actions
-	public MacroAction(String name, UserIcon icon, Key key, Action action, boolean showInToolBar) {
+	public MacroAction(String name, UserIcon icon, Key key, Action action, boolean showInToolBar, boolean showInMenu) {
 		this.name = name;
 		this.setIcon(icon);
 		this.keys.add(new Key(KeyEvent.VK_SPACE));
 		this.actionsToPerform.add(action);
 		this.showInToolbar = showInToolBar;
+		this.showInMenu = showInMenu;
 	}
 
 	public MacroAction(String name) {
@@ -76,7 +78,7 @@ public class MacroAction implements Serializable {
 
 				clonedAction.perform();
 
-				EventManager.performEvent(clonedAction);
+				//EventManager.performEvent(clonedAction);
 
 			} else if (action instanceof FileAction) {
 
@@ -127,6 +129,5 @@ public class MacroAction implements Serializable {
 	public void setIcon(UserIcon icon) {
 		this.icon = icon;
 	}
-
 
 }

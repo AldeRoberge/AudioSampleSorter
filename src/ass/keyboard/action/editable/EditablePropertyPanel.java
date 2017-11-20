@@ -24,7 +24,7 @@ import logger.Logger;
  */
 
 @SuppressWarnings("unchecked")
-public class EditablePropertyPanel extends JPanel {
+class EditablePropertyPanel extends JPanel {
 
 	private static final String TAG = "EditPropertyPanel";
 
@@ -56,7 +56,7 @@ public class EditablePropertyPanel extends JPanel {
 			ActionListener act = new ActionListener() {
 				public void actionPerformed(ActionEvent actionEvent) {
 					Logger.logInfo(TAG, "setNewValue : boolean");
-					propertyToEdit.setValue((Boolean) chckbxNewCheckBox.isSelected());
+					propertyToEdit.setValue(chckbxNewCheckBox.isSelected());
 				}
 			};
 			chckbxNewCheckBox.addActionListener(act);
@@ -139,7 +139,7 @@ public class EditablePropertyPanel extends JPanel {
 				}
 
 				public void updateValue() {
-					propertyToEdit.setValue(Integer.parseInt((String) intInputField.getText()));
+					propertyToEdit.setValue(Integer.parseInt(intInputField.getText()));
 				}
 
 			});

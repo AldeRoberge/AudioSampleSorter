@@ -6,21 +6,21 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import ass.file.player.AudioPlayer;
+import constants.Constants;
 import file.FileTypes;
 import logger.Logger;
-import constants.Constants;
-import ass.file.player.AudioPlayer;
 import ui.FileInformation;
 
 public class Visualiser extends FileInformation {
 
 	private static final String TAG = "FileVisualiser";
 
-	public JPanel playerContainer;
+	private JPanel playerContainer;
 
 	private AudioPlayer audPlayer = new AudioPlayer();
 
-	public static ArrayList<File> selectedFiles = new ArrayList<File>();
+	private static ArrayList<File> selectedFiles = new ArrayList<File>();
 
 	public Visualiser() {
 		super();

@@ -1,10 +1,10 @@
 package ass.keyboard.action;
 
-import ass.keyboard.action.editable.EditableProperty;
-import logger.Logger;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import ass.keyboard.action.editable.EditableProperty;
+import logger.Logger;
 
 /**
  * Action is a single Action (rename, move, etc) to be performed on a SoundPanel

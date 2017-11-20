@@ -1,12 +1,20 @@
 package ass.keyboard.action.editable;
 
-import ass.keyboard.action.Action;
-import logger.Logger;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import ass.keyboard.action.Action;
+import logger.Logger;
 
 //See MacroEditorUI
 
@@ -25,8 +33,7 @@ public class EditablePropertyEditor extends JFrame {
 	 * Create the frame.
 	 */
 	public EditablePropertyEditor() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(EditablePropertyEditor.class
-				.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Paste-Black@2x.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(EditablePropertyEditor.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Paste-Black@2x.png")));
 		setTitle("Edit Action Property");
 
 		JPanel contentPane = new JPanel();
@@ -64,7 +71,7 @@ public class EditablePropertyEditor extends JFrame {
 
 	}
 
-	// TODO : update this when adding fiels
+	// TODO : update this when adding fields
 	public void changeAction(Action e) {
 
 		clear();

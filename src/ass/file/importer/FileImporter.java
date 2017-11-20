@@ -1,20 +1,22 @@
 package ass.file.importer;
 
-import ass.file.Manager;
-import ui.BasicContainer;
-import constants.Properties;
-import file.FileTypes;
-import icons.Icons;
-import logger.Logger;
-import ui.MiddleOfTheScreen;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.dnd.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -27,16 +29,34 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.TooManyListenersException;
 
+import javax.imageio.ImageIO;
+import javax.swing.Action;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+
+import ass.file.Manager;
+import constants.Properties;
+import file.FileTypes;
+import icons.Icons;
+import logger.Logger;
+import ui.BasicContainer;
+import ui.MiddleOfTheScreen;
+
 public class FileImporter extends JFrame {
 
-	protected static final String TAG = "FileImporter";
+	private static final String TAG = "FileImporter";
 
 	private ArrayList<File> filesToImport = new ArrayList<File>();
 	private DropPane dropPanel;
 	private JButton btnImport;
 
-	public static BasicContainer fileImporterParent = new BasicContainer("This is used to pass the icon to the fileChooser",
-			Icons.IMPORT.getImage(), null, false);
+	public static BasicContainer fileImporterParent = new BasicContainer("This is used to pass the icon to the fileChooser", Icons.IMPORT.getImage(), null, false);
 
 	/**
 	 * Create the frame.
@@ -148,41 +168,44 @@ public class FileImporter extends JFrame {
 		for (File file : transferData) { //we do this because the user might choose more than 1 folder
 			if (file.isDirectory()) {
 
-				int totalResultFiles = getAllFiles(file.getAbsolutePath(),
-						Properties.INCLUDE_SUBFOLDERS.getValueAsBoolean(), 0);
+				int totalResultFiles = getAllFiles(file.getAbsolutePath(), Properties.INCLUDE_SUBFOLDERS.getValueAsBoolean(), 0);
 
 			} else {
 				addFileToImport(file);
 			}
 		}
-
 	}
 
 	int getAllFiles(String directoryName, boolean includeSubfolders, int totalOfFiles) {
 
-		System.out.println(
-				"Getting all files for directory : " + directoryName + ", including subfolders : " + includeSubfolders);
+		System.out.println("Getting all files for directory : " + directoryName + ", including subfolders : " + includeSubfolders);
 
 		File directory = new File(directoryName);
 
 		// get all the files from a directory
 		File[] fList = directory.listFiles();
-		for (File file : fList) {
 
-			if (file.isFile()) {
-				totalOfFiles += 1;
+		if (fList != null) {
 
-				addFileToImport(file);
+			for (File file : fList) {
 
-			} else if (file.isDirectory() && includeSubfolders) {
-				getAllFiles(file.getAbsolutePath(), includeSubfolders, totalOfFiles);
+				if (file.isFile()) {
+					totalOfFiles += 1;
+
+					addFileToImport(file);
+
+				} else if (file.isDirectory() && includeSubfolders) {
+					getAllFiles(file.getAbsolutePath(), includeSubfolders, totalOfFiles);
+				}
 			}
+
 		}
+
 		return totalOfFiles;
 
 	}
 
-	public void addFileToImport(File f) {
+	void addFileToImport(File f) {
 		if (!filesToImport.contains(f) && FileTypes.AUDIO_FILES.accept(f)) {
 			filesToImport.add(f);
 
@@ -196,10 +219,7 @@ public class FileImporter extends JFrame {
 
 }
 
-
-
 class DropPane extends JPanel {
-
 
 	//Thanks to https://stackoverflow.com/questions/13597233/how-to-drag-and-drop-files-from-a-directory-in-java
 
@@ -237,14 +257,14 @@ class DropPane extends JPanel {
 		return new Dimension(400, 400);
 	}
 
-	protected DropTarget getMyDropTarget() {
+	DropTarget getMyDropTarget() {
 		if (dropTarget == null) {
 			dropTarget = new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, null);
 		}
 		return dropTarget;
 	}
 
-	protected DropTargetHandler getDropTargetHandler() {
+	DropTargetHandler getDropTargetHandler() {
 		if (dropTargetHandler == null) {
 			dropTargetHandler = new DropTargetHandler();
 		}
@@ -285,7 +305,7 @@ class DropPane extends JPanel {
 
 	protected class DropTargetHandler implements DropTargetListener {
 
-		protected void processDrag(DropTargetDragEvent dtde) {
+		void processDrag(DropTargetDragEvent dtde) {
 			if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 				dtde.acceptDrag(DnDConstants.ACTION_COPY);
 			} else {

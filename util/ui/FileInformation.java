@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public class FileInformation extends JPanel {
 
-	boolean displayFileDate;
+	private boolean displayFileDate;
 
 	private JLabel fileName;
 	private JLabel path;
@@ -26,7 +26,7 @@ public class FileInformation extends JPanel {
 
 	private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
 
-	public FileInformation() {
+	protected FileInformation() {
 
 		displayFileDate = Properties.DISPLAY_FILE_DATE.getValueAsBoolean();
 

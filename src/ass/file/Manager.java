@@ -17,15 +17,29 @@
  */
 package ass.file;
 
-import ass.file.importer.FileImporter;
-import constants.Constants;
-import icons.Icons;
-import ass.keyboard.macro.ListenForMacroChanges;
-import ass.keyboard.macro.MacroAction;
-import file.ObjectSerializer;
-import logger.Logger;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -33,12 +47,15 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
+
+import ass.file.importer.FileImporter;
+import ass.keyboard.macro.ListenForMacroChanges;
+import ass.keyboard.macro.MacroAction;
+import ass.keyboard.macro.MacroEditor;
+import constants.Constants;
+import file.ObjectSerializer;
+import icons.Icons;
+import logger.Logger;
 
 /**
  * Credits :
@@ -49,14 +66,9 @@ import java.util.Date;
  */
 public class Manager extends JPanel implements ActionListener, ListenForMacroChanges {
 
-	private String TAG = "FileManager";
-
 	//
 
-	public ObjectSerializer<ArrayList<File>> importedFilesSerialiser = new ObjectSerializer<ArrayList<File>>("imported.ser");
-
-	/** Provides nice icons and names for files. */
-	private FileSystemView fileSystemView;
+	private ObjectSerializer<ArrayList<File>> importedFilesSerialiser = new ObjectSerializer<ArrayList<File>>("imported.ser");
 
 	/** Directory listing */
 	private JTable table;
@@ -75,9 +87,11 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 	//
 
 	public Visualiser fileVisualiser;
-	public FileImporter fileImporter;
+	private FileImporter fileImporter;
 
-	public Manager() {
+	//
+
+	public Manager(ToolBar toolBar) {
 
 		fileImporter = new FileImporter(this);
 		fileVisualiser = new Visualiser();
@@ -93,7 +107,8 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 
 		//End popup menu
 
-		fileSystemView = FileSystemView.getFileSystemView();
+		/* Provides nice icons and names for files. */
+		FileSystemView fileSystemView = FileSystemView.getFileSystemView();
 
 		JPanel detailView = new JPanel(new BorderLayout(3, 3));
 
@@ -150,6 +165,9 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 							fileVisualiser.setSelectedFiles(selectedFiles);
 
 						}
+
+						//Update toolbar and menu
+						//toolBar.updateNumberOfSelectedFiles(selectedFiles.size());
 					}
 
 				}
@@ -228,6 +246,7 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 					error = "doesn't exist at this path '" + file.getAbsolutePath() + "'";
 				}
 
+				String TAG = "FileManager";
 				Logger.logWarning(TAG, "Warning : File '" + file.getName() + "' " + error + ".");
 
 			}
@@ -291,7 +310,7 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 				JFrame f = new JFrame(Constants.SOFTWARE_NAME);
 				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-				Manager fileManager = new Manager();
+				Manager fileManager = new Manager(new ToolBar(new MacroEditor()));
 				f.setContentPane(fileManager);
 
 				f.setIconImage(Icons.SOFTWARE_ICON.getImage());
@@ -313,9 +332,13 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 		popupMenu.removeAll();
 
 		for (MacroAction ma : newMacros) {
-			JMenuItem item = new FileMenuItem(ma);
-			item.addActionListener(this);
-			popupMenu.add(item);
+
+			if (ma.showInMenu) {
+				JMenuItem item = new FileMenuItem(ma);
+				item.addActionListener(this);
+				popupMenu.add(item);
+			}
+
 		}
 	}
 }
@@ -420,28 +443,30 @@ class FileMenuItem extends JMenuItem {
 
 	public FileMenuItem(MacroAction action) {
 		super(action.getName());
+
+		setIcon(action.getIcon());
 	}
 
 	public void update(int numberOfFiles) {
 
 		setText(action.getName());
-		
-		setEnabled(false);
-		
-		/**if (action instanceof FileAction) {
 
+		setEnabled(false);
+
+		/**if (action instanceof FileAction) {
+		
 			if (supportsMultipleFiles()) {
 				setEnabled(true);
 				setText(textOnMultipleFiles);
 			} else {
 				setEnabled(false);
 			}
-
+		
 		} else {
 			setEnabled(true);
 			setText(text);
 		}
-*/
+		*/
 	}
 
 }

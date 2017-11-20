@@ -1,13 +1,16 @@
 package ass.ui;
 
-import file.FileReader;
+import java.awt.BorderLayout;
+import java.io.IOException;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
-import java.awt.*;
-import java.io.IOException;
+
+import file.FileReader;
 
 public class Credits extends JPanel {
 

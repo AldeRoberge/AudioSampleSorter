@@ -1,17 +1,9 @@
 package ui;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import logger.Logger;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -19,17 +11,11 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.TimerTask;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.Timer;
-
-import logger.Logger;
-
 public class SplashScreen {
 
 	private static String TAG = "SplashScreen";
 
-	public final Font subTextFont = new Font("Calibri Light", Font.PLAIN, 20);
+	private final Font subTextFont = new Font("Calibri Light", Font.PLAIN, 20);
 	private TimerTask close;
 
 	public SplashScreen(Image icon, BufferedImage inImage, BufferedImage outImage, BufferedImage titleImage, String subText, JFrame component) {

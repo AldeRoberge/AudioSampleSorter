@@ -1,2 +1,3 @@
-# SampleSorter
-A simple audio sample sorter
+# AudioSampleSorter
+
+Version 0.01

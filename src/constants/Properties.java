@@ -5,7 +5,7 @@ import property.PropertyFileManager;
 
 public class Properties {
 
-	public static PropertyFileManager e = new PropertyFileManager("ass.properties");
+	private static PropertyFileManager e = new PropertyFileManager("ass.properties");
 
 	// Booleans
 

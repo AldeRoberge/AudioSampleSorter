@@ -1,13 +1,18 @@
 package ass.keyboard.macro.edit;
 
-import ass.keyboard.action.Action;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MacroActionPanel extends JPanel {
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import ass.keyboard.action.Action;
+
+class MacroActionPanel extends JPanel {
 
 	private MacroActionPanel me = this;
 

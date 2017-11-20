@@ -1,9 +1,9 @@
 package file;
 
+import logger.Logger;
+
 import java.io.*;
 import java.util.ArrayList;
-
-import logger.Logger;
 
 /**
  * @author VaypeNaysh
@@ -18,7 +18,7 @@ public class ObjectSerializer<T extends Serializable> {
 	private T t;
 
 	public boolean isNull() {
-		return t == null;
+		return (t == null);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class ObjectSerializer<T extends Serializable> {
 	}
 
 	public static void main(String[] args) {
-		ObjectSerializer<ArrayList<String>> genericSerialiserTest = new ObjectSerializer<ArrayList<String>>("serialistion_test_file.ser");
+		ObjectSerializer<ArrayList<String>> genericSerialiserTest = new ObjectSerializer<ArrayList<String>>("serialization_test_file.ser");
 
 		System.out.println(genericSerialiserTest.get());
 

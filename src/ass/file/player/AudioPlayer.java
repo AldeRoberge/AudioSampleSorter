@@ -313,6 +313,3 @@ public class AudioPlayer implements BasicPlayerListener {
 	}
 
 }
-
-
-

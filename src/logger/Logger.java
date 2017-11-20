@@ -1,18 +1,14 @@
 package logger;
 
-import file.WriteToFile;
-
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
-import com.sun.istack.Nullable;
+import file.WriteToFile;
 
 public class Logger {
 
 	private static LogUI logUI;
 
-	public static ArrayList<Log> bufferedLogs = new ArrayList<Log>();
+	private static ArrayList<Log> bufferedLogs = new ArrayList<Log>();
 
 	/**
 	 * Used by the UI to create the logger after creating the LogUI panel

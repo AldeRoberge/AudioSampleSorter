@@ -4,7 +4,7 @@ import javax.swing.JButton;
 
 import icons.UserIcon;
 
-public class IconChooserButton extends JButton {
+class IconChooserButton extends JButton {
 
 	private UserIcon staticIcon;
 

@@ -1,4 +1,5 @@
 package ass;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -15,7 +16,7 @@ import ui.SplashScreen;
  * Runs ASS with the SplashScreen
  *
  */
-public class Run {
+class Run {
 
 	private static final String TAG = "Run";
 

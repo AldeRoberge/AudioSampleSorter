@@ -1,10 +1,10 @@
 package ass.keyboard.action.type.file.impl;
 
-import ass.keyboard.action.editable.EditableProperty;
-import ass.keyboard.action.type.file.FileAction;
-
 import java.io.File;
 import java.util.ArrayList;
+
+import ass.keyboard.action.editable.EditableProperty;
+import ass.keyboard.action.type.file.FileAction;
 
 public class TestAction extends FileAction {
 

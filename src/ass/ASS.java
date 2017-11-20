@@ -1,40 +1,53 @@
 package ass;
 
-import ass.ui.Credits;
-import ass.file.Manager;
-import ass.ui.Settings;
-import ass.file.ToolBar;
-import constants.Constants;
-import icons.Icons;
-import ass.keyboard.macro.MacroEditor;
-import ass.keyboard.macro.MacroLoader;
-import constants.Properties;
-import ui.BasicContainer;
-import logger.LogUI;
-import logger.Logger;
-import ui.MiddleOfTheScreen;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.UIManager;
+
+import ass.file.Manager;
+import ass.file.ToolBar;
+import ass.keyboard.macro.MacroEditor;
+import ass.ui.Credits;
+import ass.ui.Settings;
+import constants.Constants;
+import constants.Properties;
+import icons.Icons;
+import logger.LogUI;
+import logger.Logger;
+import ui.BasicContainer;
+import ui.MiddleOfTheScreen;
+
 public class ASS extends JFrame {
 
 	private static final String TAG = Constants.SOFTWARE_NAME;
 
-	public MacroEditor macroEditor = new MacroEditor();
+	private MacroEditor macroEditor = new MacroEditor();
 
-	public Manager fMan;
+	private Manager fMan;
 
 	private BasicContainer logger = new BasicContainer("Log", Icons.LOGGER.getImage(), new LogUI(), true);
 	private BasicContainer settings;
 	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new Credits(), true);
 
-	public ToolBar toolBar = new ToolBar(macroEditor);
+	private ToolBar toolBar = macroEditor.getToolbar();
 
 	//Actual UI
 
@@ -43,10 +56,15 @@ public class ASS extends JFrame {
 	 */
 	public ASS() {
 
-		fMan = new Manager();
+		fMan = new Manager(toolBar);
 
-		MacroLoader.registerWaitingForMacroChanges(fMan);
-		MacroLoader.registerWaitingForMacroChanges(toolBar);
+		macroEditor.macroLoader.registerWaitingForMacroChanges(fMan);
+		macroEditor.macroLoader.registerWaitingForMacroChanges(toolBar);
+
+		//Manually trigger it to populate fMan and toolBar
+		macroEditor.macroLoader.tellMacroChanged();
+
+		//
 
 		settings = new BasicContainer("Settings", Icons.SETTINGS.getImage(), new Settings(fMan), false);
 
@@ -292,7 +310,7 @@ public class ASS extends JFrame {
 	 * @param newState New state (true == set to visible)
 	 * @return returns the new state of the component (true == now visible)
 	 */
-	public boolean toggleVisibility(Component c, boolean forceState, boolean newState) {
+	boolean toggleVisibility(Component c, boolean forceState, boolean newState) {
 
 		if (forceState == true) {
 			c.setVisible(newState);

@@ -8,7 +8,7 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class LogPanel extends JPanel {
+class LogPanel extends JPanel {
 
 	/**
 	 * Create the panel.

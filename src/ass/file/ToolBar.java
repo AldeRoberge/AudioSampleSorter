@@ -1,21 +1,25 @@
 package ass.file;
 
-import ass.keyboard.macro.ListenForMacroChanges;
-import ass.keyboard.macro.MacroAction;
-import ass.keyboard.macro.MacroEditor;
-import logger.Logger;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
+import javax.swing.JToolBar;
+
+import ass.keyboard.macro.ListenForMacroChanges;
+import ass.keyboard.macro.MacroAction;
+import ass.keyboard.macro.MacroEditor;
+import logger.Logger;
+
 public class ToolBar extends JToolBar implements ListenForMacroChanges {
 
 	private static final String TAG = "ToolBar";
-
 
 	public ToolBar(MacroEditor macroEditor) {
 		super();
@@ -64,11 +68,8 @@ public class ToolBar extends JToolBar implements ListenForMacroChanges {
 					item.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 
-
-								//m.setVisible(true);
-								//m.showMacroListUI(macroAction);
-
-
+							//m.setVisible(true);
+							//m.showMacroListUI(macroAction);
 
 						}
 					});
@@ -111,4 +112,5 @@ public class ToolBar extends JToolBar implements ListenForMacroChanges {
 
 		}
 	}
+
 }

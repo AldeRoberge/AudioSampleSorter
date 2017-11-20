@@ -11,9 +11,9 @@ class Log {
 	public static final int WARNING = 1;
 	public static final int ERROR = 2;
 
-	public static final String IMPORTANT_INFO_NAME = "Information";
-	public static final String WARNING_NAME = "Warning";
-	public static final String ERROR_NAME = "Fatal Error";
+	private static final String IMPORTANT_INFO_NAME = "Information";
+	private static final String WARNING_NAME = "Warning";
+	private static final String ERROR_NAME = "Fatal Error";
 
 	private Timestamp time;
 	private int severity;
@@ -71,7 +71,7 @@ class Log {
 		}
 
 		System.err.println("Unknown type " + type);
-		return "Unkwon tag";
+		return "Unknown tag";
 	}
 
 }

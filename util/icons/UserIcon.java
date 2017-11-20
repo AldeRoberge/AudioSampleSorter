@@ -14,14 +14,14 @@ public class UserIcon implements Serializable {
 	private ImageIcon imageIcon;
 
 	//Default dimensions (images are stored in memory with this resolution)
-	public static final int DEFAULT_HEIGHT = 16;
-	public static final int DEFAULT_WIDTH = 16;
+	private static final int DEFAULT_HEIGHT = 16;
+	private static final int DEFAULT_WIDTH = 16;
 
 	public UserIcon(String pathOfImage) {
 		this(pathOfImage, DEFAULT_HEIGHT, DEFAULT_WIDTH);
 	}
 
-	public UserIcon(String pathOfImage, int height, int width) {
+	private UserIcon(String pathOfImage, int height, int width) {
 		this.imageIcon = Icons.createImageIcon(pathOfImage, height, width);
 		this.imagePath = pathOfImage;
 	}

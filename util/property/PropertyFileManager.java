@@ -1,12 +1,11 @@
 package property;
 
-import java.io.File;
-import java.io.IOException;
-
+import logger.Logger;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
-import logger.Logger;
+import java.io.File;
+import java.io.IOException;
 
 public class PropertyFileManager {
 
@@ -28,7 +27,7 @@ public class PropertyFileManager {
 			Logger.logInfo(TAG, "Saving property " + key + " with value " + value + ".");
 		}
 
-		createFileIfDoesntExist();
+		createFileIfDoesNotExist();
 
 		PropertiesConfiguration config;
 		try {
@@ -47,7 +46,7 @@ public class PropertyFileManager {
 			Logger.logInfo(TAG, "Getting property " + key + ".");
 		}
 
-		createFileIfDoesntExist();
+		createFileIfDoesNotExist();
 
 		try {
 			PropertiesConfiguration config = new PropertiesConfiguration(fileName);
@@ -66,7 +65,7 @@ public class PropertyFileManager {
 		return defaultValue;
 	}
 
-	private void createFileIfDoesntExist() {
+	private void createFileIfDoesNotExist() {
 		try {
 			new File(fileName).createNewFile(); // if file already exists will do nothing 
 		} catch (IOException e1) {

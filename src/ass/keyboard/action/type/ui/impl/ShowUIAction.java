@@ -1,12 +1,12 @@
 package ass.keyboard.action.type.ui.impl;
 
+import java.util.ArrayList;
+
 import ass.ASS;
 import ass.keyboard.action.Action;
 import ass.keyboard.action.editable.EditableProperty;
 import ass.keyboard.action.type.ui.UIAction;
 import logger.Logger;
-
-import java.util.ArrayList;
 
 public class ShowUIAction extends UIAction {
 
@@ -35,7 +35,7 @@ public class ShowUIAction extends UIAction {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public boolean currentVisibilityState = false; //used to unperform
+	private boolean currentVisibilityState = false; //used to unperform
 
 	private int ID;
 	private String name; //Used in toString (populating combobox)
@@ -131,21 +131,21 @@ public class ShowUIAction extends UIAction {
 
 		switch (ID) {
 
-			case SHOW_CREDITS_ID:
-				currentVisibilityState = ASS.showCredits(true, switchState);
-				break;
-			case SHOW_MACRO_ID:
-				currentVisibilityState = ASS.showEditMacros(true, switchState);
-				break;
-			case SHOW_SETTINGS_ID:
-				currentVisibilityState = ASS.showSettings(true, switchState);
-				break;
-			case SHOW_LOGGER_ID:
-				currentVisibilityState = ASS.showLogger(true, switchState);
-				break;
-			default:
-				Logger.logError(name, "Invalid ID " + ID + " for SimpleUIAction");
-				break;
+		case SHOW_CREDITS_ID:
+			currentVisibilityState = ASS.showCredits(true, switchState);
+			break;
+		case SHOW_MACRO_ID:
+			currentVisibilityState = ASS.showEditMacros(true, switchState);
+			break;
+		case SHOW_SETTINGS_ID:
+			currentVisibilityState = ASS.showSettings(true, switchState);
+			break;
+		case SHOW_LOGGER_ID:
+			currentVisibilityState = ASS.showLogger(true, switchState);
+			break;
+		default:
+			Logger.logError(name, "Invalid ID " + ID + " for SimpleUIAction");
+			break;
 
 		}
 	}

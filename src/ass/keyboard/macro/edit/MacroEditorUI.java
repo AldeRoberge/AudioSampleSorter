@@ -1,5 +1,30 @@
 package ass.keyboard.macro.edit;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import org.jnativehook.keyboard.NativeKeyEvent;
+
 import ass.keyboard.action.Action;
 import ass.keyboard.action.editable.EditablePropertyEditor;
 import ass.keyboard.action.type.file.impl.PlayAction;
@@ -15,24 +40,12 @@ import icons.iconChooser.IconChooser;
 import key.KeysToString;
 import key.NativeKeyEventToKey;
 import logger.Logger;
-import org.jnativehook.keyboard.NativeKeyEvent;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class MacroEditorUI extends JPanel implements GetIcon {
 
 	private static final String TAG = "MacroEditor";
 
-	public static ArrayList<Action> default_actions = new ArrayList<Action>();
+	private static ArrayList<Action> default_actions = new ArrayList<Action>();
 
 	static {
 
@@ -82,7 +95,8 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 	public EditablePropertyEditor propertyEditor = new EditablePropertyEditor();
 	private JTextField titleEditor;
 	private JButton iconButton;
-	private JCheckBox chckbxAddToTool;
+	private JCheckBox chckBoxToolbar;
+	private JCheckBox chckboxMenu;
 
 	public void onHide() {
 		isListenningForKeyInputs = false;
@@ -208,7 +222,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		titleEditor.setFont(new Font("Segoe UI Light", Font.BOLD, 20));
 		titleEditor.setText("Title");
 		titleEditor.setHorizontalAlignment(SwingConstants.CENTER);
-		titleEditor.setBounds(56, 13, 158, 32);
+		titleEditor.setBounds(56, 13, 209, 32);
 
 		titleEditor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -238,22 +252,36 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		iconButton.setBounds(12, 13, 32, 32);
 		add(iconButton);
 
-		chckbxAddToTool = new JCheckBox("Add to tool bar");
-		chckbxAddToTool.setSelected(true);
+		chckBoxToolbar = new JCheckBox("Toolbar");
+		chckBoxToolbar.setToolTipText("Show in toolbar");
+		chckBoxToolbar.setSelected(true);
 
 		ActionListener act = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
-				keyBindToEdit.showInToolbar = chckbxAddToTool.isSelected();
+				keyBindToEdit.showInToolbar = chckBoxToolbar.isSelected();
 			}
 		};
-		chckbxAddToTool.addActionListener(act);
+		chckBoxToolbar.addActionListener(act);
 
-		chckbxAddToTool.setBounds(222, 13, 120, 36);
-		add(chckbxAddToTool);
+		chckBoxToolbar.setBounds(273, 13, 82, 16);
+		add(chckBoxToolbar);
 
 		JLabel lblAddAction = new JLabel("Add action :");
 		lblAddAction.setBounds(12, 61, 81, 16);
 		add(lblAddAction);
+
+		chckboxMenu = new JCheckBox("Menu");
+		chckboxMenu.setToolTipText("Show in right click menu");
+		chckboxMenu.setSelected(true);
+		chckboxMenu.setBounds(273, 33, 82, 16);
+
+		ActionListener act2 = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				keyBindToEdit.showInMenu = chckboxMenu.isSelected();
+			}
+		};
+		chckboxMenu.addActionListener(act2);
+		add(chckboxMenu);
 
 		keyEditorImputBox.addMouseListener(new MouseAdapter() {
 			@Override
@@ -285,7 +313,8 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 				addActionAndActionEditPanel(a);
 			}
 
-			chckbxAddToTool.setSelected(keyBindToEdit.showInToolbar);
+			chckBoxToolbar.setSelected(keyBindToEdit.showInToolbar);
+			chckboxMenu.setSelected(keyBindToEdit.showInMenu);
 
 			if (keyBindToEdit.getIcon() != null) {
 
@@ -317,9 +346,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 			} else {
 				keyEditorImputBox.setText("Edit shortcut");
 			}
-		} else {
-			//Its a new keyBind, so do nothing
-		}
+		} //Else : its a new keyBind, so do nothing
 	}
 
 	/**

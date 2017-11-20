@@ -1,11 +1,16 @@
 package icons.iconChooser;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.SystemColor;
+import icons.Icons;
+import icons.UserIcon;
+import logger.Logger;
+import ui.MiddleOfTheScreen;
+import ui.WrapLayout;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -13,36 +18,16 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
-import icons.Icons;
-import icons.UserIcon;
-import logger.Logger;
-import ui.MiddleOfTheScreen;
-import ui.WrapLayout;
-import javax.swing.JLabel;
-import java.awt.Component;
-import javax.swing.Box;
-
 public class IconChooser extends JFrame {
 
-	protected static final String TAG = "IconChooser";
+	private static final String TAG = "IconChooser";
 
 	private GetIcon waitingForAnswer;
 
 	private JPanel contentPane;
 	private JPanel iconsPanel;
 
-	public final Font font = new Font("Segoe UI Light", Font.PLAIN, 13);
+	private final Font font = new Font("Segoe UI Light", Font.PLAIN, 13);
 
 	private String searchForValue = "";
 
@@ -168,7 +153,7 @@ public class IconChooser extends JFrame {
 		populate();
 	}
 
-	public void populate() {
+	void populate() {
 
 		Logger.logInfo(TAG, "Repopulating...");
 
