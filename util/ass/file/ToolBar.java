@@ -36,12 +36,13 @@ public class ToolBar extends JToolBar implements ListenForMacroChanges {
 
 		for (MacroAction macroAction : newMacros) {
 
-			if (macroAction.showInToolbar) {
+			if (true) { //if show
 				JButton button = new JButton("Action");
 				try {
 					button.setIcon(macroAction.getIcon());
 					button.setText(macroAction.getName());
 					button.setFocusable(false);
+					button.setEnabled(macroAction.isEnabled);
 
 					button.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) { //Perform action(s)
@@ -55,6 +56,7 @@ public class ToolBar extends JToolBar implements ListenForMacroChanges {
 					JPopupMenu menu = new JPopupMenu("Menu");
 
 					JMenuItem item = new JMenuItem("Perform");
+					item.setEnabled(macroAction.isEnabled);
 					item.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							macroAction.perform();
@@ -78,7 +80,7 @@ public class ToolBar extends JToolBar implements ListenForMacroChanges {
 					item = new JMenuItem("Hide from toolbar");
 					item.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							macroAction.showInToolbar = false;
+							//macroAction.showInToolbar = false; show false
 							macroChanged(newMacros); //Makes the button disappear
 						}
 					});

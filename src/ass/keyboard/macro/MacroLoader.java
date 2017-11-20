@@ -3,14 +3,16 @@ package ass.keyboard.macro;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import ass.keyboard.action.type.file.impl.PlayAction;
-import ass.keyboard.action.type.file.impl.RenameAction;
-import ass.keyboard.action.type.ui.impl.ShowUIAction;
+import ass.file.ListenForSelectedFilesChanges;
+import ass.keyboard.action.PlayAction;
+import ass.keyboard.action.RenameAction;
+import ass.keyboard.action.ShowUIAction;
+import ass.keyboard.action.interfaces.Action;
 import ass.keyboard.key.Key;
 import file.ObjectSerializer;
 import icons.Icons;
 
-public class MacroLoader {
+public class MacroLoader implements ListenForSelectedFilesChanges {
 
 	private static final String TAG = "MacroLoader";
 
@@ -39,14 +41,14 @@ public class MacroLoader {
 			}
 
 		} else {
-			addNewMacro(new MacroAction("Play", Icons.PLAY, new Key(KeyEvent.VK_SPACE), new PlayAction(), true, true));
+			addNewMacro(new MacroAction("Play", Icons.PLAY, new Key(KeyEvent.VK_SPACE), new PlayAction(), true));
 
-			addNewMacro(new MacroAction("Show Credits", Icons.ABOUT, new Key(KeyEvent.VK_F1), ShowUIAction.SHOW_CREDITS, false, false));
-			addNewMacro(new MacroAction("Edit Macros", Icons.MACROS, new Key(KeyEvent.VK_F2), ShowUIAction.SHOW_MACRO, false, false));
-			addNewMacro(new MacroAction("Edit Settings", Icons.SETTINGS, new Key(KeyEvent.VK_F3), ShowUIAction.SHOW_SETTINGS, false, false));
-			addNewMacro(new MacroAction("Show Logger", Icons.LOGGER, new Key(KeyEvent.VK_F4), ShowUIAction.SHOW_LOGGER, false, false));
+			addNewMacro(new MacroAction("Show Credits", Icons.ABOUT, new Key(KeyEvent.VK_F1), ShowUIAction.SHOW_CREDITS, false));
+			addNewMacro(new MacroAction("Edit Macros", Icons.MACROS, new Key(KeyEvent.VK_F2), ShowUIAction.SHOW_MACRO, false));
+			addNewMacro(new MacroAction("Edit Settings", Icons.SETTINGS, new Key(KeyEvent.VK_F3), ShowUIAction.SHOW_SETTINGS, false));
+			addNewMacro(new MacroAction("Show Logger", Icons.LOGGER, new Key(KeyEvent.VK_F4), ShowUIAction.SHOW_LOGGER, false));
 
-			addNewMacro(new MacroAction("Rename", Icons.PENCIL, new Key(KeyEvent.VK_R), new RenameAction(), false, false));
+			addNewMacro(new MacroAction("Rename", Icons.PENCIL, new Key(KeyEvent.VK_R), new RenameAction(), false));
 
 		}
 
@@ -88,6 +90,30 @@ public class MacroLoader {
 	public void serialise() {
 		macroSerializer.set(macroActions);
 		macroSerializer.serialise();
+	}
+
+	@Override
+	public void filesChanged(int amountOfSelectedFiles) {
+		for (MacroAction ma : macroActions) {
+
+			boolean allActionsCanBePerformedOnThisAmountOfSelectedFiles = true;
+
+			for (Action a : ma.actionsToPerform) {
+				if (!a.canBePerformedOnFiles(amountOfSelectedFiles)) {
+					allActionsCanBePerformedOnThisAmountOfSelectedFiles = false;
+					break;
+				}
+			}
+
+			if (allActionsCanBePerformedOnThisAmountOfSelectedFiles) {
+				ma.isEnabled = true;
+			} else {
+				ma.isEnabled = false;
+			}
+
+		}
+
+		tellMacroChanged();
 	}
 
 }

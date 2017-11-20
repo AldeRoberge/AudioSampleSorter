@@ -1,4 +1,4 @@
-package ass.keyboard.action;
+package ass.keyboard.action.interfaces;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -64,6 +64,25 @@ public interface Action extends Serializable {
 											// editableProperties inside the
 											// action
 		return (getEditableProperties() != null);
+	}
+
+	public static String getPolicyAsString(int highestPolicy) {
+		switch (highestPolicy) {
+		case PERFORMED_ON_NO_FILES_ONLY_POLICY:
+			return "no files";
+		case PERFORMED_ON_ONE_FILE_ONLY_POLICY:
+			return "one file";
+		case PERFORMED_ON_ZERO_TO_MANY_FILES_ONLY_POLICY:
+			return "any number of files";
+		case PERFORMED_ON_ONE_OR_MANY_FILES_ONLY_POLICY:
+			return "more than one file";
+		case PERFORMED_ON_MANY_FILES_ONLY_POLICY:
+			return "more than two files";
+
+		default:
+			Logger.logError("FileAction", "Invalid getPolicyAsString policy : " + highestPolicy);
+			return "invalid policy " + highestPolicy;
+		}
 	}
 
 }

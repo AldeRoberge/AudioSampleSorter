@@ -1,8 +1,8 @@
-package ass.keyboard.action.type.file.impl;
+package ass.keyboard.action;
 
 import java.io.File;
 
-import ass.keyboard.action.type.file.FileAction;
+import ass.keyboard.action.interfaces.FileAction;
 
 public class PlayAction extends FileAction {
 

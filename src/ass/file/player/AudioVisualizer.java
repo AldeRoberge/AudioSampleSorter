@@ -14,6 +14,8 @@ public class AudioVisualizer {
 
 	private static final String TAG = "AudioVisualizer";
 
+	private static final boolean DEBUG = false;
+
 	private static String status;
 
 	private static final String OFF = "off";
@@ -23,7 +25,10 @@ public class AudioVisualizer {
 	public SpectrumTimeAnalyzer analyzer;
 
 	public void setStatus(String newStatus) {
-		Logger.logInfo(TAG, newStatus);
+		if (DEBUG) {
+			Logger.logInfo(TAG, newStatus);
+		}
+
 		status = newStatus;
 	}
 

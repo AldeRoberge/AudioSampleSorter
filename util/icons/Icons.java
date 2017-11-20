@@ -40,7 +40,7 @@ public class Icons {
 
 	public static final ImageIcon SOFTWARE_ICON = new ImageIcon("res/icon.png");
 	public static final UserIcon PLAY = new UserIcon(LOCATION_OF_ICONS + "play-sign.png");
-	public static final UserIcon ABOUT = new UserIcon(LOCATION_OF_ICONS + "question-sign.png");
+	public static final UserIcon ABOUT = new UserIcon(LOCATION_OF_ICONS + "information-button.png");
 	public static final UserIcon MACROS = new UserIcon(LOCATION_OF_ICONS + "keyboard.png");
 	public static final UserIcon SETTINGS = new UserIcon(LOCATION_OF_ICONS + "cog-wheel-silhouette.png");
 	public static final UserIcon LOGGER = new UserIcon(LOCATION_OF_ICONS + "terminal.png");

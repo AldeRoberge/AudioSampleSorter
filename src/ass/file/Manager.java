@@ -52,6 +52,7 @@ import ass.file.importer.FileImporter;
 import ass.keyboard.macro.ListenForMacroChanges;
 import ass.keyboard.macro.MacroAction;
 import ass.keyboard.macro.MacroEditor;
+import ass.keyboard.macro.MacroLoader;
 import constants.Constants;
 import file.ObjectSerializer;
 import icons.Icons;
@@ -91,7 +92,7 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 
 	//
 
-	public Manager(ToolBar toolBar) {
+	public Manager() {
 
 		fileImporter = new FileImporter(this);
 		fileVisualiser = new Visualiser();
@@ -103,6 +104,10 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 
 		// Popup menu
 
+		/**
+		 * Popup menu
+		 * @see macroChanged(ArrayList<MacroAction> newMacros)
+		 */
 		popupMenu = new JPopupMenu();
 
 		//End popup menu
@@ -167,7 +172,8 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 						}
 
 						//Update toolbar and menu
-						//toolBar.updateNumberOfSelectedFiles(selectedFiles.size());
+						tellSelectedFilesChanged();
+
 					}
 
 				}
@@ -310,7 +316,7 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 				JFrame f = new JFrame(Constants.SOFTWARE_NAME);
 				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-				Manager fileManager = new Manager(new ToolBar(new MacroEditor()));
+				Manager fileManager = new Manager();
 				f.setContentPane(fileManager);
 
 				f.setIconImage(Icons.SOFTWARE_ICON.getImage());
@@ -329,18 +335,40 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 
 	@Override
 	public void macroChanged(ArrayList<MacroAction> newMacros) {
+
+		System.out.println("macroChanged");
+
 		popupMenu.removeAll();
 
-		for (MacroAction ma : newMacros) {
+		for (MacroAction ma : newMacros) { //populate JMenuItem
 
 			if (ma.showInMenu) {
 				JMenuItem item = new FileMenuItem(ma);
 				item.addActionListener(this);
 				popupMenu.add(item);
 			}
-
 		}
 	}
+
+	//Waiting for selected files change (used by MacroLoader to update weither MacroAction is enabled based on policy)
+
+	private ArrayList<ListenForSelectedFilesChanges> waitingForChanges = new ArrayList<>();
+
+	public void registerWaitingForFileChanges(ListenForSelectedFilesChanges f) {
+		waitingForChanges.add(f);
+	}
+
+	public void tellSelectedFilesChanged() {
+
+		System.out.println(fileVisualiser.getSelectedFiles().size());
+
+		for (ListenForSelectedFilesChanges l : waitingForChanges) {
+
+			l.filesChanged(fileVisualiser.getSelectedFiles().size());
+		}
+
+	}
+
 }
 
 /** A TableModel to hold File[]. */
@@ -439,34 +467,12 @@ class CellRenderer extends DefaultTableCellRenderer {
 
 class FileMenuItem extends JMenuItem {
 
-	private MacroAction action;
+	public FileMenuItem(MacroAction macroAction) {
+		super(macroAction.getName());
 
-	public FileMenuItem(MacroAction action) {
-		super(action.getName());
-
-		setIcon(action.getIcon());
-	}
-
-	public void update(int numberOfFiles) {
-
-		setText(action.getName());
-
-		setEnabled(false);
-
-		/**if (action instanceof FileAction) {
-		
-			if (supportsMultipleFiles()) {
-				setEnabled(true);
-				setText(textOnMultipleFiles);
-			} else {
-				setEnabled(false);
-			}
-		
-		} else {
-			setEnabled(true);
-			setText(text);
-		}
-		*/
+		setToolTipText(macroAction.getInformationAsHTML());
+		setIcon(macroAction.getIcon());
+		setEnabled(macroAction.isEnabled);
 	}
 
 }

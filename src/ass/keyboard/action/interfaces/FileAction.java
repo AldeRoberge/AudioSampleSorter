@@ -1,8 +1,6 @@
-package ass.keyboard.action.type.file;
+package ass.keyboard.action.interfaces;
 
 import java.io.File;
-
-import ass.keyboard.action.Action;
 
 public abstract class FileAction implements Action, Cloneable {
 

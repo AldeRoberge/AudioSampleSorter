@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import ass.keyboard.action.Action;
+import ass.keyboard.action.interfaces.Action;
 import logger.Logger;
 
 //See MacroEditorUI

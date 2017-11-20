@@ -38,7 +38,6 @@ public class Credits extends JPanel {
 		try {
 			editorKit.insertHTML(doc, doc.getLength(), credits, 0, 0, null);
 		} catch (BadLocationException | IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		scrollPane.setViewportView(textPane);

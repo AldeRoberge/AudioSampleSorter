@@ -1,10 +1,10 @@
-package ass.keyboard.action.type.file.impl;
+package ass.keyboard.action;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import ass.keyboard.action.editable.EditableProperty;
-import ass.keyboard.action.type.file.FileAction;
+import ass.keyboard.action.interfaces.FileAction;
 
 public class RenameAction extends FileAction {
 

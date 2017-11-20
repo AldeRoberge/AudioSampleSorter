@@ -1,7 +1,6 @@
-package ass.keyboard.action.type.ui;
+package ass.keyboard.action.interfaces;
 
 import ass.ASS;
-import ass.keyboard.action.Action;
 
 public abstract class UIAction implements Action, Cloneable {
 

@@ -25,12 +25,12 @@ import javax.swing.event.DocumentListener;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
 
-import ass.keyboard.action.Action;
+import ass.keyboard.action.PlayAction;
+import ass.keyboard.action.RenameAction;
+import ass.keyboard.action.ShowUIAction;
+import ass.keyboard.action.TestAction;
 import ass.keyboard.action.editable.EditablePropertyEditor;
-import ass.keyboard.action.type.file.impl.PlayAction;
-import ass.keyboard.action.type.file.impl.RenameAction;
-import ass.keyboard.action.type.file.impl.TestAction;
-import ass.keyboard.action.type.ui.impl.ShowUIAction;
+import ass.keyboard.action.interfaces.Action;
 import ass.keyboard.key.Key;
 import ass.keyboard.macro.MacroAction;
 import ass.keyboard.macro.MacroEditor;
@@ -95,7 +95,6 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 	public EditablePropertyEditor propertyEditor = new EditablePropertyEditor();
 	private JTextField titleEditor;
 	private JButton iconButton;
-	private JCheckBox chckBoxToolbar;
 	private JCheckBox chckboxMenu;
 
 	public void onHide() {
@@ -252,20 +251,6 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		iconButton.setBounds(12, 13, 32, 32);
 		add(iconButton);
 
-		chckBoxToolbar = new JCheckBox("Toolbar");
-		chckBoxToolbar.setToolTipText("Show in toolbar");
-		chckBoxToolbar.setSelected(true);
-
-		ActionListener act = new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				keyBindToEdit.showInToolbar = chckBoxToolbar.isSelected();
-			}
-		};
-		chckBoxToolbar.addActionListener(act);
-
-		chckBoxToolbar.setBounds(273, 13, 82, 16);
-		add(chckBoxToolbar);
-
 		JLabel lblAddAction = new JLabel("Add action :");
 		lblAddAction.setBounds(12, 61, 81, 16);
 		add(lblAddAction);
@@ -313,19 +298,19 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 				addActionAndActionEditPanel(a);
 			}
 
-			chckBoxToolbar.setSelected(keyBindToEdit.showInToolbar);
 			chckboxMenu.setSelected(keyBindToEdit.showInMenu);
 
 			if (keyBindToEdit.getIcon() != null) {
-
-				//System.out.println("Setting icon : " + keyBindToEdit.getIconPath());
 				iconButton.setIcon(keyBindToEdit.getIcon());
-
 			}
 
 		} else {
 
+			//Reset for fresh start
+
 			Logger.logInfo(TAG, "Creating new keyBind");
+
+			chckboxMenu.setSelected(true);
 
 			newKeyBind = true;
 			keyBindToEdit = new MacroAction("Title");

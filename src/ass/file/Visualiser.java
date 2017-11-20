@@ -57,6 +57,10 @@ public class Visualiser extends FileInformation {
 		setFilesDetails(files);
 	}
 
+	public ArrayList<File> getSelectedFiles() {
+		return selectedFiles;
+	}
+
 	public AudioPlayer getAudioPlayer() {
 		return audPlayer;
 	}

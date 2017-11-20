@@ -1,11 +1,11 @@
-package ass.keyboard.action.type.ui.impl;
+package ass.keyboard.action;
 
 import java.util.ArrayList;
 
 import ass.ASS;
-import ass.keyboard.action.Action;
 import ass.keyboard.action.editable.EditableProperty;
-import ass.keyboard.action.type.ui.UIAction;
+import ass.keyboard.action.interfaces.Action;
+import ass.keyboard.action.interfaces.UIAction;
 import logger.Logger;
 
 public class ShowUIAction extends UIAction {

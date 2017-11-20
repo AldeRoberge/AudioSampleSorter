@@ -18,12 +18,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 
 import ass.file.Manager;
-import ass.file.ToolBar;
 import ass.keyboard.macro.MacroEditor;
 import ass.ui.Credits;
 import ass.ui.Settings;
@@ -41,25 +39,19 @@ public class ASS extends JFrame {
 
 	private MacroEditor macroEditor = new MacroEditor();
 
-	private Manager fMan;
+	private Manager fMan = new Manager();
 
 	private BasicContainer logger = new BasicContainer("Log", Icons.LOGGER.getImage(), new LogUI(), true);
 	private BasicContainer settings;
 	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new Credits(), true);
-
-	private ToolBar toolBar = macroEditor.getToolbar();
-
-	//Actual UI
 
 	/**
 	 * Create the frame.
 	 */
 	public ASS() {
 
-		fMan = new Manager(toolBar);
-
 		macroEditor.macroLoader.registerWaitingForMacroChanges(fMan);
-		macroEditor.macroLoader.registerWaitingForMacroChanges(toolBar);
+		fMan.registerWaitingForFileChanges(macroEditor.macroLoader);
 
 		//Manually trigger it to populate fMan and toolBar
 		macroEditor.macroLoader.tellMacroChanged();
@@ -222,12 +214,6 @@ public class ASS extends JFrame {
 
 		splitPane.setBottomComponent(container);
 		container.setLayout(new BorderLayout(0, 0));
-
-		JScrollPane toolBarContainer = new JScrollPane();
-		toolBarContainer.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		toolBarContainer.setPreferredSize(new Dimension(10, 35));
-		container.add(toolBarContainer, BorderLayout.NORTH);
-		toolBarContainer.setViewportView(toolBar);
 
 		container.add(fMan.fileVisualiser.getPlayer(), BorderLayout.CENTER);
 

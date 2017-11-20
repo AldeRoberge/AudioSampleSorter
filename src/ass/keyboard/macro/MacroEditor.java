@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import ass.file.ToolBar;
 import ass.keyboard.key.GlobalKeyListener;
 import ass.keyboard.macro.edit.MacroEditorUI;
 import ass.keyboard.macro.list.MacroListUI;
@@ -35,8 +34,6 @@ public class MacroEditor extends JFrame {
 	private Image macroListIcon = Toolkit.getDefaultToolkit().getImage(MacroEditor.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Justify-Black.png"));
 
 	public GlobalKeyListener globalKeyListener;
-
-	private ToolBar toolBar = new ToolBar(this);
 
 	/**
 	 * Used by KeyBindUI press 'Add' -> MacroEditor change view to show -> NewMacroUI
@@ -115,10 +112,6 @@ public class MacroEditor extends JFrame {
 
 	public ArrayList<MacroAction> getAllMacroActions() {
 		return macroLoader.macroActions;
-	}
-
-	public ToolBar getToolbar() {
-		return toolBar;
 	}
 
 }

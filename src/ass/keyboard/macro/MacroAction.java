@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
-import ass.keyboard.action.Action;
-import ass.keyboard.action.type.file.FileAction;
-import ass.keyboard.action.type.ui.UIAction;
+import ass.keyboard.action.interfaces.Action;
+import ass.keyboard.action.interfaces.FileAction;
+import ass.keyboard.action.interfaces.UIAction;
 import ass.keyboard.key.Key;
 import icons.UserIcon;
 import logger.Logger;
@@ -30,16 +30,16 @@ public class MacroAction implements Serializable {
 
 	public ArrayList<Action> actionsToPerform = new ArrayList<Action>();
 
-	public boolean showInToolbar = true;
 	public boolean showInMenu = true;
 
+	public boolean isEnabled = true; //Changes depending on the actions policy
+
 	//Used by MacroLoader to instantiate basic actions
-	public MacroAction(String name, UserIcon icon, Key key, Action action, boolean showInToolBar, boolean showInMenu) {
+	public MacroAction(String name, UserIcon icon, Key key, Action action, boolean showInMenu) {
 		this.name = name;
 		this.setIcon(icon);
 		this.keys.add(new Key(KeyEvent.VK_SPACE));
 		this.actionsToPerform.add(action);
-		this.showInToolbar = showInToolBar;
 		this.showInMenu = showInMenu;
 	}
 
@@ -128,6 +128,36 @@ public class MacroAction implements Serializable {
 
 	public void setIcon(UserIcon icon) {
 		this.icon = icon;
+	}
+
+	public String getInformationAsHTML() {
+
+		
+		
+		String build = "<html>";
+
+		build += "<p><strong>" + getName() + "</strong></p>";
+
+		for (Action a : actionsToPerform) {
+			build += "<p>" + a.getDescription() + "</p>";
+		}
+
+		//Get highest policy as string
+
+		int highestPolicy = -100;
+
+		for (Action a : actionsToPerform) {
+			if (a.getPolicy() > highestPolicy) {
+				highestPolicy = a.getPolicy();
+			}
+		}
+
+		//
+
+		build += "<p><small>Requires " + Action.getPolicyAsString(highestPolicy) + " to be selected</small></p>";
+
+		return build + "</html>";
+
 	}
 
 }

@@ -64,11 +64,6 @@ public class Property {
 			Logger.logError(TAG, "isTrue() on " + key + " for value " + value + " is impossible. (Boolean string values are case sensitive!)");
 			return false;
 		}
-
-		//getValue().equals(Properties.TRUE)
-
-		// TODO Auto-generated method stub
-
 	}
 
 	public int getValueAsInt() {

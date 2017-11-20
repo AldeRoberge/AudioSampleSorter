@@ -304,8 +304,6 @@ public class AudioPlayer implements BasicPlayerListener {
 
 				}
 			} else {
-				System.out.println("Playing new sound...");
-
 				playNewSound(sound);
 			}
 		}
