@@ -22,6 +22,7 @@ import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 
 import ass.file.FileManager;
+import ass.keyboard.action.interfaces.FileAction;
 import ass.keyboard.action.interfaces.UIAction;
 import ass.keyboard.macro.MacroEditor;
 import constants.Constants;
@@ -51,8 +52,10 @@ public class ASS extends JFrame {
 	 */
 	public ASS() {
 
+		FileActionManager.fMan = fMan;
+
 		UIAction.ASS = this;
-		
+
 		macroEditor = new MacroEditor();
 
 		macroEditor.macroLoader.registerWaitingForMacroChanges(fMan);
@@ -227,43 +230,47 @@ public class ASS extends JFrame {
 
 			@Override
 			public void windowOpened(WindowEvent e) {
-
-				macroEditor.globalKeyListener.isListenningForInputs = true;
+				setIsListenningForInputs(true);
 			}
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				macroEditor.globalKeyListener.isListenningForInputs = false;
+				setIsListenningForInputs(false);
 			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
-				macroEditor.globalKeyListener.isListenningForInputs = false;
+				setIsListenningForInputs(false);
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				macroEditor.globalKeyListener.isListenningForInputs = true;
+				setIsListenningForInputs(true);
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				macroEditor.globalKeyListener.isListenningForInputs = true;
+				setIsListenningForInputs(true);
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				macroEditor.globalKeyListener.isListenningForInputs = false;
+				setIsListenningForInputs(false);
 			}
 
 			@Override
 			public void windowGainedFocus(WindowEvent e) {
-				macroEditor.globalKeyListener.isListenningForInputs = true;
+				setIsListenningForInputs(true);
 			}
 
 			@Override
 			public void windowLostFocus(WindowEvent e) {
-				macroEditor.globalKeyListener.isListenningForInputs = false;
+				setIsListenningForInputs(false);
+				
+			}
+
+			private void setIsListenningForInputs(boolean b) {
+				macroEditor.globalKeyListener.isListenningForInputs = b;
 			}
 		});
 
@@ -322,4 +329,5 @@ public class ASS extends JFrame {
 	public boolean resumeOrPauseSound() {
 		return fMan.fileVisualiser.getAudioPlayer().resumeOrPause();
 	}
+
 }

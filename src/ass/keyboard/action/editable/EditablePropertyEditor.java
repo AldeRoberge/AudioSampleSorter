@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 
 import ass.keyboard.action.interfaces.Action;
 import logger.Logger;
+import ui.MiddleOfTheScreen;
 
 //See MacroEditorUI
 
@@ -23,7 +24,7 @@ public class EditablePropertyEditor extends JFrame {
 
 	private static final String TAG = "EditablePropertyEditor";
 
-	private static JPanel editeablePropertyPanels = new JPanel();
+	private JPanel editeablePropertyPanels = new JPanel();
 	private static JScrollPane scrollPane;
 
 	private static ArrayList<EditablePropertyPanel> allValueEditorPanels = new ArrayList<EditablePropertyPanel>();
@@ -33,14 +34,12 @@ public class EditablePropertyEditor extends JFrame {
 	 */
 	public EditablePropertyEditor() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(EditablePropertyEditor.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Paste-Black@2x.png")));
-		setTitle("Edit Action Property");
+		setTitle("Edit Action Properties");
 
 		JPanel contentPane = new JPanel();
 
 		contentPane.setBounds(0, 0, 620, 400);
 		contentPane.setLayout(new CardLayout(0, 0));
-
-		this.setMinimumSize(new Dimension(390, 200));
 
 		contentPane.setVisible(true);
 
@@ -61,6 +60,8 @@ public class EditablePropertyEditor extends JFrame {
 
 		pack();
 
+		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
+
 	}
 
 	// TODO : update this when adding fields
@@ -80,7 +81,7 @@ public class EditablePropertyEditor extends JFrame {
 
 	}
 
-	private static void refreshInfoPanels() {
+	private void refreshInfoPanels() {
 
 		for (EditablePropertyPanel logPanel : allValueEditorPanels) {
 

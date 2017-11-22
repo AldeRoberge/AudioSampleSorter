@@ -59,19 +59,18 @@ public class IconChooser extends JFrame {
 		contentPane.add(content);
 		content.setLayout(new BorderLayout(0, 0));
 
-		JScrollPane iconScrollpane = new JScrollPane();
-		iconScrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		content.add(iconScrollpane, BorderLayout.CENTER);
-		iconScrollpane.getVerticalScrollBar().setUnitIncrement(16);
+		JScrollPane iconScrollPan = new JScrollPane();
+		content.add(iconScrollPan, BorderLayout.CENTER);
+		iconScrollPan.getVerticalScrollBar().setUnitIncrement(16);
 
 		iconsPanel = new JPanel();
 		iconsPanel.setBackground(SystemColor.textHighlightText);
-		iconScrollpane.setViewportView(iconsPanel);
+		iconScrollPan.setViewportView(iconsPanel);
 		iconsPanel.setLayout(new WrapLayout());
 
 		JPanel importPanel = new JPanel();
 		importPanel.setBackground(SystemColor.control);
-		iconScrollpane.setColumnHeaderView(importPanel);
+		iconScrollPan.setColumnHeaderView(importPanel);
 
 		JButton btnImport = new JButton("Refresh list");
 		btnImport.addActionListener(new ActionListener() {

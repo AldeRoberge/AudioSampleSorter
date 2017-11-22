@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import ass.keyboard.action.editable.EditableProperty;
 import ass.keyboard.action.interfaces.FileAction;
+import ass.keyboard.action.interfaces.FileEvent;
 
 public class TestAction extends FileAction {
 
@@ -32,10 +33,6 @@ public class TestAction extends FileAction {
 	}
 
 	@Override
-	public void perform() {
-	}
-
-	@Override
 	public String getDescription() {
 		return "Test action used to test features";
 	}
@@ -48,7 +45,13 @@ public class TestAction extends FileAction {
 	@Override
 	public void unperform() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public FileEvent perform(File fileAffected) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

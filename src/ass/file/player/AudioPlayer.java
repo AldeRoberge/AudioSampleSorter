@@ -5,8 +5,10 @@
 package ass.file.player;
 
 import java.io.File;
+import java.net.URL;
 import java.util.Map;
 
+import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 
 import constants.Properties;
@@ -37,6 +39,10 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	private AudioVisualizer audioVis;
 
+	BasicPlayer player;
+
+	private boolean debug = true;
+
 	//
 
 	public AudioVisualizer getVisualizer() {
@@ -47,6 +53,10 @@ public class AudioPlayer implements BasicPlayerListener {
 	}
 
 	void newVisualizerStatus(String newStatus) {
+		if (debug) {
+			Logger.logInfo(TAG, newStatus);
+		}
+
 		audioVis.setStatus(newStatus);
 	}
 
@@ -54,7 +64,7 @@ public class AudioPlayer implements BasicPlayerListener {
 		Logger.logInfo(TAG, "Initialising...");
 
 		// Instantiate BasicPlayer.
-		BasicPlayer player = new BasicPlayer();
+		player = new BasicPlayer();
 
 		// BasicPlayer is a BasicController.
 		control = player;
@@ -126,6 +136,8 @@ public class AudioPlayer implements BasicPlayerListener {
 	boolean isStopped = false;
 	boolean isPaused = false;
 
+	Thread soundPlayThread;
+
 	/**
 	 * Notification callback for basicplayer events such as opened, eom ...
 	 * 
@@ -188,6 +200,14 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	}
 
+	public void stop() {
+		try {
+			control.stop();
+		} catch (BasicPlayerException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Return true if its paused
 	 */
@@ -210,7 +230,7 @@ public class AudioPlayer implements BasicPlayerListener {
 	public void play(File sound) {
 		if (sound.exists()) {
 
-			new Thread("Sound player") {
+			soundPlayThread = new Thread("Sound player") {
 
 				public void run() {
 
@@ -228,11 +248,11 @@ public class AudioPlayer implements BasicPlayerListener {
 					}
 
 				}
-			}.start();
+			};
 
-		} else {
-			Logger.logError(TAG, "File doesn't exist!");
+			soundPlayThread.start();
 		}
+
 	}
 
 	/**
@@ -248,4 +268,24 @@ public class AudioPlayer implements BasicPlayerListener {
 		}
 	}
 
+	public void stopUsing(File f) {
+		if (currentSelectedSound != null && currentSelectedSound.getAbsolutePath().equals(f.getAbsolutePath())) {
+			Logger.logInfo(TAG, "selectedSound is the file last played by AudioPlayer! Stopping using it...");
+
+			stop();
+
+			try {
+				soundPlayThread.join();
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+
+			//EPIC THANKS TO wuppi AT https://stackoverflow.com/a/14123384/3224295
+			//WUPPI I LOVE YOU
+
+			System.gc();
+			Thread.yield();
+
+		}
+	}
 }

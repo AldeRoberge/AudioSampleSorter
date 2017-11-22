@@ -53,7 +53,7 @@ class EditablePropertyPanel extends JPanel {
 
 			ActionListener act = new ActionListener() {
 				public void actionPerformed(ActionEvent actionEvent) {
-					Logger.logInfo(TAG, "setNewValue : boolean");
+					Logger.logInfo(TAG, "Value updated to " + chckbxNewCheckBox.isSelected());
 					propertyToEdit.setValue(chckbxNewCheckBox.isSelected());
 				}
 			};
@@ -89,6 +89,7 @@ class EditablePropertyPanel extends JPanel {
 				}
 
 				public void updateValue() {
+					Logger.logInfo(TAG, "Value updated to " + stringInputField.getText());
 					propertyToEdit.setValue(stringInputField.getText());
 				}
 
@@ -118,6 +119,7 @@ class EditablePropertyPanel extends JPanel {
 					}
 
 					if (!intInputField.getText().equals("")) {
+						Logger.logInfo(TAG, "Value updated to " + intInputField.getText());
 						propertyToEdit.setValue(Integer.parseInt(intInputField.getText()));
 					}
 
@@ -148,7 +150,7 @@ class EditablePropertyPanel extends JPanel {
 
 						String directory = chooser.getCurrentDirectory().toString();
 
-						Logger.logInfo(TAG, "setNewValue : file");
+						Logger.logInfo(TAG, "Value updated to " + chooser.getSelectedFile());
 						propertyToEdit.setValue(chooser.getSelectedFile());
 					}
 				}

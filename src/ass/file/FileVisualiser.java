@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import ass.file.player.AudioPlayer;
 import constants.Constants;
+import constants.Properties;
 import file.FileTypes;
 import logger.Logger;
 import ui.FileInformation;
@@ -39,7 +40,11 @@ public class FileVisualiser extends FileInformation {
 		setFileDetails(file);
 
 		if (FileTypes.AUDIO_FILES.accept(file)) {
-			audPlayer.play(file);
+
+			if (Properties.PLAY_ON_CLICK.getValueAsBoolean()) {
+				audPlayer.play(file);
+			}
+
 		} else if (FileTypes.VIDEO_FILES.accept(file)) {
 			Logger.logError(TAG, "Video files are not currently supported!");
 		} else if (FileTypes.PICTURE_FILES.accept(file)) {
@@ -55,10 +60,6 @@ public class FileVisualiser extends FileInformation {
 	public void setSelectedFiles(ArrayList<File> files) {
 		selectedFiles = files;
 		setFilesDetails(files);
-	}
-
-	public ArrayList<File> getSelectedFiles() {
-		return selectedFiles;
 	}
 
 	public AudioPlayer getAudioPlayer() {

@@ -45,8 +45,8 @@ public class SplashScreen {
 					}
 				};
 
-				java.util.Timer timer = new java.util.Timer();
-				timer.schedule(close, 10000);
+				/**java.util.Timer timer = new java.util.Timer();
+				timer.schedule(close, 10000);*/
 
 				new Thread("slowly appear") {
 

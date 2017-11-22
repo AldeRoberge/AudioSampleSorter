@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
+import ass.ASS;
+import ass.FileActionManager;
 import ass.keyboard.action.interfaces.Action;
 import ass.keyboard.action.interfaces.FileAction;
 import ass.keyboard.action.interfaces.UIAction;
@@ -58,9 +60,7 @@ public class MacroAction implements Serializable {
 		keys = new ArrayList<Key>();
 	}
 
-	public void perform() { // this needs to be here rather than in
-								// globalKeyListener to allow UI buttons to be
-							// pressed
+	public void perform() {
 		for (Action action : actionsToPerform) {
 
 			if (action instanceof UIAction) {
@@ -78,8 +78,6 @@ public class MacroAction implements Serializable {
 
 				clonedAction.perform();
 
-				//EventManager.performEvent(clonedAction);
-
 			} else if (action instanceof FileAction) {
 
 				Logger.logInfo(TAG, "This action is an instanceof FileAction");
@@ -92,10 +90,7 @@ public class MacroAction implements Serializable {
 					e2.printStackTrace();
 				}
 
-				/**
-				 * for (File file : SorterUI.) { EventManager.performEvent(new
-				 * Event(clonedAction, file)); }
-				 */
+				FileActionManager.perform(clonedAction);
 
 			} else {
 				Logger.logError(TAG, "Invalid type of action!");

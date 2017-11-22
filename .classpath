@@ -12,7 +12,6 @@
 	<classpathentry kind="lib" path="lib/commons-configuration-1.10.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.2-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.4-1.jar"/>
-	<classpathentry kind="lib" path="lib/org.apache.commons.io.jar"/>
 	<classpathentry kind="lib" path="lib/jflac-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/jl1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jmactritonusspi1.74.jar"/>
@@ -27,5 +26,7 @@
 	<classpathentry kind="lib" path="lib/commons-configuration-1.10-tests.jar"/>
 	<classpathentry kind="lib" path="lib/istack-commons-runtime-2.13.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_share-0.3.6.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.6-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

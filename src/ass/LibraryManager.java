@@ -28,8 +28,7 @@ public class LibraryManager {
 		if (library == null) {
 			File LIBRARY_FOLDER = new File(Properties.LIBRARY_LOCATION.getValue());
 
-			if (/**Properties.LIBRARY_LOCATION.isDefaultValue()*/
-			true) {
+			if (Properties.LIBRARY_LOCATION.isDefaultValue()) {
 
 				LIBRARY_FOLDER = new File(new File(".").getAbsolutePath() + "/library/");
 
@@ -43,8 +42,9 @@ public class LibraryManager {
 
 				Properties.LIBRARY_LOCATION.setNewValue(LIBRARY_FOLDER.getAbsolutePath());
 
-				library = new Library(LIBRARY_FOLDER);
 			}
+
+			library = new Library(LIBRARY_FOLDER);
 		}
 
 		return library;

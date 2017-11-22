@@ -100,7 +100,11 @@ public class SpectrumTimeAnalyzer extends JPanel implements KJDigitalSignalProce
 	public SpectrumTimeAnalyzer() {
 		setOpaque(false);
 		initialize();
+		
+		
 	}
+	
+	
 
 	public boolean isPeaksEnabled() {
 		return peaksEnabled;

@@ -5,10 +5,11 @@ import java.util.ArrayList;
 
 import ass.keyboard.action.editable.EditableProperty;
 import ass.keyboard.action.interfaces.FileAction;
+import ass.keyboard.action.interfaces.FileEvent;
 
 public class RenameAction extends FileAction {
 
-	private String TAG = "RenameAction";
+	private String TAG = "Rename";
 
 	@Override
 	public String toString() {
@@ -36,15 +37,16 @@ public class RenameAction extends FileAction {
 		return FileAction.PERFORMED_ON_ONE_OR_MANY_FILES_ONLY_POLICY;
 	}
 
-	@Override
-	public void perform() {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void unperform() {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public FileEvent perform(File fileAffected) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

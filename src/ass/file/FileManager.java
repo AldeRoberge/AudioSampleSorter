@@ -80,7 +80,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 	//
 
 	/** Table model for File[]. */
-	private FileTableModel fileTableModel;
+	public FileTableModel fileTableModel;
 	private ListSelectionListener listSelectionListener;
 	private boolean cellSizesSet = false;
 
@@ -93,6 +93,8 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 	private FileImporter fileImporter = new FileImporter(this);
 
 	//
+
+	public ArrayList<File> selectedFiles = new ArrayList<File>();
 
 	public FileManager() {
 
@@ -145,7 +147,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 					int minIndex = lsm.getMinSelectionIndex();
 					int maxIndex = lsm.getMaxSelectionIndex();
 
-					ArrayList<File> selectedFiles = new ArrayList<File>();
+					selectedFiles.clear();
 
 					for (int i = minIndex; i <= maxIndex; i++) {
 						if (lsm.isSelectedIndex(i)) {
@@ -160,9 +162,9 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 					if (!isAdjusting) {
 						if (selectedFiles.size() == 1) { //amount of selected files == 1
 
-							File selecteFiled = selectedFiles.get(0);
+							File selectedFile = selectedFiles.get(0);
 
-							fileVisualiser.setSelectedFile(selecteFiled);
+							fileVisualiser.setSelectedFile(selectedFile);
 
 						} else if (selectedFiles.size() > 1) { //more than 1 selected file
 
@@ -172,6 +174,10 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 						//Update toolbar and menu
 						tellSelectedFilesChanged();
+
+						//Save on every selection change, might cause performance issues TODO
+						//(this is done to fix actions not serialising the list after moving and deleting)
+						importedFilesSerialiser.set(fileTableModel.getFiles());
 
 					}
 
@@ -273,7 +279,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 				table.getSelectionModel().addListSelectionListener(listSelectionListener);
 				if (!cellSizesSet) {
 
-					int rowHeight = 26;
+					int rowHeight = 40;
 
 					// size adjustment to better account for icons
 					table.setRowHeight(rowHeight); //TODO make this an editeable property
@@ -303,30 +309,6 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 		tableColumn.setPreferredWidth(width);
 		tableColumn.setMaxWidth(width);
 		tableColumn.setMinWidth(width);
-	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				} catch (Exception weTried) {
-					weTried.printStackTrace();
-				}
-				JFrame f = new JFrame(Constants.SOFTWARE_NAME);
-				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-				FileManager fileManager = new FileManager();
-				f.setContentPane(fileManager);
-
-				f.setIconImage(Icons.SOFTWARE_ICON.getImage());
-
-				f.pack();
-				f.setLocationByPlatform(true);
-				f.setMinimumSize(f.getSize());
-				f.setVisible(true);
-			}
-		});
 	}
 
 	public void showFileImporter() {
@@ -359,87 +341,9 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 	public void tellSelectedFilesChanged() {
 
 		for (ListenForSelectedFilesChanges l : waitingForChanges) {
-			l.filesChanged(fileVisualiser.getSelectedFiles().size());
+			l.filesChanged(selectedFiles.size());
 		}
 
-	}
-
-}
-
-/** A TableModel to hold File[]. */
-class FileTableModel extends AbstractTableModel {
-
-	private static final String TAG = null;
-	private ArrayList<File> files;
-
-	private ArrayList<File> selectedFiles;
-
-	private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
-	private String[] columns = { "Icon", "File", "Path", "Size", "Last Modified" };
-
-	FileTableModel() {
-		files = new ArrayList<File>();
-	}
-
-	public Object getValueAt(int row, int column) {
-		File file = files.get(row);
-		switch (column) {
-		case 0:
-			return fileSystemView.getSystemIcon(file);
-		case 1:
-			return fileSystemView.getSystemDisplayName(file);
-		case 2:
-			return file.getPath();
-		case 3:
-			return file.length();
-		case 4:
-			return file.lastModified();
-		default:
-			System.err.println("Logic Error");
-		}
-		return "";
-	}
-
-	public int getColumnCount() {
-		return columns.length;
-	}
-
-	public Class<?> getColumnClass(int column) {
-		switch (column) {
-		case 0:
-			return ImageIcon.class;
-		case 3:
-			return Long.class;
-		case 4:
-			return Date.class;
-		}
-		return String.class;
-	}
-
-	public String getColumnName(int column) {
-		return columns[column];
-	}
-
-	public int getRowCount() {
-		return files.size();
-	}
-
-	public File getFile(int row) {
-		return files.get(row);
-	}
-
-	public void setFiles(ArrayList<File> files) {
-		this.files = files;
-		fireTableDataChanged();
-	}
-
-	public ArrayList<File> getFiles() {
-		return files;
-	}
-
-	public void addFile(File file) {
-		files.add(file);
-		fireTableDataChanged();
 	}
 
 }
