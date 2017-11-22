@@ -59,18 +59,18 @@ public class IconChooser extends JFrame {
 		contentPane.add(content);
 		content.setLayout(new BorderLayout(0, 0));
 
-		JScrollPane iconScrollPan = new JScrollPane();
-		content.add(iconScrollPan, BorderLayout.CENTER);
-		iconScrollPan.getVerticalScrollBar().setUnitIncrement(16);
+		JScrollPane iconScrollPane = new JScrollPane();
+		content.add(iconScrollPane, BorderLayout.CENTER);
+		iconScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
 		iconsPanel = new JPanel();
 		iconsPanel.setBackground(SystemColor.textHighlightText);
-		iconScrollPan.setViewportView(iconsPanel);
+		iconScrollPane.setViewportView(iconsPanel);
 		iconsPanel.setLayout(new WrapLayout());
 
 		JPanel importPanel = new JPanel();
 		importPanel.setBackground(SystemColor.control);
-		iconScrollPan.setColumnHeaderView(importPanel);
+		iconScrollPane.setColumnHeaderView(importPanel);
 
 		JButton btnImport = new JButton("Refresh list");
 		btnImport.addActionListener(new ActionListener() {
@@ -126,10 +126,10 @@ public class IconChooser extends JFrame {
 			}
 
 			public void updateValue() {
-				
+
 				searchForValue = searchFor.getText();
 				populate();
-				
+
 			}
 
 		});
@@ -161,7 +161,7 @@ public class IconChooser extends JFrame {
 
 		for (UserIcon i : Icons.images) {
 
-			if (i.containsString(searchForValue)) {
+			if (i.containsString(searchForValue, true)) {
 				JPanel icon = new JPanel();
 				icon.setLayout(new FlowLayout());
 				iconsPanel.add(icon);

@@ -26,6 +26,7 @@ import javax.swing.event.DocumentListener;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
 import ass.keyboard.action.DeleteAction;
+import ass.keyboard.action.RemoveSelectedFilesAction;
 import ass.keyboard.action.RenameAction;
 import ass.keyboard.action.TestAction;
 import ass.keyboard.action.SimpleUIAction;
@@ -59,6 +60,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		//Other Actions
 		default_actions.add(new RenameAction());
 		default_actions.add(new DeleteAction());
+		default_actions.add(new RemoveSelectedFilesAction());
 		//default_actions.add(new TestAction());
 
 		Logger.logInfo(TAG, "Found " + default_actions.size() + " actions.");

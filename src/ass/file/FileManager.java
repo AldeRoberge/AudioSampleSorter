@@ -26,10 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Iterator;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -39,12 +37,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileSystemView;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
@@ -52,11 +48,8 @@ import ass.LibraryManager;
 import ass.file.importer.FileImporter;
 import ass.keyboard.macro.ListenForMacroChanges;
 import ass.keyboard.macro.MacroAction;
-import ass.keyboard.macro.MacroEditor;
-import ass.keyboard.macro.MacroLoader;
 import constants.Constants;
 import file.ObjectSerializer;
-import icons.Icons;
 import logger.Logger;
 
 /**
@@ -238,21 +231,36 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 		}
 	}*/
 
+	public void removeFiles(ArrayList<File> filesToRemove) {
+		final ArrayList<File> files = fileTableModel.getFiles();
+
+		for (Iterator<File> iterator = files.iterator(); iterator.hasNext();) {
+			File file = iterator.next();
+
+			if (filesToRemove.contains(file)) {
+				iterator.remove();
+			}
+		}
+
+		setTableData(files);
+
+	}
+
 	//Used by FileImporter and importedFileSerialise
 	public void importFiles(ArrayList<File> filesToImport) {
 
-		final ArrayList<File> oldFile = fileTableModel.getFiles();
+		final ArrayList<File> oldFiles = fileTableModel.getFiles();
 
-		ArrayList<File> newFile = new ArrayList<File>();
-		newFile.addAll(oldFile);
+		ArrayList<File> newFiles = new ArrayList<File>();
+		newFiles.addAll(oldFiles);
 
 		for (File file : filesToImport) {
-			if (!oldFile.contains(file) && file.exists()) {
-				newFile.add(file);
+			if (!oldFiles.contains(file) && file.exists()) {
+				newFiles.add(file);
 			} else {
 				String error = "";
 
-				if (oldFile.contains(file)) {
+				if (oldFiles.contains(file)) {
 					error = "is a duplicate file";
 				} else {
 					error = "doesn't exist at this path '" + file.getAbsolutePath() + "'";
@@ -264,7 +272,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 			}
 		}
 
-		setTableData(newFile);
+		setTableData(newFiles);
 
 	}
 
@@ -344,6 +352,10 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 			l.filesChanged(selectedFiles.size());
 		}
 
+	}
+
+	public void removeSelectedFiles() {
+		removeFiles(selectedFiles);
 	}
 
 }

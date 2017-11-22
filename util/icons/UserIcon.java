@@ -38,9 +38,16 @@ public class UserIcon implements Serializable {
 		return imageIcon;
 	}
 
-	public boolean containsString(String searchForValue) {
+	public boolean containsString(String searchForValue, boolean ignoreCase) {
 
-		return (getImagePath().contains(searchForValue));
+		if (ignoreCase) {
+			return (getImagePath().toLowerCase().contains(searchForValue.toLowerCase()));
+		} else {
+			return (getImagePath().contains(searchForValue));
+		}
+		
+		
+		
 
 	}
 

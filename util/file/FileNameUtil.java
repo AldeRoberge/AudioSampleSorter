@@ -1,6 +1,6 @@
 package file;
 
-class FileNameUtil {
+public class FileNameUtil {
 
 	//FROM https://stackoverflow.com/questions/924394/how-to-get-the-filename-without-the-extension-in-java
 
