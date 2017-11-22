@@ -44,4 +44,6 @@ public class Properties {
 
 	public static Property HORIZONTAL_SPLITPANE_DIVIDERLOCATION = new Property("SPLITPANE_DIVIDERLOCATION", "200", e);
 
+	public static Property LIBRARY_LOCATION = new Property("LIBRAIRY_LOCATION", "C:\\", e);
+
 }

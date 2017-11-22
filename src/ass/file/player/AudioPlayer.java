@@ -23,33 +23,21 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	private BasicController control;
 
-	private double currentAudioVolume = Properties.MAIN_VOLUME_SLIDER_VALUE.getValueAsInt(); // stored
-																								// between
-																								// 0
-																								// and
-																								// 100
-																								// (converted
-																								// in
-																								// setVolume())
-	private double currentAudioPan = Properties.MAIN_PAN_SLIDER_VALUE.getValueAsInt(); // stored
-																						// between
-																						// 0
-																						// and
-																						// 100
-																						// (converted
-																						// in
-																						// setGain())
+	/**
+	 * Volume and pan are stored between 0 and 100 in properties and converted from 0 to 1 in setVolume() and setGain()
+	 */
+	private double currentAudioVolume = Properties.MAIN_VOLUME_SLIDER_VALUE.getValueAsInt();
+	private double currentAudioPan = Properties.MAIN_PAN_SLIDER_VALUE.getValueAsInt();
 
 	private File currentSelectedSound;
-
-	private boolean isStopped;
-	private boolean isPaused;
 
 	//
 
 	private Map audioInfo = null;
 
 	private AudioVisualizer audioVis;
+
+	//
 
 	public AudioVisualizer getVisualizer() {
 		if (audioVis == null) {
@@ -78,54 +66,6 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	}
 
-	void playNewSound(File sound) {
-
-		if (sound.exists()) {
-
-			new Thread("Sound player") {
-
-				public void run() {
-
-					currentSelectedSound = sound;
-
-					try {
-						// Open file, or URL or Stream (shoutcast) to play.
-						control.open(currentSelectedSound);
-						// control.open(new
-						// URL("http://yourshoutcastserver.com:8000"));
-
-						// Start playback in a thread.
-						control.play();
-
-						// Set Volume (0 to 1.0).
-						// setGain should be called after control.play().
-
-						setVolume(currentAudioVolume);
-						setPan(currentAudioPan);
-
-						// If you want to pause/resume/pause the played file
-						// then
-						// write a Swing player and just call control.pause(),
-						// control.resume() or control.stop().
-						// Use control.seek(bytesToSkip) to seek file
-						// (i.e. fast forward and rewind). seek feature will
-						// work only if underlying JavaSound SPI implements
-						// skip(...). True for MP3SPI (JavaZOOM) and SUN SPI's
-						// (WAVE, AU, AIFF).
-
-					} catch (BasicPlayerException e) {
-						e.printStackTrace();
-						System.err.println("Error!");
-					}
-
-				}
-			}.start();
-
-		} else {
-			Logger.logError(TAG, "File doesn't exist!");
-		}
-	}
-
 	/**
 	 * Open callback, stream is ready to play.
 	 *
@@ -150,73 +90,6 @@ public class AudioPlayer implements BasicPlayerListener {
 			// Spectrum/time analyzer
 			getVisualizer().analyzer.writeDSP(pcmdata);
 		}
-
-	}
-
-	/**
-	 * Notification callback for basicplayer events such as opened, eom ...
-	 * 
-	 * A copy of javazoom.jlgui.player.amp.processStateUpdated(BasicPlayerEvent
-	 * event)
-	 * 
-	 * @param event
-	 */
-	public void stateUpdated(BasicPlayerEvent event) {
-		// Notification of BasicPlayer states (opened, playing, end of media,
-		// ...)
-
-		int state = event.getCode();
-
-		if (event.getCode() == BasicPlayerEvent.STOPPED) {
-			newVisualizerStatus("Stopped");
-
-			isStopped = true;
-
-			// stop analyzer
-			getVisualizer().analyzer.stopDSP();
-			getVisualizer().analyzer.repaint();
-
-		} else if (event.getCode() == BasicPlayerEvent.PAUSED) {
-			newVisualizerStatus("Paused");
-
-			isPaused = true;
-
-		} else if (event.getCode() == BasicPlayerEvent.PLAYING) {
-
-			newVisualizerStatus("Playing");
-
-			isPaused = false;
-			isStopped = false;
-
-			// analyzer
-			if (audioInfo.containsKey("basicplayer.sourcedataline")) {
-
-				getVisualizer().analyzer.setupDSP((SourceDataLine) audioInfo.get("basicplayer.sourcedataline"));
-				getVisualizer().analyzer.startDSP((SourceDataLine) audioInfo.get("basicplayer.sourcedataline"));
-
-			}
-
-		} else if (event.getCode() == BasicPlayerEvent.RESUMED) {
-			newVisualizerStatus("Resumed");
-
-			isPaused = false;
-			isStopped = false;
-		} else if (state == BasicPlayerEvent.OPENING) {
-
-			newVisualizerStatus("Buffering");
-
-			// buffering
-		} else if (state == BasicPlayerEvent.EOM) { /*-- End Of Media reached --*/
-			newVisualizerStatus("End of media");
-
-			// currentSelectedSound.isPlaying = false;
-
-			// end of media reached
-		}
-
-		// see
-		// javazoom.jlgui.player.amp.PlayerUI
-		// processStateUpdated(BasicPlayerEvent event)
 
 	}
 
@@ -247,67 +120,132 @@ public class AudioPlayer implements BasicPlayerListener {
 		}
 	}
 
-	public void pause() {
+	/////////////////////////////////////////////////////////////////////////
 
+	public boolean isPlaying = false;
+	boolean isStopped = false;
+	boolean isPaused = false;
+
+	/**
+	 * Notification callback for basicplayer events such as opened, eom ...
+	 * 
+	 * A copy of javazoom.jlgui.player.amp.processStateUpdated(BasicPlayerEvent event)
+	 * 
+	 */
+	public void stateUpdated(BasicPlayerEvent event) {
+		// Notification of BasicPlayer states (opened, playing, end of media,
+		// ...)
+
+		int state = event.getCode();
+
+		if (event.getCode() == BasicPlayerEvent.STOPPED) {
+			newVisualizerStatus("Stopped");
+
+			isStopped = true;
+			isPlaying = false;
+			isPaused = false;
+
+			// stop analyzer
+			getVisualizer().analyzer.stopDSP();
+			getVisualizer().analyzer.repaint();
+
+		} else if (event.getCode() == BasicPlayerEvent.PAUSED) {
+			newVisualizerStatus("Paused");
+
+			isStopped = false;
+			isPlaying = false;
+			isPaused = true;
+
+		} else if (event.getCode() == BasicPlayerEvent.PLAYING) {
+
+			newVisualizerStatus("Playing");
+
+			isStopped = false;
+			isPaused = false;
+			isPlaying = true;
+
+			// analyzer
+			if (audioInfo.containsKey("basicplayer.sourcedataline")) {
+
+				getVisualizer().analyzer.setupDSP((SourceDataLine) audioInfo.get("basicplayer.sourcedataline"));
+				getVisualizer().analyzer.startDSP((SourceDataLine) audioInfo.get("basicplayer.sourcedataline"));
+
+			}
+
+		} else if (event.getCode() == BasicPlayerEvent.RESUMED) {
+			newVisualizerStatus("Resumed");
+
+			isStopped = false;
+			isPaused = false;
+			isPlaying = true;
+		} else if (state == BasicPlayerEvent.OPENING) {
+
+			newVisualizerStatus("Buffering");
+
+		} else if (state == BasicPlayerEvent.EOM) { /*-- End Of Media reached --*/
+			newVisualizerStatus("End of media");
+		}
+
+	}
+
+	/**
+	 * Return true if its paused
+	 */
+	public void pause() {
 		try {
 			control.pause();
 		} catch (BasicPlayerException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public void resume() {
-
 		try {
 			control.resume();
 		} catch (BasicPlayerException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	public void playNewSoundOrResume(File sound) {
+	public void play(File sound) {
+		if (sound.exists()) {
 
-		if (currentSelectedSound == null) {
-			playNewSound(sound);
-		} else {
+			new Thread("Sound player") {
 
-			if (currentSelectedSound.equals(sound)) {
+				public void run() {
 
-				if (isStopped) { // stopped (play)
+					currentSelectedSound = sound;
 
 					try {
+						control.open(currentSelectedSound);
 						control.play();
+
+						setVolume(currentAudioVolume);
+						setPan(currentAudioPan);
 					} catch (BasicPlayerException e) {
-						Logger.logError(TAG, "Could not play stopped sound " + sound);
 						e.printStackTrace();
-					}
-
-				} else if (isPaused) { // paused (resume)
-
-					try {
-						control.resume();
-					} catch (BasicPlayerException e) {
-						Logger.logError(TAG, "Could not resume paused sound " + sound);
-						e.printStackTrace();
-					}
-
-				} else { // playing (pause)
-
-					try {
-						control.pause();
-					} catch (BasicPlayerException e) {
-						Logger.logError(TAG, "Could not pause playing sound " + sound);
-						e.printStackTrace();
+						System.err.println("Error!");
 					}
 
 				}
-			} else {
-				playNewSound(sound);
-			}
-		}
+			}.start();
 
+		} else {
+			Logger.logError(TAG, "File doesn't exist!");
+		}
+	}
+
+	/**
+	 * Return if its playing now
+	 */
+	public boolean resumeOrPause() {
+		if (isPaused) {
+			resume();
+			return true;
+		} else {
+			pause();
+			return false;
+		}
 	}
 
 }

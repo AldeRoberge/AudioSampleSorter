@@ -27,9 +27,9 @@ public interface Action extends Serializable {
 		return null;
 	}
 
-	public static final int PERFORMED_ON_NO_FILES_ONLY_POLICY = -2; //0 selected files
+	public static final int PERFORMED_ON_ZERO_FILES_ONLY_POLICY = -2; //0 selected files
 	public static final int PERFORMED_ON_ONE_FILE_ONLY_POLICY = -1; //1 to 1 selected file
-	public static final int PERFORMED_ON_ZERO_TO_MANY_FILES_ONLY_POLICY = 0; //0 to infinity selected files
+	public static final int PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY = 0; //0 to infinity selected files
 	public static final int PERFORMED_ON_ONE_OR_MANY_FILES_ONLY_POLICY = 1; //1 to infinity selected files
 	public static final int PERFORMED_ON_MANY_FILES_ONLY_POLICY = 2; //2 to infinity selected files
 
@@ -38,11 +38,11 @@ public interface Action extends Serializable {
 
 	public default boolean canBePerformedOnFiles(int numberOfFiles) {
 		switch (getPolicy()) {
-		case PERFORMED_ON_NO_FILES_ONLY_POLICY:
+		case PERFORMED_ON_ZERO_FILES_ONLY_POLICY:
 			return numberOfFiles == 0;
 		case PERFORMED_ON_ONE_FILE_ONLY_POLICY:
 			return numberOfFiles == 1;
-		case PERFORMED_ON_ZERO_TO_MANY_FILES_ONLY_POLICY:
+		case PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY:
 			return numberOfFiles >= 0;
 		case PERFORMED_ON_ONE_OR_MANY_FILES_ONLY_POLICY:
 			return numberOfFiles >= 1;
@@ -55,7 +55,7 @@ public interface Action extends Serializable {
 		}
 	}
 
-	public abstract String toString(); // used by ComboBox inside MacorEditorUI
+	public abstract String toString(); // used by ComboBox inside MacorEditorUI, implemented by FileAction and UIAction
 
 	public abstract String getDescription();
 
@@ -68,11 +68,11 @@ public interface Action extends Serializable {
 
 	public static String getPolicyAsString(int highestPolicy) {
 		switch (highestPolicy) {
-		case PERFORMED_ON_NO_FILES_ONLY_POLICY:
+		case PERFORMED_ON_ZERO_FILES_ONLY_POLICY:
 			return "no files";
 		case PERFORMED_ON_ONE_FILE_ONLY_POLICY:
 			return "one file";
-		case PERFORMED_ON_ZERO_TO_MANY_FILES_ONLY_POLICY:
+		case PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY:
 			return "any number of files";
 		case PERFORMED_ON_ONE_OR_MANY_FILES_ONLY_POLICY:
 			return "more than one file";

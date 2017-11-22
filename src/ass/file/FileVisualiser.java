@@ -12,7 +12,7 @@ import file.FileTypes;
 import logger.Logger;
 import ui.FileInformation;
 
-public class Visualiser extends FileInformation {
+public class FileVisualiser extends FileInformation {
 
 	private static final String TAG = "FileVisualiser";
 
@@ -22,7 +22,7 @@ public class Visualiser extends FileInformation {
 
 	private static ArrayList<File> selectedFiles = new ArrayList<File>();
 
-	public Visualiser() {
+	public FileVisualiser() {
 		super();
 
 		playerContainer = new JPanel();
@@ -39,7 +39,7 @@ public class Visualiser extends FileInformation {
 		setFileDetails(file);
 
 		if (FileTypes.AUDIO_FILES.accept(file)) {
-			audPlayer.playNewSoundOrResume(file);
+			audPlayer.play(file);
 		} else if (FileTypes.VIDEO_FILES.accept(file)) {
 			Logger.logError(TAG, "Video files are not currently supported!");
 		} else if (FileTypes.PICTURE_FILES.accept(file)) {

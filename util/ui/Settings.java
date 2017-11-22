@@ -1,4 +1,4 @@
-package ass.ui;
+package ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,10 +12,10 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ass.file.Manager;
+import ass.file.FileManager;
 import ass.file.player.AudioPlayer;
 import constants.Properties;
-import ui.MiddleOfTheScreen;
+import javax.swing.JSeparator;
 
 public class Settings extends JPanel {
 
@@ -31,7 +31,7 @@ public class Settings extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Settings(Manager fMan) {
+	public Settings(FileManager fMan) {
 
 		this.audioPlayer = fMan.fileVisualiser.getAudioPlayer();
 
@@ -41,18 +41,6 @@ public class Settings extends JPanel {
 
 		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
 
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Display file extensions");
-		chckbxNewCheckBox.setSelected(Properties.DISPLAY_SOUND_SUFFIXES.getValueAsBoolean());
-		chckbxNewCheckBox.setBounds(22, 115, 186, 25);
-		ActionListener displayFileExtensionsAction = new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				Properties.DISPLAY_SOUND_SUFFIXES.setNewValue(chckbxNewCheckBox.isSelected());
-				//sorter.refreshInfoPanels();
-			}
-		};
-		chckbxNewCheckBox.addActionListener(displayFileExtensionsAction);
-		add(chckbxNewCheckBox);
-
 		//
 
 		lblMasterVolume = new JLabel("Master Volume (100%)");
@@ -60,7 +48,8 @@ public class Settings extends JPanel {
 		add(lblMasterVolume);
 
 		JSlider volumeSlider = new JSlider();
-		volumeSlider.setBounds(167, 51, 200, 25);
+		volumeSlider.setPaintTicks(true);
+		volumeSlider.setBounds(167, 51, 221, 25);
 
 		volumeSlider.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent me) { // On mouse release
@@ -90,7 +79,8 @@ public class Settings extends JPanel {
 		add(lblMasterPan);
 
 		JSlider panSlider = new JSlider();
-		panSlider.setBounds(167, 13, 200, 25);
+		panSlider.setPaintTicks(true);
+		panSlider.setBounds(167, 13, 221, 25);
 
 		panSlider.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent me) { // On mouse release
@@ -116,9 +106,10 @@ public class Settings extends JPanel {
 
 		//
 
-		JCheckBox chckbxPlayAudioOn = new JCheckBox("Play Audio on Click");
+		JCheckBox chckbxPlayAudioOn = new JCheckBox("Play audio on click");
+		chckbxPlayAudioOn.setToolTipText("Toggles weither to play audio files on click");
 		chckbxPlayAudioOn.setSelected(Properties.PLAY_ON_CLICK.getValueAsBoolean());
-		chckbxPlayAudioOn.setBounds(22, 85, 147, 25);
+		chckbxPlayAudioOn.setBounds(22, 115, 147, 25);
 		ActionListener act = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				Properties.PLAY_ON_CLICK.setNewValue(chckbxPlayAudioOn.isSelected());
@@ -131,7 +122,7 @@ public class Settings extends JPanel {
 
 		chckbxIncludeSubfoldersInSearch = new JCheckBox("Include subfolders on import");
 		chckbxIncludeSubfoldersInSearch = new JCheckBox("Include subfolders on import");
-		chckbxIncludeSubfoldersInSearch.setToolTipText("Include folders inside the selected folders");
+		chckbxIncludeSubfoldersInSearch.setToolTipText("Toggles weither if we should import files contained inside the selected folders");
 		chckbxIncludeSubfoldersInSearch.setBounds(22, 145, 208, 25);
 		chckbxIncludeSubfoldersInSearch.setSelected(Properties.INCLUDE_SUBFOLDERS.getValueAsBoolean());
 		ActionListener includeSubfoldersAction = new ActionListener() {
@@ -146,6 +137,7 @@ public class Settings extends JPanel {
 		//
 
 		JCheckBox chckbxPromptOnClose = new JCheckBox("Prompt on close");
+		chckbxPromptOnClose.setToolTipText("Toggles the 'Are you sure you want to exit?' dialog");
 		chckbxPromptOnClose.setSelected(Properties.PROMPT_ON_EXIT.getValueAsBoolean());
 		chckbxPromptOnClose.setBounds(22, 175, 147, 25);
 		ActionListener changePromptOnClose = new ActionListener() {
@@ -156,6 +148,10 @@ public class Settings extends JPanel {
 		};
 		chckbxPromptOnClose.addActionListener(changePromptOnClose);
 		add(chckbxPromptOnClose);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(22, 98, 366, 2);
+		add(separator);
 
 	}
 

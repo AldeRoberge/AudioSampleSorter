@@ -13,7 +13,7 @@ import java.util.Date;
 
 /**
  * Very important :
- * @see ass.file.Visualiser
+ * @see ass.file.FileVisualiser
  */
 public class FileInformation extends JPanel {
 
@@ -73,9 +73,6 @@ public class FileInformation extends JPanel {
 	/** Update the File details view with the details of this File. */
 	protected void setFileDetails(File file) {
 
-		System.out.println(file.getName());
-
-		//currentFile = file;
 		Icon icon = fileSystemView.getSystemIcon(file);
 		fileName.setIcon(icon);
 		fileName.setText(fileSystemView.getSystemDisplayName(file));
@@ -87,20 +84,15 @@ public class FileInformation extends JPanel {
 
 		size.setText(FileSizeToString.getFileSizeAsString(file) + " (" + file.length() + " bytes)");
 
-		/**JFrame f = (JFrame) getTopLevelAncestor(); //will trace back to Sorter
-		if (f != null) {
-			f.setTitle(Constants.SOFTWARE_NAME + " - " + fileSystemView.getSystemDisplayName(file));
-		}*/
-
 		repaint();
 	}
 
 	protected void setFilesDetails(ArrayList<File> files) {
-		String multipleFilesSelected = "Multiple files selected";
+		String multipleFilesSelected = files.size() + " files selected";
 
 		fileName.setIcon(null);
-		fileName.setText(multipleFilesSelected);
-		path.setText(multipleFilesSelected);
+		fileName.setText(""); //Empty because multiple files are selected
+		path.setText("");
 
 		if (displayFileDate) {
 			date.setText(multipleFilesSelected);

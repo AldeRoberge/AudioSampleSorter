@@ -3,10 +3,11 @@ package ass.keyboard.macro;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import ass.LibraryManager;
 import ass.file.ListenForSelectedFilesChanges;
-import ass.keyboard.action.PlayAction;
 import ass.keyboard.action.RenameAction;
-import ass.keyboard.action.ShowUIAction;
+import ass.keyboard.action.ResumePauseAction;
+import ass.keyboard.action.SimpleUIAction;
 import ass.keyboard.action.interfaces.Action;
 import ass.keyboard.key.Key;
 import file.ObjectSerializer;
@@ -25,7 +26,7 @@ public class MacroLoader implements ListenForSelectedFilesChanges {
 
 	private MacroEditor macroEditor;
 
-	private ObjectSerializer<ArrayList<MacroAction>> macroSerializer = new ObjectSerializer<ArrayList<MacroAction>>("macro.ser");
+	private ObjectSerializer<ArrayList<MacroAction>> macroSerializer = new ObjectSerializer<ArrayList<MacroAction>>(LibraryManager.getMacroSerFile());
 
 	public MacroLoader(MacroEditor macroEditor) {
 		this.macroEditor = macroEditor;
@@ -41,12 +42,12 @@ public class MacroLoader implements ListenForSelectedFilesChanges {
 			}
 
 		} else {
-			addNewMacro(new MacroAction("Play", Icons.PLAY, new Key(KeyEvent.VK_SPACE), new PlayAction(), true));
+			addNewMacro(new MacroAction("Play", Icons.PLAY, new Key(KeyEvent.VK_SPACE), new ResumePauseAction(), true));
 
-			addNewMacro(new MacroAction("Show Credits", Icons.ABOUT, new Key(KeyEvent.VK_F1), ShowUIAction.SHOW_CREDITS, false));
-			addNewMacro(new MacroAction("Edit Macros", Icons.MACROS, new Key(KeyEvent.VK_F2), ShowUIAction.SHOW_MACRO, false));
-			addNewMacro(new MacroAction("Edit Settings", Icons.SETTINGS, new Key(KeyEvent.VK_F3), ShowUIAction.SHOW_SETTINGS, false));
-			addNewMacro(new MacroAction("Show Logger", Icons.LOGGER, new Key(KeyEvent.VK_F4), ShowUIAction.SHOW_LOGGER, false));
+			addNewMacro(new MacroAction("Show Credits", Icons.ABOUT, new Key(KeyEvent.VK_F1), SimpleUIAction.SHOW_CREDITS, false));
+			addNewMacro(new MacroAction("Edit Macros", Icons.MACROS, new Key(KeyEvent.VK_F2), SimpleUIAction.SHOW_MACRO, false));
+			addNewMacro(new MacroAction("Edit Settings", Icons.SETTINGS, new Key(KeyEvent.VK_F3), SimpleUIAction.SHOW_SETTINGS, false));
+			addNewMacro(new MacroAction("Show Logger", Icons.LOGGER, new Key(KeyEvent.VK_F4), SimpleUIAction.SHOW_LOGGER, false));
 
 			addNewMacro(new MacroAction("Rename", Icons.PENCIL, new Key(KeyEvent.VK_R), new RenameAction(), false));
 

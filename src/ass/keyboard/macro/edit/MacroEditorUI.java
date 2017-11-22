@@ -25,10 +25,10 @@ import javax.swing.event.DocumentListener;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
 
-import ass.keyboard.action.PlayAction;
 import ass.keyboard.action.RenameAction;
-import ass.keyboard.action.ShowUIAction;
+import ass.keyboard.action.ResumePauseAction;
 import ass.keyboard.action.TestAction;
+import ass.keyboard.action.SimpleUIAction;
 import ass.keyboard.action.editable.EditablePropertyEditor;
 import ass.keyboard.action.interfaces.Action;
 import ass.keyboard.key.Key;
@@ -50,21 +50,21 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 	static {
 
 		// Simple UI Actions
-		ShowUIAction.init();
+		SimpleUIAction.init();
 
-		for (Action sUIa : ShowUIAction.UIActions) {
+		for (Action sUIa : SimpleUIAction.UIActions) {
 			default_actions.add(sUIa);
 		}
 
 		//Other Actions
-		default_actions.add(new PlayAction());
 		default_actions.add(new RenameAction());
 		default_actions.add(new TestAction());
+		default_actions.add(new ResumePauseAction());
 
-		Logger.logInfo(TAG, "Found " + default_actions + " actions.");
+		Logger.logInfo(TAG, "Found " + default_actions.size() + " actions.");
 
 	}
-
+	
 	private IconChooser iconChooser = new IconChooser();
 
 	private MacroEditorUI me = this;
@@ -160,7 +160,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		JComboBox<Action> comboBox = new JComboBox<Action>();
 		comboBox.setToolTipText("Add action");
 		for (Action a : default_actions) {
-			comboBox.addItem(a);
+			comboBox.addItem(a); //uses action.toString to display
 		}
 
 		comboBox.setBounds(105, 58, 237, 22);
@@ -225,8 +225,8 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 
 		titleEditor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//System.out.println("KeyBind has a new title : " + titleEditor.getText());
 				keyBindToEdit.setName(titleEditor.getText());
+				titleEditor.transferFocus();
 			}
 		});
 
@@ -258,7 +258,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		chckboxMenu = new JCheckBox("Menu");
 		chckboxMenu.setToolTipText("Show in right click menu");
 		chckboxMenu.setSelected(true);
-		chckboxMenu.setBounds(273, 33, 82, 16);
+		chckboxMenu.setBounds(273, 13, 74, 35);
 
 		ActionListener act2 = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {

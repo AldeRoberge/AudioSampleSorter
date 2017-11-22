@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,9 +23,7 @@ public class EditablePropertyEditor extends JFrame {
 
 	private static final String TAG = "EditablePropertyEditor";
 
-	private static JPanel columnPanel = new JPanel();
-	private static JPanel borderLayoutPanel;
-
+	private static JPanel editeablePropertyPanels = new JPanel();
 	private static JScrollPane scrollPane;
 
 	private static ArrayList<EditablePropertyPanel> allValueEditorPanels = new ArrayList<EditablePropertyPanel>();
@@ -47,25 +46,18 @@ public class EditablePropertyEditor extends JFrame {
 
 		// scrolleable list
 
-		// list
-
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(15, 16, 620, 398);
 		scrollPane.setAutoscrolls(true);
 		contentPane.add(scrollPane);
 
-		borderLayoutPanel = new JPanel();
-		scrollPane.setViewportView(borderLayoutPanel);
-		borderLayoutPanel.setLayout(new BorderLayout(0, 0));
-
-		columnPanel = new JPanel();
-		columnPanel.setLayout(new GridLayout(0, 1, 0, 0));
-		columnPanel.setBackground(Color.red);
-		borderLayoutPanel.add(columnPanel, BorderLayout.NORTH);
-
-		// end
+		editeablePropertyPanels = new JPanel();
+		editeablePropertyPanels.setLayout(new BoxLayout(editeablePropertyPanels, BoxLayout.PAGE_AXIS));
+		scrollPane.setViewportView(editeablePropertyPanels);
 
 		setContentPane(contentPane);
+
+		// end
 
 		pack();
 
@@ -74,16 +66,17 @@ public class EditablePropertyEditor extends JFrame {
 	// TODO : update this when adding fields
 	public void changeAction(Action e) {
 
-		clear();
+		allValueEditorPanels.clear();
+		editeablePropertyPanels.removeAll();
 
 		for (EditableProperty<?> a : e.getEditableProperties()) {
 			EditablePropertyPanel infoPanel = new EditablePropertyPanel(a);
 
 			allValueEditorPanels.add(infoPanel);
-			columnPanel.add(infoPanel);
-
-			refreshInfoPanels();
+			editeablePropertyPanels.add(infoPanel);
 		}
+
+		refreshInfoPanels();
 
 	}
 
@@ -96,31 +89,12 @@ public class EditablePropertyEditor extends JFrame {
 
 		}
 
-		columnPanel.validate();
-		columnPanel.repaint();
-
-		borderLayoutPanel.validate();
-		borderLayoutPanel.repaint();
+		editeablePropertyPanels.validate();
+		editeablePropertyPanels.repaint();
 
 		scrollPane.validate();
 		scrollPane.repaint();
 
-	}
-
-	void clear() {
-		try {
-			for (Iterator<EditablePropertyPanel> iterator = allValueEditorPanels.iterator(); iterator.hasNext();) {
-				EditablePropertyPanel editPropertyPanel = iterator.next();
-
-				iterator.remove();
-				columnPanel.remove(editPropertyPanel);
-			}
-
-			refreshInfoPanels();
-		} catch (Exception e) {
-			Logger.logError(TAG, "Error in removeInfoPanel", e);
-			e.printStackTrace();
-		}
 	}
 
 }

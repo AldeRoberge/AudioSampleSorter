@@ -1,4 +1,4 @@
-package ass.ui;
+package ui;
 
 import java.awt.BorderLayout;
 import java.io.IOException;

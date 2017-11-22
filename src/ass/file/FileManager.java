@@ -48,6 +48,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import ass.LibraryManager;
 import ass.file.importer.FileImporter;
 import ass.keyboard.macro.ListenForMacroChanges;
 import ass.keyboard.macro.MacroAction;
@@ -65,11 +66,13 @@ import logger.Logger;
  * Codejava.net : http://www.codejava.net/java-se/swing/jtable-popup-menu-example
  *
  */
-public class Manager extends JPanel implements ActionListener, ListenForMacroChanges {
+public class FileManager extends JPanel implements ActionListener, ListenForMacroChanges {
+
+	private static final String TAG = "Manager";
 
 	//
 
-	private ObjectSerializer<ArrayList<File>> importedFilesSerialiser = new ObjectSerializer<ArrayList<File>>("imported.ser");
+	private ObjectSerializer<ArrayList<File>> importedFilesSerialiser = new ObjectSerializer<ArrayList<File>>(LibraryManager.getFileSerFile());
 
 	/** Directory listing */
 	private JTable table;
@@ -80,22 +83,18 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 	private FileTableModel fileTableModel;
 	private ListSelectionListener listSelectionListener;
 	private boolean cellSizesSet = false;
-	private int rowIconPadding = 6;
 
 	/** Popup menu on right click **/
 	private JPopupMenu popupMenu;
 
 	//
 
-	public Visualiser fileVisualiser;
-	private FileImporter fileImporter;
+	public FileVisualiser fileVisualiser = new FileVisualiser();
+	private FileImporter fileImporter = new FileImporter(this);
 
 	//
 
-	public Manager() {
-
-		fileImporter = new FileImporter(this);
-		fileVisualiser = new Visualiser();
+	public FileManager() {
 
 		/* :) */
 
@@ -209,9 +208,10 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 
 		if (event.getSource() instanceof FileMenuItem) {
 			FileMenuItem menu = (FileMenuItem) event.getSource();
-			System.out.println(
-					"Hey, its me, menu! I've been clicked on. My master is way too busy fixing important shit, so he left this little message here to remind himself that he hasnt broken this yet.");
-			//menu.updateAndPerform(fileTableModel.getFiles().size() == 1);
+
+			Logger.logInfo(TAG, "Performing event(s)...");
+
+			menu.perform();
 		}
 
 	}
@@ -273,7 +273,7 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 				table.getSelectionModel().addListSelectionListener(listSelectionListener);
 				if (!cellSizesSet) {
 
-					int rowHeight = 32;
+					int rowHeight = 26;
 
 					// size adjustment to better account for icons
 					table.setRowHeight(rowHeight); //TODO make this an editeable property
@@ -316,7 +316,7 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 				JFrame f = new JFrame(Constants.SOFTWARE_NAME);
 				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-				Manager fileManager = new Manager();
+				FileManager fileManager = new FileManager();
 				f.setContentPane(fileManager);
 
 				f.setIconImage(Icons.SOFTWARE_ICON.getImage());
@@ -335,8 +335,6 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 
 	@Override
 	public void macroChanged(ArrayList<MacroAction> newMacros) {
-
-		System.out.println("macroChanged");
 
 		popupMenu.removeAll();
 
@@ -360,10 +358,7 @@ public class Manager extends JPanel implements ActionListener, ListenForMacroCha
 
 	public void tellSelectedFilesChanged() {
 
-		System.out.println(fileVisualiser.getSelectedFiles().size());
-
 		for (ListenForSelectedFilesChanges l : waitingForChanges) {
-
 			l.filesChanged(fileVisualiser.getSelectedFiles().size());
 		}
 
@@ -467,12 +462,20 @@ class CellRenderer extends DefaultTableCellRenderer {
 
 class FileMenuItem extends JMenuItem {
 
-	public FileMenuItem(MacroAction macroAction) {
-		super(macroAction.getName());
+	MacroAction macroAction;
+
+	public FileMenuItem(MacroAction ma) {
+		super(ma.getName());
+
+		this.macroAction = ma;
 
 		setToolTipText(macroAction.getInformationAsHTML());
 		setIcon(macroAction.getIcon());
 		setEnabled(macroAction.isEnabled);
+	}
+
+	public void perform() {
+		macroAction.perform();
 	}
 
 }

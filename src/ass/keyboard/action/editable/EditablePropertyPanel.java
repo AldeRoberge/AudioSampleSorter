@@ -46,8 +46,6 @@ class EditablePropertyPanel extends JPanel {
 
 		if (propertyToEdit.ID == EditableProperty.BOOLEAN_ID) { // JCHECKBOX
 
-			setLayout(null);
-
 			JCheckBox chckbxNewCheckBox = new JCheckBox(propertyToEdit.prefix);
 			chckbxNewCheckBox.setBounds(8, 9, 434, 25);
 			chckbxNewCheckBox.setSelected((Boolean) propertyToEdit.getValue());
@@ -118,28 +116,11 @@ class EditablePropertyPanel extends JPanel {
 						getToolkit().beep();
 						e.consume();
 					}
-				}
-			});
 
-			intInputField.getDocument().addDocumentListener(new DocumentListener() {
+					if (!intInputField.getText().equals("")) {
+						propertyToEdit.setValue(Integer.parseInt(intInputField.getText()));
+					}
 
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					updateValue();
-				}
-
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					updateValue();
-				}
-
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					updateValue();
-				}
-
-				public void updateValue() {
-					propertyToEdit.setValue(Integer.parseInt(intInputField.getText()));
 				}
 
 			});

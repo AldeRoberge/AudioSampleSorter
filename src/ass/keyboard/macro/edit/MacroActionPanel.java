@@ -37,7 +37,7 @@ class MacroActionPanel extends JPanel {
 
 		JLabel lblTitle = new JLabel(action.toString());
 		lblTitle.setFont(new Font("Segoe UI Light", Font.BOLD, 14));
-		lblTitle.setBounds(12, 0, 259, 19);
+		lblTitle.setBounds(12, 0, 200, 19);
 		lblTitle.setToolTipText(action.getDescription());
 		panel.add(lblTitle);
 

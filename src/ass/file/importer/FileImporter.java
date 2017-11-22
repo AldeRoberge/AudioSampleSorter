@@ -1,9 +1,10 @@
 package ass.file.importer;
 
-import ass.file.Manager;
+import ass.file.FileManager;
 import constants.Properties;
 import file.FileTypes;
 import icons.Icons;
+import javazoom.jlgui.basicplayer.BasicPlayerException;
 import logger.Logger;
 import ui.BasicContainer;
 import ui.MiddleOfTheScreen;
@@ -40,7 +41,7 @@ public class FileImporter extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FileImporter(Manager fMan) {
+	public FileImporter(FileManager fMan) {
 
 		setIconImage(Icons.IMPORT.getImage());
 		setTitle("Import");
@@ -145,42 +146,48 @@ public class FileImporter extends JFrame {
 	void importAll(List<File> transferData) {
 
 		for (File file : transferData) { //we do this because the user might choose more than 1 folder
+
 			if (file.isDirectory()) {
 
-				int totalResultFiles = getAllFiles(file.getAbsolutePath(), Properties.INCLUDE_SUBFOLDERS.getValueAsBoolean(), 0);
+				getAllFiles(file.getAbsolutePath(), Properties.INCLUDE_SUBFOLDERS.getValueAsBoolean(), 0);
 
 			} else {
 				addFileToImport(file);
 			}
 		}
+
 	}
 
-	int getAllFiles(String directoryName, boolean includeSubfolders, int totalOfFiles) {
+	void getAllFiles(String directoryName, boolean includeSubfolders, int totalOfFiles) {
 
-		System.out.println("Getting all files for directory : " + directoryName + ", including subfolders : " + includeSubfolders);
+		new Thread("Sound player") {
 
-		File directory = new File(directoryName);
+			public void run() {
 
-		// get all the files from a directory
-		File[] fList = directory.listFiles();
+				Logger.logInfo(TAG, "Getting all files for directory : " + directoryName + ", including subfolders : " + includeSubfolders);
 
-		if (fList != null) {
+				File directory = new File(directoryName);
 
-			for (File file : fList) {
+				// get all the files from a directory
+				File[] fList = directory.listFiles();
 
-				if (file.isFile()) {
-					totalOfFiles += 1;
+				if (fList != null) {
 
-					addFileToImport(file);
+					for (File file : fList) {
 
-				} else if (file.isDirectory() && includeSubfolders) {
-					getAllFiles(file.getAbsolutePath(), includeSubfolders, totalOfFiles);
+						if (file.isFile()) {
+
+							addFileToImport(file);
+
+						} else if (file.isDirectory() && includeSubfolders) {
+							getAllFiles(file.getAbsolutePath(), includeSubfolders, totalOfFiles);
+						}
+					}
+
 				}
+
 			}
-
-		}
-
-		return totalOfFiles;
+		}.start();
 
 	}
 

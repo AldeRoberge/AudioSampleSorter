@@ -84,4 +84,8 @@ public class Property {
 
 		return 0;
 	}
+
+	public boolean isDefaultValue() {
+		return value.equals(defaultValue);
+	}
 }

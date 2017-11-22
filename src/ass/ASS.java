@@ -21,25 +21,26 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 
-import ass.file.Manager;
+import ass.file.FileManager;
+import ass.keyboard.action.interfaces.UIAction;
 import ass.keyboard.macro.MacroEditor;
-import ass.ui.Credits;
-import ass.ui.Settings;
 import constants.Constants;
 import constants.Properties;
 import icons.Icons;
 import logger.LogUI;
 import logger.Logger;
 import ui.BasicContainer;
+import ui.Credits;
 import ui.MiddleOfTheScreen;
+import ui.Settings;
 
 public class ASS extends JFrame {
 
 	private static final String TAG = Constants.SOFTWARE_NAME;
 
-	private MacroEditor macroEditor = new MacroEditor();
+	public FileManager fMan = new FileManager();
 
-	private Manager fMan = new Manager();
+	private MacroEditor macroEditor;
 
 	private BasicContainer logger = new BasicContainer("Log", Icons.LOGGER.getImage(), new LogUI(), true);
 	private BasicContainer settings;
@@ -50,8 +51,11 @@ public class ASS extends JFrame {
 	 */
 	public ASS() {
 
+		UIAction.ASS = this;
+		
+		macroEditor = new MacroEditor();
+
 		macroEditor.macroLoader.registerWaitingForMacroChanges(fMan);
-		fMan.registerWaitingForFileChanges(macroEditor.macroLoader);
 
 		//Manually trigger it to populate fMan and toolBar
 		macroEditor.macroLoader.tellMacroChanged();
@@ -310,5 +314,12 @@ public class ASS extends JFrame {
 				return true;
 			}
 		}
+	}
+
+	/**
+	 * @return true if its paused
+	 */
+	public boolean resumeOrPauseSound() {
+		return fMan.fileVisualiser.getAudioPlayer().resumeOrPause();
 	}
 }

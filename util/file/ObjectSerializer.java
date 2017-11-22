@@ -5,6 +5,8 @@ import logger.Logger;
 import java.io.*;
 import java.util.ArrayList;
 
+import ass.LibraryManager;
+
 /**
  * @author VaypeNaysh
  *
@@ -38,19 +40,8 @@ public class ObjectSerializer<T extends Serializable> {
 	/**
 	 * @param fileToSaveTo path of file to create and save data to
 	 */
-	public ObjectSerializer(String fileToSaveTo) {
-		this.file = new File(fileToSaveTo);
-
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-
-				serialise();
-			} catch (IOException e1) {
-				Logger.logError(TAG, "FATAL ERROR : Could not create new file", e1);
-				e1.printStackTrace();
-			}
-		}
+	public ObjectSerializer(File file) {
+		this.file = file;
 
 		if (file.exists() && !(file.length() == 0)) {
 			try {
@@ -89,7 +80,7 @@ public class ObjectSerializer<T extends Serializable> {
 	}
 
 	public static void main(String[] args) {
-		ObjectSerializer<ArrayList<String>> genericSerialiserTest = new ObjectSerializer<ArrayList<String>>("serialization_test_file.ser");
+		ObjectSerializer<ArrayList<String>> genericSerialiserTest = new ObjectSerializer<ArrayList<String>>(LibraryManager.getMacroSerFile());
 
 		System.out.println(genericSerialiserTest.get());
 

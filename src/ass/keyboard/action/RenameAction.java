@@ -8,12 +8,12 @@ import ass.keyboard.action.interfaces.FileAction;
 
 public class RenameAction extends FileAction {
 
+	private String TAG = "RenameAction";
+
 	@Override
 	public String toString() {
-		return "Rename";
+		return TAG;
 	}
-
-	private String TAG = "RenameAction";
 
 	private EditableProperty<Boolean> promptOnRename = new EditableProperty<Boolean>(true, "Prompt on rename");
 	private EditableProperty<String> newName = new EditableProperty<String>("NewFileName", "New name");
@@ -27,12 +27,6 @@ public class RenameAction extends FileAction {
 	}
 
 	@Override
-	public void perform(File p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public String getDescription() {
 		return "Renames the selected file";
 	}
@@ -40,6 +34,17 @@ public class RenameAction extends FileAction {
 	@Override
 	public int getPolicy() {
 		return FileAction.PERFORMED_ON_ONE_OR_MANY_FILES_ONLY_POLICY;
+	}
+
+	@Override
+	public void perform() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void unperform() {
+		// TODO Auto-generated method stub
 	}
 
 }

@@ -127,11 +127,10 @@ public class IconChooser extends JFrame {
 			}
 
 			public void updateValue() {
-				System.out.println(searchFor.getText());
-
+				
 				searchForValue = searchFor.getText();
-
 				populate();
+				
 			}
 
 		});

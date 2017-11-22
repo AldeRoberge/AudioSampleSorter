@@ -132,8 +132,6 @@ public class MacroAction implements Serializable {
 
 	public String getInformationAsHTML() {
 
-		
-		
 		String build = "<html>";
 
 		build += "<p><strong>" + getName() + "</strong></p>";
@@ -154,7 +152,9 @@ public class MacroAction implements Serializable {
 
 		//
 
-		build += "<p><small>Requires " + Action.getPolicyAsString(highestPolicy) + " to be selected</small></p>";
+		if (highestPolicy != -100) { //If there is no actions, policy will stay at -100
+			build += "<p><small>Requires " + Action.getPolicyAsString(highestPolicy) + " to be selected</small></p>";
+		}
 
 		return build + "</html>";
 
