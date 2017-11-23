@@ -319,8 +319,18 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 		tableColumn.setMinWidth(width);
 	}
 
-	public void showFileImporter() {
-		fileImporter.setVisible(true);
+	public boolean showFileImporter(boolean forceState, boolean newState) {
+		
+		if (forceState) {
+			fileImporter.setVisible(newState);
+			
+			return newState;
+		} else {
+			fileImporter.setVisible(!fileImporter.isVisible());
+
+			return fileImporter.isVisible();
+		}
+
 	}
 
 	@Override

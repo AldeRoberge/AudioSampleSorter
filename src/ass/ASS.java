@@ -123,7 +123,7 @@ public class ASS extends JFrame {
 		JMenuItem mntmImport = new JMenuItem(new AbstractAction("Import audio files...") {
 			public void actionPerformed(ActionEvent e) {
 				Logger.logInfo(TAG, "Importing...");
-				fMan.showFileImporter();
+				fMan.showFileImporter(true, true);
 			}
 		});
 
@@ -266,7 +266,7 @@ public class ASS extends JFrame {
 			@Override
 			public void windowLostFocus(WindowEvent e) {
 				setIsListenningForInputs(false);
-				
+
 			}
 
 			private void setIsListenningForInputs(boolean b) {
@@ -278,6 +278,10 @@ public class ASS extends JFrame {
 			Properties.FIRST_LAUNCH.setNewValue(false);
 			showCredits(true, true);
 		}
+	}
+
+	public boolean showFileImporter(boolean forceState, boolean newState) {
+		return fMan.showFileImporter(forceState, newState);
 	}
 
 	/**

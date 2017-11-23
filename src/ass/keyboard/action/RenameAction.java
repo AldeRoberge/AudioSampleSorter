@@ -3,12 +3,15 @@ package ass.keyboard.action;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.omg.Messaging.SyncScopeHelper;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import ass.keyboard.action.editable.EditableProperty;
 import ass.keyboard.action.interfaces.FileAction;
 import ass.keyboard.action.interfaces.FileEvent;
 import file.FileNameUtil;
+import icons.Icons;
 
 public class RenameAction extends FileAction {
 
@@ -39,9 +42,22 @@ public class RenameAction extends FileAction {
 		// TODO Auto-generated method stub
 	}
 
+	/**
+	 * Returns null if the user cancels
+	 */
+
 	@Override
 	public FileEvent perform(File fileAffected) {
-		return rename(fileAffected, "newName");
+
+		String input = (String) JOptionPane.showInputDialog(new JFrame(), "Enter the new name for '" + fileAffected.getName() + "' (without extension).", "Edit "+fileAffected.getName()+"'s name", JOptionPane.INFORMATION_MESSAGE,
+				Icons.PENCIL.getImageIcon(), null, "");
+
+		if (input == null) {
+			return null;
+		} else {
+			return rename(fileAffected, input);
+		}
+
 	}
 
 	public FileEvent rename(File file, String newName) {
@@ -49,8 +65,6 @@ public class RenameAction extends FileAction {
 
 		String oldFileName = file.getName();
 		String newFileName = newName + FileNameUtil.getExtension(file.getName());
-
-		System.out.println("File name : " + file.getName());
 
 		String newPath = basePath + "\\" + newFileName;
 

@@ -22,6 +22,11 @@ public class RemoveSelectedFilesAction extends UIAction {
 	public String getDescription() {
 		return "Removes the files *(Does not delete from disk)";
 	}
+	
+	@Override
+	public String toString() {
+		return "Remove Selected Files";
+	}
 
 	ArrayList<File> filesRemoved = new ArrayList<File>();
 

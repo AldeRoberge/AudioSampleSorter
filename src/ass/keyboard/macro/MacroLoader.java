@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import ass.LibraryManager;
 import ass.file.ListenForSelectedFilesChanges;
+import ass.keyboard.action.DeleteAction;
+import ass.keyboard.action.RemoveSelectedFilesAction;
 import ass.keyboard.action.RenameAction;
 import ass.keyboard.action.SimpleUIAction;
 import ass.keyboard.action.interfaces.Action;
@@ -41,12 +43,18 @@ public class MacroLoader implements ListenForSelectedFilesChanges {
 			}
 
 		} else {
+			//Default macro actions
+
+			addNewMacro(new MacroAction("Import...", Icons.IMPORT, new Key(KeyEvent.VK_R), SimpleUIAction.SHOW_FILE_IMPORTER, true));
+			addNewMacro(new MacroAction("Remove", Icons.REMOVE, new Key(KeyEvent.VK_R), new RemoveSelectedFilesAction(), true));
+			addNewMacro(new MacroAction("Rename", Icons.PENCIL, new Key(KeyEvent.VK_R), new RenameAction(), true));
+			addNewMacro(new MacroAction("Delete", Icons.TRASH, new Key(KeyEvent.VK_DELETE), new DeleteAction(), true));
+			addNewMacro(new MacroAction("Open containing folder", Icons.REMOVE, new Key(KeyEvent.VK_R), new RemoveSelectedFilesAction(), true));
+
 			addNewMacro(new MacroAction("Show Credits", Icons.ABOUT, new Key(KeyEvent.VK_F1), SimpleUIAction.SHOW_CREDITS, false));
 			addNewMacro(new MacroAction("Edit Macros", Icons.MACROS, new Key(KeyEvent.VK_F2), SimpleUIAction.SHOW_MACRO, false));
 			addNewMacro(new MacroAction("Edit Settings", Icons.SETTINGS, new Key(KeyEvent.VK_F3), SimpleUIAction.SHOW_SETTINGS, false));
 			addNewMacro(new MacroAction("Show Logger", Icons.LOGGER, new Key(KeyEvent.VK_F4), SimpleUIAction.SHOW_LOGGER, false));
-
-			addNewMacro(new MacroAction("Rename", Icons.PENCIL, new Key(KeyEvent.VK_R), new RenameAction(), false));
 
 		}
 

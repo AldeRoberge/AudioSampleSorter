@@ -11,22 +11,20 @@ public class FileActionManager {
 	static FileManager fMan;
 
 	public static void perform(FileAction a) {
+		System.out.println("Performing action on " + fMan.selectedFiles.size() + " selected files.");
+
 		for (File f : fMan.selectedFiles) {
 
 			//Make sure we arent using the file
 			fMan.fileVisualiser.getAudioPlayer().stopUsing(f);
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
 			FileEvent fe = a.perform(f);
 
-			fMan.fileTableModel.updateFile(fe);
+			if (fe == null) { //no changes
+				System.out.println("Doing nothing! No changes!");
+			} else {
+				fMan.fileTableModel.updateFile(fe);
+			}
 		}
 	}
-
 }

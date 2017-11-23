@@ -16,36 +16,33 @@ public class SimpleUIAction extends UIAction {
 
 	public static ArrayList<SimpleUIAction> UIActions = new ArrayList<SimpleUIAction>();
 
-	private static final int SHOW_CREDITS_ID = 0;
-	private static final int SHOW_MACRO_ID = 1;
-	private static final int SHOW_SETTINGS_ID = 2;
-	private static final int SHOW_LOGGER_ID = 3;
-
 	static int NO_POLICY = UIAction.PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY;
 
-	public static final SimpleUIAction SHOW_CREDITS = new SimpleUIAction(SHOW_CREDITS_ID, "Show Credits", "Shows the credits UI.", NO_POLICY);
-	public static final SimpleUIAction SHOW_MACRO = new SimpleUIAction(SHOW_MACRO_ID, "Edit Macros", "Shows the macro UI.", NO_POLICY);
-	public static final SimpleUIAction SHOW_SETTINGS = new SimpleUIAction(SHOW_SETTINGS_ID, "Edit Settings", "Shows the settings UI.", NO_POLICY);
-	public static final SimpleUIAction SHOW_LOGGER = new SimpleUIAction(SHOW_LOGGER_ID, "Show Logger", "Shows the debug log.", NO_POLICY);
-	
+	public static final SimpleUIAction SHOW_CREDITS = new SimpleUIAction(0, "Show Credits", "Shows the credits UI.", NO_POLICY);
+	public static final SimpleUIAction SHOW_MACRO = new SimpleUIAction(1, "Edit Macros", "Shows the macro UI.", NO_POLICY);
+	public static final SimpleUIAction SHOW_SETTINGS = new SimpleUIAction(2, "Edit Settings", "Shows the settings UI.", NO_POLICY);
+	public static final SimpleUIAction SHOW_LOGGER = new SimpleUIAction(3, "Show Logger", "Shows the debug log.", NO_POLICY);
+	public static final SimpleUIAction SHOW_FILE_IMPORTER = new SimpleUIAction(4, "Show File Importer", "Shows the file importer.", NO_POLICY);
+
 	public static void init() {
 		UIActions.add(SHOW_CREDITS);
 		UIActions.add(SHOW_MACRO);
 		UIActions.add(SHOW_SETTINGS);
 		UIActions.add(SHOW_LOGGER);
+		UIActions.add(SHOW_FILE_IMPORTER);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	private boolean currentState = false; //used to unperform
 
-	private int ID;
+	private int id;
 	private String name; //Used in toString (populating combobox)
 	private int policy;
 	private String description;
 
-	private SimpleUIAction(int ID, String name, String description, int policy) {
-		this.ID = ID;
+	private SimpleUIAction(int id, String name, String description, int policy) {
+		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.policy = policy;
@@ -71,6 +68,10 @@ public class SimpleUIAction extends UIAction {
 		return policy;
 	}
 
+	public int getId() {
+		return id;
+	}
+
 	public void perform() {
 
 		/**
@@ -79,50 +80,40 @@ public class SimpleUIAction extends UIAction {
 		 * unperform() -> currentState = reverts (!currentState)
 		 */
 
-		switch (ID) {
-
-		case SHOW_CREDITS_ID:
+		if (id == SHOW_CREDITS.getId()) {
 			currentState = ASS.showCredits(false, false);
-			break;
-		case SHOW_MACRO_ID:
+		} else if (id == SHOW_MACRO.getId()) {
 			currentState = ASS.showEditMacros(false, false);
-			break;
-		case SHOW_SETTINGS_ID:
+		} else if (id == SHOW_SETTINGS.getId()) {
 			currentState = ASS.showSettings(false, false);
-			break;
-		case SHOW_LOGGER_ID:
+		} else if (id == SHOW_LOGGER.getId()) {
 			currentState = ASS.showLogger(false, false);
-			break;
-		default:
-			Logger.logError(name, "Invalid ID " + ID + " for SimpleUIAction");
-			break;
-
+		} else if (id == SHOW_FILE_IMPORTER.getId()) {
+			currentState = ASS.showFileImporter(false, false);
+		} else {
+			Logger.logError(name, "Invalid object for perform SimpleUIAction");
 		}
+
 	}
 
 	@Override
 	public void unperform() {
 		boolean switchState = !currentState;
 
-		switch (ID) {
-
-		case SHOW_CREDITS_ID:
+		if (id == SHOW_CREDITS.getId()) {
 			currentState = ASS.showCredits(true, switchState);
-			break;
-		case SHOW_MACRO_ID:
+		} else if (id == SHOW_MACRO.getId()) {
 			currentState = ASS.showEditMacros(true, switchState);
-			break;
-		case SHOW_SETTINGS_ID:
+		} else if (id == SHOW_SETTINGS.getId()) {
 			currentState = ASS.showSettings(true, switchState);
-			break;
-		case SHOW_LOGGER_ID:
+		} else if (id == SHOW_LOGGER.getId()) {
 			currentState = ASS.showLogger(true, switchState);
-			break;
-		default:
-			Logger.logError(name, "Invalid ID " + ID + " for SimpleUIAction");
-			break;
-
+		} else if (id == SHOW_FILE_IMPORTER.getId()) {
+			currentState = ASS.showFileImporter(true, switchState);
+		} else {
+			Logger.logError(name, "Invalid object for perform SimpleUIAction");
 		}
+
 	}
 
 }

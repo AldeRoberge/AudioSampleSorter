@@ -19,6 +19,8 @@ public class Icons {
 
 	public static final ArrayList<UserIcon> images = new ArrayList<UserIcon>();
 
+
+
 	static {
 
 		FloatingLoadingBar loadingBar = new FloatingLoadingBar();
@@ -51,6 +53,12 @@ public class Icons {
 	public static final UserIcon LOADING_BAR = new UserIcon(LOCATION_OF_ICONS + "spinner-of-dots.png");
 	public static final UserIcon CROSS = new UserIcon(LOCATION_OF_ICONS + "download.png");
 
+	public static final UserIcon TRASH = new UserIcon(LOCATION_OF_ICONS + "trash.png");
+
+	public static final UserIcon REMOVE = new UserIcon(LOCATION_OF_ICONS + "folder-minus.png");
+
+
+	
 	//
 
 	static ImageIcon createImageIcon(String path, int height, int width) {
