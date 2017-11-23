@@ -17,33 +17,6 @@
  */
 package ass.file;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.filechooser.FileSystemView;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumn;
-
 import ass.LibraryManager;
 import ass.file.importer.FileImporter;
 import ass.keyboard.macro.ListenForMacroChanges;
@@ -51,6 +24,20 @@ import ass.keyboard.macro.MacroAction;
 import constants.Constants;
 import file.ObjectSerializer;
 import logger.Logger;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Credits :
@@ -356,7 +343,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 		waitingForChanges.add(f);
 	}
 
-	public void tellSelectedFilesChanged() {
+	void tellSelectedFilesChanged() {
 
 		for (ListenForSelectedFilesChanges l : waitingForChanges) {
 			l.filesChanged(selectedFiles.size());
@@ -388,7 +375,7 @@ class CellRenderer extends DefaultTableCellRenderer {
 
 class FileMenuItem extends JMenuItem {
 
-	MacroAction macroAction;
+	private MacroAction macroAction;
 
 	public FileMenuItem(MacroAction ma) {
 		super(ma.getName());

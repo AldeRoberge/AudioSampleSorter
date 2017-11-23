@@ -11,8 +11,8 @@ import ass.keyboard.action.RenameAction;
 import ass.keyboard.action.SimpleUIAction;
 import ass.keyboard.action.interfaces.Action;
 import ass.keyboard.key.Key;
+import constants.icons.Icons;
 import file.ObjectSerializer;
-import icons.Icons;
 
 public class MacroLoader implements ListenForSelectedFilesChanges {
 
@@ -45,12 +45,12 @@ public class MacroLoader implements ListenForSelectedFilesChanges {
 		} else {
 			//Default macro actions
 
-			addNewMacro(new MacroAction("Import...", Icons.IMPORT, new Key(KeyEvent.VK_R), SimpleUIAction.SHOW_FILE_IMPORTER, true));
-			addNewMacro(new MacroAction("Remove", Icons.REMOVE, new Key(KeyEvent.VK_R), new RemoveSelectedFilesAction(), true));
 			addNewMacro(new MacroAction("Rename", Icons.PENCIL, new Key(KeyEvent.VK_R), new RenameAction(), true));
+			addNewMacro(new MacroAction("Remove", Icons.FOLDER_MINUS, new Key(KeyEvent.VK_BACK_SPACE), new RemoveSelectedFilesAction(), true));
 			addNewMacro(new MacroAction("Delete", Icons.TRASH, new Key(KeyEvent.VK_DELETE), new DeleteAction(), true));
-			addNewMacro(new MacroAction("Open containing folder", Icons.REMOVE, new Key(KeyEvent.VK_R), new RemoveSelectedFilesAction(), true));
+			addNewMacro(new MacroAction("Open containing folder", Icons.OPEN_FOLDER, new Key(KeyEvent.VK_R), new RemoveSelectedFilesAction(), true));
 
+			addNewMacro(new MacroAction("Import", Icons.IMPORT, new Key(KeyEvent.VK_R), SimpleUIAction.SHOW_FILE_IMPORTER, false));
 			addNewMacro(new MacroAction("Show Credits", Icons.ABOUT, new Key(KeyEvent.VK_F1), SimpleUIAction.SHOW_CREDITS, false));
 			addNewMacro(new MacroAction("Edit Macros", Icons.MACROS, new Key(KeyEvent.VK_F2), SimpleUIAction.SHOW_MACRO, false));
 			addNewMacro(new MacroAction("Edit Settings", Icons.SETTINGS, new Key(KeyEvent.VK_F3), SimpleUIAction.SHOW_SETTINGS, false));
@@ -111,11 +111,7 @@ public class MacroLoader implements ListenForSelectedFilesChanges {
 				}
 			}
 
-			if (allActionsCanBePerformedOnThisAmountOfSelectedFiles) {
-				ma.isEnabled = true;
-			} else {
-				ma.isEnabled = false;
-			}
+			ma.isEnabled = allActionsCanBePerformedOnThisAmountOfSelectedFiles;
 
 		}
 

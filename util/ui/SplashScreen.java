@@ -45,7 +45,11 @@ public class SplashScreen {
 					}
 				};
 
-				/**java.util.Timer timer = new java.util.Timer();
+
+
+				/**
+				 * Close after 10 seconds :
+				 * java.util.Timer timer = new java.util.Timer();
 				timer.schedule(close, 10000);*/
 
 				new Thread("slowly appear") {
@@ -56,7 +60,7 @@ public class SplashScreen {
 						float increments = 0.2f;
 						boolean go = true;
 
-						while (go) { //gradually show software
+						while (go) { //gradually increase opacity
 							if ((previousOpacity + increments) >= 1) {
 								go = false;
 								frame.setOpacity(1f);

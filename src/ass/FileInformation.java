@@ -1,6 +1,6 @@
-package ui;
+package ass;
 
-import constants.Properties;
+import constants.property.Properties;
 import file.FileSizeToString;
 
 import javax.swing.*;

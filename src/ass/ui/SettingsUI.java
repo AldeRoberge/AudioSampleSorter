@@ -1,4 +1,4 @@
-package ui;
+package ass.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,10 +14,12 @@ import javax.swing.event.ChangeListener;
 
 import ass.file.FileManager;
 import ass.file.player.AudioPlayer;
-import constants.Properties;
+import constants.property.Properties;
+import ui.MiddleOfTheScreen;
+
 import javax.swing.JSeparator;
 
-public class Settings extends JPanel {
+public class SettingsUI extends JPanel {
 
 	private static final String TAG = "SettingsPanel";
 
@@ -31,7 +33,7 @@ public class Settings extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Settings(FileManager fMan) {
+	public SettingsUI(FileManager fMan) {
 
 		this.audioPlayer = fMan.fileVisualiser.getAudioPlayer();
 

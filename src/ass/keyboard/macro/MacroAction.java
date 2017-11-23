@@ -6,13 +6,12 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
-import ass.ASS;
 import ass.FileActionManager;
 import ass.keyboard.action.interfaces.Action;
 import ass.keyboard.action.interfaces.FileAction;
 import ass.keyboard.action.interfaces.UIAction;
 import ass.keyboard.key.Key;
-import icons.UserIcon;
+import constants.icons.UserIcon;
 import logger.Logger;
 
 /**
@@ -40,7 +39,7 @@ public class MacroAction implements Serializable {
 	public MacroAction(String name, UserIcon icon, Key key, Action action, boolean showInMenu) {
 		this.name = name;
 		this.setIcon(icon);
-		this.keys.add(new Key(KeyEvent.VK_SPACE));
+		this.keys.add(key);
 		this.actionsToPerform.add(action);
 		this.showInMenu = showInMenu;
 	}

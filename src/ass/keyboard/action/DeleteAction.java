@@ -14,10 +14,9 @@ import logger.Logger;
 
 public class DeleteAction extends FileAction {
 
-	private String TAG = "Delete";
-
 	@Override
 	public String toString() {
+		String TAG = "Delete";
 		return TAG;
 	}
 
@@ -38,10 +37,10 @@ public class DeleteAction extends FileAction {
 
 	////////////////////////////////////////////////////////////////
 
-	public File fileAffected;
+	private File fileAffected;
 
-	public String previousPath;
-	public String newPath;
+	private String previousPath;
+	private String newPath;
 
 	@Override
 	public FileEvent perform(File oldFile) {

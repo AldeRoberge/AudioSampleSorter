@@ -20,7 +20,7 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *----------------------------------------------------------------------
  */
-package ui;
+package ass.file.player;
 
 import kj.dsp.KJDigitalSignalProcessingAudioDataConsumer;
 import kj.dsp.KJDigitalSignalProcessor;

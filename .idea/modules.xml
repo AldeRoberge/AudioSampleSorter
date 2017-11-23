@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AudioSampleSorter.iml" filepath="$PROJECT_DIR$/AudioSampleSorter.iml" />
       <module fileurl="file://$PROJECT_DIR$/SampleSorter.iml" filepath="$PROJECT_DIR$/SampleSorter.iml" />
       <module fileurl="file://$PROJECT_DIR$/SamplerSorter.iml" filepath="$PROJECT_DIR$/SamplerSorter.iml" />
     </modules>

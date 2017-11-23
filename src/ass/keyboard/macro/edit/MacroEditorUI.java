@@ -29,16 +29,15 @@ import ass.keyboard.action.DeleteAction;
 import ass.keyboard.action.OpenContainingFolderAction;
 import ass.keyboard.action.RemoveSelectedFilesAction;
 import ass.keyboard.action.RenameAction;
-import ass.keyboard.action.TestAction;
 import ass.keyboard.action.SimpleUIAction;
 import ass.keyboard.action.editable.EditablePropertyEditor;
 import ass.keyboard.action.interfaces.Action;
 import ass.keyboard.key.Key;
 import ass.keyboard.macro.MacroAction;
 import ass.keyboard.macro.MacroEditor;
-import icons.UserIcon;
-import icons.iconChooser.GetIcon;
-import icons.iconChooser.IconChooser;
+import constants.icons.UserIcon;
+import constants.icons.iconChooser.GetIcon;
+import constants.icons.iconChooser.IconChooser;
 import key.KeysToString;
 import key.NativeKeyEventToKey;
 import logger.Logger;
@@ -354,9 +353,11 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 			} else {
 				keyReleased(k);
 			}
+			
+			updateImputBoxText();
 		}
 
-		updateImputBoxText();
+		
 	}
 
 	private void keyPressed(Key k) {

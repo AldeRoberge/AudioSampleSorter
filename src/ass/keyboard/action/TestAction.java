@@ -9,10 +9,9 @@ import ass.keyboard.action.interfaces.FileEvent;
 
 public class TestAction extends FileAction {
 
-	private String TAG = "TEST";
-
 	@Override
 	public String toString() {
+		String TAG = "TEST";
 		return TAG;
 	}
 

@@ -5,13 +5,11 @@
 package ass.file.player;
 
 import java.io.File;
-import java.net.URL;
 import java.util.Map;
 
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 
-import constants.Properties;
+import constants.property.Properties;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
@@ -39,9 +37,7 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	private AudioVisualizer audioVis;
 
-	BasicPlayer player;
-
-	private boolean debug = true;
+	private BasicPlayer player;
 
 	//
 
@@ -53,6 +49,7 @@ public class AudioPlayer implements BasicPlayerListener {
 	}
 
 	void newVisualizerStatus(String newStatus) {
+		boolean debug = true;
 		if (debug) {
 			Logger.logInfo(TAG, newStatus);
 		}
@@ -132,11 +129,11 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	/////////////////////////////////////////////////////////////////////////
 
-	public boolean isPlaying = false;
-	boolean isStopped = false;
-	boolean isPaused = false;
+	private boolean isPlaying = false;
+	private boolean isStopped = false;
+	private boolean isPaused = false;
 
-	Thread soundPlayThread;
+	private Thread soundPlayThread;
 
 	/**
 	 * Notification callback for basicplayer events such as opened, eom ...
@@ -200,7 +197,7 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	}
 
-	public void stop() {
+	void stop() {
 		try {
 			control.stop();
 		} catch (BasicPlayerException e) {
@@ -211,7 +208,7 @@ public class AudioPlayer implements BasicPlayerListener {
 	/**
 	 * Return true if its paused
 	 */
-	public void pause() {
+	void pause() {
 		try {
 			control.pause();
 		} catch (BasicPlayerException e) {
@@ -219,7 +216,7 @@ public class AudioPlayer implements BasicPlayerListener {
 		}
 	}
 
-	public void resume() {
+	void resume() {
 		try {
 			control.resume();
 		} catch (BasicPlayerException e) {

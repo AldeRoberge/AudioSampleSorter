@@ -1,9 +1,9 @@
 package ass;
 
+import logger.Logger;
+
 import java.io.File;
 import java.io.IOException;
-
-import logger.Logger;
 
 public class Library {
 
@@ -13,7 +13,7 @@ public class Library {
 	public Library(File folder) {
 		this.libraryFolder = folder;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Library [" + libraryFolder + "]";

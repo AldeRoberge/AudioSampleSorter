@@ -28,7 +28,7 @@ public class RemoveSelectedFilesAction extends UIAction {
 		return "Remove Selected Files";
 	}
 
-	ArrayList<File> filesRemoved = new ArrayList<File>();
+	private ArrayList<File> filesRemoved = new ArrayList<File>();
 
 	@Override
 	public void perform() {

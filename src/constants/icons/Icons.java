@@ -1,11 +1,12 @@
-package icons;
+package constants.icons;
 
-import ui.FloatingLoadingBar;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+
+import ui.FloatingLoadingBar;
 
 public class Icons {
 
@@ -18,8 +19,6 @@ public class Icons {
 	public static final String LOCATION_OF_ICONS = new File(".").getAbsolutePath() + "/res/icons/";
 
 	public static final ArrayList<UserIcon> images = new ArrayList<UserIcon>();
-
-
 
 	static {
 
@@ -52,13 +51,10 @@ public class Icons {
 	public static final UserIcon ICON_CHOOSER = new UserIcon(LOCATION_OF_ICONS + "cogs.png");
 	public static final UserIcon LOADING_BAR = new UserIcon(LOCATION_OF_ICONS + "spinner-of-dots.png");
 	public static final UserIcon CROSS = new UserIcon(LOCATION_OF_ICONS + "download.png");
-
 	public static final UserIcon TRASH = new UserIcon(LOCATION_OF_ICONS + "trash.png");
+	public static final UserIcon FOLDER_MINUS = new UserIcon(LOCATION_OF_ICONS + "folder-minus.png");
+	public static final UserIcon OPEN_FOLDER = new UserIcon(LOCATION_OF_ICONS + "folder-open.png");
 
-	public static final UserIcon REMOVE = new UserIcon(LOCATION_OF_ICONS + "folder-minus.png");
-
-
-	
 	//
 
 	static ImageIcon createImageIcon(String path, int height, int width) {

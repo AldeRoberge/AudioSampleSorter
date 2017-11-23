@@ -2,25 +2,17 @@ package ass.keyboard.macro.list;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 
 import ass.keyboard.macro.MacroAction;
 import ass.keyboard.macro.MacroEditor;
-import constants.Constants;
-import icons.Icons;
-import key.KeysToString;
 
 public class MacroListUI extends JPanel {
 

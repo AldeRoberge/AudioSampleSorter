@@ -22,18 +22,17 @@ import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 
 import ass.file.FileManager;
-import ass.keyboard.action.interfaces.FileAction;
 import ass.keyboard.action.interfaces.UIAction;
 import ass.keyboard.macro.MacroEditor;
+import ass.ui.CreditsUI;
+import ass.ui.SettingsUI;
 import constants.Constants;
-import constants.Properties;
-import icons.Icons;
+import constants.icons.Icons;
+import constants.property.Properties;
 import logger.LogUI;
 import logger.Logger;
 import ui.BasicContainer;
-import ui.Credits;
 import ui.MiddleOfTheScreen;
-import ui.Settings;
 
 public class ASS extends JFrame {
 
@@ -44,8 +43,8 @@ public class ASS extends JFrame {
 	private MacroEditor macroEditor;
 
 	private BasicContainer logger = new BasicContainer("Log", Icons.LOGGER.getImage(), new LogUI(), true);
-	private BasicContainer settings;
-	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new Credits(), true);
+	private BasicContainer settings  = new BasicContainer("Settings", Icons.SETTINGS.getImage(), new SettingsUI(fMan), false);
+	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new CreditsUI(), true);
 
 	/**
 	 * Create the frame.
@@ -62,10 +61,6 @@ public class ASS extends JFrame {
 
 		//Manually trigger it to populate fMan and toolBar
 		macroEditor.macroLoader.tellMacroChanged();
-
-		//
-
-		settings = new BasicContainer("Settings", Icons.SETTINGS.getImage(), new Settings(fMan), false);
 
 		//
 
@@ -313,7 +308,7 @@ public class ASS extends JFrame {
 	 */
 	boolean toggleVisibility(Component c, boolean forceState, boolean newState) {
 
-		if (forceState == true) {
+		if (forceState) {
 			c.setVisible(newState);
 			return newState;
 		} else {

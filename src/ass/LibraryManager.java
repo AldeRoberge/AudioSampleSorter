@@ -1,16 +1,8 @@
 package ass;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
-import constants.Properties;
+import constants.property.Properties;
 import logger.Logger;
 
 public class LibraryManager {
@@ -23,7 +15,7 @@ public class LibraryManager {
 		System.out.println(LibraryManager.getTrashFolder().getAbsolutePath());
 	}
 
-	public static Library getLibrary() {
+	private static Library getLibrary() {
 
 		if (library == null) {
 			File LIBRARY_FOLDER = new File(Properties.LIBRARY_LOCATION.getValue());

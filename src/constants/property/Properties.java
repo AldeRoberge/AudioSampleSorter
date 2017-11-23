@@ -1,7 +1,7 @@
-package constants;
+package constants.property;
 
-import property.Property;
-import property.PropertyFileManager;
+import constants.property.Property;
+import constants.property.PropertyFileManager;
 
 public class Properties {
 

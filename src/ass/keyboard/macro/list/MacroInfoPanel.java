@@ -13,8 +13,7 @@ import javax.swing.JPanel;
 
 import ass.keyboard.macro.MacroAction;
 import ass.keyboard.macro.MacroEditor;
-import constants.Constants;
-import icons.Icons;
+import constants.icons.Icons;
 import key.KeysToString;
 
 public class MacroInfoPanel extends JPanel {

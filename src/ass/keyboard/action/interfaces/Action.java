@@ -75,7 +75,7 @@ public interface Action extends Serializable {
 		case PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY:
 			return "any number of files";
 		case PERFORMED_ON_ONE_OR_MANY_FILES_ONLY_POLICY:
-			return "more than one file";
+			return "one or more files";
 		case PERFORMED_ON_MANY_FILES_ONLY_POLICY:
 			return "more than two files";
 

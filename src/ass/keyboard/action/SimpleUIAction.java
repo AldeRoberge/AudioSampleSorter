@@ -16,7 +16,7 @@ public class SimpleUIAction extends UIAction {
 
 	public static ArrayList<SimpleUIAction> UIActions = new ArrayList<SimpleUIAction>();
 
-	static int NO_POLICY = UIAction.PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY;
+	private static int NO_POLICY = UIAction.PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY;
 
 	public static final SimpleUIAction SHOW_CREDITS = new SimpleUIAction(0, "Show Credits", "Shows the credits UI.", NO_POLICY);
 	public static final SimpleUIAction SHOW_MACRO = new SimpleUIAction(1, "Edit Macros", "Shows the macro UI.", NO_POLICY);
@@ -68,7 +68,7 @@ public class SimpleUIAction extends UIAction {
 		return policy;
 	}
 
-	public int getId() {
+	int getId() {
 		return id;
 	}
 

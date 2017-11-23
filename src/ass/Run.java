@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import constants.Constants;
-import icons.Icons;
+import constants.icons.Icons;
 import logger.Logger;
 import ui.SplashScreen;
 

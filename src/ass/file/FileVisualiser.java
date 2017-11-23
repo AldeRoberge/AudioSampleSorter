@@ -8,10 +8,10 @@ import javax.swing.JPanel;
 
 import ass.file.player.AudioPlayer;
 import constants.Constants;
-import constants.Properties;
+import constants.property.Properties;
 import file.FileTypes;
 import logger.Logger;
-import ui.FileInformation;
+import ass.FileInformation;
 
 public class FileVisualiser extends FileInformation {
 

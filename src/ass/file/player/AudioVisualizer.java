@@ -6,9 +6,8 @@ import java.awt.Color;
 import javax.swing.JPanel;
 
 import constants.Constants;
-import constants.Properties;
+import constants.property.Properties;
 import logger.Logger;
-import ui.SpectrumTimeAnalyzer;
 
 public class AudioVisualizer {
 

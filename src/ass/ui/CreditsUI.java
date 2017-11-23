@@ -1,4 +1,4 @@
-package ui;
+package ass.ui;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
@@ -12,12 +12,12 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import file.FileReader;
 
-public class Credits extends JPanel {
+public class CreditsUI extends JPanel {
 
 	/**
 	 * Create the panel.
 	 */
-	public Credits() {
+	public CreditsUI() {
 		setBounds(100, 100, 550, 600);
 		setLayout(new BorderLayout(0, 0));
 

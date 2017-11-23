@@ -1,8 +1,9 @@
-package icons;
+package constants.icons;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Image;
 import java.io.Serializable;
+
+import javax.swing.ImageIcon;
 
 /**
  * An icon stored on the user's disk

@@ -1,11 +1,10 @@
 package file;
 
+import ass.LibraryManager;
 import logger.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
-
-import ass.LibraryManager;
 
 /**
  * @author VaypeNaysh
@@ -38,7 +37,7 @@ public class ObjectSerializer<T extends Serializable> {
 	}
 
 	/**
-	 * @param fileToSaveTo path of file to create and save data to
+	 * @param file path of file to create and save data to
 	 */
 	public ObjectSerializer(File file) {
 		this.file = file;
@@ -79,6 +78,9 @@ public class ObjectSerializer<T extends Serializable> {
 		}
 	}
 
+	/**
+	 * Test
+	 */
 	public static void main(String[] args) {
 		ObjectSerializer<ArrayList<String>> genericSerialiserTest = new ObjectSerializer<ArrayList<String>>(LibraryManager.getMacroSerFile());
 

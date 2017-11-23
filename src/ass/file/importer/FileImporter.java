@@ -1,21 +1,22 @@
 package ass.file.importer;
 
-import ass.file.FileManager;
-import constants.Properties;
-import file.FileTypes;
-import icons.Icons;
-import javazoom.jlgui.basicplayer.BasicPlayerException;
-import logger.Logger;
-import ui.BasicContainer;
-import ui.MiddleOfTheScreen;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.dnd.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -27,6 +28,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TooManyListenersException;
+
+import javax.imageio.ImageIO;
+import javax.swing.Action;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+
+import ass.file.FileManager;
+import constants.icons.Icons;
+import constants.property.Properties;
+import file.FileTypes;
+import logger.Logger;
+import ui.BasicContainer;
+import ui.MiddleOfTheScreen;
 
 public class FileImporter extends JFrame {
 
@@ -289,7 +309,7 @@ class DropPane extends JPanel {
 		}
 	}
 
-	protected class DropTargetHandler implements DropTargetListener {
+	class DropTargetHandler implements DropTargetListener {
 
 		void processDrag(DropTargetDragEvent dtde) {
 			if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {

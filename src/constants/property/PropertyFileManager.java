@@ -1,4 +1,4 @@
-package property;
+package constants.property;
 
 import logger.Logger;
 import org.apache.commons.configuration.ConfigurationException;
@@ -7,7 +7,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class PropertyFileManager {
+class PropertyFileManager {
 
 	private final static boolean DEBUG = false;
 

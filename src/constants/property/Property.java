@@ -1,6 +1,5 @@
-package property;
+package constants.property;
 
-import constants.Properties;
 import logger.Logger;
 
 public class Property {

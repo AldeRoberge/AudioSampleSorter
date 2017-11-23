@@ -1,8 +1,8 @@
-package icons.iconChooser;
+package constants.icons.iconChooser;
 
 import javax.swing.JButton;
 
-import icons.UserIcon;
+import constants.icons.UserIcon;
 
 class IconChooserButton extends JButton {
 

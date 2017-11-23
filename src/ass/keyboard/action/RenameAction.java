@@ -3,22 +3,20 @@ package ass.keyboard.action;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import ass.keyboard.action.editable.EditableProperty;
 import ass.keyboard.action.interfaces.FileAction;
 import ass.keyboard.action.interfaces.FileEvent;
+import constants.icons.Icons;
 import file.FileNameUtil;
-import icons.Icons;
 
 public class RenameAction extends FileAction {
 
-	private String TAG = "Rename";
-
 	@Override
 	public String toString() {
+		String TAG = "Rename";
 		return TAG;
 	}
 
@@ -60,7 +58,7 @@ public class RenameAction extends FileAction {
 
 	}
 
-	public FileEvent rename(File file, String newName) {
+	FileEvent rename(File file, String newName) {
 		String basePath = file.getParent();
 
 		String oldFileName = file.getName();
