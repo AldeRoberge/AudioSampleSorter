@@ -37,11 +37,7 @@ public class EditablePropertyEditor extends JFrame {
 		setTitle("Edit Action Properties");
 
 		JPanel contentPane = new JPanel();
-
-		contentPane.setBounds(0, 0, 620, 400);
-		contentPane.setLayout(new CardLayout(0, 0));
-
-		contentPane.setVisible(true);
+		contentPane.setLayout(new BorderLayout(0, 0));
 
 		// scrolleable list
 
@@ -56,12 +52,25 @@ public class EditablePropertyEditor extends JFrame {
 
 		setContentPane(contentPane);
 
-		// end
+		updateHeight();
 
-		pack();
+		// end
 
 		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
 
+	}
+
+	public void updateHeight() { //TODO this right here is the dirtiest piece of code
+		int height = 0;
+		for (int i = 0; i < allValueEditorPanels.size(); i++) {
+			height += allValueEditorPanels.get(i).getHeight();
+		}
+
+		setSize(new Dimension(600, height + 40));
+
+		System.out.println("Height is " + height);
+
+		//pack();
 	}
 
 	// TODO : update this when adding fields

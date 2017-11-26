@@ -8,16 +8,14 @@ import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ass.file.FileManager;
 import ass.file.player.AudioPlayer;
 import constants.property.Properties;
 import ui.MiddleOfTheScreen;
-
-import javax.swing.JSeparator;
 
 public class SettingsUI extends JPanel {
 
@@ -29,13 +27,13 @@ public class SettingsUI extends JPanel {
 	private JCheckBox chckbxIncludeSubfoldersInSearch;
 
 	private AudioPlayer audioPlayer;
-
+	
 	/**
 	 * Create the panel.
 	 */
-	public SettingsUI(FileManager fMan) {
-
-		this.audioPlayer = fMan.fileVisualiser.getAudioPlayer();
+	public SettingsUI(AudioPlayer p) {
+		
+		this.audioPlayer = p;
 
 		setLayout(null);
 

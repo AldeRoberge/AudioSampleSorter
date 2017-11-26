@@ -21,43 +21,31 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	private static String TAG = "AudioPlayer";
 
-	private BasicController control;
-
 	/**
 	 * Volume and pan are stored between 0 and 100 in properties and converted from 0 to 1 in setVolume() and setGain()
 	 */
 	private double currentAudioVolume = Properties.MAIN_VOLUME_SLIDER_VALUE.getValueAsInt();
 	private double currentAudioPan = Properties.MAIN_PAN_SLIDER_VALUE.getValueAsInt();
 
-	private File currentSelectedSound;
+	private File currentSound;
 
-	//
+	private static Map audioInfo = null;
 
-	private Map audioInfo = null;
-
-	private AudioVisualizer audioVis;
-
+	private BasicController control;
 	private BasicPlayer player;
 
+	//Singleton reference to AudioVisualizer
+	private AudioVisualizer audioVis;
+
 	//
 
-	public AudioVisualizer getVisualizer() {
-		if (audioVis == null) {
-			audioVis = new AudioVisualizer();
-		}
-		return audioVis;
-	}
-
 	void newVisualizerStatus(String newStatus) {
-		boolean debug = true;
-		if (debug) {
-			Logger.logInfo(TAG, newStatus);
-		}
-
-		audioVis.setStatus(newStatus);
+		Logger.logInfo(TAG, newStatus);
 	}
 
 	public AudioPlayer() {
+		audioVis = AudioVisualizer.getVisualiser();
+
 		Logger.logInfo(TAG, "Initialising...");
 
 		// Instantiate BasicPlayer.
@@ -70,7 +58,6 @@ public class AudioPlayer implements BasicPlayerListener {
 		// It means that this object will be notified on BasicPlayer
 		// events such as : opened(...), progress(...), stateUpdated(...)
 		player.addBasicPlayerListener(this);
-
 	}
 
 	/**
@@ -95,7 +82,7 @@ public class AudioPlayer implements BasicPlayerListener {
 	public void progress(int bytesread, long microseconds, byte[] pcmdata, Map properties) {
 		if (audioInfo.containsKey("basicplayer.sourcedataline")) {
 			// Spectrum/time analyzer
-			getVisualizer().analyzer.writeDSP(pcmdata);
+			audioVis.analyzer.writeDSP(pcmdata);
 		}
 
 	}
@@ -155,8 +142,8 @@ public class AudioPlayer implements BasicPlayerListener {
 			isPaused = false;
 
 			// stop analyzer
-			getVisualizer().analyzer.stopDSP();
-			getVisualizer().analyzer.repaint();
+			audioVis.analyzer.stopDSP();
+			audioVis.analyzer.repaint();
 
 		} else if (event.getCode() == BasicPlayerEvent.PAUSED) {
 			newVisualizerStatus("Paused");
@@ -176,8 +163,8 @@ public class AudioPlayer implements BasicPlayerListener {
 			// analyzer
 			if (audioInfo.containsKey("basicplayer.sourcedataline")) {
 
-				getVisualizer().analyzer.setupDSP((SourceDataLine) audioInfo.get("basicplayer.sourcedataline"));
-				getVisualizer().analyzer.startDSP((SourceDataLine) audioInfo.get("basicplayer.sourcedataline"));
+				audioVis.analyzer.setupDSP((SourceDataLine) audioInfo.get("basicplayer.sourcedataline"));
+				audioVis.analyzer.startDSP((SourceDataLine) audioInfo.get("basicplayer.sourcedataline"));
 
 			}
 
@@ -231,10 +218,10 @@ public class AudioPlayer implements BasicPlayerListener {
 
 				public void run() {
 
-					currentSelectedSound = sound;
+					currentSound = sound;
 
 					try {
-						control.open(currentSelectedSound);
+						control.open(currentSound);
 						control.play();
 
 						setVolume(currentAudioVolume);
@@ -266,7 +253,7 @@ public class AudioPlayer implements BasicPlayerListener {
 	}
 
 	public void stopUsing(File f) {
-		if (currentSelectedSound != null && currentSelectedSound.getAbsolutePath().equals(f.getAbsolutePath())) {
+		if (currentSound != null && currentSound.getAbsolutePath().equals(f.getAbsolutePath())) {
 			Logger.logInfo(TAG, "selectedSound is the file last played by AudioPlayer! Stopping using it...");
 
 			stop();
@@ -277,12 +264,18 @@ public class AudioPlayer implements BasicPlayerListener {
 				e1.printStackTrace();
 			}
 
-			//EPIC THANKS TO wuppi AT https://stackoverflow.com/a/14123384/3224295
-			//WUPPI I LOVE YOU
+			//EPIC THANKS TO wuppi AT https://stackoverflow.com/a/14123384/3224295 WUPPI I LOVE YOU
 
 			System.gc();
 			Thread.yield();
 
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
 		}
 	}
+
 }

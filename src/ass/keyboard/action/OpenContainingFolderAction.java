@@ -36,11 +36,11 @@ public class OpenContainingFolderAction extends UIAction {
 	@Override
 	public void perform() {
 
-		if (ASS.fMan.selectedFiles.isEmpty()) {
+		if (ASS.fileBro.selectedFiles.isEmpty()) {
 			Logger.logError(TAG, "No selected files");
 		} else {
 			try {
-				Desktop.getDesktop().open(ASS.fMan.selectedFiles.get(0).getParentFile());
+				Desktop.getDesktop().open(ASS.fileBro.selectedFiles.get(0).getParentFile());
 			} catch (IOException e) {
 				Logger.logError(TAG, "Could not open file location");
 				e.printStackTrace();

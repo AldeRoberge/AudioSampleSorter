@@ -22,14 +22,12 @@ public class SimpleUIAction extends UIAction {
 	public static final SimpleUIAction SHOW_MACRO = new SimpleUIAction(1, "Edit Macros", "Shows the macro UI.", NO_POLICY);
 	public static final SimpleUIAction SHOW_SETTINGS = new SimpleUIAction(2, "Edit Settings", "Shows the settings UI.", NO_POLICY);
 	public static final SimpleUIAction SHOW_LOGGER = new SimpleUIAction(3, "Show Logger", "Shows the debug log.", NO_POLICY);
-	public static final SimpleUIAction SHOW_FILE_IMPORTER = new SimpleUIAction(4, "Show File Importer", "Shows the file importer.", NO_POLICY);
 
 	public static void init() {
 		UIActions.add(SHOW_CREDITS);
 		UIActions.add(SHOW_MACRO);
 		UIActions.add(SHOW_SETTINGS);
 		UIActions.add(SHOW_LOGGER);
-		UIActions.add(SHOW_FILE_IMPORTER);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,8 +86,6 @@ public class SimpleUIAction extends UIAction {
 			currentState = ASS.showSettings(false, false);
 		} else if (id == SHOW_LOGGER.getId()) {
 			currentState = ASS.showLogger(false, false);
-		} else if (id == SHOW_FILE_IMPORTER.getId()) {
-			currentState = ASS.showFileImporter(false, false);
 		} else {
 			Logger.logError(name, "Invalid object for perform SimpleUIAction");
 		}
@@ -108,8 +104,6 @@ public class SimpleUIAction extends UIAction {
 			currentState = ASS.showSettings(true, switchState);
 		} else if (id == SHOW_LOGGER.getId()) {
 			currentState = ASS.showLogger(true, switchState);
-		} else if (id == SHOW_FILE_IMPORTER.getId()) {
-			currentState = ASS.showFileImporter(true, switchState);
 		} else {
 			Logger.logError(name, "Invalid object for perform SimpleUIAction");
 		}

@@ -1,4 +1,4 @@
-package ass;
+package constants.library;
 
 import java.io.File;
 
@@ -46,15 +46,15 @@ public class LibraryManager {
 	/**
 	 * return the file used by MacroLoader to serialise macros to
 	 */
-	public static File getMacroSerFile() {
-		return getLibrary().getFileInLibrary("savedMacros.ser", true);
+	public static File getMacroFile() {
+		return getLibrary().getFileInLibrary("macros.ser", true);
 	}
 
 	/**
 	 * return the file used by FileManager to serialise imported files to
 	 */
-	public static File getFileSerFile() {
-		return getLibrary().getFileInLibrary("importedFiles.ser", true);
+	public static File getFileFile() {
+		return getLibrary().getFileInLibrary("files.ser", true);
 	}
 
 	/**

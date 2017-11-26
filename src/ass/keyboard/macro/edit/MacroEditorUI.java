@@ -26,10 +26,12 @@ import javax.swing.event.DocumentListener;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
 import ass.keyboard.action.DeleteAction;
+import ass.keyboard.action.MoveToFolderAction;
 import ass.keyboard.action.OpenContainingFolderAction;
 import ass.keyboard.action.RemoveSelectedFilesAction;
 import ass.keyboard.action.RenameAction;
 import ass.keyboard.action.SimpleUIAction;
+import ass.keyboard.action.TestAction;
 import ass.keyboard.action.editable.EditablePropertyEditor;
 import ass.keyboard.action.interfaces.Action;
 import ass.keyboard.key.Key;
@@ -38,7 +40,6 @@ import ass.keyboard.macro.MacroEditor;
 import constants.icons.UserIcon;
 import constants.icons.iconChooser.GetIcon;
 import constants.icons.iconChooser.IconChooser;
-import key.KeysToString;
 import key.NativeKeyEventToKey;
 import logger.Logger;
 
@@ -62,6 +63,8 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		default_actions.add(new DeleteAction());
 		default_actions.add(new RemoveSelectedFilesAction());
 		default_actions.add(new OpenContainingFolderAction());
+		default_actions.add(new MoveToFolderAction());
+		default_actions.add(new TestAction());
 
 		//default_actions.add(new TestAction());
 
@@ -100,6 +103,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 	private JTextField titleEditor;
 	private JButton iconButton;
 	private JCheckBox chckboxMenu;
+	private JCheckBox chckbxToolbar;
 
 	public void onHide() {
 		isListenningForKeyInputs = false;
@@ -225,7 +229,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		titleEditor.setFont(new Font("Segoe UI Light", Font.BOLD, 20));
 		titleEditor.setText("Title");
 		titleEditor.setHorizontalAlignment(SwingConstants.CENTER);
-		titleEditor.setBounds(56, 13, 209, 32);
+		titleEditor.setBounds(56, 13, 195, 32);
 
 		titleEditor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -262,7 +266,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		chckboxMenu = new JCheckBox("Menu");
 		chckboxMenu.setToolTipText("Show in right click menu");
 		chckboxMenu.setSelected(true);
-		chckboxMenu.setBounds(273, 13, 74, 35);
+		chckboxMenu.setBounds(259, 8, 83, 22);
 
 		ActionListener act2 = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
@@ -271,6 +275,19 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		};
 		chckboxMenu.addActionListener(act2);
 		add(chckboxMenu);
+
+		chckbxToolbar = new JCheckBox("Toolbar");
+		chckboxMenu.setToolTipText("Show in toolbar");
+		chckboxMenu.setSelected(true);
+		chckbxToolbar.setBounds(259, 31, 83, 18);
+		
+		ActionListener act = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				keyBindToEdit.showInToolbar = chckbxToolbar.isSelected();
+			}
+		};
+		chckbxToolbar.addActionListener(act);
+		add(chckbxToolbar);
 
 		keyEditorImputBox.addMouseListener(new MouseAdapter() {
 			@Override
@@ -331,7 +348,9 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 	private void updateImputBoxText() {
 		if (keyBindToEdit != null) {
 			if (keyBindToEdit.keys.size() > 0) {
-				keyEditorImputBox.setText(KeysToString.keysToString("[", keyBindToEdit.keys, "]"));
+
+				keyEditorImputBox.setText("[" + keyBindToEdit.getKeysAsString() + "]");
+
 			} else {
 				keyEditorImputBox.setText("Edit shortcut");
 			}
@@ -353,11 +372,10 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 			} else {
 				keyReleased(k);
 			}
-			
+
 			updateImputBoxText();
 		}
 
-		
 	}
 
 	private void keyPressed(Key k) {

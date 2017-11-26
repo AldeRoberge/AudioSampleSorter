@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import ass.keyboard.macro.MacroAction;
 import ass.keyboard.macro.MacroEditor;
 import constants.icons.Icons;
-import key.KeysToString;
 
 public class MacroInfoPanel extends JPanel {
 
@@ -78,25 +77,18 @@ public class MacroInfoPanel extends JPanel {
 
 	//Called by refreshInfoPanel(), which is called on addKeyBindInfoPanel
 	public void updateText() {
-		String keysShortcut = KeysToString.keysToString("", keyBind.keys, "");
 
 		if (keyBind.getName() != null) { //display the name if it has one
 			labelTitle.setText(keyBind.getName());
 		} else {
-			labelTitle.setText(keysShortcut);
+			labelTitle.setText(keyBind.getKeysAsString());
 		}
 
 		if (keyBind.getIcon() != null) {
 			labelTitle.setIcon(keyBind.getIcon());
 		}
 
-		if (keyBind.actionsToPerform.size() > 1) {
-
-			labelTitle.setToolTipText(keyBind.actionsToPerform.toString());
-
-		} else if (keyBind.actionsToPerform.size() == 0) {
-
-		}
+		labelTitle.setToolTipText(keyBind.getToolTip());
 
 	}
 }

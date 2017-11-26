@@ -33,16 +33,15 @@ public class RemoveSelectedFilesAction extends UIAction {
 	@Override
 	public void perform() {
 
-		filesRemoved = ASS.fMan.selectedFiles;
-		ASS.fMan.removeFiles(filesRemoved);
+		filesRemoved = ASS.fileBro.selectedFiles;
+		ASS.fileBro.removeFiles(filesRemoved);
 
 	}
 
 	@Override
 	public void unperform() {
-
-		ASS.fMan.importFiles(filesRemoved);
-
+		ASS.fileBro.addFiles(filesRemoved);
+		
 	}
 
 }

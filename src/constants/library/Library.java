@@ -1,4 +1,4 @@
-package ass;
+package constants.library;
 
 import logger.Logger;
 

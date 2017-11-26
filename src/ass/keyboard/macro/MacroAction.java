@@ -1,14 +1,14 @@
 package ass.keyboard.macro;
 
-import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.Icon;
 
-import ass.FileActionManager;
 import ass.keyboard.action.interfaces.Action;
 import ass.keyboard.action.interfaces.FileAction;
+import ass.keyboard.action.interfaces.FileEvent;
 import ass.keyboard.action.interfaces.UIAction;
 import ass.keyboard.key.Key;
 import constants.icons.UserIcon;
@@ -32,16 +32,21 @@ public class MacroAction implements Serializable {
 	public ArrayList<Action> actionsToPerform = new ArrayList<Action>();
 
 	public boolean showInMenu = true;
+	public boolean showInToolbar = true;
 
-	public boolean isEnabled = true; //Changes depending on the actions policy
+	public boolean isEnabled;
 
 	//Used by MacroLoader to instantiate basic actions
-	public MacroAction(String name, UserIcon icon, Key key, Action action, boolean showInMenu) {
+	public MacroAction(String name, UserIcon icon, Key key, Action action, boolean showInMenu, boolean showInToolbar) {
 		this.name = name;
 		this.setIcon(icon);
-		this.keys.add(key);
+		if (key != null) {
+			this.keys.add(key);
+		}
 		this.actionsToPerform.add(action);
 		this.showInMenu = showInMenu;
+		this.showInToolbar = showInToolbar;
+
 	}
 
 	public MacroAction(String name) {
@@ -89,7 +94,9 @@ public class MacroAction implements Serializable {
 					e2.printStackTrace();
 				}
 
-				FileActionManager.perform(clonedAction);
+				//perform
+
+				clonedAction.ready();
 
 			} else {
 				Logger.logError(TAG, "Invalid type of action!");
@@ -124,7 +131,7 @@ public class MacroAction implements Serializable {
 		this.icon = icon;
 	}
 
-	public String getInformationAsHTML() {
+	public String getToolTip() {
 
 		String build = "<html>";
 
@@ -146,12 +153,38 @@ public class MacroAction implements Serializable {
 
 		//
 
+		if (keys.size() > 0) {
+			build += "<p>Shortcut : [" + getKeysAsString() + "]</p>";
+		}
+
 		if (highestPolicy != -100) { //If there is no actions, policy will stay at -100
-			build += "<p><small>Requires " + Action.getPolicyAsString(highestPolicy) + " to be selected</small></p>";
+
+			String policyString = "<small>Requires " + Action.getPolicyAsString(highestPolicy) + " to be selected</small>";
+
+			if (!isEnabled) {
+				build += "<p><font color=\"red\">" + policyString + "</font></p>";
+			} /*else {
+				build += "<p>" + policyString + "</p>";
+				}*/
+
 		}
 
 		return build + "</html>";
 
+	}
+
+	public String getKeysAsString() {
+
+		String displayKeyNames = "";
+
+		for (int i = 0; i < keys.size(); i++) {
+			if (i != 0) {
+				displayKeyNames += " + ";
+			}
+			displayKeyNames += keys.get(i).keyName;
+		}
+
+		return displayKeyNames;
 	}
 
 }

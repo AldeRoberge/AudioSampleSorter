@@ -27,6 +27,19 @@ public interface Action extends Serializable {
 		return null;
 	}
 
+	public abstract String toString(); // used by ComboBox inside MacorEditorUI, implemented by FileAction and UIAction
+
+	public abstract String getDescription();
+
+	public default boolean isEditable() { // used by MacroActionEditPanel (Edit
+												// button) to know if there is
+											// editableProperties inside the
+											// action
+		return (getEditableProperties() != null);
+	}
+
+	//File policy (if it can be performed on the current amount of selected files in FileManager (ex : Play cant be performed on more than 1 file))
+
 	public static final int PERFORMED_ON_ZERO_FILES_ONLY_POLICY = -2; //0 selected files
 	public static final int PERFORMED_ON_ONE_FILE_ONLY_POLICY = -1; //1 to 1 selected file
 	public static final int PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY = 0; //0 to infinity selected files
@@ -53,17 +66,6 @@ public interface Action extends Serializable {
 			Logger.logError("FileAction", "Invalid performed on files policy : " + getPolicy());
 			return false;
 		}
-	}
-
-	public abstract String toString(); // used by ComboBox inside MacorEditorUI, implemented by FileAction and UIAction
-
-	public abstract String getDescription();
-
-	public default boolean isEditable() { // used by MacroActionEditPanel (Edit
-												// button) to know if there is
-											// editableProperties inside the
-											// action
-		return (getEditableProperties() != null);
 	}
 
 	public static String getPolicyAsString(int highestPolicy) {

@@ -21,7 +21,7 @@ public class GlobalKeyListener implements NativeKeyListener {
 
 	private static final String TAG = "GlobalMacroKeyListener";
 
-	public boolean isListenningForInputs = true; //only true when the frame is visible
+	public boolean isListenningForInputs = false; //only true when the frame is visible (set to false at first)
 
 	private ArrayList<Key> pressedKeys = new ArrayList<Key>();
 

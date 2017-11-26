@@ -12,17 +12,21 @@ public class Properties {
 	public static final String TRUE = "TRUE";
 	public static final String FALSE = "FALSE";
 
+	public static Property ROOT_FOLDER = new Property("ROOT_FOLDER", "C:\\", e);
+
 	//Checked before launching the UI, if set to TRUE will open Credits
 	public static Property FIRST_LAUNCH = new Property("FIRST_LAUNCH", TRUE, e);
 
 	//Prompt on close, are you sure to exit?
 	public static Property PROMPT_ON_EXIT = new Property("PROMPT_ON_EXIT", TRUE, e);
 
+	//Prompt on close, are you sure to exit?
+	public static Property SIZE_WIDTH = new Property("SIZE_X", TRUE, e);
+	//Prompt on close, are you sure to exit?
+	public static Property SIZE_HEIGH = new Property("SIZE_Y", TRUE, e);
+
 	//RunSS UI checkBox 'include subfolders'
 	public static Property INCLUDE_SUBFOLDERS = new Property("INCLUDE_SUBFOLDERS", TRUE, e);
-
-	//RunSS JFileChooser uses this to restore the previous directory
-	public static Property LAST_OPENED_LOCATION = new Property("LAST_OPENED_LOCATION", "C:\\", e);
 
 	//Set in Settings and checked by RunSS to know if .wav or .mp3 should be displayed in SoundPanel
 	public static Property DISPLAY_SOUND_SUFFIXES = new Property("DISPLAY_SOUND_SUFFIXES", TRUE, e);

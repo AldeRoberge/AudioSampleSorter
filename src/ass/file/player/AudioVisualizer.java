@@ -5,52 +5,44 @@ import java.awt.Color;
 
 import javax.swing.JPanel;
 
+import ass.file.player.spectrum.SpectrumTimeAnalyzer;
 import constants.Constants;
 import constants.property.Properties;
 import logger.Logger;
 
-public class AudioVisualizer {
+public class AudioVisualizer extends JPanel {
 
 	private static final String TAG = "AudioVisualizer";
-
-	private static final boolean DEBUG = false;
-
-	private static String status;
 
 	private static final String OFF = "off";
 	private static final String OSCILLO = "oscillo";
 	private static final String SPECTRUM = "spectrum";
 
-	public SpectrumTimeAnalyzer analyzer;
+	public static SpectrumTimeAnalyzer analyzer;
 
-	public void setStatus(String newStatus) {
-		if (DEBUG) {
-			Logger.logInfo(TAG, newStatus);
+	public static AudioVisualizer me;
+
+	private AudioVisualizer() {
+	}
+
+	public static AudioVisualizer getVisualiser() {
+
+		if (me == null) {
+			me = new AudioVisualizer();
+			
+			me.init();
+
+			me.setLayout(new BorderLayout(0, 0));
+			me.add(analyzer, BorderLayout.CENTER);
 		}
 
-		status = newStatus;
+		return me;
 	}
 
-	/**
-	 * Create the frame.
-	 */
-	public AudioVisualizer() {
-
-		initAnalyzer();
-
-		JPanel contentPane = new JPanel();
-		contentPane.setLayout(new BorderLayout(0, 0));
-
-		contentPane.add(analyzer, BorderLayout.CENTER);
-
-	}
-
-	private void initAnalyzer() {
+	private void init() {
 		analyzer = new SpectrumTimeAnalyzer();
 
-		status = Properties.SPECTRUM_ANALYZER_STATUS.getValue();
-
-		switch (status) {
+		switch (Properties.SPECTRUM_ANALYZER_STATUS.getValue()) {
 		case OFF:
 			analyzer.setDisplayMode(SpectrumTimeAnalyzer.DISPLAY_MODE_OFF);
 			break;

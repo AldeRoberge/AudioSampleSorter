@@ -24,13 +24,15 @@ public class EditableProperty<V> implements Serializable, Cloneable {
 
 	public String prefix; //used by Buttons, CheckBoxes, etc
 
-	public int ID = -1;
+	private int ID = -1;
+	private V defaultValue;
 	private V value;
 
 	// Pass type in as parameter to constructor
 	public EditableProperty(V defaultValue, String label) {
 		prefix = label;
 		value = defaultValue;
+		this.defaultValue = defaultValue;
 
 		if (defaultValue instanceof Boolean) {
 			ID = BOOLEAN_ID;
@@ -51,6 +53,17 @@ public class EditableProperty<V> implements Serializable, Cloneable {
 	 */
 	public V getValue() {
 		return value;
+	}
+
+	/**
+	 * @return the obj
+	 */
+	public int getId() {
+		return ID;
+	}
+
+	public boolean isDefaultValue() {
+		return value.equals(defaultValue);
 	}
 
 	/**

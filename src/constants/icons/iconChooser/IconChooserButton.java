@@ -15,7 +15,6 @@ class IconChooserButton extends JButton {
 
 		setIcon(staticIcon.getImageIcon());
 		setToolTipText(staticIcon.getImagePath());
-
 	}
 
 	public UserIcon getStaticIcon() {

@@ -58,28 +58,6 @@ public class RenameAction extends FileAction {
 
 	}
 
-	FileEvent rename(File file, String newName) {
-		String basePath = file.getParent();
-
-		String oldFileName = file.getName();
-		String newFileName = newName + FileNameUtil.getExtension(file.getName());
-
-		String newPath = basePath + "\\" + newFileName;
-
-		System.out.println("Old : " + basePath + file.getName());
-		System.out.println("New : " + newPath);
-
-		File oldFile = file;
-		File newFile = new File(newPath);
-
-		if (file.renameTo(newFile)) {
-			System.out.println("Success...");
-			return new FileEvent(oldFile, newFile);
-		} else {
-			System.err.println("NOT Success...");
-			return new FileEvent(oldFile, oldFile);
-		}
-
-	}
+	
 
 }

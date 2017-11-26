@@ -1,10 +1,11 @@
 package file;
 
-import ass.LibraryManager;
 import logger.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
+
+import constants.library.LibraryManager;
 
 /**
  * @author VaypeNaysh
@@ -20,16 +21,6 @@ public class ObjectSerializer<T extends Serializable> {
 
 	public boolean isNull() {
 		return (t == null);
-	}
-
-	/**
-	 * Changes the serialized object, and serializes it
-	 * @param t
-	 */
-	public void set(T t) {
-		this.t = t;
-
-		serialise();
 	}
 
 	public T get() {
@@ -64,7 +55,8 @@ public class ObjectSerializer<T extends Serializable> {
 
 	}
 
-	public void serialise() {
+	public void serialise(T t) {
+		this.t = t;
 
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
@@ -82,12 +74,12 @@ public class ObjectSerializer<T extends Serializable> {
 	 * Test
 	 */
 	public static void main(String[] args) {
-		ObjectSerializer<ArrayList<String>> genericSerialiserTest = new ObjectSerializer<ArrayList<String>>(LibraryManager.getMacroSerFile());
+		ObjectSerializer<ArrayList<String>> genericSerialiserTest = new ObjectSerializer<ArrayList<String>>(LibraryManager.getMacroFile());
 
 		System.out.println(genericSerialiserTest.get());
 
 		ArrayList<String> t = new ArrayList<String>();
 		t.add("Hey!");
-		genericSerialiserTest.set(t);
+		genericSerialiserTest.serialise(t);
 	}
 }

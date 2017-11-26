@@ -4,13 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -21,7 +28,9 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 
-import ass.file.FileManager;
+import ass.file.player.AudioPlayer;
+import ass.file.player.AudioVisualizer;
+import ass.keyboard.action.interfaces.FileAction;
 import ass.keyboard.action.interfaces.UIAction;
 import ass.keyboard.macro.MacroEditor;
 import ass.ui.CreditsUI;
@@ -33,34 +42,43 @@ import logger.LogUI;
 import logger.Logger;
 import ui.BasicContainer;
 import ui.MiddleOfTheScreen;
+import ui.SplashScreen;
+import javax.swing.JLabel;
 
 public class ASS extends JFrame {
 
 	private static final String TAG = Constants.SOFTWARE_NAME;
 
-	public FileManager fMan = new FileManager();
+	public FileManager fileBro = new FileManager();
+
+	private static AudioPlayer audioPlayer = new AudioPlayer();
 
 	private MacroEditor macroEditor;
 
 	private BasicContainer logger = new BasicContainer("Log", Icons.LOGGER.getImage(), new LogUI(), true);
-	private BasicContainer settings  = new BasicContainer("Settings", Icons.SETTINGS.getImage(), new SettingsUI(fMan), false);
+	private BasicContainer settings = new BasicContainer("Settings", Icons.SETTINGS.getImage(), new SettingsUI(audioPlayer), false);
 	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new CreditsUI(), true);
+
+	public static AudioPlayer getAudioPlayer() {
+		return audioPlayer;
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	public ASS() {
 
-		FileActionManager.fMan = fMan;
-
 		UIAction.ASS = this;
+		FileAction.ASS = this;
 
 		macroEditor = new MacroEditor();
 
-		macroEditor.macroLoader.registerWaitingForMacroChanges(fMan);
+		macroEditor.macroLoader.registerWaitingForMacroChanges(fileBro);
 
 		//Manually trigger it to populate fMan and toolBar
 		macroEditor.macroLoader.tellMacroChanged();
+
+		fileBro.registerWaitingForFileChanges(macroEditor.macroLoader);
 
 		//
 
@@ -70,19 +88,35 @@ public class ASS extends JFrame {
 		setBackground(Color.WHITE);
 		setTitle(Constants.SOFTWARE_NAME);
 		setBounds(100, 100, 655, 493);
-		setSize(new Dimension(605, 500));
-		setIconImage(Icons.SOFTWARE_ICON.getImage());
+
+		if (Properties.SIZE_WIDTH.isDefaultValue() && Properties.SIZE_HEIGH.isDefaultValue()) {
+			setSize(new Dimension(824, 499));
+		} else {
+			setSize(new Dimension(Properties.SIZE_WIDTH.getValueAsInt(), Properties.SIZE_HEIGH.getValueAsInt()));
+
+		}
+
+		addComponentListener(new ComponentListener() {
+			public void componentResized(ComponentEvent e) {
+				Properties.SIZE_WIDTH.setNewValue(getWidth());
+				Properties.SIZE_HEIGH.setNewValue(getHeight());
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentShown(ComponentEvent e) {
+			}
+		});
+
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
-
-		try {
-
-			UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Times New Roman", Font.BOLD, 14));
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-		} catch (Exception weTried) {
-			weTried.printStackTrace();
-		}
 
 		//
 
@@ -115,15 +149,15 @@ public class ASS extends JFrame {
 
 		// File, Import
 
-		JMenuItem mntmImport = new JMenuItem(new AbstractAction("Import audio files...") {
+		JMenuItem mntmChangeFolder = new JMenuItem(new AbstractAction("Change sound folder...") {
 			public void actionPerformed(ActionEvent e) {
-				Logger.logInfo(TAG, "Importing...");
-				fMan.showFileImporter(true, true);
+				Logger.logInfo(TAG, "Selecting new sound library...");
+				fileBro.changeRootFolder();
 			}
 		});
 
-		mntmImport.setIcon(Icons.IMPORT.getImageIcon());
-		mnFile.add(mntmImport);
+		mntmChangeFolder.setIcon(Icons.IMPORT.getImageIcon());
+		mnFile.add(mntmChangeFolder);
 
 		// File (Separator)
 
@@ -188,27 +222,28 @@ public class ASS extends JFrame {
 		mntmAbout.setIcon(Icons.ABOUT.getImageIcon());
 		mnHelp.add(mntmAbout);
 
-		getContentPane().add(fMan.fileVisualiser, BorderLayout.SOUTH);
+		//getContentPane().add(AudioVisualiser., BorderLayout.SOUTH);
 
 		/** End of menus */
 
 		//
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setResizeWeight(0.90);
-		splitPane.setDividerLocation(Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION.getValueAsInt());
+		splitPane.setResizeWeight(1);
+		splitPane.setDividerLocation(350);
+
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent pce) {
 				Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION.setNewValue((((Integer) pce.getNewValue()).intValue()) + "");
 			}
 		});
-		BorderLayout borderLayout = (BorderLayout) fMan.getLayout();
+		BorderLayout borderLayout = (BorderLayout) fileBro.getLayout();
 		borderLayout.setVgap(1);
 		borderLayout.setHgap(1);
 
 		//fMan
-		splitPane.setTopComponent(fMan);
+		splitPane.setTopComponent(fileBro);
 
 		//
 
@@ -217,7 +252,13 @@ public class ASS extends JFrame {
 		splitPane.setBottomComponent(container);
 		container.setLayout(new BorderLayout(0, 0));
 
-		container.add(fMan.fileVisualiser.getPlayer(), BorderLayout.CENTER);
+		JPanel progressPanel = new JPanel();
+		container.add(progressPanel, BorderLayout.SOUTH);
+		progressPanel.setLayout(new BorderLayout(0, 0));
+
+		progressPanel.add(Logger.getStatusField());
+
+		container.add(AudioVisualizer.getVisualiser(), BorderLayout.CENTER);
 
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 
@@ -275,10 +316,6 @@ public class ASS extends JFrame {
 		}
 	}
 
-	public boolean showFileImporter(boolean forceState, boolean newState) {
-		return fMan.showFileImporter(forceState, newState);
-	}
-
 	/**
 	 * @param forceState enforce new visibility state (if is set to false, component will switch visibility)
 	 * @param newState new state of visiblity (if forceState set to false, newState is invalidated)
@@ -326,7 +363,50 @@ public class ASS extends JFrame {
 	 * @return true if its paused
 	 */
 	public boolean resumeOrPauseSound() {
-		return fMan.fileVisualiser.getAudioPlayer().resumeOrPause();
+		return audioPlayer.resumeOrPause();
+	}
+
+	/**
+	 * The main entry of the program
+	 */
+	public static void main(String[] args) {
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception weTried) {
+			Logger.logError(TAG, "Error with look and feel", weTried);
+		}
+
+		//
+
+		ASS ASS = new ASS();
+
+		ArrayList<Image> images = new ArrayList<Image>();
+		images.add(Icons.BIG_ICON.getImage());
+		images.add(Icons.SMALL_ICON.getImage());
+		ASS.setIconImages(images);
+
+		ASS.setIconImage(Icons.BIG_ICON.getImage());
+
+		System.out.println(Icons.SMALL_ICON.getImagePath());
+
+		final String IMAGE_LOCATION = new File(".").getAbsolutePath() + "/res/splashScreen/";
+		try {
+
+			BufferedImage inImage = ImageIO.read(new File(IMAGE_LOCATION + "/BG_BLURRY.png"));
+			BufferedImage outImage = ImageIO.read(new File(IMAGE_LOCATION + "/BG.png"));
+			BufferedImage textImage = ImageIO.read(new File(IMAGE_LOCATION + "/TITLE.png"));
+			Image icon = Icons.LOADING_BAR.getImage();
+
+			new SplashScreen(icon, inImage, outImage, textImage, Constants.SOFTWARE_NAME, ASS);
+
+		} catch (IOException e) {
+			Logger.logError(TAG, "Error with SplashScreen!");
+			e.printStackTrace();
+			Logger.logError(TAG, "Starting without SplashScreen...");
+
+			ASS.setVisible(true);
+		}
 	}
 
 }

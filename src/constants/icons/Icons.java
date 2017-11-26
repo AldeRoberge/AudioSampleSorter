@@ -16,7 +16,9 @@ public class Icons {
 
 	//
 
-	public static final String LOCATION_OF_ICONS = new File(".").getAbsolutePath() + "/res/icons/";
+	public static final String LOCATION_OF_ICONS = new File(".").getAbsolutePath() + "\\res\\icons\\";
+
+	public static final String LOCATION_OF_SOFTWARE_ICONS = new File(".").getAbsolutePath() + "\\res\\";
 
 	public static final ArrayList<UserIcon> images = new ArrayList<UserIcon>();
 
@@ -39,7 +41,6 @@ public class Icons {
 	//Returned in case everything fails;
 	public static final UserIcon DEFAULT_ICON = new UserIcon(LOCATION_OF_ICONS + "missing.png");
 
-	public static final ImageIcon SOFTWARE_ICON = new ImageIcon("res/icon.png");
 	public static final UserIcon PLAY = new UserIcon(LOCATION_OF_ICONS + "play-sign.png");
 	public static final UserIcon ABOUT = new UserIcon(LOCATION_OF_ICONS + "information-button.png");
 	public static final UserIcon MACROS = new UserIcon(LOCATION_OF_ICONS + "keyboard.png");
@@ -54,6 +55,9 @@ public class Icons {
 	public static final UserIcon TRASH = new UserIcon(LOCATION_OF_ICONS + "trash.png");
 	public static final UserIcon FOLDER_MINUS = new UserIcon(LOCATION_OF_ICONS + "folder-minus.png");
 	public static final UserIcon OPEN_FOLDER = new UserIcon(LOCATION_OF_ICONS + "folder-open.png");
+
+	public static final UserIcon BIG_ICON = new UserIcon(LOCATION_OF_SOFTWARE_ICONS + "icon_huge.png");
+	public static final UserIcon SMALL_ICON = new UserIcon(LOCATION_OF_SOFTWARE_ICONS + "icon_small.png");
 
 	//
 

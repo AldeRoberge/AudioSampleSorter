@@ -122,5 +122,11 @@ public class MacroListUI extends JPanel {
 
 	}
 
-}
+	public void removeAllPanels() {
 
+		columnpanel.removeAll();
+		refreshInfoPanel();
+
+	}
+
+}

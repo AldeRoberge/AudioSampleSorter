@@ -59,6 +59,7 @@ class MacroActionPanel extends JPanel {
 			btnEditProperty.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					k.propertyEditor.changeAction(action);
+					k.propertyEditor.updateHeight();
 					k.propertyEditor.setVisible(true);
 				}
 			});

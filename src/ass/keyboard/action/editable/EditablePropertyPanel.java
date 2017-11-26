@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -16,7 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import ass.file.importer.FileImporter;
+import constants.property.Properties;
 import logger.Logger;
 
 /**
@@ -44,7 +45,7 @@ class EditablePropertyPanel extends JPanel {
 		setSize(new Dimension(WIDTH, HEIGHT)); // default dimensions
 		setLayout(new FlowLayout(FlowLayout.LEFT)); // default layout
 
-		if (propertyToEdit.ID == EditableProperty.BOOLEAN_ID) { // JCHECKBOX
+		if (propertyToEdit.getId() == EditableProperty.BOOLEAN_ID) { // JCHECKBOX
 
 			JCheckBox chckbxNewCheckBox = new JCheckBox(propertyToEdit.prefix);
 			chckbxNewCheckBox.setBounds(8, 9, 434, 25);
@@ -59,7 +60,7 @@ class EditablePropertyPanel extends JPanel {
 			};
 			chckbxNewCheckBox.addActionListener(act);
 
-		} else if (propertyToEdit.ID == EditableProperty.STRING_ID) { // JTEXTFIELD
+		} else if (propertyToEdit.getId() == EditableProperty.STRING_ID) { // JTEXTFIELD
 
 			JLabel lblPrefix = new JLabel(propertyToEdit.prefix);
 			lblPrefix.setBounds(12, 16, 56, 16);
@@ -97,7 +98,7 @@ class EditablePropertyPanel extends JPanel {
 
 			add(stringInputField);
 
-		} else if (propertyToEdit.ID == EditableProperty.INT_ID) { // JTEXTFIELD that only accepts ints
+		} else if (propertyToEdit.getId() == EditableProperty.INT_ID) { // JTEXTFIELD that only accepts ints
 
 			setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -129,7 +130,7 @@ class EditablePropertyPanel extends JPanel {
 
 			add(intInputField);
 
-		} else if (propertyToEdit.ID == EditableProperty.FILE_CHOOSER_ID) { // JFILECHOOSER
+		} else if (propertyToEdit.getId() == EditableProperty.FILE_CHOOSER_ID) { // JFILECHOOSER
 
 			// Select a single file/folder
 
@@ -138,15 +139,16 @@ class EditablePropertyPanel extends JPanel {
 			chooser.setPreferredSize(new Dimension(800, 600));
 			chooser.setAcceptAllFileFilterUsed(false);
 			chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+			chooser.setCurrentDirectory(new File(Properties.ROOT_FOLDER.getValue()));
 
 			JLabel lblPrefix = new JLabel(propertyToEdit.prefix);
 			add(lblPrefix);
 
-			JButton btnOpenFileBrowser = new JButton("Browse files");
+			JButton btnOpenFileBrowser = new JButton("Open file browser");
 			btnOpenFileBrowser.setToolTipText("Open file browser");
 			btnOpenFileBrowser.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (chooser.showOpenDialog(FileImporter.fileImporterParent) == JFileChooser.APPROVE_OPTION) {
+					if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
 						String directory = chooser.getCurrentDirectory().toString();
 

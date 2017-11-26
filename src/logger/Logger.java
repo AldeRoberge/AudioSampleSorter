@@ -2,6 +2,9 @@ package logger;
 
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
 import file.WriteToFile;
 
 public class Logger {
@@ -10,12 +13,24 @@ public class Logger {
 
 	private static ArrayList<Log> bufferedLogs = new ArrayList<Log>();
 
+	private static JLabel status;
+
 	/**
 	 * Used by the UI to create the logger after creating the LogUI panel
 	 * After creating LogUI, we do Logger.init(this);
 	 */
 	public static void init(LogUI panel) {
+
 		Logger.logUI = panel;
+	}
+
+	public static JLabel getStatusField() {
+		if (status == null) {
+			status = new JLabel();
+			status();
+		}
+
+		return status;
 	}
 
 	private Logger() {
@@ -104,6 +119,22 @@ public class Logger {
 
 			return sb.toString();
 		}
+	}
+
+	/**
+	 * Sets status JLabel to string and prints the string
+	 */
+	public static void status(String string) {
+		//System.out.println(string);
+
+		getStatusField().setText(string);
+	}
+
+	/**
+	 * Reset status to default ("Ready")
+	 */
+	public static void status() {
+		getStatusField().setText("Ready");
 	}
 
 }
