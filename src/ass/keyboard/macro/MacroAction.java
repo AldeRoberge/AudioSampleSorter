@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
-import ass.keyboard.action.interfaces.Action;
-import ass.keyboard.action.interfaces.FileAction;
-import ass.keyboard.action.interfaces.FileEvent;
-import ass.keyboard.action.interfaces.UIAction;
+import ass.action.interfaces.Action;
+import ass.action.interfaces.FileAction;
+import ass.action.interfaces.FileEvent;
+import ass.action.interfaces.UIAction;
 import ass.keyboard.key.Key;
 import constants.icons.UserIcon;
 import logger.Logger;
@@ -154,7 +154,7 @@ public class MacroAction implements Serializable {
 		//
 
 		if (keys.size() > 0) {
-			build += "<p>Shortcut : [" + getKeysAsString() + "]</p>";
+			build += "<p>Shortcut : " + getKeysAsString() + "</p>";
 		}
 
 		if (highestPolicy != -100) { //If there is no actions, policy will stay at -100

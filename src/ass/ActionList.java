@@ -2,7 +2,7 @@ package ass;
 
 import javax.swing.JPanel;
 
-import ass.keyboard.action.interfaces.Action;
+import ass.action.interfaces.Action;
 
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;

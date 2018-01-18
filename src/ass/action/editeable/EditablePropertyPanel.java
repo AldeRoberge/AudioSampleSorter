@@ -1,4 +1,4 @@
-package ass.keyboard.action.editable;
+package ass.action.editeable;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;

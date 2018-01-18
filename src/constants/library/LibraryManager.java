@@ -1,6 +1,7 @@
 package constants.library;
 
 import java.io.File;
+import java.io.IOException;
 
 import constants.property.Properties;
 import logger.Logger;
@@ -10,10 +11,6 @@ public class LibraryManager {
 	private static final String TAG = "LibraryManager";
 
 	private static Library library;
-
-	public static void main(String args[]) {
-		System.out.println(LibraryManager.getTrashFolder().getAbsolutePath());
-	}
 
 	private static Library getLibrary() {
 
@@ -62,6 +59,47 @@ public class LibraryManager {
 	 */
 	public static File getTrashFolder() {
 		return getLibrary().getFolderInLibrary("trash", true);
+	}
+
+}
+
+class Library {
+
+	private static final String TAG = "Library";
+	private File libraryFolder;
+
+	public Library(File folder) {
+		this.libraryFolder = folder;
+	}
+
+	@Override
+	public String toString() {
+		return "Library [" + libraryFolder + "]";
+	}
+
+	public File getFileInLibrary(String file, boolean createIfDoesntExist) {
+		File f = new File(libraryFolder.getAbsolutePath() + "\\" + file);
+
+		if (createIfDoesntExist && !f.exists()) {
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+				Logger.logError(TAG, "Could not create file " + file + ".");
+				e.printStackTrace();
+			}
+		}
+
+		return f;
+	}
+
+	public File getFolderInLibrary(String folder, boolean createIfDoesntExist) {
+		File f = new File(libraryFolder.getAbsolutePath() + "\\" + folder);
+
+		if (createIfDoesntExist && !f.exists()) {
+			f.mkdir();
+		}
+
+		return f;
 	}
 
 }

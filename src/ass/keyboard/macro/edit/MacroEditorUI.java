@@ -25,15 +25,15 @@ import javax.swing.event.DocumentListener;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
 
-import ass.keyboard.action.DeleteAction;
-import ass.keyboard.action.MoveToFolderAction;
-import ass.keyboard.action.OpenContainingFolderAction;
-import ass.keyboard.action.RemoveSelectedFilesAction;
-import ass.keyboard.action.RenameAction;
-import ass.keyboard.action.SimpleUIAction;
-import ass.keyboard.action.TestAction;
-import ass.keyboard.action.editable.EditablePropertyEditor;
-import ass.keyboard.action.interfaces.Action;
+import ass.action.DeleteAction;
+import ass.action.MoveToFolderAction;
+import ass.action.OpenContainingFolderAction;
+import ass.action.RemoveSelectedFilesAction;
+import ass.action.RenameAction;
+import ass.action.SimpleUIAction;
+import ass.action.TestAction;
+import ass.action.editeable.EditablePropertyEditor;
+import ass.action.interfaces.Action;
 import ass.keyboard.key.Key;
 import ass.keyboard.macro.MacroAction;
 import ass.keyboard.macro.MacroEditor;

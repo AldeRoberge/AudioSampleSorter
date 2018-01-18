@@ -1,4 +1,4 @@
-package ass.keyboard.action.interfaces;
+package ass.action.interfaces;
 
 import java.io.File;
 

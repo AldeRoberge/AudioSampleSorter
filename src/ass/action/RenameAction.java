@@ -1,4 +1,4 @@
-package ass.keyboard.action;
+package ass.action;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import ass.keyboard.action.editable.EditableProperty;
-import ass.keyboard.action.interfaces.FileAction;
-import ass.keyboard.action.interfaces.FileEvent;
+import ass.action.editeable.EditableProperty;
+import ass.action.interfaces.FileAction;
+import ass.action.interfaces.FileEvent;
 import constants.icons.Icons;
 import file.FileNameUtil;
 

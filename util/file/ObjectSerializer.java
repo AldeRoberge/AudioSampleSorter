@@ -1,11 +1,16 @@
 package file;
 
-import logger.Logger;
-
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import constants.library.LibraryManager;
+import logger.Logger;
 
 /**
  * @author VaypeNaysh
@@ -55,7 +60,7 @@ public class ObjectSerializer<T extends Serializable> {
 
 	}
 
-	public void serialise(T t) {
+	public void set(T t) {
 		this.t = t;
 
 		try {
@@ -80,6 +85,8 @@ public class ObjectSerializer<T extends Serializable> {
 
 		ArrayList<String> t = new ArrayList<String>();
 		t.add("Hey!");
-		genericSerialiserTest.serialise(t);
+		genericSerialiserTest.set(t);
+		
+		System.out.println(genericSerialiserTest.get());
 	}
 }

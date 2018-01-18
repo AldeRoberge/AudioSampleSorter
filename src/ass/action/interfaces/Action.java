@@ -1,9 +1,9 @@
-package ass.keyboard.action.interfaces;
+package ass.action.interfaces;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import ass.keyboard.action.editable.EditableProperty;
+import ass.action.editeable.EditableProperty;
 import logger.Logger;
 
 /**

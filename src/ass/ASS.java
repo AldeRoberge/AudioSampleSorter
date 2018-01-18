@@ -28,22 +28,20 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 
+import ass.action.interfaces.FileAction;
+import ass.action.interfaces.UIAction;
 import ass.file.player.AudioPlayer;
 import ass.file.player.AudioVisualizer;
-import ass.keyboard.action.interfaces.FileAction;
-import ass.keyboard.action.interfaces.UIAction;
 import ass.keyboard.macro.MacroEditor;
 import ass.ui.CreditsUI;
 import ass.ui.SettingsUI;
 import constants.Constants;
 import constants.icons.Icons;
 import constants.property.Properties;
-import logger.LogUI;
 import logger.Logger;
 import ui.BasicContainer;
 import ui.MiddleOfTheScreen;
 import ui.SplashScreen;
-import javax.swing.JLabel;
 
 public class ASS extends JFrame {
 
@@ -55,7 +53,7 @@ public class ASS extends JFrame {
 
 	private MacroEditor macroEditor;
 
-	private BasicContainer logger = new BasicContainer("Log", Icons.LOGGER.getImage(), new LogUI(), true);
+	private BasicContainer logger = new BasicContainer("Logger", Icons.LOGGER.getImage(), Logger.getLogUIPanel(), true);
 	private BasicContainer settings = new BasicContainer("Settings", Icons.SETTINGS.getImage(), new SettingsUI(audioPlayer), false);
 	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new CreditsUI(), true);
 
@@ -126,8 +124,7 @@ public class ASS extends JFrame {
 
 				if (Properties.PROMPT_ON_EXIT.getValueAsBoolean()) {
 					String ObjButtons[] = { "Yes", "No" };
-					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-							Icons.ABOUT.getImageIcon(), ObjButtons, ObjButtons[1]);
+					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, Icons.ABOUT.getImageIcon(), ObjButtons, ObjButtons[1]);
 					if (PromptResult == JOptionPane.YES_OPTION) {
 						System.exit(0);
 					}
@@ -247,18 +244,18 @@ public class ASS extends JFrame {
 
 		//
 
-		JPanel container = new JPanel();
+		JPanel progressContainer = new JPanel();
 
-		splitPane.setBottomComponent(container);
-		container.setLayout(new BorderLayout(0, 0));
+		splitPane.setBottomComponent(progressContainer);
+		progressContainer.setLayout(new BorderLayout(0, 0));
 
 		JPanel progressPanel = new JPanel();
-		container.add(progressPanel, BorderLayout.SOUTH);
+		progressContainer.add(progressPanel, BorderLayout.SOUTH);
 		progressPanel.setLayout(new BorderLayout(0, 0));
 
 		progressPanel.add(Logger.getStatusField());
 
-		container.add(AudioVisualizer.getVisualiser(), BorderLayout.CENTER);
+		progressContainer.add(AudioVisualizer.getVisualiser(), BorderLayout.CENTER);
 
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 

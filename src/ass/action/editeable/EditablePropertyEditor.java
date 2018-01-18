@@ -1,4 +1,4 @@
-package ass.keyboard.action.editable;
+package ass.action.editeable;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import ass.keyboard.action.interfaces.Action;
+import ass.action.interfaces.Action;
 import logger.Logger;
 import ui.MiddleOfTheScreen;
 

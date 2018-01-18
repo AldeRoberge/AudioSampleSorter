@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import ass.keyboard.action.interfaces.Action;
+import ass.action.interfaces.Action;
 
 class MacroActionPanel extends JPanel {
 

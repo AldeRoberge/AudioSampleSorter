@@ -1,6 +1,9 @@
 package ui;
 
 import javax.swing.*;
+
+import logger.Logger;
+
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -12,6 +15,12 @@ public class BasicContainer extends JFrame {
 	 * The Container setBounds(); to the content's bounds 
 	 */
 	public BasicContainer(String title, Image iconImage, JPanel content, boolean isResizeable) {
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception weTried) {
+			Logger.logError("BasicContainer (" + title + ")", "Error with look and feel", weTried);
+		}
 
 		setIconImage(iconImage);
 		setResizable(isResizeable);

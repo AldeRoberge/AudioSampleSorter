@@ -3,13 +3,13 @@ package ass.keyboard.macro;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import ass.action.DeleteAction;
+import ass.action.OpenContainingFolderAction;
+import ass.action.RemoveSelectedFilesAction;
+import ass.action.RenameAction;
+import ass.action.SimpleUIAction;
+import ass.action.interfaces.Action;
 import ass.file.ListenForSelectedFilesChanges;
-import ass.keyboard.action.DeleteAction;
-import ass.keyboard.action.OpenContainingFolderAction;
-import ass.keyboard.action.RemoveSelectedFilesAction;
-import ass.keyboard.action.RenameAction;
-import ass.keyboard.action.SimpleUIAction;
-import ass.keyboard.action.interfaces.Action;
 import ass.keyboard.key.Key;
 import constants.icons.Icons;
 import constants.library.LibraryManager;
@@ -106,7 +106,7 @@ public class MacroLoader implements ListenForSelectedFilesChanges {
 	}
 
 	public void serialise() {
-		macroSerializer.serialise(macroActions);
+		macroSerializer.set(macroActions);
 	}
 
 	@Override

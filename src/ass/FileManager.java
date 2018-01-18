@@ -55,8 +55,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import ass.action.interfaces.FileEvent;
 import ass.file.ListenForSelectedFilesChanges;
-import ass.keyboard.action.interfaces.FileEvent;
 import ass.keyboard.macro.ListenForMacroChanges;
 import ass.keyboard.macro.MacroAction;
 import constants.Constants;
@@ -411,24 +411,21 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 		//Update table
 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if (fileTableModel == null) {
-					fileTableModel = new FileTableModel();
-					table.setModel(fileTableModel);
-				}
-				table.getSelectionModel().removeListSelectionListener(listSelectionListener);
-				fileTableModel.setFiles(newFiles);
-				table.getSelectionModel().addListSelectionListener(listSelectionListener);
-				if (!cellSizesSet) {
+		if (fileTableModel == null) {
+			fileTableModel = new FileTableModel();
+			table.setModel(fileTableModel);
+		}
+		table.getSelectionModel().removeListSelectionListener(listSelectionListener);
+		fileTableModel.setFiles(newFiles);
+		table.getSelectionModel().addListSelectionListener(listSelectionListener);
+		if (!cellSizesSet) {
 
-					table.setRowHeight(40);
-					setColumnWidth(0, -1);
-					cellSizesSet = true;
+			table.setRowHeight(40);
+			setColumnWidth(0, -1);
+			cellSizesSet = true;
 
-				}
-			}
-		});
+		}
+
 	}
 
 	@Override
@@ -494,7 +491,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 				tree.setEnabled(false);
 
-				Logger.status("Searching...");
+				Logger.loading(true);
 
 				//
 
@@ -534,7 +531,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 					setTableData(new ArrayList<File>(Arrays.asList(filesInsideParent)));
 				}
 
-				Logger.status();
+				Logger.loading(false);
 
 				tree.setEnabled(true);
 				setFilesDetails(null);
