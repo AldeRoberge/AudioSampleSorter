@@ -8,10 +8,13 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ass.keyboard.key.GlobalKeyListener;
 import ass.keyboard.macro.edit.MacroEditorUI;
 import ass.keyboard.macro.list.MacroListUI;
-import logger.Logger;
+
 
 /**
  * MacroEditor is the head of the Macro movement
@@ -23,7 +26,7 @@ import logger.Logger;
 
 public class MacroEditor extends JFrame {
 
-	private static final String TAG = "MacroEditor";
+	static Logger log = LoggerFactory.getLogger(MacroEditor.class);
 
 	public MacroListUI macroListUI = new MacroListUI(this);
 	public MacroEditorUI macroEditorUI = new MacroEditorUI(this);
@@ -90,7 +93,7 @@ public class MacroEditor extends JFrame {
 	 * Initialize the contents of the 
 	 */
 	private void initialize() {
-		Logger.logInfo(TAG, "Launching...");
+		log.info("Launching...");
 
 		globalKeyListener = GlobalKeyListener.get();
 		globalKeyListener.init(this);

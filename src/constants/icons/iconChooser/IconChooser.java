@@ -27,15 +27,17 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import constants.icons.Icons;
 import constants.icons.UserIcon;
-import logger.Logger;
 import ui.MiddleOfTheScreen;
 import ui.WrapLayout;
 
 public class IconChooser extends JFrame {
 
-	private static final String TAG = "IconChooser";
+	static Logger log = LoggerFactory.getLogger(IconChooser.class);
 
 	private GetIcon waitingForAnswer;
 
@@ -106,7 +108,7 @@ public class IconChooser extends JFrame {
 				try {
 					Desktop.getDesktop().open(new File(Icons.LOCATION_OF_ICONS));
 				} catch (IOException e1) {
-					Logger.logError(TAG, "Could not open folder containing icon images!");
+					log.error("Could not open folder containing icon images!");
 					e1.printStackTrace();
 				}
 
@@ -168,7 +170,7 @@ public class IconChooser extends JFrame {
 
 	void populate() {
 
-		Logger.logInfo(TAG, "Repopulating...");
+		log.info("Repopulating...");
 
 		iconsPanel.removeAll();
 		iconsPanel.revalidate();

@@ -4,12 +4,13 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ass.keyboard.macro.MacroAction;
 import ass.keyboard.macro.MacroEditor;
@@ -19,7 +20,7 @@ import key.NativeKeyEventToKey;
 
 public class GlobalKeyListener implements NativeKeyListener {
 
-	private static final String TAG = "GlobalMacroKeyListener";
+	Logger log = LoggerFactory.getLogger(GlobalKeyListener.class);
 
 	public boolean isListenningForInputs = false; //only true when the frame is visible (set to false at first)
 
@@ -98,15 +99,15 @@ public class GlobalKeyListener implements NativeKeyListener {
 		try {
 			GlobalScreen.registerNativeHook();
 		} catch (NativeHookException ex) {
-			logger.Logger.logError(TAG, "There was a problem registering the native hook.", ex);
+			log.error("There was a problem registering the native hook.", ex);
 			System.exit(1);
 		}
-
+		
 		// Get the logger for "org.jnativehook" and set the level to off.
-		Logger.getLogger(GlobalScreen.class.getPackage().getName()).setLevel(Level.WARNING);
+		java.util.logging.Logger.getLogger(GlobalScreen.class.getPackage().getName()).setLevel(Level.OFF);
 
 		// Change the level for all handlers attached to the default logger.
-		Handler[] handlers = Logger.getLogger("").getHandlers();
+		Handler[] handlers = java.util.logging.Logger.getLogger("").getHandlers();
 		for (Handler handler : handlers) {
 			handler.setLevel(Level.OFF);
 		}

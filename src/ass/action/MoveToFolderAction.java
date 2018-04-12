@@ -1,16 +1,12 @@
 package ass.action;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import org.apache.commons.io.FileUtils;
 
 import ass.action.editeable.EditableProperty;
 import ass.action.interfaces.FileAction;
 import ass.action.interfaces.FileEvent;
-import constants.library.LibraryManager;
-import logger.Logger;
+
 
 public class MoveToFolderAction extends FileAction {
 
@@ -52,16 +48,16 @@ public class MoveToFolderAction extends FileAction {
 		File folderToMoveTo = fileTest.getValue();
 
 		if (fileTest.isDefaultValue() || !folderToMoveTo.exists() || !folderToMoveTo.isDirectory()) {
-			Logger.logInfo(TAG, "Error with folder to move to!");
+			log.info("Error with folder to move to!");
 
 			if (fileTest.isDefaultValue()) {
-				Logger.logInfo(TAG, "Folder is default value!");
+				log.info("Folder is default value!");
 			} else if (!folderToMoveTo.exists()) {
-				Logger.logInfo(TAG, "Folder does not exist!");
+				log.info("Folder does not exist!");
 			} else if (!folderToMoveTo.isDirectory()) {
-				Logger.logInfo(TAG, "Folder is not a directory!");
+				log.info("Folder is not a directory!");
 			} else {
-				Logger.logInfo(TAG, "Unknown error");
+				log.info("Unknown error");
 			}
 
 			return null;

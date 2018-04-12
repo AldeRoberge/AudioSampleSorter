@@ -22,19 +22,24 @@
  */
 package ass.file.player.spectrum;
 
-import kj.dsp.KJDigitalSignalProcessingAudioDataConsumer;
-import kj.dsp.KJDigitalSignalProcessor;
-import kj.dsp.KJFFT;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.sound.sampled.SourceDataLine;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import javax.sound.sampled.SourceDataLine;
+import javax.swing.JPanel;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import kj.dsp.KJDigitalSignalProcessingAudioDataConsumer;
+import kj.dsp.KJDigitalSignalProcessor;
+import kj.dsp.KJFFT;
 
 /**
  * Basically jlgui3.0's SpectrumTimeAnalyzer, but without the

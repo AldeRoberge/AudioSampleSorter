@@ -3,33 +3,35 @@ package constants.library;
 import java.io.File;
 import java.io.IOException;
 
-import constants.property.Properties;
-import logger.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import constants.property.PropertiesImpl;
 
 public class LibraryManager {
 
-	private static final String TAG = "LibraryManager";
+	static Logger log = LoggerFactory.getLogger(LibraryManager.class);
 
 	private static Library library;
 
 	private static Library getLibrary() {
 
 		if (library == null) {
-			File LIBRARY_FOLDER = new File(Properties.LIBRARY_LOCATION.getValue());
+			File LIBRARY_FOLDER = new File(PropertiesImpl.LIBRARY_LOCATION.getValue());
 
-			if (Properties.LIBRARY_LOCATION.isDefaultValue()) {
+			if (PropertiesImpl.LIBRARY_LOCATION.isDefaultValue()) {
 
 				LIBRARY_FOLDER = new File(new File(".").getAbsolutePath() + "/library/");
 
-				Logger.logInfo(TAG, "Library is at " + LIBRARY_FOLDER.getPath() + "...");
+				log.info("Library is at " + LIBRARY_FOLDER.getPath() + "...");
 
 				if (!LIBRARY_FOLDER.exists()) {
-					Logger.logInfo(TAG, "Creating new folder...");
+					log.info("Creating new folder...");
 
 					LIBRARY_FOLDER.mkdir();
 				}
 
-				Properties.LIBRARY_LOCATION.setNewValue(LIBRARY_FOLDER.getAbsolutePath());
+				PropertiesImpl.LIBRARY_LOCATION.setNewValue(LIBRARY_FOLDER.getAbsolutePath());
 
 			}
 
@@ -65,7 +67,8 @@ public class LibraryManager {
 
 class Library {
 
-	private static final String TAG = "Library";
+	static Logger log = LoggerFactory.getLogger(Library.class);
+
 	private File libraryFolder;
 
 	public Library(File folder) {
@@ -84,7 +87,7 @@ class Library {
 			try {
 				f.createNewFile();
 			} catch (IOException e) {
-				Logger.logError(TAG, "Could not create file " + file + ".");
+				log.error("Could not create file " + file + ".");
 				e.printStackTrace();
 			}
 		}

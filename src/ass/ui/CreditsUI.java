@@ -1,6 +1,8 @@
 package ass.ui;
 
 import java.awt.BorderLayout;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 import javax.swing.JPanel;
@@ -10,7 +12,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
-import file.FileReader;
+import alde.commons.util.file.GetFileAsString;
 
 public class CreditsUI extends JPanel {
 
@@ -28,7 +30,11 @@ public class CreditsUI extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane);
 
-		String credits = FileReader.readFile("res//credits.html");
+		String credits = "";
+
+		for (String s : GetFileAsString.getFileAsList(new File("res//credits.html"))) {
+			credits += s;
+		}
 
 		JTextPane textPane = new JTextPane();
 		textPane.setContentType("text/html");

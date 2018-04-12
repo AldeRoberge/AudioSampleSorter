@@ -1,6 +1,7 @@
 package file;
 
 public class FileTypes {
+	
 	public static final ExtensionFilter AUDIO_FILES = new ExtensionFilter(
 			"Audio Files (*.aiff, *.au, *.mp3, *.ogg, *.mp4, *.wav)",
 			new String[] { ".aiff", ".au", ".mp3", ".ogg", ".mp4", ".wav" });

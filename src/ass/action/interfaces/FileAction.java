@@ -2,11 +2,8 @@ package ass.action.interfaces;
 
 import java.io.File;
 
+import alde.commons.util.file.FileNameUtil;
 import ass.ASS;
-import ass.FileManager;
-import ass.file.player.AudioPlayer;
-import file.FileNameUtil;
-import logger.Logger;
 
 public abstract class FileAction implements Action, Cloneable {
 
@@ -41,10 +38,10 @@ public abstract class FileAction implements Action, Cloneable {
 		File newFile = new File(newPath);
 
 		if (file.renameTo(newFile)) {
-			Logger.logInfo(TAG + " (Rename file)", "Success...");
+			log.info(TAG + " (Rename file)", "Success...");
 			return new FileEvent(oldFile, newFile);
 		} else {
-			Logger.logError(TAG + " (Rename file)", "Failure...");
+			log.error(TAG + " (Rename file)", "Failure...");
 			return new FileEvent(oldFile, oldFile);
 		}
 
@@ -61,10 +58,10 @@ public abstract class FileAction implements Action, Cloneable {
 		File newFile = new File(newPath);
 
 		if (file.renameTo(newFile)) {
-			Logger.logInfo(TAG + " (Move file)", "Success...");
+			log.info(TAG + " (Move file)", "Success...");
 			return new FileEvent(oldFile, newFile);
 		} else {
-			Logger.logError(TAG + " (Move file)", "Failure...");
+			log.error(TAG + " (Move file)", "Failure...");
 			return new FileEvent(oldFile, oldFile);
 		}
 
@@ -82,7 +79,7 @@ public abstract class FileAction implements Action, Cloneable {
 			if (fe != null) {
 				ASS.fileBro.updateFile(fe);
 			} else {
-				Logger.logInfo(TAG, "No FileEvent, ignoring this action result.");
+				log.info("No FileEvent, ignoring this action result.");
 			}
 
 		}

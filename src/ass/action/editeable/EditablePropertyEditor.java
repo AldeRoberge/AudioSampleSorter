@@ -1,29 +1,27 @@
 package ass.action.editeable;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ass.action.interfaces.Action;
-import logger.Logger;
 import ui.MiddleOfTheScreen;
 
 //See MacroEditorUI
 
 public class EditablePropertyEditor extends JFrame {
 
-	private static final String TAG = "EditablePropertyEditor";
-
+	private Logger log = LoggerFactory.getLogger(EditablePropertyEditor.class);
+	
 	private JPanel editeablePropertyPanels = new JPanel();
 	private static JScrollPane scrollPane;
 

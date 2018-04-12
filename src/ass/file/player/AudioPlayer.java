@@ -9,23 +9,26 @@ import java.util.Map;
 
 import javax.sound.sampled.SourceDataLine;
 
-import constants.property.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import constants.property.PropertiesImpl;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
-import logger.Logger;
+
 
 public class AudioPlayer implements BasicPlayerListener {
 
-	private static String TAG = "AudioPlayer";
-
+	Logger log = LoggerFactory.getLogger(AudioPlayer.class);
+	
 	/**
 	 * Volume and pan are stored between 0 and 100 in properties and converted from 0 to 1 in setVolume() and setGain()
 	 */
-	private double currentAudioVolume = Properties.MAIN_VOLUME_SLIDER_VALUE.getValueAsInt();
-	private double currentAudioPan = Properties.MAIN_PAN_SLIDER_VALUE.getValueAsInt();
+	private double currentAudioVolume = PropertiesImpl.MAIN_VOLUME_SLIDER_VALUE.getValueAsInt();
+	private double currentAudioPan = PropertiesImpl.MAIN_PAN_SLIDER_VALUE.getValueAsInt();
 
 	private File currentSound;
 
@@ -40,13 +43,13 @@ public class AudioPlayer implements BasicPlayerListener {
 	//
 
 	void newVisualizerStatus(String newStatus) {
-		Logger.logInfo(TAG, newStatus);
+		log.info(newStatus);
 	}
 
 	public AudioPlayer() {
 		audioVis = AudioVisualizer.getVisualiser();
 
-		Logger.logInfo(TAG, "Initialising...");
+		log.info("Initialising...");
 
 		// Instantiate BasicPlayer.
 		player = new BasicPlayer();
@@ -254,7 +257,7 @@ public class AudioPlayer implements BasicPlayerListener {
 
 	public void stopUsing(File f) {
 		if (currentSound != null && currentSound.getAbsolutePath().equals(f.getAbsolutePath())) {
-			Logger.logInfo(TAG, "selectedSound is the file last played by AudioPlayer! Stopping using it...");
+			log.info("selectedSound is the file last played by AudioPlayer! Stopping using it...");
 
 			stop();
 

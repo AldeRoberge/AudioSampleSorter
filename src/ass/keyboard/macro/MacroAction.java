@@ -1,18 +1,19 @@
 package ass.keyboard.macro;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.Icon;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ass.action.interfaces.Action;
 import ass.action.interfaces.FileAction;
-import ass.action.interfaces.FileEvent;
 import ass.action.interfaces.UIAction;
 import ass.keyboard.key.Key;
 import constants.icons.UserIcon;
-import logger.Logger;
+
 
 /**
  * MacroAction is key(s) to action(s)
@@ -20,6 +21,8 @@ import logger.Logger;
 
 public class MacroAction implements Serializable {
 
+	static Logger log = LoggerFactory.getLogger(MacroAction.class);
+	
 	// UI information
 
 	private static final String TAG = "MacroAction";
@@ -69,7 +72,7 @@ public class MacroAction implements Serializable {
 
 			if (action instanceof UIAction) {
 
-				Logger.logInfo(TAG, "This action is an instanceof UIAction");
+				log.info("This action is an instanceof UIAction");
 
 				UIAction act = (UIAction) action;
 				UIAction clonedAction = null;
@@ -84,7 +87,7 @@ public class MacroAction implements Serializable {
 
 			} else if (action instanceof FileAction) {
 
-				Logger.logInfo(TAG, "This action is an instanceof FileAction");
+				log.info("This action is an instanceof FileAction");
 
 				FileAction act = (FileAction) action;
 				FileAction clonedAction = null;
@@ -99,7 +102,7 @@ public class MacroAction implements Serializable {
 				clonedAction.ready();
 
 			} else {
-				Logger.logError(TAG, "Invalid type of action!");
+				log.error("Invalid type of action!");
 			}
 
 			// if

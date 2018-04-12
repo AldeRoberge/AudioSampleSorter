@@ -9,8 +9,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -55,6 +53,11 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import alde.commons.util.file.FileSizeToString;
+import alde.commons.util.file.ObjectSerializer;
 import ass.action.interfaces.FileEvent;
 import ass.file.ListenForSelectedFilesChanges;
 import ass.keyboard.macro.ListenForMacroChanges;
@@ -62,12 +65,8 @@ import ass.keyboard.macro.MacroAction;
 import constants.Constants;
 import constants.icons.Icons;
 import constants.library.LibraryManager;
-import constants.property.Properties;
-import file.FileSizeToString;
+import constants.property.PropertiesImpl;
 import file.FileTypes;
-import file.ObjectSerializer;
-import javazoom.jlgui.basicplayer.BasicPlayerException;
-import logger.Logger;
 import ui.MiddleOfTheScreen;
 import ui.PrettyTimeStatic;
 
@@ -85,6 +84,8 @@ Made FileBro only display file name, path, date and size
 FileBro now displays file date as a 'PrettyDate' and file size as readeable (KB, MB, GB, etc)
 */
 public class FileManager extends JPanel implements ActionListener, ListenForMacroChanges {
+
+	static Logger log = LoggerFactory.getLogger(FileManager.class);
 
 	/** Title of the application */
 	public static final String TAG = "ASS MEKANIK 3000"; //TODO RENAME TO TAG
@@ -127,7 +128,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 	private JPopupMenu popupMenu = new JPopupMenu();
 
-	private ObjectSerializer<File> currentPath = new ObjectSerializer<File>(LibraryManager.getFileFile());
+	//private ObjectSerializer<File> currentPath = new ObjectSerializer<File>(LibraryManager.getFileFile());
 
 	public FileManager() {
 
@@ -222,6 +223,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 		// show the file system roots.
 
 		tree = new JTree();
+		tree.removeAll();
 		tree.setRootVisible(false);
 		tree.setCellRenderer(new FileTreeCellRenderer());
 		tree.setVisibleRowCount(15);
@@ -241,7 +243,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 			}
 		});
 
-		if (Properties.ROOT_FOLDER.isDefaultValue()) {
+		if (PropertiesImpl.ROOT_FOLDER.isDefaultValue()) {
 			changeRootFolder();
 		} else {
 			updateRoot();
@@ -313,11 +315,11 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 	void changeRootFolder() {
 		JOptionPane.showMessageDialog(this, "Please select the upmost folder of your sound library");
 
-		Logger.logInfo(TAG, "Selecting a new root folder...");
+		log.info("Selecting a new root folder...");
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(chooser));
-		chooser.setCurrentDirectory(new File(Properties.ROOT_FOLDER.getValue()));
+		chooser.setCurrentDirectory(new File(PropertiesImpl.ROOT_FOLDER.getValue()));
 		chooser.setDialogTitle("Select folder");
 		chooser.setApproveButtonText("Choose");
 		Action details = chooser.getActionMap().get("viewTypeDetails"); // show details view
@@ -332,18 +334,18 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 			String directory = chooser.getCurrentDirectory().toString();
 
-			Properties.ROOT_FOLDER.setNewValue(directory);
+			PropertiesImpl.ROOT_FOLDER.setNewValue(directory);
 
 			updateRoot();
 
 		} else {
-			Logger.logInfo(TAG + " (Folder Selector)", "No selection");
+			log.info(TAG + " (Folder Selector)", "No selection");
 		}
 	}
 
 	private void updateRoot() {
 
-		File rootFile = new File(Properties.ROOT_FOLDER.getValue());
+		File rootFile = new File(PropertiesImpl.ROOT_FOLDER.getValue());
 
 		if (rootFile.exists() && rootFile.isDirectory()) {
 
@@ -403,7 +405,8 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 			File file = iterator.next();
 
-			if (currentFiles.contains(file) || !file.exists() || !FileTypes.AUDIO_FILES.accept(file) || file.isDirectory()) {
+			if (currentFiles.contains(file) || !file.exists() || !FileTypes.AUDIO_FILES.accept(file)
+					|| file.isDirectory()) {
 				iterator.remove();
 			}
 
@@ -434,7 +437,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 		if (event.getSource() instanceof FileMenuItem) {
 			FileMenuItem menu = (FileMenuItem) event.getSource();
 
-			Logger.logInfo(TAG, "Performing event(s)...");
+			log.info("Performing event(s)...");
 
 			menu.perform();
 		}
@@ -491,7 +494,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 				tree.setEnabled(false);
 
-				Logger.loading(true);
+				log.info("Loading..."); //TODO add loading bar
 
 				//
 
@@ -531,7 +534,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 					setTableData(new ArrayList<File>(Arrays.asList(filesInsideParent)));
 				}
 
-				Logger.loading(false);
+				log.info("Loading ended."); //TODO add loading bar
 
 				tree.setEnabled(true);
 				setFilesDetails(null);
@@ -566,7 +569,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 		if (FileTypes.AUDIO_FILES.accept(file)) {
 
-			if (Properties.PLAY_ON_CLICK.getValueAsBoolean()) {
+			if (PropertiesImpl.PLAY_ON_CLICK.getValueAsBoolean()) {
 				System.out.println("Playing on click...");
 
 				ASS.getAudioPlayer().play(file);
@@ -575,13 +578,13 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 		}
 
 		/**else if (FileTypes.VIDEO_FILES.accept(file)) {
-			Logger.logError(TAG, "Video files are not currently supported!");
+			log.error("Video files are not currently supported!");
 		} else if (FileTypes.PICTURE_FILES.accept(file)) {
-			Logger.logError(TAG, "Picture files are not currently supported!");
+			log.error("Picture files are not currently supported!");
 		} else if (FileTypes.TEXT_FILES.accept(file)) {
-			Logger.logError(TAG, "Text files are not currently supported!");
+			log.error("Text files are not currently supported!");
 		} else {
-			Logger.logError(TAG, "Unknown file Type " + file.getName());
+			log.error("Unknown file Type " + file.getName());
 		}*/
 
 	}
@@ -612,7 +615,8 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 				totalBytes += f.length();
 			}
 
-			size.setText(FileSizeToString.getByteSizeAsString(totalBytes) + " (" + files.size() + " files selected" + ")");
+			size.setText(
+					FileSizeToString.getByteSizeAsString(totalBytes) + " (" + files.size() + " files selected" + ")");
 
 		}
 
@@ -802,7 +806,8 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 class FileTableModel extends AbstractTableModel {
 
-	private static final String TAG = "FileTableModel";
+	static Logger log = LoggerFactory.getLogger(FileTableModel.class);
+
 	private List<File> files;
 	private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
 	private String[] columns = { "Icon", "File", "Path", "Size", "Last Modified" };
@@ -871,9 +876,9 @@ class FileTableModel extends AbstractTableModel {
 			files.set(files.indexOf(f.oldFile), f.newFile);
 			fireTableDataChanged();
 
-			Logger.logInfo(TAG, "Changed table data...");
+			log.info("Changed table data...");
 		} else {
-			Logger.logError(TAG, "MAJOR ERROR : files to update do NOT contain reference to old file!");
+			log.error("MAJOR ERROR : files to update do NOT contain reference to old file!");
 		}
 
 	}
@@ -903,20 +908,31 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 	}
 
 	@Override
-	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
+			boolean leaf, int row, boolean hasFocus) {
 
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-		File file = (File) node.getUserObject();
-		label.setIcon(fileSystemView.getSystemIcon(file));
-		label.setText(fileSystemView.getSystemDisplayName(file));
-		label.setToolTipText(file.getPath());
 
-		if (selected) {
-			label.setBackground(backgroundSelectionColor);
-			label.setForeground(textSelectionColor);
-		} else {
-			label.setBackground(backgroundNonSelectionColor);
-			label.setForeground(textNonSelectionColor);
+		System.out.println("Debug : " + node.getUserObject() + " " + node.getPath());
+
+		try {
+
+			File file = (File) node.getUserObject();
+			label.setIcon(fileSystemView.getSystemIcon(file));
+			label.setText(fileSystemView.getSystemDisplayName(file));
+			label.setToolTipText(file.getPath());
+
+			if (selected) {
+				label.setBackground(backgroundSelectionColor);
+				label.setForeground(textSelectionColor);
+			} else {
+				label.setBackground(backgroundNonSelectionColor);
+				label.setForeground(textNonSelectionColor);
+			}
+
+		} catch (Exception e) {
+			System.err.println("Error : ");
+			e.printStackTrace();
 		}
 
 		return label;
@@ -928,7 +944,8 @@ class CellRenderer extends DefaultTableCellRenderer {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+			int row, int column) {
 		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 		// if (value>17 value<26) {

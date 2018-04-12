@@ -2,11 +2,9 @@ package ass.action;
 
 import java.util.ArrayList;
 
-import ass.ASS;
 import ass.action.editeable.EditableProperty;
-import ass.action.interfaces.Action;
 import ass.action.interfaces.UIAction;
-import logger.Logger;
+
 
 public class SimpleUIAction extends UIAction {
 
@@ -87,7 +85,7 @@ public class SimpleUIAction extends UIAction {
 		} else if (id == SHOW_LOGGER.getId()) {
 			currentState = ASS.showLogger(false, false);
 		} else {
-			Logger.logError(name, "Invalid object for perform SimpleUIAction");
+			log.error(name, "Invalid object for perform SimpleUIAction");
 		}
 
 	}
@@ -105,7 +103,7 @@ public class SimpleUIAction extends UIAction {
 		} else if (id == SHOW_LOGGER.getId()) {
 			currentState = ASS.showLogger(true, switchState);
 		} else {
-			Logger.logError(name, "Invalid object for perform SimpleUIAction");
+			log.error(name, "Invalid object for perform SimpleUIAction");
 		}
 
 	}

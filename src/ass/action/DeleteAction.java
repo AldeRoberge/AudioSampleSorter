@@ -1,16 +1,13 @@
 package ass.action;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import org.apache.commons.io.FileUtils;
 
 import ass.action.editeable.EditableProperty;
 import ass.action.interfaces.FileAction;
 import ass.action.interfaces.FileEvent;
 import constants.library.LibraryManager;
-import logger.Logger;
+
 
 public class DeleteAction extends FileAction {
 

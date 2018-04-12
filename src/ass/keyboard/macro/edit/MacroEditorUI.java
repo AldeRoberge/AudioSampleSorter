@@ -24,6 +24,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ass.action.DeleteAction;
 import ass.action.MoveToFolderAction;
@@ -41,10 +43,12 @@ import constants.icons.UserIcon;
 import constants.icons.iconChooser.GetIcon;
 import constants.icons.iconChooser.IconChooser;
 import key.NativeKeyEventToKey;
-import logger.Logger;
+
 
 public class MacroEditorUI extends JPanel implements GetIcon {
 
+	static Logger log = LoggerFactory.getLogger(MacroEditorUI.class);
+	
 	private static final String TAG = "MacroEditor";
 
 	private static ArrayList<Action> default_actions = new ArrayList<Action>();
@@ -68,7 +72,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 
 		//default_actions.add(new TestAction());
 
-		Logger.logInfo(TAG, "Found " + default_actions.size() + " actions.");
+		log.info("Found " + default_actions.size() + " actions.");
 
 	}
 
@@ -127,7 +131,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 
 				if (newKeyBind) {
 					newKeyBind = false;
-					Logger.logInfo(TAG, "Creating new KeyBind");
+					log.info("Creating new KeyBind");
 
 					keyBindToEdit.actionsToPerform.clear();
 
@@ -295,11 +299,11 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 				if (!isListenningForKeyInputs) {
 					keyBindToEdit.clearKeys();
 					keyEditorImputBox.setText("Press any key(s)");
-					Logger.logInfo(TAG, "Now listenning for key inputs");
+					log.info("Now listenning for key inputs");
 					isListenningForKeyInputs = true;
 					keyEditorImputBox.setFont(RESULT_FONT_PLAIN);
 				} else {
-					Logger.logInfo(TAG, "Already listenning for key inputs!");
+					log.info("Already listenning for key inputs!");
 				}
 			}
 		});
@@ -313,7 +317,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		if (keyBindToEdit != null) {
 			newKeyBind = false;
 
-			Logger.logInfo(TAG, "Editing existing keybind");
+			log.info("Editing existing keybind");
 
 			for (Action a : keyBindToEdit.actionsToPerform) {
 				addActionAndActionEditPanel(a);
@@ -329,7 +333,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 
 			//Reset for fresh start
 
-			Logger.logInfo(TAG, "Creating new keyBind");
+			log.info("Creating new keyBind");
 
 			chckboxMenu.setSelected(true);
 
@@ -395,7 +399,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		}
 
 		if (keysPressedAndNotReleased.size() == 0) { //no more keys to be released
-			Logger.logInfo(TAG, "Stopped listenning for events.");
+			log.info("Stopped listenning for events.");
 			isListenningForKeyInputs = false;
 			keyEditorImputBox.setFont(RESULT_FONT_BOLD);
 		}
@@ -430,7 +434,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 			refreshPanels();
 
 		} catch (Exception e) {
-			Logger.logError(TAG, "Error in clearActionEditPanels", e);
+			log.error("Error in clearActionEditPanels", e);
 			e.printStackTrace();
 		}
 	}

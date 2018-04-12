@@ -28,6 +28,11 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import alde.commons.logger.LoggerUI;
+import alde.commons.util.SplashScreen;
 import ass.action.interfaces.FileAction;
 import ass.action.interfaces.UIAction;
 import ass.file.player.AudioPlayer;
@@ -37,15 +42,13 @@ import ass.ui.CreditsUI;
 import ass.ui.SettingsUI;
 import constants.Constants;
 import constants.icons.Icons;
-import constants.property.Properties;
-import logger.Logger;
+import constants.property.PropertiesImpl;
 import ui.BasicContainer;
 import ui.MiddleOfTheScreen;
-import ui.SplashScreen;
 
 public class ASS extends JFrame {
 
-	private static final String TAG = Constants.SOFTWARE_NAME;
+	static Logger log = LoggerFactory.getLogger(ASS.class);
 
 	public FileManager fileBro = new FileManager();
 
@@ -53,8 +56,9 @@ public class ASS extends JFrame {
 
 	private MacroEditor macroEditor;
 
-	private BasicContainer logger = new BasicContainer("Logger", Icons.LOGGER.getImage(), Logger.getLogUIPanel(), true);
-	private BasicContainer settings = new BasicContainer("Settings", Icons.SETTINGS.getImage(), new SettingsUI(audioPlayer), false);
+	private BasicContainer logger = new BasicContainer("Logger", Icons.LOGGER.getImage(), new LoggerUI(), true);
+	private BasicContainer settings = new BasicContainer("Settings", Icons.SETTINGS.getImage(),
+			new SettingsUI(audioPlayer), false);
 	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new CreditsUI(), true);
 
 	public static AudioPlayer getAudioPlayer() {
@@ -87,17 +91,18 @@ public class ASS extends JFrame {
 		setTitle(Constants.SOFTWARE_NAME);
 		setBounds(100, 100, 655, 493);
 
-		if (Properties.SIZE_WIDTH.isDefaultValue() && Properties.SIZE_HEIGH.isDefaultValue()) {
+		if (PropertiesImpl.SIZE_WIDTH.isDefaultValue() && PropertiesImpl.SIZE_HEIGH.isDefaultValue()) {
 			setSize(new Dimension(824, 499));
 		} else {
-			setSize(new Dimension(Properties.SIZE_WIDTH.getValueAsInt(), Properties.SIZE_HEIGH.getValueAsInt()));
+			setSize(new Dimension(PropertiesImpl.SIZE_WIDTH.getValueAsInt(),
+					PropertiesImpl.SIZE_HEIGH.getValueAsInt()));
 
 		}
 
 		addComponentListener(new ComponentListener() {
 			public void componentResized(ComponentEvent e) {
-				Properties.SIZE_WIDTH.setNewValue(getWidth());
-				Properties.SIZE_HEIGH.setNewValue(getHeight());
+				PropertiesImpl.SIZE_WIDTH.setNewValue(getWidth());
+				PropertiesImpl.SIZE_HEIGH.setNewValue(getHeight());
 			}
 
 			@Override
@@ -122,9 +127,11 @@ public class ASS extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent we) {
 
-				if (Properties.PROMPT_ON_EXIT.getValueAsBoolean()) {
+				if (PropertiesImpl.PROMPT_ON_EXIT.getValueAsBoolean()) {
 					String ObjButtons[] = { "Yes", "No" };
-					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, Icons.ABOUT.getImageIcon(), ObjButtons, ObjButtons[1]);
+					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?",
+							JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, Icons.ABOUT.getImageIcon(),
+							ObjButtons, ObjButtons[1]);
 					if (PromptResult == JOptionPane.YES_OPTION) {
 						System.exit(0);
 					}
@@ -146,9 +153,9 @@ public class ASS extends JFrame {
 
 		// File, Import
 
-		JMenuItem mntmChangeFolder = new JMenuItem(new AbstractAction("Change sound folder...") {
+		JMenuItem mntmChangeFolder = new JMenuItem(new AbstractAction("Set library root folder...") {
 			public void actionPerformed(ActionEvent e) {
-				Logger.logInfo(TAG, "Selecting new sound library...");
+				log.info("Selecting new sound library...");
 				fileBro.changeRootFolder();
 			}
 		});
@@ -164,7 +171,7 @@ public class ASS extends JFrame {
 
 		JMenuItem mnExit = new JMenuItem(new AbstractAction("Exit") {
 			public void actionPerformed(ActionEvent e) {
-				Logger.logInfo(TAG, "Exiting...");
+				log.info("Exiting...");
 				System.exit(0);
 			}
 		});
@@ -232,7 +239,8 @@ public class ASS extends JFrame {
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent pce) {
-				Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION.setNewValue((((Integer) pce.getNewValue()).intValue()) + "");
+				PropertiesImpl.HORIZONTAL_SPLITPANE_DIVIDERLOCATION
+						.setNewValue((((Integer) pce.getNewValue()).intValue()) + "");
 			}
 		});
 		BorderLayout borderLayout = (BorderLayout) fileBro.getLayout();
@@ -253,7 +261,7 @@ public class ASS extends JFrame {
 		progressContainer.add(progressPanel, BorderLayout.SOUTH);
 		progressPanel.setLayout(new BorderLayout(0, 0));
 
-		progressPanel.add(Logger.getStatusField());
+		//progressPanel.add(Logger.getStatusField());
 
 		progressContainer.add(AudioVisualizer.getVisualiser(), BorderLayout.CENTER);
 
@@ -307,8 +315,8 @@ public class ASS extends JFrame {
 			}
 		});
 
-		if (Properties.FIRST_LAUNCH.getValueAsBoolean()) {
-			Properties.FIRST_LAUNCH.setNewValue(false);
+		if (PropertiesImpl.FIRST_LAUNCH.getValueAsBoolean()) {
+			PropertiesImpl.FIRST_LAUNCH.setNewValue(false);
 			showCredits(true, true);
 		}
 	}
@@ -371,7 +379,7 @@ public class ASS extends JFrame {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception weTried) {
-			Logger.logError(TAG, "Error with look and feel", weTried);
+			log.error("Error with look and feel", weTried);
 		}
 
 		//
@@ -393,14 +401,13 @@ public class ASS extends JFrame {
 			BufferedImage inImage = ImageIO.read(new File(IMAGE_LOCATION + "/BG_BLURRY.png"));
 			BufferedImage outImage = ImageIO.read(new File(IMAGE_LOCATION + "/BG.png"));
 			BufferedImage textImage = ImageIO.read(new File(IMAGE_LOCATION + "/TITLE.png"));
-			Image icon = Icons.LOADING_BAR.getImage();
 
-			new SplashScreen(icon, inImage, outImage, textImage, Constants.SOFTWARE_NAME, ASS);
+			new SplashScreen(inImage, outImage, textImage, ASS, true, 20);
 
 		} catch (IOException e) {
-			Logger.logError(TAG, "Error with SplashScreen!");
+			log.error("Error with SplashScreen!");
 			e.printStackTrace();
-			Logger.logError(TAG, "Starting without SplashScreen...");
+			log.error("Starting without SplashScreen...");
 
 			ASS.setVisible(true);
 		}

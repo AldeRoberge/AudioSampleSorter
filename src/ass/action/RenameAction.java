@@ -10,7 +10,6 @@ import ass.action.editeable.EditableProperty;
 import ass.action.interfaces.FileAction;
 import ass.action.interfaces.FileEvent;
 import constants.icons.Icons;
-import file.FileNameUtil;
 
 public class RenameAction extends FileAction {
 

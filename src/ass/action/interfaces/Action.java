@@ -3,8 +3,11 @@ package ass.action.interfaces;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ass.action.editeable.EditableProperty;
-import logger.Logger;
+
 
 /**
  * Action is a single Action (rename, move, etc) to be performed on a SoundPanel
@@ -12,11 +15,14 @@ import logger.Logger;
  * 
  * @author 4LDE
  * 
- *         Don,t forget to hardcode them inside ActionManager
+ *         Don't forget to hardcode them inside ActionManager
  *
  */
 public interface Action extends Serializable {
 
+	Logger log = LoggerFactory.getLogger(Action.class);
+	
+	
 	boolean hasBeenPerformed = false;
 
 	public default boolean hasEditeableProperties() {
@@ -63,7 +69,7 @@ public interface Action extends Serializable {
 			return numberOfFiles >= 2;
 
 		default:
-			Logger.logError("FileAction", "Invalid performed on files policy : " + getPolicy());
+			log.error("FileAction", "Invalid performed on files policy : " + getPolicy());
 			return false;
 		}
 	}
@@ -82,7 +88,7 @@ public interface Action extends Serializable {
 			return "more than two files";
 
 		default:
-			Logger.logError("FileAction", "Invalid getPolicyAsString policy : " + highestPolicy);
+			log.error("FileAction", "Invalid getPolicyAsString policy : " + highestPolicy);
 			return "invalid policy " + highestPolicy;
 		}
 	}

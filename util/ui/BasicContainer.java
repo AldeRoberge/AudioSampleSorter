@@ -2,13 +2,18 @@ package ui;
 
 import javax.swing.*;
 
-import logger.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ass.ASS;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class BasicContainer extends JFrame {
+
+	static Logger log = LoggerFactory.getLogger(BasicContainer.class);
 
 	/**
 	 * Panels contained in the Container need to be static. (Irrelevant to any other components)
@@ -19,7 +24,7 @@ public class BasicContainer extends JFrame {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception weTried) {
-			Logger.logError("BasicContainer (" + title + ")", "Error with look and feel", weTried);
+			log.error("BasicContainer (" + title + ")", "Error with look and feel", weTried);
 		}
 
 		setIconImage(iconImage);
@@ -40,6 +45,18 @@ public class BasicContainer extends JFrame {
 			}
 		});
 
+	}
+
+	public BasicContainer(String title, Image iconImage, JComponent component, boolean isResizeable) {
+		this(title, iconImage, generatePanel(component), isResizeable);
+	}
+
+	private static JPanel generatePanel(JComponent component) {
+
+		JPanel p = new JPanel(new BorderLayout());
+		p.add(component, BorderLayout.CENTER);
+
+		return p;
 	}
 
 }

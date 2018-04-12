@@ -3,13 +3,7 @@ package ass.action;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.omg.Messaging.SyncScopeHelper;
-
-import ass.action.editeable.EditableProperty;
-import ass.action.interfaces.FileAction;
-import ass.action.interfaces.FileEvent;
 import ass.action.interfaces.UIAction;
-import file.FileNameUtil;
 
 public class RemoveSelectedFilesAction extends UIAction {
 

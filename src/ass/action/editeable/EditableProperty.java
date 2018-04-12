@@ -3,7 +3,8 @@ package ass.action.editeable;
 import java.io.File;
 import java.io.Serializable;
 
-import logger.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A property of an Action that can be edited (UI : see Action -> ActionEditor)
@@ -13,7 +14,7 @@ import logger.Logger;
 
 public class EditableProperty<V> implements Serializable, Cloneable {
 
-	private static final String TAG = "EditableProperty";
+	private Logger log = LoggerFactory.getLogger(EditableProperty.class);
 
 	public static final int BOOLEAN_ID = 0;
 	public static final int STRING_ID = 1;
@@ -43,7 +44,7 @@ public class EditableProperty<V> implements Serializable, Cloneable {
 		} else if (defaultValue instanceof File) {
 			ID = FILE_CHOOSER_ID;
 		} else {
-			Logger.logError(TAG, "Unknown object type");
+			log.error("Unknown object type");
 		}
 
 	}

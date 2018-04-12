@@ -17,8 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import constants.property.Properties;
-import logger.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import constants.property.PropertiesImpl;
+
 
 /**
  * See ActionEditor
@@ -27,8 +30,8 @@ import logger.Logger;
 @SuppressWarnings("unchecked")
 class EditablePropertyPanel extends JPanel {
 
-	private static final String TAG = "EditPropertyPanel";
-
+	private Logger log = LoggerFactory.getLogger(EditablePropertyPanel.class);
+	
 	private static final int WIDTH = 450;
 	private static final int HEIGHT = 44;
 
@@ -54,7 +57,7 @@ class EditablePropertyPanel extends JPanel {
 
 			ActionListener act = new ActionListener() {
 				public void actionPerformed(ActionEvent actionEvent) {
-					Logger.logInfo(TAG, "Value updated to " + chckbxNewCheckBox.isSelected());
+					log.info("Value updated to " + chckbxNewCheckBox.isSelected());
 					propertyToEdit.setValue(chckbxNewCheckBox.isSelected());
 				}
 			};
@@ -90,7 +93,7 @@ class EditablePropertyPanel extends JPanel {
 				}
 
 				public void updateValue() {
-					Logger.logInfo(TAG, "Value updated to " + stringInputField.getText());
+					log.info("Value updated to " + stringInputField.getText());
 					propertyToEdit.setValue(stringInputField.getText());
 				}
 
@@ -120,7 +123,7 @@ class EditablePropertyPanel extends JPanel {
 					}
 
 					if (!intInputField.getText().equals("")) {
-						Logger.logInfo(TAG, "Value updated to " + intInputField.getText());
+						log.info("Value updated to " + intInputField.getText());
 						propertyToEdit.setValue(Integer.parseInt(intInputField.getText()));
 					}
 
@@ -139,7 +142,7 @@ class EditablePropertyPanel extends JPanel {
 			chooser.setPreferredSize(new Dimension(800, 600));
 			chooser.setAcceptAllFileFilterUsed(false);
 			chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-			chooser.setCurrentDirectory(new File(Properties.ROOT_FOLDER.getValue()));
+			chooser.setCurrentDirectory(new File(PropertiesImpl.ROOT_FOLDER.getValue()));
 
 			JLabel lblPrefix = new JLabel(propertyToEdit.prefix);
 			add(lblPrefix);
@@ -152,7 +155,7 @@ class EditablePropertyPanel extends JPanel {
 
 						String directory = chooser.getCurrentDirectory().toString();
 
-						Logger.logInfo(TAG, "Value updated to " + chooser.getSelectedFile());
+						log.info("Value updated to " + chooser.getSelectedFile());
 						propertyToEdit.setValue(chooser.getSelectedFile());
 					}
 				}
@@ -160,7 +163,7 @@ class EditablePropertyPanel extends JPanel {
 			add(btnOpenFileBrowser);
 
 		} else {
-			Logger.logInfo("EditPropertyPanel", "Unimplemented propertyToEdit");
+			log.info("EditPropertyPanel", "Unimplemented propertyToEdit");
 		}
 
 	}

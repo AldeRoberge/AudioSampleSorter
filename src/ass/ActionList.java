@@ -1,11 +1,11 @@
 package ass;
 
+import java.awt.BorderLayout;
+
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import ass.action.interfaces.Action;
-
-import java.awt.BorderLayout;
-import javax.swing.BoxLayout;
 
 public class ActionList extends JPanel {
 

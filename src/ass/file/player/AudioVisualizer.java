@@ -7,8 +7,7 @@ import javax.swing.JPanel;
 
 import ass.file.player.spectrum.SpectrumTimeAnalyzer;
 import constants.Constants;
-import constants.property.Properties;
-import logger.Logger;
+import constants.property.PropertiesImpl;
 
 public class AudioVisualizer extends JPanel {
 
@@ -29,7 +28,7 @@ public class AudioVisualizer extends JPanel {
 
 		if (me == null) {
 			me = new AudioVisualizer();
-			
+
 			me.init();
 
 			me.setLayout(new BorderLayout(0, 0));
@@ -42,7 +41,7 @@ public class AudioVisualizer extends JPanel {
 	private void init() {
 		analyzer = new SpectrumTimeAnalyzer();
 
-		switch (Properties.SPECTRUM_ANALYZER_STATUS.getValue()) {
+		switch (PropertiesImpl.SPECTRUM_ANALYZER_STATUS.getValue()) {
 		case OFF:
 			analyzer.setDisplayMode(SpectrumTimeAnalyzer.DISPLAY_MODE_OFF);
 			break;
