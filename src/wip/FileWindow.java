@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.io.File;
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import ui.WrapLayout;
 
@@ -15,14 +16,12 @@ public class FileWindow {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FileWindow window = new FileWindow();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				FileWindow window = new FileWindow();
+				window.frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -40,7 +39,7 @@ public class FileWindow {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setLayout(new WrapLayout());
 
 		frame.add(new ASSFile(new File("ass.properties")).getFilePanel());

@@ -4,10 +4,12 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-public class ExtensionFilter extends FileFilter {
+/**
+ * 	Code from Java2s.com
+ *
+ */
 
-	//Code from Java2s.com
-	//Used by the JFileChooser in RunSS
+public class ExtensionFilter extends FileFilter {
 
 	private String extensions[];
 
@@ -26,7 +28,7 @@ public class ExtensionFilter extends FileFilter {
 		if (file.isDirectory()) {
 			return true;
 		}
-		int count = extensions.length;
+
 		String path = file.getAbsolutePath();
 		for (String ext : extensions) {
 			if (path.endsWith(ext) && (path.charAt(path.length() - ext.length()) == '.')) {

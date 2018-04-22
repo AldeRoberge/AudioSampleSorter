@@ -3,8 +3,6 @@ package ass.keyboard.macro.list;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -25,7 +23,7 @@ public class MacroListUI extends JPanel {
 
 	private JScrollPane scrollPane;
 
-	private ArrayList<MacroInfoPanel> panels = new ArrayList<MacroInfoPanel>();
+	private ArrayList<MacroInfoPanel> panels = new ArrayList<>();
 
 	/**
 	 * Create the frame.
@@ -59,10 +57,8 @@ public class MacroListUI extends JPanel {
 		borderlaoutpanel.add(columnpanel, BorderLayout.NORTH);
 
 		JButton btnAdd = new JButton("Create new macro");
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				m.showMacroListUI(null); //null because theres no panel to edit
-			}
+		btnAdd.addActionListener(e -> {
+			m.showMacroListUI(null); //null because theres no panel to edit
 		});
 		btnAdd.setBounds(0, 286, 355, 25);
 		add(btnAdd);

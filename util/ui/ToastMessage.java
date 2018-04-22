@@ -1,10 +1,17 @@
 package ui;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 class ToastMessage extends JDialog {
 	private static final long serialVersionUID = 1L;
@@ -65,14 +72,12 @@ class ToastMessage extends JDialog {
 			frame.setBounds(100, 100, 450, 83);
 
 			JButton btnTestToast = new JButton("Test Toast");
-			btnTestToast.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
+			btnTestToast.addActionListener(e -> {
 
-					ToastMessage toastMessage = new ToastMessage(frame, "Hey there!", 3000, Color.WHITE, Color.BLACK); // isError
-																														// =
-																														// true
-					toastMessage.setVisible(true);
-				}
+				ToastMessage toastMessage = new ToastMessage(frame, "Hey there!", 3000, Color.WHITE, Color.BLACK); // isError
+																													// =
+																													// true
+				toastMessage.setVisible(true);
 			});
 			frame.add(btnTestToast, BorderLayout.NORTH);
 

@@ -7,8 +7,6 @@ import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -30,13 +28,13 @@ import javax.swing.event.DocumentListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import alde.commons.util.UtilityJFrame;
 import constants.icons.Icons;
 import constants.icons.IconsLibrary;
 import constants.icons.UserIcon;
-import ui.MiddleOfTheScreen;
 import ui.WrapLayout;
 
-public class IconChooser extends JFrame {
+public class IconChooser extends UtilityJFrame {
 
 	static Logger log = LoggerFactory.getLogger(IconChooser.class);
 
@@ -67,8 +65,6 @@ public class IconChooser extends JFrame {
 
 		setBounds(100, 100, 450, 300);
 
-		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
-
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -92,31 +88,25 @@ public class IconChooser extends JFrame {
 		iconScrollPane.setColumnHeaderView(importPanel);
 
 		JButton btnImport = new JButton("Refresh list");
-		btnImport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				repopulate(waitingForAnswer, searchForValue);
-			}
-		});
+		btnImport.addActionListener(e -> repopulate(waitingForAnswer, searchForValue));
 		btnImport.setFont(font.deriveFont(Font.BOLD));
 		importPanel.add(btnImport);
 
 		JButton btnOpenContainingFolder = new JButton("Open containing folder");
 		btnOpenContainingFolder.setFont(font.deriveFont(Font.BOLD));
-		btnOpenContainingFolder.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(contentPane,
-						"Opening the icon folder. \nIcons are loaded as 16x16 images that support transparency.\nIcons are stored in "
-								+ IconsLibrary.LOCATION_OF_ICONS
-								+ ".\nYou might have to reload the program to see your icon.");
+		btnOpenContainingFolder.addActionListener(e -> {
+			JOptionPane.showMessageDialog(contentPane,
+					"Opening the icon folder. \nIcons are loaded as 16x16 images that support transparency.\nIcons are stored in "
+							+ IconsLibrary.LOCATION_OF_ICONS
+							+ ".\nYou might have to reload the program to see your icon.");
 
-				try {
-					Desktop.getDesktop().open(new File(IconsLibrary.LOCATION_OF_ICONS));
-				} catch (IOException e1) {
-					log.error("Could not open folder containing icon images!");
-					e1.printStackTrace();
-				}
-
+			try {
+				Desktop.getDesktop().open(new File(IconsLibrary.LOCATION_OF_ICONS));
+			} catch (IOException e1) {
+				log.error("Could not open folder containing icon images!");
+				e1.printStackTrace();
 			}
+
 		});
 		btnOpenContainingFolder.setBackground(Color.ORANGE);
 		btnOpenContainingFolder.setForeground(Color.BLACK);
@@ -187,13 +177,11 @@ public class IconChooser extends JFrame {
 
 				IconChooserButton selectThisIcon = new IconChooserButton(i);
 				selectThisIcon.setFont(font);
-				selectThisIcon.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						//selectThisIcon.getIcon(), 
+				selectThisIcon.addActionListener(e -> {
+					//selectThisIcon.getIcon(),
 
-						waitingForAnswer.getResponse(selectThisIcon.getStaticIcon());
-						setVisible(false);
-					}
+					waitingForAnswer.getResponse(selectThisIcon.getStaticIcon());
+					setVisible(false);
 				});
 				icon.add(selectThisIcon);
 			}

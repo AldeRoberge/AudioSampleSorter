@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -40,10 +39,7 @@ import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -57,16 +53,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import alde.commons.util.file.FileSizeToString;
-import alde.commons.util.file.ObjectSerializer;
 import ass.action.interfaces.FileEvent;
 import ass.file.ListenForSelectedFilesChanges;
 import ass.keyboard.macro.ListenForMacroChanges;
 import ass.keyboard.macro.MacroAction;
 import constants.Constants;
-import constants.icons.Icons;
-import constants.icons.IconsLibrary;
-import constants.icons.UserIcon;
-import constants.library.LibraryManager;
 import constants.property.PropertiesImpl;
 import file.FileTypes;
 import ui.MiddleOfTheScreen;
@@ -95,7 +86,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 	private FileSystemView fileSystemView;
 
 	/** currently selected File. */
-	public ArrayList<File> selectedFiles = new ArrayList<File>();
+	public ArrayList<File> selectedFiles = new ArrayList<>();
 
 	/** File-system tree. Built Lazily */
 	private JTree tree;
@@ -157,56 +148,51 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 		//set font bold for column 1 (see CellRenderer at the bottom of this class)
 		table.getColumnModel().getColumn(1).setCellRenderer(new CellRenderer());
 
-		listSelectionListener = new ListSelectionListener() {
+		listSelectionListener = e -> {
+			ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+			boolean isAdjusting = e.getValueIsAdjusting();
 
-				boolean isAdjusting = e.getValueIsAdjusting();
+			if (!lsm.isSelectionEmpty()) {
+				// Find out which indexes are selected.
+				int minIndex = lsm.getMinSelectionIndex();
+				int maxIndex = lsm.getMaxSelectionIndex();
 
-				if (!lsm.isSelectionEmpty()) {
-					// Find out which indexes are selected.
-					int minIndex = lsm.getMinSelectionIndex();
-					int maxIndex = lsm.getMaxSelectionIndex();
+				selectedFiles.clear();
 
-					selectedFiles.clear();
+				for (int i = minIndex; i <= maxIndex; i++) {
+					if (lsm.isSelectedIndex(i)) {
 
-					for (int i = minIndex; i <= maxIndex; i++) {
-						if (lsm.isSelectedIndex(i)) {
+						//Fixes row being incorrect after sortings
+						int row = table.convertRowIndexToModel(i);
 
-							//Fixes row being incorrect after sortings
-							int row = table.convertRowIndexToModel(i);
+						selectedFiles.add(fileTableModel.getFile(row));
+					}
+				}
 
-							selectedFiles.add(fileTableModel.getFile(row));
-						}
+				if (!isAdjusting) {
+					if (selectedFiles.size() == 1) { //amount of selected files == 1
+
+						File selectedFile = selectedFiles.get(0);
+
+						setFileDetails(selectedFile);
+
+					} else if (selectedFiles.size() > 1) { //more than 1 selected file
+
+						setFilesDetails(selectedFiles);
+
 					}
 
-					if (!isAdjusting) {
-						if (selectedFiles.size() == 1) { //amount of selected files == 1
+					tellSelectedFilesChanged();
 
-							File selectedFile = selectedFiles.get(0);
+					//Update toolbar and menu
+					//tellSelectedFilesChanged(); TODO
 
-							setFileDetails(selectedFile);
+					//Save on every selection change, might cause performance issues TODO
+					//(this is done to fix actions not serialising the list after moving and deleting)
+					//filesSerialiser.serialise(fileTableModel.getFiles());
 
-						} else if (selectedFiles.size() > 1) { //more than 1 selected file
-
-							setFilesDetails(selectedFiles);
-
-						}
-
-						tellSelectedFilesChanged();
-
-						//Update toolbar and menu
-						//tellSelectedFilesChanged(); TODO
-
-						//Save on every selection change, might cause performance issues TODO
-						//(this is done to fix actions not serialising the list after moving and deleting)
-						//filesSerialiser.serialise(fileTableModel.getFiles());
-
-						//filesSerialiser.serialise();
-
-					}
+					//filesSerialiser.serialise();
 
 				}
 
@@ -230,19 +216,15 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 		tree.setCellRenderer(new FileTreeCellRenderer());
 		tree.setVisibleRowCount(15);
 
-		tree.addTreeSelectionListener(new TreeSelectionListener() {
+		tree.addTreeSelectionListener(evt -> {
 
-			@Override
-			public void valueChanged(TreeSelectionEvent evt) {
+			TreePath[] treePaths = tree.getSelectionModel().getSelectionPaths();
+			for (TreePath treePath : treePaths) {
+				DefaultMutableTreeNode selectedElement = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 
-				TreePath[] treePaths = tree.getSelectionModel().getSelectionPaths();
-				for (TreePath treePath : treePaths) {
-					DefaultMutableTreeNode selectedElement = (DefaultMutableTreeNode) treePath.getLastPathComponent();
-
-					showChildren(selectedElement);
-				}
-
+				showChildren(selectedElement);
 			}
+
 		});
 
 		if (PropertiesImpl.ROOT_FOLDER.isDefaultValue()) {
@@ -449,9 +431,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 	public void addFiles(ArrayList<File> filesToAdd) {
 		final List<File> files = fileTableModel.getFiles();
 
-		for (Iterator<File> iterator = filesToAdd.iterator(); iterator.hasNext();) {
-			files.add(iterator.next());
-		}
+		files.addAll(filesToAdd);
 
 		setTableData(files);
 
@@ -533,7 +513,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 				}
 
 				if (parent.isDirectory()) {
-					setTableData(new ArrayList<File>(Arrays.asList(filesInsideParent)));
+					setTableData(new ArrayList<>(Arrays.asList(filesInsideParent)));
 				}
 
 				log.info("Loading ended."); //TODO add loading bar
@@ -649,25 +629,23 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
+		SwingUtilities.invokeLater(() -> {
 
-				JFrame f = new JFrame();
-				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			JFrame f = new JFrame();
+			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-				FileManager ff = new FileManager();
-				ff.showRootFile();
+			FileManager ff = new FileManager();
+			ff.showRootFile();
 
-				f.setContentPane(ff);
+			f.setContentPane(ff);
 
-				f.setIconImages(ASS.getStaticIconImages());
+			f.setIconImages(ASS.getStaticIconImages());
 
-				f.pack();
-				f.setLocationByPlatform(true);
-				f.setMinimumSize(f.getSize());
-				f.setVisible(true);
+			f.pack();
+			f.setLocationByPlatform(true);
+			f.setMinimumSize(f.getSize());
+			f.setVisible(true);
 
-			}
 		});
 	}
 
@@ -713,10 +691,8 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 					button.setFocusable(false);
 					button.setEnabled(macroAction.isEnabled);
 
-					button.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent ae) { //Perform action(s)
-							macroAction.perform();
-						}
+					button.addActionListener(ae -> { //Perform action(s)
+						macroAction.perform();
 					});
 					toolBar.add(button);
 
@@ -726,32 +702,24 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 					JMenuItem item = new JMenuItem("Perform");
 					item.setEnabled(macroAction.isEnabled);
-					item.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							macroAction.perform();
-						}
-					});
+					item.addActionListener(e -> macroAction.perform());
 					menu.add(item);
 
 					menu.add(new JSeparator());
 
 					item = new JMenuItem("Edit");
-					item.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
+					item.addActionListener(e -> {
 
-							//m.setVisible(true);
-							//m.showMacroListUI(macroAction);
+						//m.setVisible(true);
+						//m.showMacroListUI(macroAction);
 
-						}
 					});
 					menu.add(item);
 
 					item = new JMenuItem("Hide from toolbar");
-					item.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							//macroAction.showInToolbar = false; show false
-							//macroChanged(newMacros); //Makes the button disappear
-						}
+					item.addActionListener(e -> {
+						//macroAction.showInToolbar = false; show false
+						//macroChanged(newMacros); //Makes the button disappear
 					});
 					menu.add(item);
 
@@ -785,7 +753,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 	//UPDATE POPUPMENU BEGIN
 
-	public ArrayList<MacroAction> macros = new ArrayList<MacroAction>();
+	public ArrayList<MacroAction> macros = new ArrayList<>();
 
 	@Override
 	public void macroChanged(ArrayList<MacroAction> newMacros) {
@@ -810,7 +778,7 @@ class FileTableModel extends AbstractTableModel {
 	private String[] columns = { "Icon", "File", "Path", "Size", "Last Modified" };
 
 	FileTableModel() {
-		files = new ArrayList<File>();
+		files = new ArrayList<>();
 	}
 
 	public Object getValueAt(int row, int column) {
@@ -945,7 +913,7 @@ class CellRenderer extends DefaultTableCellRenderer {
 
 		// if (value>17 value<26) {
 		this.setValue(table.getValueAt(row, column));
-		this.setFont(this.getFont().deriveFont(Font.ROMAN_BASELINE));
+		this.setFont(this.getFont().deriveFont(Font.PLAIN));
 		//}
 		return this;
 	}

@@ -21,7 +21,7 @@ public class MoveToFolderAction extends FileAction {
 
 	@Override
 	public ArrayList<EditableProperty> getEditableProperties() {
-		ArrayList<EditableProperty> editableProperties = new ArrayList<EditableProperty>();
+		ArrayList<EditableProperty> editableProperties = new ArrayList<>();
 		editableProperties.add(fileTest);
 		return editableProperties;
 	}

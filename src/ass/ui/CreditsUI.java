@@ -29,10 +29,10 @@ public class CreditsUI extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane);
 
-		String credits = "";
+		StringBuilder credits = new StringBuilder();
 
 		for (String s : GetFileAsList.getFileAsList(new File("res//credits.html"))) {
-			credits += s;
+			credits.append(s);
 		}
 
 		JTextPane textPane = new JTextPane();
@@ -41,7 +41,7 @@ public class CreditsUI extends JPanel {
 		HTMLDocument doc = (HTMLDocument) textPane.getDocument();
 		HTMLEditorKit editorKit = (HTMLEditorKit) textPane.getEditorKit();
 		try {
-			editorKit.insertHTML(doc, doc.getLength(), credits, 0, 0, null);
+			editorKit.insertHTML(doc, doc.getLength(), credits.toString(), 0, 0, null);
 		} catch (BadLocationException | IOException e1) {
 			e1.printStackTrace();
 		}

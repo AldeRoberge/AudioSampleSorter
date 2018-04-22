@@ -12,7 +12,7 @@ public class SimpleUIAction extends UIAction {
 
 	//
 
-	public static ArrayList<SimpleUIAction> UIActions = new ArrayList<SimpleUIAction>();
+	public static ArrayList<SimpleUIAction> UIActions = new ArrayList<>();
 
 	private static int NO_POLICY = UIAction.PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY;
 

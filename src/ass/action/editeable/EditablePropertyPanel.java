@@ -2,7 +2,6 @@ package ass.action.editeable;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -55,11 +54,9 @@ class EditablePropertyPanel extends JPanel {
 			chckbxNewCheckBox.setSelected((Boolean) propertyToEdit.getValue());
 			add(chckbxNewCheckBox);
 
-			ActionListener act = new ActionListener() {
-				public void actionPerformed(ActionEvent actionEvent) {
-					log.info("Value updated to " + chckbxNewCheckBox.isSelected());
-					propertyToEdit.setValue(chckbxNewCheckBox.isSelected());
-				}
+			ActionListener act = actionEvent -> {
+				log.info("Value updated to " + chckbxNewCheckBox.isSelected());
+				propertyToEdit.setValue(chckbxNewCheckBox.isSelected());
 			};
 			chckbxNewCheckBox.addActionListener(act);
 
@@ -149,15 +146,13 @@ class EditablePropertyPanel extends JPanel {
 
 			JButton btnOpenFileBrowser = new JButton("Open file browser");
 			btnOpenFileBrowser.setToolTipText("Open file browser");
-			btnOpenFileBrowser.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			btnOpenFileBrowser.addActionListener(e -> {
+				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
-						String directory = chooser.getCurrentDirectory().toString();
+					String directory = chooser.getCurrentDirectory().toString();
 
-						log.info("Value updated to " + chooser.getSelectedFile());
-						propertyToEdit.setValue(chooser.getSelectedFile());
-					}
+					log.info("Value updated to " + chooser.getSelectedFile());
+					propertyToEdit.setValue(chooser.getSelectedFile());
 				}
 			});
 			add(btnOpenFileBrowser);

@@ -22,7 +22,7 @@ public class TestAction extends FileAction {
 
 	@Override
 	public ArrayList<EditableProperty> getEditableProperties() {
-		ArrayList<EditableProperty> editableProperties = new ArrayList<EditableProperty>();
+		ArrayList<EditableProperty> editableProperties = new ArrayList<>();
 		editableProperties.add(booleanTest);
 		editableProperties.add(stringTest);
 		editableProperties.add(integerTest);

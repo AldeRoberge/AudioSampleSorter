@@ -11,8 +11,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -239,13 +237,8 @@ public class ASS extends JFrame {
 		splitPane.setResizeWeight(1);
 		splitPane.setDividerLocation(350);
 
-		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent pce) {
-				PropertiesImpl.HORIZONTAL_SPLITPANE_DIVIDERLOCATION
-						.setNewValue((((Integer) pce.getNewValue()).intValue()) + "");
-			}
-		});
+		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, pce -> PropertiesImpl.HORIZONTAL_SPLITPANE_DIVIDERLOCATION
+				.setNewValue((((Integer) pce.getNewValue()).intValue()) + ""));
 		BorderLayout borderLayout = (BorderLayout) fileBro.getLayout();
 		borderLayout.setVgap(1);
 		borderLayout.setHgap(1);
@@ -410,7 +403,7 @@ public class ASS extends JFrame {
 	}
 
 	public static List<? extends Image> getStaticIconImages() {
-		ArrayList<Image> images = new ArrayList<Image>();
+		ArrayList<Image> images = new ArrayList<>();
 		UserIcon HUGE = new UserIcon(IconsLibrary.LOCATION_OF_ICONS + "icon_huge.png");
 		UserIcon SMALL = new UserIcon(IconsLibrary.LOCATION_OF_ICONS + "icon_small.png");
 

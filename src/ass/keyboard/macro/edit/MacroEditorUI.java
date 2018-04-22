@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -48,16 +47,14 @@ public class MacroEditorUI extends JPanel {
 
 	static Logger log = LoggerFactory.getLogger(MacroEditorUI.class);
 
-	private static ArrayList<Action> default_actions = new ArrayList<Action>();
+	private static ArrayList<Action> default_actions = new ArrayList<>();
 
 	static {
 
 		// Simple UI Actions
 		SimpleUIAction.init();
 
-		for (Action sUIa : SimpleUIAction.UIActions) {
-			default_actions.add(sUIa);
-		}
+		default_actions.addAll(SimpleUIAction.UIActions);
 
 		//Other Actions
 		default_actions.add(new RenameAction());
@@ -85,7 +82,7 @@ public class MacroEditorUI extends JPanel {
 	private static final Font RESULT_FONT_BOLD = new Font("Segoe UI Light", Font.BOLD, 20);
 
 	private boolean isListenningForKeyInputs = false;
-	private ArrayList<Key> keysPressedAndNotReleased = new ArrayList<Key>();
+	private ArrayList<Key> keysPressedAndNotReleased = new ArrayList<>();
 	private JTextField keyEditorInputBox;
 
 	private boolean newKeyBind;
@@ -95,8 +92,8 @@ public class MacroEditorUI extends JPanel {
 
 	private static JScrollPane scrollPane;
 
-	private ArrayList<Action> actions = new ArrayList<Action>();
-	private ArrayList<MacroActionPanel> macroActionEditPanels = new ArrayList<MacroActionPanel>();
+	private ArrayList<Action> actions = new ArrayList<>();
+	private ArrayList<MacroActionPanel> macroActionEditPanels = new ArrayList<>();
 
 	public EditablePropertyEditor propertyEditor = new EditablePropertyEditor();
 	private JTextField titleEditor;
@@ -121,33 +118,31 @@ public class MacroEditorUI extends JPanel {
 		setLayout(null);
 
 		JButton btnAdd = new JButton("Save");
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnAdd.addActionListener(e -> {
 
-				if (newKeyBind) {
-					newKeyBind = false;
-					log.info("Creating new KeyBind");
-
-					keyBindToEdit.actionsToPerform.clear();
-
-					m.macroLoader.addNewMacro(keyBindToEdit);
-
-				}
+			if (newKeyBind) {
+				newKeyBind = false;
+				log.info("Creating new KeyBind");
 
 				keyBindToEdit.actionsToPerform.clear();
 
-				for (Action action : actions) {
-					keyBindToEdit.actionsToPerform.add(action);
-				}
+				m.macroLoader.addNewMacro(keyBindToEdit);
 
-				m.macroListUI.refreshInfoPanel();
-
-				m.macroLoader.serialise(); //just save
-
-				m.showMacroEditUI();
-
-				m.macroLoader.tellMacroChanged();
 			}
+
+			keyBindToEdit.actionsToPerform.clear();
+
+			for (Action action : actions) {
+				keyBindToEdit.actionsToPerform.add(action);
+			}
+
+			m.macroListUI.refreshInfoPanel();
+
+			m.macroLoader.serialise(); //just save
+
+			m.showMacroEditUI();
+
+			m.macroLoader.tellMacroChanged();
 		});
 		btnAdd.setBounds(12, 272, 330, 25);
 		add(btnAdd);
@@ -164,7 +159,7 @@ public class MacroEditorUI extends JPanel {
 
 		//Populate the ComboBox
 
-		JComboBox<Action> comboBox = new JComboBox<Action>();
+		JComboBox<Action> comboBox = new JComboBox<>();
 		comboBox.setToolTipText("Add action");
 		for (Action a : default_actions) {
 			comboBox.addItem(a); //uses action.toString to display
@@ -173,13 +168,11 @@ public class MacroEditorUI extends JPanel {
 		comboBox.setBounds(105, 58, 237, 22);
 		add(comboBox);
 
-		comboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				if (comboBox.getSelectedItem() != null) {
-					Action selectedAction = (Action) comboBox.getSelectedItem();
-					addActionAndActionEditPanel(selectedAction);
+		comboBox.addActionListener(evt -> {
+			if (comboBox.getSelectedItem() != null) {
+				Action selectedAction = (Action) comboBox.getSelectedItem();
+				addActionAndActionEditPanel(selectedAction);
 
-				}
 			}
 		});
 
@@ -230,11 +223,9 @@ public class MacroEditorUI extends JPanel {
 		titleEditor.setHorizontalAlignment(SwingConstants.CENTER);
 		titleEditor.setBounds(56, 13, 195, 32);
 
-		titleEditor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				keyBindToEdit.setName(titleEditor.getText());
-				titleEditor.transferFocus();
-			}
+		titleEditor.addActionListener(e -> {
+			keyBindToEdit.setName(titleEditor.getText());
+			titleEditor.transferFocus();
 		});
 
 		add(titleEditor);
@@ -248,17 +239,15 @@ public class MacroEditorUI extends JPanel {
 				.getResource("/com/sun/deploy/uitoolkit/impl/fx/ui/resources/image/graybox_error.png")));
 
 		iconButton.setFocusable(false); //Removes the stupid 'selected' border
-		iconButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				IconChooser i = new IconChooser(new GetIcon() {
-					@Override
-					public void getResponse(UserIcon icon) {
-						keyBindToEdit.setIcon(icon);
-						iconButton.setIcon(icon.getImageIcon());
-					}
-				});
+		iconButton.addActionListener(e -> {
+			IconChooser i = new IconChooser(new GetIcon() {
+				@Override
+				public void getResponse(UserIcon icon) {
+					keyBindToEdit.setIcon(icon);
+					iconButton.setIcon(icon.getImageIcon());
+				}
+			});
 
-			}
 		});
 
 		//
@@ -275,11 +264,7 @@ public class MacroEditorUI extends JPanel {
 		chckboxMenu.setSelected(true);
 		chckboxMenu.setBounds(259, 8, 83, 22);
 
-		ActionListener act2 = new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				keyBindToEdit.showInMenu = chckboxMenu.isSelected();
-			}
-		};
+		ActionListener act2 = actionEvent -> keyBindToEdit.showInMenu = chckboxMenu.isSelected();
 		chckboxMenu.addActionListener(act2);
 		add(chckboxMenu);
 
@@ -288,11 +273,7 @@ public class MacroEditorUI extends JPanel {
 		chckboxMenu.setSelected(true);
 		chckbxToolbar.setBounds(259, 31, 83, 18);
 
-		ActionListener act = new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				keyBindToEdit.showInToolbar = chckbxToolbar.isSelected();
-			}
-		};
+		ActionListener act = actionEvent -> keyBindToEdit.showInToolbar = chckbxToolbar.isSelected();
 		chckbxToolbar.addActionListener(act);
 		add(chckbxToolbar);
 

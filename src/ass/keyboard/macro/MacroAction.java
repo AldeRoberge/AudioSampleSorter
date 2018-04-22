@@ -14,7 +14,6 @@ import ass.action.interfaces.UIAction;
 import ass.keyboard.key.Key;
 import constants.icons.UserIcon;
 
-
 /**
  * MacroAction is key(s) to action(s)
  */
@@ -22,16 +21,16 @@ import constants.icons.UserIcon;
 public class MacroAction implements Serializable {
 
 	static Logger log = LoggerFactory.getLogger(MacroAction.class);
-	
+
 	// UI information
 
 	private String name;
 	private UserIcon icon;
 
 	// Keys required to be pressed to trigger the event
-	public ArrayList<Key> keys = new ArrayList<Key>();
+	public ArrayList<Key> keys = new ArrayList<>();
 
-	public ArrayList<Action> actionsToPerform = new ArrayList<Action>();
+	public ArrayList<Action> actionsToPerform = new ArrayList<>();
 
 	public boolean showInMenu = true;
 	public boolean showInToolbar = true;
@@ -63,7 +62,7 @@ public class MacroAction implements Serializable {
 	// Used by MacroEditorUI when the edit audiosamplesorter JTextPanel is clicked to reset
 	// the keys
 	public void clearKeys() {
-		keys = new ArrayList<Key>();
+		keys = new ArrayList<>();
 	}
 
 	public void perform() {
@@ -135,12 +134,12 @@ public class MacroAction implements Serializable {
 
 	public String getToolTip() {
 
-		String build = "<html>";
+		StringBuilder build = new StringBuilder("<html>");
 
-		build += "<p><strong>" + getName() + "</strong></p>";
+		build.append("<p><strong>").append(getName()).append("</strong></p>");
 
 		for (Action a : actionsToPerform) {
-			build += "<p>" + a.getDescription() + "</p>";
+			build.append("<p>").append(a.getDescription()).append("</p>");
 		}
 
 		//Get highest policy as string
@@ -156,15 +155,16 @@ public class MacroAction implements Serializable {
 		//
 
 		if (keys.size() > 0) {
-			build += "<p>Shortcut : " + getKeysAsString() + "</p>";
+			build.append("<p>Shortcut : ").append(getKeysAsString()).append("</p>");
 		}
 
 		if (highestPolicy != -100) { //If there is no actions, policy will stay at -100
 
-			String policyString = "<small>Requires " + Action.getPolicyAsString(highestPolicy) + " to be selected</small>";
+			String policyString = "<small>Requires " + Action.getPolicyAsString(highestPolicy)
+					+ " to be selected</small>";
 
 			if (!isEnabled) {
-				build += "<p><font color=\"red\">" + policyString + "</font></p>";
+				build.append("<p><font color=\"red\">").append(policyString).append("</font></p>");
 			} /*else {
 				build += "<p>" + policyString + "</p>";
 				}*/
@@ -177,16 +177,16 @@ public class MacroAction implements Serializable {
 
 	public String getKeysAsString() {
 
-		String displayKeyNames = "";
+		StringBuilder displayKeyNames = new StringBuilder();
 
 		for (int i = 0; i < keys.size(); i++) {
 			if (i != 0) {
-				displayKeyNames += " + ";
+				displayKeyNames.append(" + ");
 			}
-			displayKeyNames += keys.get(i).keyName;
+			displayKeyNames.append(keys.get(i).keyName);
 		}
 
-		return displayKeyNames;
+		return displayKeyNames.toString();
 	}
 
 }

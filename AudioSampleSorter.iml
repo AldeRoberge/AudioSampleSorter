@@ -31,7 +31,7 @@
       <src_folder value="file://$MODULE_DIR$/util" expected_position="2" />
     </src_description>
   </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
+  <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/bin" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -265,5 +265,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="alde-commons-1.2" level="project" />
   </component>
 </module>

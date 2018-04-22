@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -47,11 +45,9 @@ public class MacroInfoPanel extends JPanel {
 		buttonDelete.setFont(new Font("Segoe UI Light", Font.BOLD, 13));
 		buttonDelete.setForeground(new Color(255, 0, 0));
 		buttonDelete.setMargin(new Insets(-5, -5, -5, -5)); //allows for the 'X' to display even if theres not a lot of space around it
-		buttonDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				m.macroLoader.removeMacro(keyBind);
-				m.macroListUI.removePanel(me);
-			}
+		buttonDelete.addActionListener(e -> {
+			m.macroLoader.removeMacro(keyBind);
+			m.macroListUI.removePanel(me);
 		});
 		buttonDelete.setBounds(290, 7, 35, 35);
 		panel.add(buttonDelete);
@@ -61,11 +57,7 @@ public class MacroInfoPanel extends JPanel {
 		buttonEdit.setToolTipText("Edit actions");
 		buttonEdit.setBounds(247, 7, 35, 35);
 		buttonEdit.setIcon(Icons.SETTINGS.getImageIcon());
-		buttonEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				m.macroListUI.keyBindPanelIsClicked(me);
-			}
-		});
+		buttonEdit.addActionListener(e -> m.macroListUI.keyBindPanelIsClicked(me));
 		buttonEdit.setMargin(new Insets(0, 0, 0, 0));
 		buttonEdit.setForeground(Color.DARK_GRAY);
 		buttonEdit.setFont(new Font("Tahoma", Font.BOLD, 13));

@@ -1,6 +1,5 @@
 package ass.ui;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,8 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import alde.commons.util.sound.AudioPlayer;
 import constants.property.PropertiesImpl;
@@ -59,14 +56,7 @@ public class SettingsUI extends JPanel {
 		updateAudioVolume(newVolumeValue);
 		volumeSlider.setValue(newVolumeValue);
 
-		volumeSlider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent ce) {
-
-				updateAudioVolume(volumeSlider.getValue());
-			}
-
-		});
+		volumeSlider.addChangeListener(ce -> updateAudioVolume(volumeSlider.getValue()));
 
 		add(volumeSlider);
 
@@ -90,15 +80,7 @@ public class SettingsUI extends JPanel {
 		updateAudioPan(newPanValue);
 		panSlider.setValue(newPanValue);
 
-		panSlider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent ce) {
-
-				updateAudioPan(panSlider.getValue());
-
-			}
-
-		});
+		panSlider.addChangeListener(ce -> updateAudioPan(panSlider.getValue()));
 
 		add(panSlider);
 
@@ -108,11 +90,7 @@ public class SettingsUI extends JPanel {
 		chckbxPlayAudioOn.setToolTipText("Toggles weither to play audio files on click");
 		chckbxPlayAudioOn.setSelected(PropertiesImpl.PLAY_ON_CLICK.getValueAsBoolean());
 		chckbxPlayAudioOn.setBounds(22, 115, 147, 25);
-		ActionListener act = new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				PropertiesImpl.PLAY_ON_CLICK.setNewValue(chckbxPlayAudioOn.isSelected());
-			}
-		};
+		ActionListener act = actionEvent -> PropertiesImpl.PLAY_ON_CLICK.setNewValue(chckbxPlayAudioOn.isSelected());
 		chckbxPlayAudioOn.addActionListener(act);
 		add(chckbxPlayAudioOn);
 
@@ -123,11 +101,7 @@ public class SettingsUI extends JPanel {
 		chckbxIncludeSubfoldersInSearch.setToolTipText("Toggles weither if we should import files contained inside the selected folders");
 		chckbxIncludeSubfoldersInSearch.setBounds(22, 145, 208, 25);
 		chckbxIncludeSubfoldersInSearch.setSelected(PropertiesImpl.INCLUDE_SUBFOLDERS.getValueAsBoolean());
-		ActionListener includeSubfoldersAction = new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				PropertiesImpl.INCLUDE_SUBFOLDERS.setNewValue(chckbxIncludeSubfoldersInSearch.isSelected());
-			}
-		};
+		ActionListener includeSubfoldersAction = actionEvent -> PropertiesImpl.INCLUDE_SUBFOLDERS.setNewValue(chckbxIncludeSubfoldersInSearch.isSelected());
 		chckbxIncludeSubfoldersInSearch.addActionListener(includeSubfoldersAction);
 
 		add(chckbxIncludeSubfoldersInSearch);
@@ -138,11 +112,9 @@ public class SettingsUI extends JPanel {
 		chckbxPromptOnClose.setToolTipText("Toggles the 'Are you sure you want to exit?' dialog");
 		chckbxPromptOnClose.setSelected(PropertiesImpl.PROMPT_ON_EXIT.getValueAsBoolean());
 		chckbxPromptOnClose.setBounds(22, 175, 147, 25);
-		ActionListener changePromptOnClose = new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				PropertiesImpl.PROMPT_ON_EXIT.setNewValue(chckbxPromptOnClose.isSelected());
-				//sorter.refreshInfoPanels();
-			}
+		ActionListener changePromptOnClose = actionEvent -> {
+			PropertiesImpl.PROMPT_ON_EXIT.setNewValue(chckbxPromptOnClose.isSelected());
+			//sorter.refreshInfoPanels();
 		};
 		chckbxPromptOnClose.addActionListener(changePromptOnClose);
 		add(chckbxPromptOnClose);

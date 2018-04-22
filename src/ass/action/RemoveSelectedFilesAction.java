@@ -22,7 +22,7 @@ public class RemoveSelectedFilesAction extends UIAction {
 		return "Remove Selected Files";
 	}
 
-	private ArrayList<File> filesRemoved = new ArrayList<File>();
+	private ArrayList<File> filesRemoved = new ArrayList<>();
 
 	@Override
 	public void perform() {

@@ -25,7 +25,7 @@ public class EditablePropertyEditor extends JFrame {
 	private JPanel editeablePropertyPanels = new JPanel();
 	private static JScrollPane scrollPane;
 
-	private static ArrayList<EditablePropertyPanel> allValueEditorPanels = new ArrayList<EditablePropertyPanel>();
+	private static ArrayList<EditablePropertyPanel> allValueEditorPanels = new ArrayList<>();
 
 	/**
 	 * Create the frame.

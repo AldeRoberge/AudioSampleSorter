@@ -3,8 +3,6 @@ package ass.keyboard.macro.edit;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -43,11 +41,7 @@ class MacroActionPanel extends JPanel {
 
 		JButton btnRemove = new JButton("X");
 		btnRemove.setForeground(Color.RED);
-		btnRemove.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				k.removeFromPanels(me);
-			}
-		});
+		btnRemove.addActionListener(e -> k.removeFromPanels(me));
 		btnRemove.setFont(new Font("Segoe UI Light", Font.BOLD, 13));
 		btnRemove.setToolTipText("Remove");
 		btnRemove.setBounds(283, -1, 41, 22);
@@ -56,12 +50,10 @@ class MacroActionPanel extends JPanel {
 		if (action.hasEditeableProperties()) {
 			JButton btnEditProperty = new JButton("Edit");
 			btnEditProperty.setEnabled(action.isEditable());
-			btnEditProperty.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					k.propertyEditor.changeAction(action);
-					k.propertyEditor.updateHeight();
-					k.propertyEditor.setVisible(true);
-				}
+			btnEditProperty.addActionListener(e -> {
+				k.propertyEditor.changeAction(action);
+				k.propertyEditor.updateHeight();
+				k.propertyEditor.setVisible(true);
 			});
 			btnEditProperty.setBounds(208, -1, 70, 22);
 			panel.add(btnEditProperty);

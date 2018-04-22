@@ -1,9 +1,11 @@
 <component name="libraryTable">
-  <library name="basicplayer3.0">
+  <library name="alde-commons-1.2">
     <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/alde-commons-1.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/basicplayer3.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-configuration-1.10-tests.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-configuration-1.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-io-2.6.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-lang-2.4-1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-logging-1.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-logging-api.jar!/" />
@@ -16,10 +18,14 @@
       <root url="jar://$PROJECT_DIR$/lib/jorbis-0.0.15.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jspeex0.9.7.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/kj_dsp1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/logback-classic-1.2.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/logback-core-1.2.3.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/mp3spi1.9.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/org.apache.commons.io.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.eclipse.jdt.annotation-2.0.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/prettytime-2.1.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/tritonus_share.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/tritonus_share-0.3.6.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/vorbisspi1.0.2.jar!/" />
     </CLASSES>
     <JAVADOC>
@@ -27,6 +33,7 @@
       <root url="jar://$PROJECT_DIR$/lib/commons-logging-1.2-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/alde-commons-1.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-configuration-1.10-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-configuration-1.10-test-sources.jar!/" />
     </SOURCES>

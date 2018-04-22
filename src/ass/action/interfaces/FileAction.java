@@ -2,13 +2,16 @@ package ass.action.interfaces;
 
 import java.io.File;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import alde.commons.util.file.FileNameUtil;
 import ass.ASS;
 
 public abstract class FileAction implements Action, Cloneable {
 
 	public static ASS ASS;
-
+	
 	/**
 	 * Do not use this method, use perform() instead
 	 */

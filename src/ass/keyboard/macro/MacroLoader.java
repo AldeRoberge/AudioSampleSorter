@@ -22,7 +22,7 @@ public class MacroLoader implements ListenForSelectedFilesChanges {
 	 * 
 	 * (formelly 'actions')
 	 */
-	public ArrayList<MacroAction> macroActions = new ArrayList<MacroAction>();
+	public ArrayList<MacroAction> macroActions = new ArrayList<>();
 
 	private MacroEditor macroEditor;
 

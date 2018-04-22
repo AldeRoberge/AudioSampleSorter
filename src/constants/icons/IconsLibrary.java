@@ -1,10 +1,7 @@
 package constants.icons;
 
-import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
 
 import ui.FloatingLoadingBar;
 
@@ -12,7 +9,7 @@ public class IconsLibrary {
 
 	public static final String LOCATION_OF_ICONS = new File(".").getAbsolutePath() + "\\res\\icons\\";
 
-	public static final ArrayList<UserIcon> userIcons = new ArrayList<UserIcon>();
+	public static final ArrayList<UserIcon> userIcons = new ArrayList<>();
 
 	static {
 		loadAllIcons();
