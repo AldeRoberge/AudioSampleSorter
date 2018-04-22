@@ -47,7 +47,6 @@ public class MacroAction implements Serializable {
 		this.actionsToPerform.add(action);
 		this.showInMenu = showInMenu;
 		this.showInToolbar = showInToolbar;
-
 	}
 
 	public MacroAction(String name) {

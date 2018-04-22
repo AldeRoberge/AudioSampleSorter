@@ -15,7 +15,6 @@ import ass.keyboard.key.GlobalKeyListener;
 import ass.keyboard.macro.edit.MacroEditorUI;
 import ass.keyboard.macro.list.MacroListUI;
 
-
 /**
  * MacroEditor is the head of the Macro movement
  * It holds reference to the MacroLoader, MacroListUI and MacroEditorUI
@@ -33,10 +32,10 @@ public class MacroEditor extends JFrame {
 
 	public MacroLoader macroLoader = new MacroLoader(this);
 
+	//@formatter:off
 	private Image macroEditIcon = Toolkit.getDefaultToolkit().getImage(MacroEditor.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Indent-Black@2x.png"));
 	private Image macroListIcon = Toolkit.getDefaultToolkit().getImage(MacroEditor.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Justify-Black.png"));
-
-	public GlobalKeyListener globalKeyListener;
+	//@formatter:on
 
 	/**
 	 * Used by KeyBindUI press 'Add' -> MacroEditor change view to show -> NewMacroUI
@@ -44,9 +43,11 @@ public class MacroEditor extends JFrame {
 	public void showMacroListUI(MacroAction keyBindToEdit) {
 
 		if (keyBindToEdit == null) {
-			changeTitle("New Macro");
+			setTitle("New Macro");
+
+			keyBindToEdit = new MacroAction("Title");
 		} else {
-			changeTitle("Edit Macro");
+			setTitle("Edit Macro");
 		}
 
 		setIconImage(macroEditIcon);
@@ -65,7 +66,7 @@ public class MacroEditor extends JFrame {
 	 */
 	public void showMacroEditUI() {
 
-		changeTitle("List of Macros");
+		setTitle("List of Macros");
 
 		setContentPane(macroListUI);
 
@@ -73,13 +74,6 @@ public class MacroEditor extends JFrame {
 		macroEditorUI.onHide();
 
 		setIconImage(macroListIcon);
-	}
-
-	/**
-	 * Used by RunSS -> new MacroEditor() -> initialize()
-	 */
-	void changeTitle(String newTitle) {
-		setTitle(newTitle);
 	}
 
 	/**
@@ -94,9 +88,6 @@ public class MacroEditor extends JFrame {
 	 */
 	private void initialize() {
 		log.info("Launching...");
-
-		globalKeyListener = GlobalKeyListener.get();
-		globalKeyListener.init(this);
 
 		setResizable(false);
 		setBounds(100, 100, 360, 350);

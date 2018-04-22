@@ -1,7 +1,9 @@
 package ass.keyboard.key;
 
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 
@@ -12,136 +14,124 @@ import org.jnativehook.keyboard.NativeKeyListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ass.keyboard.macro.MacroAction;
-import ass.keyboard.macro.MacroEditor;
-import key.NativeKeyEventToKey;
-
 //Call GlobalScreen.unregisterNativeHook(); to remove (unneeded here)
 
 public class GlobalKeyListener implements NativeKeyListener {
 
-	Logger log = LoggerFactory.getLogger(GlobalKeyListener.class);
+	static Logger log = LoggerFactory.getLogger(GlobalKeyListener.class);
 
-	public boolean isListenningForInputs = false; //only true when the frame is visible (set to false at first)
+	private static GlobalKeyListener globalKeyListener; //Singleton
 
-	private ArrayList<Key> pressedKeys = new ArrayList<>();
+	private static List<GlobalKeyEventListener> gs = new ArrayList<>();
 
-	private MacroEditor macroEditor;
+	/**
+	 * List of pressed keys
+	 * Converted from NativeKey
+	 */
+	private List<Key> pressedKeys = new ArrayList<>();
 
-	private static GlobalKeyListener me;
+	public static void addListener(GlobalKeyEventListener g) {
+		gs.add(g);
+	}
 
 	/**
 	 * @return self, creates if not already instantiated
 	 */
 	public static GlobalKeyListener get() {
-		if (me == null) {
-			me = new GlobalKeyListener();
+		if (globalKeyListener == null) {
+			globalKeyListener = new GlobalKeyListener();
 		}
-		return me;
+		return globalKeyListener;
 	}
 
 	/**
 	 * NativeKeyListener pressed keys
 	 */
+	@Override
 	public void nativeKeyPressed(NativeKeyEvent ke) {
 
-		transferToMacroEditor(ke, true);
+		Key k = GetNativeKeyAsJavaKey.getAsJavaKey(ke);
 
-		if (isListenningForInputs) { //is not minimized and is focused
+		if (!pressedKeys.contains(k)) {
+			pressedKeys.add(k);
 
-			Key e = NativeKeyEventToKey.getJavaKeyEvent(ke);
-
-			if (!pressedKeys.contains(e)) {
-				pressedKeys.add(e);
-
-				//CHECK FOR BINDS
-
-				//For every registered MacroActions
-				for (MacroAction m : macroEditor.macroLoader.macroActions) {
-
-					//If m has keys, otherwise it will trigger every key presses
-					//If the MacroAction's keys are globaly pressed
-					if (!m.keys.isEmpty() && keysArePressed(m.keys)) {
-
-						//PERFORM ACTIONS
-						m.perform();
-					}
-				}
-			}
+			warnListenersOfUpdate();
 		}
-	}
 
-	private void transferToMacroEditor(NativeKeyEvent ke, boolean isPressed) {
-		//Transfer input to MacroEditor (fix for the JTable focus)
-		macroEditor.macroEditorUI.globalKeyBoardInput(ke, isPressed);
+		for (GlobalKeyEventListener g : gs) {
+			g.keyPressed(k);
+		}
+
+		warnListenersOfUpdate();
 	}
 
 	/**
 	 * NativeKeyListener released keys
 	 */
+	@Override
 	public void nativeKeyReleased(NativeKeyEvent ke) {
 
-		transferToMacroEditor(ke, false);
+		Key k = GetNativeKeyAsJavaKey.getAsJavaKey(ke);
 
-		Key e = NativeKeyEventToKey.getJavaKeyEvent(ke);
-		pressedKeys.remove(e);
+		pressedKeys.remove(k);
 
+		for (GlobalKeyEventListener g : gs) {
+			g.keyReleased(k);
+		}
+
+		warnListenersOfUpdate();
 	}
 
-	@Override
-	public void nativeKeyTyped(NativeKeyEvent arg0) { // left intentionally blank
+	private void warnListenersOfUpdate() {
+		for (GlobalKeyEventListener g : gs) {
+			g.keyPressedChanged(pressedKeys);
+		}
 	}
 
-	public void init(MacroEditor m) {
-
-		this.macroEditor = m;
-
+	static {
 		try {
 			GlobalScreen.registerNativeHook();
+
+			// Get the logger for "org.jnativehook" and set the level to off.
+			java.util.logging.Logger.getLogger(GlobalScreen.class.getPackage().getName()).setLevel(Level.OFF);
+
+			// Change the level for all handlers attached to the default logger.
+			Handler[] handlers = java.util.logging.Logger.getLogger("").getHandlers();
+			for (Handler handler : handlers) {
+				handler.setLevel(Level.OFF);
+			}
+
+			//Add 'this' to the nativeKeyListenners
+			GlobalScreen.addNativeKeyListener(get());
 		} catch (NativeHookException ex) {
 			log.error("There was a problem registering the native hook.", ex);
-			System.exit(1);
-		}
-		
-		// Get the logger for "org.jnativehook" and set the level to off.
-		java.util.logging.Logger.getLogger(GlobalScreen.class.getPackage().getName()).setLevel(Level.OFF);
-
-		// Change the level for all handlers attached to the default logger.
-		Handler[] handlers = java.util.logging.Logger.getLogger("").getHandlers();
-		for (Handler handler : handlers) {
-			handler.setLevel(Level.OFF);
 		}
 
-		//Add 'this' to the nativeKeyListenners
-		GlobalScreen.addNativeKeyListener(get());
 	}
 
 	/**
-	 * @param pressedKey new Key(KeyEvent.VK_SHIFT)
+	 * @param Key pressedKey
 	 */
 	public boolean keyIsPressed(Key pressedKey) {
 		return pressedKeys.contains(pressedKey);
 	}
 
 	/**
-	 * @param pressedKey KeyEvent.VK_SHIFT
+	 * @param int code of pressedKey
 	 */
 	boolean keyIsPressed(int keyCodeOfPressedKey) {
 		return pressedKeys.contains(new Key(keyCodeOfPressedKey));
 	}
 
 	/**
-	 * For all pressed keys, if a required one is not pressed, then it returns false
-	 * Otherwise it returns true
+	 * Returns true only if all keys are pressed
 	 */
 	private boolean keysArePressed(ArrayList<Key> keys) {
-
 		for (Key key : keys) {
 			if (!pressedKeys.contains(key)) {
 				return false;
 			}
 		}
-
 		return true;
 	}
 
@@ -167,6 +157,10 @@ public class GlobalKeyListener implements NativeKeyListener {
 
 	public boolean ctrlIsPressed() {
 		return keyIsPressed(KeyEvent.VK_CONTROL);
+	}
+
+	@Override
+	public void nativeKeyTyped(NativeKeyEvent arg0) { // left intentionally blank
 	}
 
 }

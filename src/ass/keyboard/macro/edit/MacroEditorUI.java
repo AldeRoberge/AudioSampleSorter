@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,7 +23,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.jnativehook.keyboard.NativeKeyEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,13 +35,14 @@ import ass.action.SimpleUIAction;
 import ass.action.TestAction;
 import ass.action.editeable.EditablePropertyEditor;
 import ass.action.interfaces.Action;
+import ass.keyboard.key.GlobalKeyEventListener;
+import ass.keyboard.key.GlobalKeyListener;
 import ass.keyboard.key.Key;
 import ass.keyboard.macro.MacroAction;
 import ass.keyboard.macro.MacroEditor;
 import constants.icons.UserIcon;
 import constants.icons.iconChooser.GetIcon;
 import constants.icons.iconChooser.IconChooser;
-import key.NativeKeyEventToKey;
 
 public class MacroEditorUI extends JPanel {
 
@@ -70,8 +71,6 @@ public class MacroEditorUI extends JPanel {
 
 	}
 
-	private MacroEditorUI me = this;
-
 	//
 
 	private MacroAction keyBindToEdit;
@@ -81,11 +80,8 @@ public class MacroEditorUI extends JPanel {
 	private static final Font RESULT_FONT_PLAIN = new Font("Segoe UI Light", Font.PLAIN, 20);
 	private static final Font RESULT_FONT_BOLD = new Font("Segoe UI Light", Font.BOLD, 20);
 
-	private boolean isListenningForKeyInputs = false;
-	private ArrayList<Key> keysPressedAndNotReleased = new ArrayList<>();
-	private JTextField keyEditorInputBox;
-
-	private boolean newKeyBind;
+	public boolean isListenningForKeyInputs = false;
+	private JTextField shortcutInputBox;
 
 	private static JPanel columnpanel = new JPanel();
 	private static JPanel borderlaoutpanel;
@@ -120,14 +116,9 @@ public class MacroEditorUI extends JPanel {
 		JButton btnAdd = new JButton("Save");
 		btnAdd.addActionListener(e -> {
 
-			if (newKeyBind) {
-				newKeyBind = false;
+			if (!m.macroLoader.macroActions.contains(keyBindToEdit)) {
 				log.info("Creating new KeyBind");
-
-				keyBindToEdit.actionsToPerform.clear();
-
 				m.macroLoader.addNewMacro(keyBindToEdit);
-
 			}
 
 			keyBindToEdit.actionsToPerform.clear();
@@ -147,15 +138,15 @@ public class MacroEditorUI extends JPanel {
 		btnAdd.setBounds(12, 272, 330, 25);
 		add(btnAdd);
 
-		keyEditorInputBox = new JTextField("Click to edit macro");
-		keyEditorInputBox.setToolTipText("Shortcut");
-		keyEditorInputBox.setHorizontalAlignment(SwingConstants.CENTER);
-		keyEditorInputBox.setFont(RESULT_FONT_PLAIN);
-		keyEditorInputBox.setBackground(Color.decode("#FCFEFF")); //'Ultra Light Cyan'
-		keyEditorInputBox.setEditable(false);
-		keyEditorInputBox.setBounds(12, 224, 330, 35);
-		keyEditorInputBox.setColumns(10);
-		add(keyEditorInputBox);
+		shortcutInputBox = new JTextField("Click to edit macro");
+		shortcutInputBox.setToolTipText("Shortcut");
+		shortcutInputBox.setHorizontalAlignment(SwingConstants.CENTER);
+		shortcutInputBox.setFont(RESULT_FONT_PLAIN);
+		shortcutInputBox.setBackground(Color.decode("#FCFEFF")); //'Ultra Light Cyan'
+		shortcutInputBox.setEditable(false);
+		shortcutInputBox.setBounds(12, 224, 330, 35);
+		shortcutInputBox.setColumns(10);
+		add(shortcutInputBox);
 
 		//Populate the ComboBox
 
@@ -172,7 +163,6 @@ public class MacroEditorUI extends JPanel {
 			if (comboBox.getSelectedItem() != null) {
 				Action selectedAction = (Action) comboBox.getSelectedItem();
 				addActionAndActionEditPanel(selectedAction);
-
 			}
 		});
 
@@ -277,15 +267,15 @@ public class MacroEditorUI extends JPanel {
 		chckbxToolbar.addActionListener(act);
 		add(chckbxToolbar);
 
-		keyEditorInputBox.addMouseListener(new MouseAdapter() {
+		shortcutInputBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (!isListenningForKeyInputs) {
 					keyBindToEdit.clearKeys();
-					keyEditorInputBox.setText("Press any key(s)");
+					shortcutInputBox.setText("Press any key(s)");
 					log.info("Now listenning for key inputs");
 					isListenningForKeyInputs = true;
-					keyEditorInputBox.setFont(RESULT_FONT_PLAIN);
+					shortcutInputBox.setFont(RESULT_FONT_PLAIN);
 				} else {
 					log.info("Already listenning for key inputs!");
 				}
@@ -294,36 +284,16 @@ public class MacroEditorUI extends JPanel {
 
 	}
 
-	public void changeKeyBindToEdit(MacroAction keyBindToEdit) {
+	public void changeKeyBindToEdit(final MacroAction keyBindToEdit) {
 
-		//if keyBindToEdit is null, it means MacroListUI wants us to create a new keyBind
+		for (Action a : keyBindToEdit.actionsToPerform) {
+			addActionAndActionEditPanel(a);
+		}
 
-		if (keyBindToEdit != null) {
-			newKeyBind = false;
+		chckboxMenu.setSelected(keyBindToEdit.showInMenu);
 
-			log.info("Editing existing keybind");
-
-			for (Action a : keyBindToEdit.actionsToPerform) {
-				addActionAndActionEditPanel(a);
-			}
-
-			chckboxMenu.setSelected(keyBindToEdit.showInMenu);
-
-			if (keyBindToEdit.getIcon() != null) {
-				iconButton.setIcon(keyBindToEdit.getIcon());
-			}
-
-		} else {
-
-			//Reset for fresh start
-
-			log.info("Creating new keyBind");
-
-			chckboxMenu.setSelected(true);
-
-			newKeyBind = true;
-			keyBindToEdit = new MacroAction("Title");
-
+		if (keyBindToEdit.getIcon() != null) {
+			iconButton.setIcon(keyBindToEdit.getIcon());
 		}
 
 		titleEditor.setText(keyBindToEdit.getName());
@@ -331,63 +301,72 @@ public class MacroEditorUI extends JPanel {
 		this.keyBindToEdit = keyBindToEdit;
 
 		updateInputBoxText();
+
+		GlobalKeyListener.addListener(new GlobalKeyEventListener() {
+
+			private List<Key> keysPressedAndNotReleased = new ArrayList<>();
+
+			@Override
+			public void keyPressedChanged(List<Key> pressedKeys) {
+			}
+
+			@Override
+			public void keyPressed(Key k) {
+
+				log.info("awdad " + isListenningForKeyInputs);
+
+				if (isListenningForKeyInputs) {
+
+					if (!keysPressedAndNotReleased.contains(k)) {
+						keysPressedAndNotReleased.add(k);
+
+						if (!keyBindToEdit.keys.contains(k)) {
+							keyBindToEdit.keys.add(k);
+						}
+					}
+
+					updateInputBoxText();
+
+				}
+
+			}
+
+			@Override
+			public void keyReleased(Key k) {
+
+				log.info("awdadawdawda " + isListenningForKeyInputs);
+
+				if (isListenningForKeyInputs) {
+
+					if (keysPressedAndNotReleased.contains(k)) {
+						keysPressedAndNotReleased.remove(k);
+					}
+
+					if (keysPressedAndNotReleased.size() == 0) { //no more keys to be released
+						log.info("Stopped listenning for events.");
+						isListenningForKeyInputs = false;
+						shortcutInputBox.setFont(RESULT_FONT_BOLD);
+					}
+
+					updateInputBoxText();
+
+				}
+			}
+
+		});
+
 	}
 
 	private void updateInputBoxText() {
+		log.debug("Updating inputBoxText");
+
 		if (keyBindToEdit != null) {
 			if (keyBindToEdit.keys.size() > 0) {
-
-				keyEditorInputBox.setText("[" + keyBindToEdit.getKeysAsString() + "]");
-
+				shortcutInputBox.setText("[" + keyBindToEdit.getKeysAsString() + "]");
 			} else {
-				keyEditorInputBox.setText("Edit shortcut");
+				shortcutInputBox.setText("Edit shortcut");
 			}
 		} //Else : its a new keyBind, so do nothing
-	}
-
-	/**
-	 * This is a work-around the previous keyboard register hook thing
-	 *  that caused both the JTable and the PropertyEditor to not receive inputs.
-	 */
-	public void globalKeyBoardInput(NativeKeyEvent ke, boolean isPressed) {
-
-		Key k = NativeKeyEventToKey.getJavaKeyEvent(ke);
-
-		if (isListenningForKeyInputs) {
-
-			if (isPressed) {
-				keyPressed(k);
-			} else {
-				keyReleased(k);
-			}
-
-			updateInputBoxText();
-		}
-
-	}
-
-	private void keyPressed(Key k) {
-		if (!keysPressedAndNotReleased.contains(k)) {
-			keysPressedAndNotReleased.add(k);
-
-			if (!keyBindToEdit.keys.contains(k)) {
-				keyBindToEdit.keys.add(k);
-			}
-		}
-	}
-
-	private void keyReleased(Key k) {
-
-		if (keysPressedAndNotReleased.contains(k)) {
-			keysPressedAndNotReleased.remove(k);
-		}
-
-		if (keysPressedAndNotReleased.size() == 0) { //no more keys to be released
-			log.info("Stopped listenning for events.");
-			isListenningForKeyInputs = false;
-			keyEditorInputBox.setFont(RESULT_FONT_BOLD);
-		}
-
 	}
 
 	// TODO : update this when adding fiels

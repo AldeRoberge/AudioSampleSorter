@@ -1,17 +1,15 @@
-package key;
+package ass.keyboard.key;
 
 import java.awt.event.KeyEvent;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
 
-import ass.keyboard.key.Key;
+public class GetNativeKeyAsJavaKey {
 
-public class NativeKeyEventToKey {
-
-	public static Key getJavaKeyEvent(NativeKeyEvent nativeEvent) {
+	public static Key getAsJavaKey(NativeKeyEvent nativeKeyEvent) {
 
 		int keyCode = KeyEvent.VK_UNDEFINED;
-		switch (nativeEvent.getKeyCode()) {
+		switch (nativeKeyEvent.getKeyCode()) {
 		case NativeKeyEvent.VC_ESCAPE:
 			keyCode = KeyEvent.VK_ESCAPE;
 			break;
@@ -499,4 +497,5 @@ public class NativeKeyEventToKey {
 		return new Key(keyCode);
 
 	}
+
 }

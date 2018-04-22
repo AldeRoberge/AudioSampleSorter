@@ -237,8 +237,9 @@ public class ASS extends JFrame {
 		splitPane.setResizeWeight(1);
 		splitPane.setDividerLocation(350);
 
-		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, pce -> PropertiesImpl.HORIZONTAL_SPLITPANE_DIVIDERLOCATION
-				.setNewValue((((Integer) pce.getNewValue()).intValue()) + ""));
+		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
+				pce -> PropertiesImpl.HORIZONTAL_SPLITPANE_DIVIDERLOCATION
+						.setNewValue((((Integer) pce.getNewValue()).intValue()) + ""));
 		BorderLayout borderLayout = (BorderLayout) fileBro.getLayout();
 		borderLayout.setVgap(1);
 		borderLayout.setHgap(1);
@@ -303,11 +304,10 @@ public class ASS extends JFrame {
 			@Override
 			public void windowLostFocus(WindowEvent e) {
 				setIsListenningForInputs(false);
-
 			}
 
 			private void setIsListenningForInputs(boolean b) {
-				macroEditor.globalKeyListener.isListenningForInputs = b;
+				macroEditor.macroEditorUI.isListenningForKeyInputs = b;
 			}
 		});
 

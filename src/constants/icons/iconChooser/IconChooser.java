@@ -55,13 +55,7 @@ public class IconChooser extends UtilityJFrame {
 		setTitle("Icon Chooser");
 		setIconImage(Icons.ICON_CHOOSER.getImage());
 
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				setVisible(false);
-			}
-		});
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
 		setBounds(100, 100, 450, 300);
 
@@ -99,7 +93,6 @@ public class IconChooser extends UtilityJFrame {
 					"Opening the icon folder. \nIcons are loaded as 16x16 images that support transparency.\nIcons are stored in "
 							+ IconsLibrary.LOCATION_OF_ICONS
 							+ ".\nYou might have to reload the program to see your icon.");
-
 			try {
 				Desktop.getDesktop().open(new File(IconsLibrary.LOCATION_OF_ICONS));
 			} catch (IOException e1) {
@@ -159,15 +152,16 @@ public class IconChooser extends UtilityJFrame {
 
 		//
 
-		log.info("Repopulating...");
+		repopulate(waitingForAnswer, searchForValue);
 
-		iconsPanel.removeAll();
-		iconsPanel.revalidate();
-		iconsPanel.repaint();
+		setVisible(true);
 
 	}
 
 	private void repopulate(GetIcon waitingForAnswer, String searchForValue) {
+
+		log.info("Repopulating with " + IconsLibrary.userIcons.size() + " icons.");
+
 		for (UserIcon i : IconsLibrary.userIcons) {
 
 			if (i.containsString(searchForValue, true)) {
@@ -187,6 +181,11 @@ public class IconChooser extends UtilityJFrame {
 			}
 
 		}
+
+		log.info("Repopulating...");
+
+		iconsPanel.revalidate();
+		iconsPanel.repaint();
 
 	}
 

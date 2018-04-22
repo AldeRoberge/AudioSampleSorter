@@ -3,7 +3,6 @@ package ass.keyboard.key;
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
 
-//A simple KeyEvent
 public class Key implements Serializable {
 
 	private int keyCode;
