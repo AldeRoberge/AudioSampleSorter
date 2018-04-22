@@ -2,7 +2,6 @@ package ass.ui;
 
 import java.awt.BorderLayout;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 import javax.swing.JPanel;
@@ -12,7 +11,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
-import alde.commons.util.file.GetFileAsString;
+import alde.commons.util.file.GetFileAsList;
 
 public class CreditsUI extends JPanel {
 
@@ -32,7 +31,7 @@ public class CreditsUI extends JPanel {
 
 		String credits = "";
 
-		for (String s : GetFileAsString.getFileAsList(new File("res//credits.html"))) {
+		for (String s : GetFileAsList.getFileAsList(new File("res//credits.html"))) {
 			credits += s;
 		}
 

@@ -2,6 +2,6 @@ package constants.icons.iconChooser;
 
 import constants.icons.UserIcon;
 
-public interface GetIcon {
-	void GetResponse(UserIcon icon);
+public abstract class GetIcon {
+	public abstract void getResponse(UserIcon icon);
 }

@@ -13,7 +13,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ass.file.player.AudioPlayer;
+import alde.commons.util.sound.AudioPlayer;
 import constants.property.PropertiesImpl;
 import ui.MiddleOfTheScreen;
 

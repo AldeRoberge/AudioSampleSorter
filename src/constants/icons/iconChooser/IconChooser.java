@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import constants.icons.Icons;
+import constants.icons.IconsLibrary;
 import constants.icons.UserIcon;
 import ui.MiddleOfTheScreen;
 import ui.WrapLayout;
@@ -39,20 +40,21 @@ public class IconChooser extends JFrame {
 
 	static Logger log = LoggerFactory.getLogger(IconChooser.class);
 
-	private GetIcon waitingForAnswer;
-
 	private JPanel contentPane;
 	private JPanel iconsPanel;
 
 	private final Font font = new Font("Segoe UI Light", Font.PLAIN, 13);
 
-	private String searchForValue = "";
+	private String searchForValue;
 
 	/**
 	 * Create the frame.
 	 */
-	public IconChooser() {
-		setTitle("Icon chooser");
+	public IconChooser(final GetIcon waitingForAnswer) {
+
+		searchForValue = "";
+
+		setTitle("Icon Chooser");
 		setIconImage(Icons.ICON_CHOOSER.getImage());
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -92,7 +94,7 @@ public class IconChooser extends JFrame {
 		JButton btnImport = new JButton("Refresh list");
 		btnImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				populate();
+				repopulate(waitingForAnswer, searchForValue);
 			}
 		});
 		btnImport.setFont(font.deriveFont(Font.BOLD));
@@ -102,11 +104,13 @@ public class IconChooser extends JFrame {
 		btnOpenContainingFolder.setFont(font.deriveFont(Font.BOLD));
 		btnOpenContainingFolder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(contentPane, "Opening the icon folder. \nIcons are loaded as 16x16 images that support transparency.\nIcons are stored in " + Icons.LOCATION_OF_ICONS
-						+ ".\nYou might have to reload the program to see your icon.");
+				JOptionPane.showMessageDialog(contentPane,
+						"Opening the icon folder. \nIcons are loaded as 16x16 images that support transparency.\nIcons are stored in "
+								+ IconsLibrary.LOCATION_OF_ICONS
+								+ ".\nYou might have to reload the program to see your icon.");
 
 				try {
-					Desktop.getDesktop().open(new File(Icons.LOCATION_OF_ICONS));
+					Desktop.getDesktop().open(new File(IconsLibrary.LOCATION_OF_ICONS));
 				} catch (IOException e1) {
 					log.error("Could not open folder containing icon images!");
 					e1.printStackTrace();
@@ -143,10 +147,8 @@ public class IconChooser extends JFrame {
 			}
 
 			public void updateValue() {
-
 				searchForValue = searchFor.getText();
-				populate();
-
+				repopulate(waitingForAnswer, searchForValue);
 			}
 
 		});
@@ -165,10 +167,7 @@ public class IconChooser extends JFrame {
 		Component horizontalStrut_1 = Box.createHorizontalStrut(5);
 		panel_1.add(horizontalStrut_1);
 
-		populate();
-	}
-
-	void populate() {
+		//
 
 		log.info("Repopulating...");
 
@@ -176,7 +175,10 @@ public class IconChooser extends JFrame {
 		iconsPanel.revalidate();
 		iconsPanel.repaint();
 
-		for (UserIcon i : Icons.images) {
+	}
+
+	private void repopulate(GetIcon waitingForAnswer, String searchForValue) {
+		for (UserIcon i : IconsLibrary.userIcons) {
 
 			if (i.containsString(searchForValue, true)) {
 				JPanel icon = new JPanel();
@@ -189,7 +191,7 @@ public class IconChooser extends JFrame {
 					public void actionPerformed(ActionEvent e) {
 						//selectThisIcon.getIcon(), 
 
-						waitingForAnswer.GetResponse(selectThisIcon.getStaticIcon());
+						waitingForAnswer.getResponse(selectThisIcon.getStaticIcon());
 						setVisible(false);
 					}
 				});
@@ -200,14 +202,23 @@ public class IconChooser extends JFrame {
 
 	}
 
-	/**
-	 * Use IconChooser.getIcon(this) when this implements GetIcon and it will
-	 * receive the icon with the GetResponse method
-	 */
+}
 
-	public void getIcon(GetIcon g) {
-		waitingForAnswer = g;
-		setVisible(true);
+class IconChooserButton extends JButton {
+
+	private UserIcon staticIcon;
+
+	public IconChooserButton(UserIcon i) {
+		super();
+
+		staticIcon = i;
+
+		setIcon(staticIcon.getImageIcon());
+		setToolTipText(staticIcon.getImagePath());
+	}
+
+	public UserIcon getStaticIcon() {
+		return staticIcon;
 	}
 
 }

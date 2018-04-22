@@ -16,6 +16,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -31,17 +32,19 @@ import javax.swing.UIManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import alde.commons.logger.LoggerUI;
+import alde.commons.logger.LoggerPanel;
 import alde.commons.util.SplashScreen;
+import alde.commons.util.sound.AudioPlayer;
+import alde.commons.util.sound.AudioVisualizer;
 import ass.action.interfaces.FileAction;
 import ass.action.interfaces.UIAction;
-import ass.file.player.AudioPlayer;
-import ass.file.player.AudioVisualizer;
 import ass.keyboard.macro.MacroEditor;
 import ass.ui.CreditsUI;
 import ass.ui.SettingsUI;
 import constants.Constants;
 import constants.icons.Icons;
+import constants.icons.IconsLibrary;
+import constants.icons.UserIcon;
 import constants.property.PropertiesImpl;
 import ui.BasicContainer;
 import ui.MiddleOfTheScreen;
@@ -56,7 +59,7 @@ public class ASS extends JFrame {
 
 	private MacroEditor macroEditor;
 
-	private BasicContainer logger = new BasicContainer("Logger", Icons.LOGGER.getImage(), new LoggerUI(), true);
+	private BasicContainer logger = new BasicContainer("Logger", Icons.LOGGER.getImage(), new LoggerPanel(), true);
 	private BasicContainer settings = new BasicContainer("Settings", Icons.SETTINGS.getImage(),
 			new SettingsUI(audioPlayer), false);
 	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new CreditsUI(), true);
@@ -386,14 +389,7 @@ public class ASS extends JFrame {
 
 		ASS ASS = new ASS();
 
-		ArrayList<Image> images = new ArrayList<Image>();
-		images.add(Icons.BIG_ICON.getImage());
-		images.add(Icons.SMALL_ICON.getImage());
-		ASS.setIconImages(images);
-
-		ASS.setIconImage(Icons.BIG_ICON.getImage());
-
-		System.out.println(Icons.SMALL_ICON.getImagePath());
+		ASS.setIconImages(getStaticIconImages());
 
 		final String IMAGE_LOCATION = new File(".").getAbsolutePath() + "/res/splashScreen/";
 		try {
@@ -411,6 +407,17 @@ public class ASS extends JFrame {
 
 			ASS.setVisible(true);
 		}
+	}
+
+	public static List<? extends Image> getStaticIconImages() {
+		ArrayList<Image> images = new ArrayList<Image>();
+		UserIcon HUGE = new UserIcon(IconsLibrary.LOCATION_OF_ICONS + "icon_huge.png");
+		UserIcon SMALL = new UserIcon(IconsLibrary.LOCATION_OF_ICONS + "icon_small.png");
+
+		images.add(HUGE.getImage());
+		images.add(SMALL.getImage());
+
+		return images;
 	}
 
 }

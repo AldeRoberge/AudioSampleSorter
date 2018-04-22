@@ -46,7 +46,9 @@ public class RenameAction extends FileAction {
 	@Override
 	public FileEvent perform(File fileAffected) {
 
-		String input = (String) JOptionPane.showInputDialog(new JFrame(), "Enter the new name for '" + fileAffected.getName() + "' (without extension).", "Edit "+fileAffected.getName()+"'s name", JOptionPane.INFORMATION_MESSAGE,
+		String input = (String) JOptionPane.showInputDialog(new JFrame(),
+				"Enter the new name for '" + fileAffected.getName() + "' (without extension).",
+				"Edit " + fileAffected.getName() + "'s name", JOptionPane.INFORMATION_MESSAGE,
 				Icons.PENCIL.getImageIcon(), null, "");
 
 		if (input == null) {
@@ -56,7 +58,5 @@ public class RenameAction extends FileAction {
 		}
 
 	}
-
-	
 
 }

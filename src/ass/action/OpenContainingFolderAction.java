@@ -7,8 +7,6 @@ import ass.action.interfaces.UIAction;
 
 public class OpenContainingFolderAction extends UIAction {
 
-	private static final String TAG = null;
-
 	@Override
 	public int getPolicy() {
 		return UIAction.PERFORMED_ON_ONE_FILE_ONLY_POLICY;

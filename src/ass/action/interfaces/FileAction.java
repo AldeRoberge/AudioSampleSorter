@@ -7,7 +7,6 @@ import ass.ASS;
 
 public abstract class FileAction implements Action, Cloneable {
 
-	protected static final String TAG = "FileAction";
 	public static ASS ASS;
 
 	/**
@@ -38,10 +37,10 @@ public abstract class FileAction implements Action, Cloneable {
 		File newFile = new File(newPath);
 
 		if (file.renameTo(newFile)) {
-			log.info(TAG + " (Rename file)", "Success...");
+			log.info("(Rename file) Success...");
 			return new FileEvent(oldFile, newFile);
 		} else {
-			log.error(TAG + " (Rename file)", "Failure...");
+			log.error("(Rename file) Failure...");
 			return new FileEvent(oldFile, oldFile);
 		}
 
@@ -58,10 +57,10 @@ public abstract class FileAction implements Action, Cloneable {
 		File newFile = new File(newPath);
 
 		if (file.renameTo(newFile)) {
-			log.info(TAG + " (Move file)", "Success...");
+			log.info("(Move file) Success...");
 			return new FileEvent(oldFile, newFile);
 		} else {
-			log.error(TAG + " (Move file)", "Failure...");
+			log.error("(Move file) Failure...");
 			return new FileEvent(oldFile, oldFile);
 		}
 

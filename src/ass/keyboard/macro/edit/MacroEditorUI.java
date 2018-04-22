@@ -44,12 +44,9 @@ import constants.icons.iconChooser.GetIcon;
 import constants.icons.iconChooser.IconChooser;
 import key.NativeKeyEventToKey;
 
-
-public class MacroEditorUI extends JPanel implements GetIcon {
+public class MacroEditorUI extends JPanel {
 
 	static Logger log = LoggerFactory.getLogger(MacroEditorUI.class);
-	
-	private static final String TAG = "MacroEditor";
 
 	private static ArrayList<Action> default_actions = new ArrayList<Action>();
 
@@ -76,8 +73,6 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 
 	}
 
-	private IconChooser iconChooser = new IconChooser();
-
 	private MacroEditorUI me = this;
 
 	//
@@ -91,7 +86,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 
 	private boolean isListenningForKeyInputs = false;
 	private ArrayList<Key> keysPressedAndNotReleased = new ArrayList<Key>();
-	private JTextField keyEditorImputBox;
+	private JTextField keyEditorInputBox;
 
 	private boolean newKeyBind;
 
@@ -157,15 +152,15 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		btnAdd.setBounds(12, 272, 330, 25);
 		add(btnAdd);
 
-		keyEditorImputBox = new JTextField("Click to edit macro");
-		keyEditorImputBox.setToolTipText("Shortcut");
-		keyEditorImputBox.setHorizontalAlignment(SwingConstants.CENTER);
-		keyEditorImputBox.setFont(RESULT_FONT_PLAIN);
-		keyEditorImputBox.setBackground(Color.decode("#FCFEFF")); //'Ultra Light Cyan'
-		keyEditorImputBox.setEditable(false);
-		keyEditorImputBox.setBounds(12, 224, 330, 35);
-		keyEditorImputBox.setColumns(10);
-		add(keyEditorImputBox);
+		keyEditorInputBox = new JTextField("Click to edit macro");
+		keyEditorInputBox.setToolTipText("Shortcut");
+		keyEditorInputBox.setHorizontalAlignment(SwingConstants.CENTER);
+		keyEditorInputBox.setFont(RESULT_FONT_PLAIN);
+		keyEditorInputBox.setBackground(Color.decode("#FCFEFF")); //'Ultra Light Cyan'
+		keyEditorInputBox.setEditable(false);
+		keyEditorInputBox.setBounds(12, 224, 330, 35);
+		keyEditorInputBox.setColumns(10);
+		add(keyEditorInputBox);
 
 		//Populate the ComboBox
 
@@ -249,12 +244,20 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 
 		iconButton = new JButton();
 		iconButton.setToolTipText("Click to edit icon");
-		iconButton.setIcon(new ImageIcon(MacroEditorUI.class.getResource("/com/sun/deploy/uitoolkit/impl/fx/ui/resources/image/graybox_error.png")));
+		iconButton.setIcon(new ImageIcon(MacroEditorUI.class
+				.getResource("/com/sun/deploy/uitoolkit/impl/fx/ui/resources/image/graybox_error.png")));
 
 		iconButton.setFocusable(false); //Removes the stupid 'selected' border
 		iconButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				iconChooser.getIcon(me);
+				IconChooser i = new IconChooser(new GetIcon() {
+					@Override
+					public void getResponse(UserIcon icon) {
+						keyBindToEdit.setIcon(icon);
+						iconButton.setIcon(icon.getImageIcon());
+					}
+				});
+
 			}
 		});
 
@@ -284,7 +287,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		chckboxMenu.setToolTipText("Show in toolbar");
 		chckboxMenu.setSelected(true);
 		chckbxToolbar.setBounds(259, 31, 83, 18);
-		
+
 		ActionListener act = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				keyBindToEdit.showInToolbar = chckbxToolbar.isSelected();
@@ -293,15 +296,15 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		chckbxToolbar.addActionListener(act);
 		add(chckbxToolbar);
 
-		keyEditorImputBox.addMouseListener(new MouseAdapter() {
+		keyEditorInputBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (!isListenningForKeyInputs) {
 					keyBindToEdit.clearKeys();
-					keyEditorImputBox.setText("Press any key(s)");
+					keyEditorInputBox.setText("Press any key(s)");
 					log.info("Now listenning for key inputs");
 					isListenningForKeyInputs = true;
-					keyEditorImputBox.setFont(RESULT_FONT_PLAIN);
+					keyEditorInputBox.setFont(RESULT_FONT_PLAIN);
 				} else {
 					log.info("Already listenning for key inputs!");
 				}
@@ -346,26 +349,26 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 
 		this.keyBindToEdit = keyBindToEdit;
 
-		updateImputBoxText();
+		updateInputBoxText();
 	}
 
-	private void updateImputBoxText() {
+	private void updateInputBoxText() {
 		if (keyBindToEdit != null) {
 			if (keyBindToEdit.keys.size() > 0) {
 
-				keyEditorImputBox.setText("[" + keyBindToEdit.getKeysAsString() + "]");
+				keyEditorInputBox.setText("[" + keyBindToEdit.getKeysAsString() + "]");
 
 			} else {
-				keyEditorImputBox.setText("Edit shortcut");
+				keyEditorInputBox.setText("Edit shortcut");
 			}
 		} //Else : its a new keyBind, so do nothing
 	}
 
 	/**
 	 * This is a work-around the previous keyboard register hook thing
-	 *  that caused both the JTable and the PropertyEditor to not receive imputs.
+	 *  that caused both the JTable and the PropertyEditor to not receive inputs.
 	 */
-	public void globalKeyBoardImput(NativeKeyEvent ke, boolean isPressed) {
+	public void globalKeyBoardInput(NativeKeyEvent ke, boolean isPressed) {
 
 		Key k = NativeKeyEventToKey.getJavaKeyEvent(ke);
 
@@ -377,7 +380,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 				keyReleased(k);
 			}
 
-			updateImputBoxText();
+			updateInputBoxText();
 		}
 
 	}
@@ -401,7 +404,7 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		if (keysPressedAndNotReleased.size() == 0) { //no more keys to be released
 			log.info("Stopped listenning for events.");
 			isListenningForKeyInputs = false;
-			keyEditorImputBox.setFont(RESULT_FONT_BOLD);
+			keyEditorInputBox.setFont(RESULT_FONT_BOLD);
 		}
 
 	}
@@ -473,9 +476,4 @@ public class MacroEditorUI extends JPanel implements GetIcon {
 		refreshPanels();
 	}
 
-	@Override
-	public void GetResponse(UserIcon icon) { //Get response after asking IconChooser
-		keyBindToEdit.setIcon(icon);
-		iconButton.setIcon(icon.getImageIcon());
-	}
 }

@@ -66,8 +66,6 @@ public class EditablePropertyEditor extends JFrame {
 
 		setSize(new Dimension(600, height + 40));
 
-		System.out.println("Height is " + height);
-
 		//pack();
 	}
 

@@ -45,6 +45,8 @@ public class BasicContainer extends JFrame {
 			}
 		});
 
+		pack();
+
 	}
 
 	public BasicContainer(String title, Image iconImage, JComponent component, boolean isResizeable) {
@@ -53,8 +55,11 @@ public class BasicContainer extends JFrame {
 
 	private static JPanel generatePanel(JComponent component) {
 
+		JScrollPane jscp = new JScrollPane();
+		jscp.setViewportView(component);
+
 		JPanel p = new JPanel(new BorderLayout());
-		p.add(component, BorderLayout.CENTER);
+		p.add(jscp, BorderLayout.CENTER);
 
 		return p;
 	}

@@ -21,9 +21,6 @@ public class MacroInfoPanel extends JPanel {
 
 	MacroAction keyBind;
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JLabel labelTitle;
 

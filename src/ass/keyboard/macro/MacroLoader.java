@@ -17,8 +17,6 @@ import constants.library.LibraryManager;
 
 public class MacroLoader implements ListenForSelectedFilesChanges {
 
-	private static final String TAG = "MacroLoader";
-
 	/**
 	 * macroActions is the shortcuts currently in the program
 	 * 

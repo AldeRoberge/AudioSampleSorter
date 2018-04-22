@@ -64,6 +64,8 @@ import ass.keyboard.macro.ListenForMacroChanges;
 import ass.keyboard.macro.MacroAction;
 import constants.Constants;
 import constants.icons.Icons;
+import constants.icons.IconsLibrary;
+import constants.icons.UserIcon;
 import constants.library.LibraryManager;
 import constants.property.PropertiesImpl;
 import file.FileTypes;
@@ -88,7 +90,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 	static Logger log = LoggerFactory.getLogger(FileManager.class);
 
 	/** Title of the application */
-	public static final String TAG = "ASS MEKANIK 3000"; //TODO RENAME TO TAG
+	public static final String TAG = "ASS"; //TODO RENAME TO TAG
 	/** Provides nice icons and names for files. */
 	private FileSystemView fileSystemView;
 
@@ -570,8 +572,6 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 		if (FileTypes.AUDIO_FILES.accept(file)) {
 
 			if (PropertiesImpl.PLAY_ON_CLICK.getValueAsBoolean()) {
-				System.out.println("Playing on click...");
-
 				ASS.getAudioPlayer().play(file);
 			}
 
@@ -660,10 +660,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 				f.setContentPane(ff);
 
-				ArrayList<Image> images = new ArrayList<Image>();
-				images.add(Icons.SMALL_ICON.getImage());
-				images.add(Icons.BIG_ICON.getImage());
-				f.setIconImages(images);
+				f.setIconImages(ASS.getStaticIconImages());
 
 				f.pack();
 				f.setLocationByPlatform(true);
@@ -912,8 +909,6 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 			boolean leaf, int row, boolean hasFocus) {
 
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-
-		System.out.println("Debug : " + node.getUserObject() + " " + node.getPath());
 
 		try {
 

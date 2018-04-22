@@ -25,7 +25,6 @@ public class MacroAction implements Serializable {
 	
 	// UI information
 
-	private static final String TAG = "MacroAction";
 	private String name;
 	private UserIcon icon;
 

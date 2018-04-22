@@ -72,8 +72,8 @@ public class GlobalKeyListener implements NativeKeyListener {
 	}
 
 	private void transferToMacroEditor(NativeKeyEvent ke, boolean isPressed) {
-		//Transfer imput to MacroEditor (fix for the JTable focus)
-		macroEditor.macroEditorUI.globalKeyBoardImput(ke, isPressed);
+		//Transfer input to MacroEditor (fix for the JTable focus)
+		macroEditor.macroEditorUI.globalKeyBoardInput(ke, isPressed);
 	}
 
 	/**
