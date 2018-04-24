@@ -19,7 +19,7 @@ import javax.swing.event.DocumentListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import constants.property.PropertiesImpl;
+import constants.property.Properties;
 
 
 /**
@@ -139,7 +139,7 @@ class EditablePropertyPanel extends JPanel {
 			chooser.setPreferredSize(new Dimension(800, 600));
 			chooser.setAcceptAllFileFilterUsed(false);
 			chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-			chooser.setCurrentDirectory(new File(PropertiesImpl.ROOT_FOLDER.getValue()));
+			chooser.setCurrentDirectory(new File(Properties.ROOT_FOLDER.getValue()));
 
 			JLabel lblPrefix = new JLabel(propertyToEdit.prefix);
 			add(lblPrefix);

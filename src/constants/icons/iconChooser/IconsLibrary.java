@@ -1,11 +1,17 @@
-package constants.icons;
+package constants.icons.iconChooser;
 
 import java.io.File;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ass.keyboard.macro.MacroAction;
 import ui.FloatingLoadingBar;
 
 public class IconsLibrary {
+
+	static Logger log = LoggerFactory.getLogger(IconsLibrary.class);
 
 	public static final String LOCATION_OF_ICONS = new File(".").getAbsolutePath() + "\\res\\icons\\";
 
@@ -36,6 +42,9 @@ public class IconsLibrary {
 				return u;
 			}
 		}
+
+		log.error("No image in library with keyword : '" + keyword + "'.");
+
 		return null;
 	}
 

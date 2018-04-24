@@ -7,8 +7,6 @@ import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.SystemColor;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -29,9 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import alde.commons.util.UtilityJFrame;
-import constants.icons.Icons;
-import constants.icons.IconsLibrary;
-import constants.icons.UserIcon;
 import ui.WrapLayout;
 
 public class IconChooser extends UtilityJFrame {
@@ -68,27 +63,27 @@ public class IconChooser extends UtilityJFrame {
 		contentPane.add(content);
 		content.setLayout(new BorderLayout(0, 0));
 
-		JScrollPane iconScrollPane = new JScrollPane();
-		content.add(iconScrollPane, BorderLayout.CENTER);
-		iconScrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		JScrollPane iconsScrollPane = new JScrollPane();
+		content.add(iconsScrollPane, BorderLayout.CENTER);
+		iconsScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
 		iconsPanel = new JPanel();
 		iconsPanel.setBackground(SystemColor.textHighlightText);
-		iconScrollPane.setViewportView(iconsPanel);
+		iconsScrollPane.setViewportView(iconsPanel);
 		iconsPanel.setLayout(new WrapLayout());
 
-		JPanel importPanel = new JPanel();
-		importPanel.setBackground(SystemColor.control);
-		iconScrollPane.setColumnHeaderView(importPanel);
+		JPanel actionPanel = new JPanel();
+		actionPanel.setBackground(SystemColor.control);
+		iconsScrollPane.setColumnHeaderView(actionPanel);
 
 		JButton btnImport = new JButton("Refresh list");
 		btnImport.addActionListener(e -> repopulate(waitingForAnswer, searchForValue));
 		btnImport.setFont(font.deriveFont(Font.BOLD));
-		importPanel.add(btnImport);
+		actionPanel.add(btnImport);
 
-		JButton btnOpenContainingFolder = new JButton("Open containing folder");
-		btnOpenContainingFolder.setFont(font.deriveFont(Font.BOLD));
-		btnOpenContainingFolder.addActionListener(e -> {
+		JButton btnShowInExplorer = new JButton("Show in explorer");
+		btnShowInExplorer.setFont(font.deriveFont(Font.BOLD));
+		btnShowInExplorer.addActionListener(e -> {
 			JOptionPane.showMessageDialog(contentPane,
 					"Opening the icon folder. \nIcons are loaded as 16x16 images that support transparency.\nIcons are stored in "
 							+ IconsLibrary.LOCATION_OF_ICONS
@@ -101,18 +96,18 @@ public class IconChooser extends UtilityJFrame {
 			}
 
 		});
-		btnOpenContainingFolder.setBackground(Color.ORANGE);
-		btnOpenContainingFolder.setForeground(Color.BLACK);
-		btnOpenContainingFolder.setIcon(Icons.ABOUT.getImageIcon());
-		importPanel.add(btnOpenContainingFolder);
+		btnShowInExplorer.setBackground(Color.ORANGE);
+		btnShowInExplorer.setForeground(Color.BLACK);
+		btnShowInExplorer.setIcon(Icons.ABOUT.getImageIcon());
+		actionPanel.add(btnShowInExplorer);
 
-		JPanel panel = new JPanel();
-		content.add(panel, BorderLayout.SOUTH);
-		panel.setLayout(new BorderLayout(0, 0));
+		JPanel searchPanel = new JPanel();
+		content.add(searchPanel, BorderLayout.SOUTH);
+		searchPanel.setLayout(new BorderLayout(0, 0));
 
-		JTextField searchFor = new JTextField();
+		JTextField searchInput = new JTextField();
 
-		searchFor.getDocument().addDocumentListener(new DocumentListener() {
+		searchInput.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
@@ -130,25 +125,25 @@ public class IconChooser extends UtilityJFrame {
 			}
 
 			public void updateValue() {
-				searchForValue = searchFor.getText();
+				searchForValue = searchInput.getText();
 				repopulate(waitingForAnswer, searchForValue);
 			}
 
 		});
 
-		panel.add(searchFor);
+		searchPanel.add(searchInput);
 
-		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, BorderLayout.WEST);
+		JPanel searchLabelPanel = new JPanel();
+		searchPanel.add(searchLabelPanel, BorderLayout.WEST);
 
-		Component horizontalStrut = Box.createHorizontalStrut(5);
-		panel_1.add(horizontalStrut);
+		Component searchLabelRightStrut = Box.createHorizontalStrut(5);
+		searchLabelPanel.add(searchLabelRightStrut);
 
-		JLabel lblSearchForLabel = new JLabel("Search for :");
-		panel_1.add(lblSearchForLabel);
+		JLabel searchLabel = new JLabel("Search for :");
+		searchLabelPanel.add(searchLabel);
 
-		Component horizontalStrut_1 = Box.createHorizontalStrut(5);
-		panel_1.add(horizontalStrut_1);
+		Component searchLabelLeftStrut = Box.createHorizontalStrut(5);
+		searchLabelPanel.add(searchLabelLeftStrut);
 
 		//
 

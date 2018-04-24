@@ -11,7 +11,7 @@ import javax.swing.JSeparator;
 import javax.swing.JSlider;
 
 import alde.commons.util.sound.AudioPlayer;
-import constants.property.PropertiesImpl;
+import constants.property.Properties;
 import ui.MiddleOfTheScreen;
 
 public class SettingsUI extends JPanel {
@@ -48,11 +48,11 @@ public class SettingsUI extends JPanel {
 
 		volumeSlider.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent me) { // On mouse release
-				PropertiesImpl.MAIN_VOLUME_SLIDER_VALUE.setNewValue(volumeSlider.getValue() + "");
+				Properties.MAIN_VOLUME_SLIDER_VALUE.setNewValue(volumeSlider.getValue() + "");
 			}
 		});
 
-		int newVolumeValue = PropertiesImpl.MAIN_VOLUME_SLIDER_VALUE.getValueAsInt();
+		int newVolumeValue = Properties.MAIN_VOLUME_SLIDER_VALUE.getValueAsInt();
 		updateAudioVolume(newVolumeValue);
 		volumeSlider.setValue(newVolumeValue);
 
@@ -72,11 +72,11 @@ public class SettingsUI extends JPanel {
 
 		panSlider.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent me) { // On mouse release
-				PropertiesImpl.MAIN_PAN_SLIDER_VALUE.setNewValue(panSlider.getValue() + "");
+				Properties.MAIN_PAN_SLIDER_VALUE.setNewValue(panSlider.getValue() + "");
 			}
 		});
 
-		int newPanValue = PropertiesImpl.MAIN_PAN_SLIDER_VALUE.getValueAsInt();
+		int newPanValue = Properties.MAIN_PAN_SLIDER_VALUE.getValueAsInt();
 		updateAudioPan(newPanValue);
 		panSlider.setValue(newPanValue);
 
@@ -88,9 +88,9 @@ public class SettingsUI extends JPanel {
 
 		JCheckBox chckbxPlayAudioOn = new JCheckBox("Play audio on click");
 		chckbxPlayAudioOn.setToolTipText("Toggles weither to play audio files on click");
-		chckbxPlayAudioOn.setSelected(PropertiesImpl.PLAY_ON_CLICK.getValueAsBoolean());
+		chckbxPlayAudioOn.setSelected(Properties.PLAY_ON_CLICK.getValueAsBoolean());
 		chckbxPlayAudioOn.setBounds(22, 115, 147, 25);
-		ActionListener act = actionEvent -> PropertiesImpl.PLAY_ON_CLICK.setNewValue(chckbxPlayAudioOn.isSelected());
+		ActionListener act = actionEvent -> Properties.PLAY_ON_CLICK.setNewValue(chckbxPlayAudioOn.isSelected());
 		chckbxPlayAudioOn.addActionListener(act);
 		add(chckbxPlayAudioOn);
 
@@ -100,8 +100,8 @@ public class SettingsUI extends JPanel {
 		chckbxIncludeSubfoldersInSearch = new JCheckBox("Include subfolders on import");
 		chckbxIncludeSubfoldersInSearch.setToolTipText("Toggles weither if we should import files contained inside the selected folders");
 		chckbxIncludeSubfoldersInSearch.setBounds(22, 145, 208, 25);
-		chckbxIncludeSubfoldersInSearch.setSelected(PropertiesImpl.INCLUDE_SUBFOLDERS.getValueAsBoolean());
-		ActionListener includeSubfoldersAction = actionEvent -> PropertiesImpl.INCLUDE_SUBFOLDERS.setNewValue(chckbxIncludeSubfoldersInSearch.isSelected());
+		chckbxIncludeSubfoldersInSearch.setSelected(Properties.INCLUDE_SUBFOLDERS.getValueAsBoolean());
+		ActionListener includeSubfoldersAction = actionEvent -> Properties.INCLUDE_SUBFOLDERS.setNewValue(chckbxIncludeSubfoldersInSearch.isSelected());
 		chckbxIncludeSubfoldersInSearch.addActionListener(includeSubfoldersAction);
 
 		add(chckbxIncludeSubfoldersInSearch);
@@ -110,10 +110,10 @@ public class SettingsUI extends JPanel {
 
 		JCheckBox chckbxPromptOnClose = new JCheckBox("Prompt on close");
 		chckbxPromptOnClose.setToolTipText("Toggles the 'Are you sure you want to exit?' dialog");
-		chckbxPromptOnClose.setSelected(PropertiesImpl.PROMPT_ON_EXIT.getValueAsBoolean());
+		chckbxPromptOnClose.setSelected(Properties.PROMPT_ON_EXIT.getValueAsBoolean());
 		chckbxPromptOnClose.setBounds(22, 175, 147, 25);
 		ActionListener changePromptOnClose = actionEvent -> {
-			PropertiesImpl.PROMPT_ON_EXIT.setNewValue(chckbxPromptOnClose.isSelected());
+			Properties.PROMPT_ON_EXIT.setNewValue(chckbxPromptOnClose.isSelected());
 			//sorter.refreshInfoPanels();
 		};
 		chckbxPromptOnClose.addActionListener(changePromptOnClose);

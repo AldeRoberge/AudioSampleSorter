@@ -44,7 +44,6 @@ public class MacroEditor extends JFrame {
 
 		if (keyBindToEdit == null) {
 			setTitle("New Macro");
-
 			keyBindToEdit = new MacroAction("Title");
 		} else {
 			setTitle("Edit Macro");

@@ -1,4 +1,4 @@
-package constants.icons;
+package constants.icons.iconChooser;
 
 import java.awt.Image;
 import java.io.Serializable;
@@ -45,7 +45,6 @@ public class UserIcon implements Serializable {
 		} else {
 			return (getImagePath().contains(searchForValue));
 		}
-
 	}
 
 	static ImageIcon createImageIcon(String path, int height, int width) {

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import ass.action.editeable.EditableProperty;
 import ass.action.interfaces.FileAction;
 import ass.action.interfaces.FileEvent;
-import constants.library.LibraryManager;
+import constants.library.ASSLibraryManager;
 
 
 public class DeleteAction extends FileAction {
@@ -44,7 +44,7 @@ public class DeleteAction extends FileAction {
 		fileAffected = oldFile;
 
 		previousPath = oldFile.getAbsolutePath();
-		newPath = LibraryManager.getTrashFolder().getAbsolutePath() + "\\" + oldFile.getName();
+		newPath = ASSLibraryManager.getTrashFolder().getAbsolutePath() + "\\" + oldFile.getName();
 
 		return moveFileTo(oldFile, newPath);
 	}

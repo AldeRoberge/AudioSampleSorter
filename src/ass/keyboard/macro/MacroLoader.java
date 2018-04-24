@@ -12,8 +12,8 @@ import ass.action.SimpleUIAction;
 import ass.action.interfaces.Action;
 import ass.file.ListenForSelectedFilesChanges;
 import ass.keyboard.key.Key;
-import constants.icons.Icons;
-import constants.library.LibraryManager;
+import constants.icons.iconChooser.Icons;
+import constants.library.ASSLibraryManager;
 
 public class MacroLoader implements ListenForSelectedFilesChanges {
 
@@ -26,7 +26,7 @@ public class MacroLoader implements ListenForSelectedFilesChanges {
 
 	private MacroEditor macroEditor;
 
-	private ObjectSerializer<ArrayList<MacroAction>> macroSerializer = new ObjectSerializer<ArrayList<MacroAction>>(LibraryManager.getMacroFile());
+	private ObjectSerializer<ArrayList<MacroAction>> macroSerializer = new ObjectSerializer<ArrayList<MacroAction>>(ASSLibraryManager.getMacroFile());
 
 	public MacroLoader(MacroEditor macroEditor) {
 		this.macroEditor = macroEditor;

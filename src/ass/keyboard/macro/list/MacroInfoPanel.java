@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 import ass.keyboard.macro.MacroAction;
 import ass.keyboard.macro.MacroEditor;
-import constants.icons.Icons;
+import constants.icons.iconChooser.Icons;
 
 public class MacroInfoPanel extends JPanel {
 

@@ -40,10 +40,10 @@ import ass.keyboard.macro.MacroEditor;
 import ass.ui.CreditsUI;
 import ass.ui.SettingsUI;
 import constants.Constants;
-import constants.icons.Icons;
-import constants.icons.IconsLibrary;
-import constants.icons.UserIcon;
-import constants.property.PropertiesImpl;
+import constants.icons.iconChooser.Icons;
+import constants.icons.iconChooser.IconsLibrary;
+import constants.icons.iconChooser.UserIcon;
+import constants.property.Properties;
 import ui.BasicContainer;
 import ui.MiddleOfTheScreen;
 
@@ -92,18 +92,18 @@ public class ASS extends JFrame {
 		setTitle(Constants.SOFTWARE_NAME);
 		setBounds(100, 100, 655, 493);
 
-		if (PropertiesImpl.SIZE_WIDTH.isDefaultValue() && PropertiesImpl.SIZE_HEIGH.isDefaultValue()) {
+		if (Properties.SIZE_WIDTH.isDefaultValue() && Properties.SIZE_HEIGH.isDefaultValue()) {
 			setSize(new Dimension(824, 499));
 		} else {
-			setSize(new Dimension(PropertiesImpl.SIZE_WIDTH.getValueAsInt(),
-					PropertiesImpl.SIZE_HEIGH.getValueAsInt()));
+			setSize(new Dimension(Properties.SIZE_WIDTH.getValueAsInt(),
+					Properties.SIZE_HEIGH.getValueAsInt()));
 
 		}
 
 		addComponentListener(new ComponentListener() {
 			public void componentResized(ComponentEvent e) {
-				PropertiesImpl.SIZE_WIDTH.setNewValue(getWidth());
-				PropertiesImpl.SIZE_HEIGH.setNewValue(getHeight());
+				Properties.SIZE_WIDTH.setNewValue(getWidth());
+				Properties.SIZE_HEIGH.setNewValue(getHeight());
 			}
 
 			@Override
@@ -128,7 +128,7 @@ public class ASS extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent we) {
 
-				if (PropertiesImpl.PROMPT_ON_EXIT.getValueAsBoolean()) {
+				if (Properties.PROMPT_ON_EXIT.getValueAsBoolean()) {
 					String ObjButtons[] = { "Yes", "No" };
 					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?",
 							JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, Icons.ABOUT.getImageIcon(),
@@ -238,7 +238,7 @@ public class ASS extends JFrame {
 		splitPane.setDividerLocation(350);
 
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
-				pce -> PropertiesImpl.HORIZONTAL_SPLITPANE_DIVIDERLOCATION
+				pce -> Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION
 						.setNewValue((((Integer) pce.getNewValue()).intValue()) + ""));
 		BorderLayout borderLayout = (BorderLayout) fileBro.getLayout();
 		borderLayout.setVgap(1);
@@ -311,8 +311,8 @@ public class ASS extends JFrame {
 			}
 		});
 
-		if (PropertiesImpl.FIRST_LAUNCH.getValueAsBoolean()) {
-			PropertiesImpl.FIRST_LAUNCH.setNewValue(false);
+		if (Properties.FIRST_LAUNCH.getValueAsBoolean()) {
+			Properties.FIRST_LAUNCH.setNewValue(false);
 			showCredits(true, true);
 		}
 	}

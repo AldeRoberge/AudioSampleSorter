@@ -2,6 +2,7 @@ package ass.keyboard.macro;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Icon;
 
@@ -12,7 +13,7 @@ import ass.action.interfaces.Action;
 import ass.action.interfaces.FileAction;
 import ass.action.interfaces.UIAction;
 import ass.keyboard.key.Key;
-import constants.icons.UserIcon;
+import constants.icons.iconChooser.UserIcon;
 
 /**
  * MacroAction is key(s) to action(s)
@@ -28,7 +29,7 @@ public class MacroAction implements Serializable {
 	private UserIcon icon;
 
 	// Keys required to be pressed to trigger the event
-	public ArrayList<Key> keys = new ArrayList<>();
+	public List<Key> keys = new ArrayList<>();
 
 	public ArrayList<Action> actionsToPerform = new ArrayList<>();
 

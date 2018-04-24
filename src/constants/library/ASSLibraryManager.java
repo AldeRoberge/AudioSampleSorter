@@ -6,20 +6,20 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import constants.property.PropertiesImpl;
+import constants.property.Properties;
 
-public class LibraryManager {
+public class ASSLibraryManager {
 
-	static Logger log = LoggerFactory.getLogger(LibraryManager.class);
+	static Logger log = LoggerFactory.getLogger(ASSLibraryManager.class);
 
 	private static Library library;
 
 	private static Library getLibrary() {
 
 		if (library == null) {
-			File LIBRARY_FOLDER = new File(PropertiesImpl.LIBRARY_LOCATION.getValue());
+			File LIBRARY_FOLDER = new File(Properties.LIBRARY_LOCATION.getValue());
 
-			if (PropertiesImpl.LIBRARY_LOCATION.isDefaultValue()) {
+			if (Properties.LIBRARY_LOCATION.isDefaultValue()) {
 
 				LIBRARY_FOLDER = new File(new File(".").getAbsolutePath() + "/library/");
 
@@ -31,7 +31,7 @@ public class LibraryManager {
 					LIBRARY_FOLDER.mkdir();
 				}
 
-				PropertiesImpl.LIBRARY_LOCATION.setNewValue(LIBRARY_FOLDER.getAbsolutePath());
+				Properties.LIBRARY_LOCATION.setNewValue(LIBRARY_FOLDER.getAbsolutePath());
 
 			}
 
@@ -46,21 +46,21 @@ public class LibraryManager {
 	 * return the file used by MacroLoader to serialise macros to
 	 */
 	public static File getMacroFile() {
-		return getLibrary().getFileInLibrary("macros.ser", true);
+		return getLibrary().getFileInLibrary("macros.ser");
 	}
 
 	/**
 	 * return the file used by FileManager to serialise imported files to
 	 */
 	public static File getFileFile() {
-		return getLibrary().getFileInLibrary("files.ser", true);
+		return getLibrary().getFileInLibrary("files.ser");
 	}
 
 	/**
 	 * return the folder used to store deleted files in
 	 */
 	public static File getTrashFolder() {
-		return getLibrary().getFolderInLibrary("trash", true);
+		return getLibrary().getFolderInLibrary("trash");
 	}
 
 }
@@ -80,10 +80,10 @@ class Library {
 		return "Library [" + libraryFolder + "]";
 	}
 
-	public File getFileInLibrary(String file, boolean createIfDoesntExist) {
+	public File getFileInLibrary(String file) {
 		File f = new File(libraryFolder.getAbsolutePath() + "\\" + file);
 
-		if (createIfDoesntExist && !f.exists()) {
+		if (!f.exists()) {
 			try {
 				f.createNewFile();
 			} catch (IOException e) {
@@ -95,10 +95,10 @@ class Library {
 		return f;
 	}
 
-	public File getFolderInLibrary(String folder, boolean createIfDoesntExist) {
+	public File getFolderInLibrary(String folder) {
 		File f = new File(libraryFolder.getAbsolutePath() + "\\" + folder);
 
-		if (createIfDoesntExist && !f.exists()) {
+		if (!f.exists()) {
 			f.mkdir();
 		}
 

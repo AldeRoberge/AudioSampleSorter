@@ -58,7 +58,7 @@ public class MacroListUI extends JPanel {
 
 		JButton btnAdd = new JButton("Create new macro");
 		btnAdd.addActionListener(e -> {
-			m.showMacroListUI(null); //null because theres no panel to edit
+			m.showMacroListUI(null); // null == new macro
 		});
 		btnAdd.setBounds(0, 286, 355, 25);
 		add(btnAdd);

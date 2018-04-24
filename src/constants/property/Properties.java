@@ -3,7 +3,7 @@ package constants.property;
 import alde.commons.properties.Property;
 import alde.commons.properties.PropertyFileManager;
 
-public class PropertiesImpl { //TODO add descriptions
+public class Properties { //TODO add descriptions
 
 	static PropertyFileManager propertyFile;
 

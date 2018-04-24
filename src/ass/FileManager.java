@@ -58,7 +58,7 @@ import ass.file.ListenForSelectedFilesChanges;
 import ass.keyboard.macro.ListenForMacroChanges;
 import ass.keyboard.macro.MacroAction;
 import constants.Constants;
-import constants.property.PropertiesImpl;
+import constants.property.Properties;
 import file.FileTypes;
 import ui.MiddleOfTheScreen;
 import ui.PrettyTimeStatic;
@@ -227,7 +227,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 		});
 
-		if (PropertiesImpl.ROOT_FOLDER.isDefaultValue()) {
+		if (Properties.ROOT_FOLDER.isDefaultValue()) {
 			changeRootFolder();
 		} else {
 			updateRoot();
@@ -303,7 +303,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(chooser));
-		chooser.setCurrentDirectory(new File(PropertiesImpl.ROOT_FOLDER.getValue()));
+		chooser.setCurrentDirectory(new File(Properties.ROOT_FOLDER.getValue()));
 		chooser.setDialogTitle("Select folder");
 		chooser.setApproveButtonText("Choose");
 		Action details = chooser.getActionMap().get("viewTypeDetails"); // show details view
@@ -318,7 +318,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 			String directory = chooser.getCurrentDirectory().toString();
 
-			PropertiesImpl.ROOT_FOLDER.setNewValue(directory);
+			Properties.ROOT_FOLDER.setNewValue(directory);
 
 			updateRoot();
 
@@ -329,7 +329,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 	private void updateRoot() {
 
-		File rootFile = new File(PropertiesImpl.ROOT_FOLDER.getValue());
+		File rootFile = new File(Properties.ROOT_FOLDER.getValue());
 
 		if (rootFile.exists() && rootFile.isDirectory()) {
 
@@ -551,7 +551,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 		if (FileTypes.AUDIO_FILES.accept(file)) {
 
-			if (PropertiesImpl.PLAY_ON_CLICK.getValueAsBoolean()) {
+			if (Properties.PLAY_ON_CLICK.getValueAsBoolean()) {
 				ASS.getAudioPlayer().play(file);
 			}
 

@@ -40,9 +40,9 @@ import ass.keyboard.key.GlobalKeyListener;
 import ass.keyboard.key.Key;
 import ass.keyboard.macro.MacroAction;
 import ass.keyboard.macro.MacroEditor;
-import constants.icons.UserIcon;
 import constants.icons.iconChooser.GetIcon;
 import constants.icons.iconChooser.IconChooser;
+import constants.icons.iconChooser.UserIcon;
 
 public class MacroEditorUI extends JPanel {
 
