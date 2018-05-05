@@ -57,7 +57,7 @@ public class ASS extends JFrame {
 
 	private MacroEditor macroEditor;
 
-	private BasicContainer logger = new BasicContainer("Logger", Icons.LOGGER.getImage(), new LoggerPanel(), true);
+	private BasicContainer logger = new BasicContainer("Logger", Icons.LOGGER.getImage(), LoggerPanel.get(), true);
 	private BasicContainer settings = new BasicContainer("Settings", Icons.SETTINGS.getImage(),
 			new SettingsUI(audioPlayer), false);
 	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new CreditsUI(), true);
@@ -95,8 +95,7 @@ public class ASS extends JFrame {
 		if (Properties.SIZE_WIDTH.isDefaultValue() && Properties.SIZE_HEIGH.isDefaultValue()) {
 			setSize(new Dimension(824, 499));
 		} else {
-			setSize(new Dimension(Properties.SIZE_WIDTH.getValueAsInt(),
-					Properties.SIZE_HEIGH.getValueAsInt()));
+			setSize(new Dimension(Properties.SIZE_WIDTH.getValueAsInt(), Properties.SIZE_HEIGH.getValueAsInt()));
 
 		}
 
