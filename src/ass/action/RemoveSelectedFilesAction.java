@@ -27,14 +27,14 @@ public class RemoveSelectedFilesAction extends UIAction {
 	@Override
 	public void perform() {
 
-		filesRemoved = ASS.fileBro.selectedFiles;
-		ASS.fileBro.removeFiles(filesRemoved);
+		filesRemoved = ASS.fileManager.selectedFiles;
+		ASS.fileManager.removeFiles(filesRemoved);
 
 	}
 
 	@Override
 	public void unperform() {
-		ASS.fileBro.addFiles(filesRemoved);
+		ASS.fileManager.addFiles(filesRemoved);
 		
 	}
 

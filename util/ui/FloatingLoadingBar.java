@@ -11,7 +11,7 @@ import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import alde.commons.util.UtilityJFrame;
+import alde.commons.util.window.UtilityJFrame;
 import constants.Constants;
 
 public class FloatingLoadingBar extends UtilityJFrame {

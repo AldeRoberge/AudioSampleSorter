@@ -6,19 +6,18 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import alde.commons.util.window.UtilityJFrame;
 import ass.action.interfaces.Action;
-import ui.MiddleOfTheScreen;
 
 //See MacroEditorUI
 
-public class EditablePropertyEditor extends JFrame {
+public class EditablePropertyEditor extends UtilityJFrame {
 
 	private Logger log = LoggerFactory.getLogger(EditablePropertyEditor.class);
 	
@@ -53,8 +52,6 @@ public class EditablePropertyEditor extends JFrame {
 		updateHeight();
 
 		// end
-
-		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
 
 	}
 

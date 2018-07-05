@@ -71,7 +71,7 @@ public abstract class FileAction implements Action, Cloneable {
 
 	@SuppressWarnings("static-access")
 	public void ready() {
-		for (File f : ASS.fileBro.selectedFiles) {
+		for (File f : ASS.fileManager.selectedFiles) {
 
 			//Make sure we arent using the file
 			ASS.getAudioPlayer().stopUsing(f);
@@ -79,7 +79,7 @@ public abstract class FileAction implements Action, Cloneable {
 			FileEvent fe = perform(f);
 
 			if (fe != null) {
-				ASS.fileBro.updateFile(fe);
+				ASS.fileManager.updateFile(fe);
 			} else {
 				log.info("No FileEvent, ignoring this action result.");
 			}

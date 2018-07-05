@@ -34,6 +34,7 @@ import alde.commons.logger.LoggerPanel;
 import alde.commons.util.SplashScreen;
 import alde.commons.util.sound.AudioPlayer;
 import alde.commons.util.sound.AudioVisualizer;
+import alde.commons.util.window.UtilityJFrame;
 import ass.action.interfaces.FileAction;
 import ass.action.interfaces.UIAction;
 import ass.keyboard.macro.MacroEditor;
@@ -45,13 +46,12 @@ import constants.icons.iconChooser.IconsLibrary;
 import constants.icons.iconChooser.UserIcon;
 import constants.property.Properties;
 import ui.BasicContainer;
-import ui.MiddleOfTheScreen;
 
-public class ASS extends JFrame {
+public class ASS extends UtilityJFrame {
 
 	static Logger log = LoggerFactory.getLogger(ASS.class);
 
-	public FileManager fileBro = new FileManager();
+	public FileManager fileManager = new FileManager();
 
 	private static AudioPlayer audioPlayer = new AudioPlayer();
 
@@ -68,6 +68,9 @@ public class ASS extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * 
+	 * (Hidden by default)
+	 * 
 	 */
 	public ASS() {
 
@@ -76,12 +79,12 @@ public class ASS extends JFrame {
 
 		macroEditor = new MacroEditor();
 
-		macroEditor.macroLoader.registerWaitingForMacroChanges(fileBro);
+		macroEditor.macroLoader.registerWaitingForMacroChanges(fileManager);
 
 		//Manually trigger it to populate fMan and toolBar
 		macroEditor.macroLoader.tellMacroChanged();
 
-		fileBro.registerWaitingForFileChanges(macroEditor.macroLoader);
+		fileManager.registerWaitingForFileChanges(macroEditor.macroLoader);
 
 		//
 
@@ -119,7 +122,6 @@ public class ASS extends JFrame {
 		});
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
 
 		//
 
@@ -156,7 +158,7 @@ public class ASS extends JFrame {
 		JMenuItem mntmChangeFolder = new JMenuItem(new AbstractAction("Set library root folder...") {
 			public void actionPerformed(ActionEvent e) {
 				log.info("Selecting new sound library...");
-				fileBro.changeRootFolder();
+				fileManager.changeRootFolder();
 			}
 		});
 
@@ -236,15 +238,16 @@ public class ASS extends JFrame {
 		splitPane.setResizeWeight(1);
 		splitPane.setDividerLocation(350);
 
+		// Divider moved
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
 				pce -> Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION
 						.setNewValue((((Integer) pce.getNewValue()).intValue()) + ""));
-		BorderLayout borderLayout = (BorderLayout) fileBro.getLayout();
+		BorderLayout borderLayout = (BorderLayout) fileManager.getLayout();
 		borderLayout.setVgap(1);
 		borderLayout.setHgap(1);
 
 		//fMan
-		splitPane.setTopComponent(fileBro);
+		splitPane.setTopComponent(fileManager);
 
 		//
 

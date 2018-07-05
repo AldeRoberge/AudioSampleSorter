@@ -14,7 +14,9 @@ import javax.swing.UIManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BasicContainer extends JFrame {
+import alde.commons.util.window.UtilityJFrame;
+
+public class BasicContainer extends UtilityJFrame {
 
 	static Logger log = LoggerFactory.getLogger(BasicContainer.class);
 
@@ -39,8 +41,6 @@ public class BasicContainer extends JFrame {
 			setBounds(content.getBounds());
 			setContentPane(content);
 		}
-
-		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {

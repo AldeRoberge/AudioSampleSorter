@@ -40,9 +40,7 @@ import ass.keyboard.key.GlobalKeyListener;
 import ass.keyboard.key.Key;
 import ass.keyboard.macro.MacroAction;
 import ass.keyboard.macro.MacroEditor;
-import constants.icons.iconChooser.GetIcon;
 import constants.icons.iconChooser.IconChooser;
-import constants.icons.iconChooser.UserIcon;
 
 public class MacroEditorUI extends JPanel {
 
@@ -230,14 +228,10 @@ public class MacroEditorUI extends JPanel {
 
 		iconButton.setFocusable(false); //Removes the stupid 'selected' border
 		iconButton.addActionListener(e -> {
-			IconChooser i = new IconChooser(new GetIcon() {
-				@Override
-				public void getResponse(UserIcon icon) {
-					keyBindToEdit.setIcon(icon);
-					iconButton.setIcon(icon.getImageIcon());
-				}
+			IconChooser i = new IconChooser(awd -> {
+				keyBindToEdit.setIcon(awd);
+				iconButton.setIcon(awd.getImageIcon());
 			});
-
 		});
 
 		//

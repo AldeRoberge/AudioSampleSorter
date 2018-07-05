@@ -12,7 +12,6 @@ import javax.swing.JSlider;
 
 import alde.commons.util.sound.AudioPlayer;
 import constants.property.Properties;
-import ui.MiddleOfTheScreen;
 
 public class SettingsUI extends JPanel {
 
@@ -33,8 +32,7 @@ public class SettingsUI extends JPanel {
 		setLayout(null);
 
 		setBounds(0, 0, 400, 290);
-
-		setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(this));
+		
 
 		//
 

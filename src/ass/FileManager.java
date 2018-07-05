@@ -53,42 +53,41 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import alde.commons.util.file.FileSizeToString;
+import alde.commons.util.file.extensions.ExtensionFilter;
+import alde.commons.util.window.UtilityJFrame;
+import alde.commons.util.window.UtilityJPanel;
 import ass.action.interfaces.FileEvent;
 import ass.file.ListenForSelectedFilesChanges;
 import ass.keyboard.macro.ListenForMacroChanges;
 import ass.keyboard.macro.MacroAction;
 import constants.Constants;
 import constants.property.Properties;
-import file.FileTypes;
-import ui.MiddleOfTheScreen;
 import ui.PrettyTimeStatic;
 
 /**
-Credits :
+Original credits :
 
 @author Andrew Thompson
 @version 2011-06-08
 @see http://codereview.stackexchange.com/q/4446/7784
 @license LGPL
 
-Modifications :
-Browses for all children folders (alows to see if the node has children without clicking)
-Made FileBro only display file name, path, date and size
-FileBro now displays file date as a 'PrettyDate' and file size as readeable (KB, MB, GB, etc)
+Credits : 
+
+@author Alde
+
 */
-public class FileManager extends JPanel implements ActionListener, ListenForMacroChanges {
+public class FileManager extends UtilityJPanel implements ActionListener, ListenForMacroChanges {
 
 	static Logger log = LoggerFactory.getLogger(FileManager.class);
 
-	/** Title of the application */
-	public static final String TAG = "ASS"; //TODO RENAME TO TAG
 	/** Provides nice icons and names for files. */
 	private FileSystemView fileSystemView;
 
 	/** currently selected File. */
 	public ArrayList<File> selectedFiles = new ArrayList<>();
 
-	/** File-system tree. Built Lazily */
+	/** File-system tree */
 	private JTree tree;
 	private DefaultTreeModel treeModel;
 
@@ -126,7 +125,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 	public FileManager() {
 
 		setLayout(new BorderLayout(3, 3));
-		setBorder(new EmptyBorder(5, 5, 5, 5));
+		//setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		fileSystemView = FileSystemView.getFileSystemView();
 
@@ -302,13 +301,12 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 		log.info("Selecting a new root folder...");
 
 		JFileChooser chooser = new JFileChooser();
-		chooser.setLocation(MiddleOfTheScreen.getMiddleOfScreenLocationFor(chooser));
 		chooser.setCurrentDirectory(new File(Properties.ROOT_FOLDER.getValue()));
 		chooser.setDialogTitle("Select folder");
 		chooser.setApproveButtonText("Choose");
 		Action details = chooser.getActionMap().get("viewTypeDetails"); // show details view
 		details.actionPerformed(null);
-		chooser.setFileFilter(FileTypes.AUDIO_FILES);
+		chooser.setFileFilter(ExtensionFilter.AUDIO_FILES);
 		chooser.setMultiSelectionEnabled(true); // shift + click to select multiple files
 		chooser.setPreferredSize(new Dimension(800, 600));
 		chooser.setAcceptAllFileFilterUsed(false);
@@ -323,7 +321,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 			updateRoot();
 
 		} else {
-			log.info(TAG + " (Folder Selector)", "No selection");
+			log.info("No selection");
 		}
 	}
 
@@ -389,7 +387,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 
 			File file = iterator.next();
 
-			if (currentFiles.contains(file) || !file.exists() || !FileTypes.AUDIO_FILES.accept(file)
+			if (currentFiles.contains(file) || !file.exists() || !ExtensionFilter.AUDIO_FILES.accept(file)
 					|| file.isDirectory()) {
 				iterator.remove();
 			}
@@ -549,7 +547,7 @@ public class FileManager extends JPanel implements ActionListener, ListenForMacr
 		selectedFiles.clear();
 		selectedFiles.add(file);
 
-		if (FileTypes.AUDIO_FILES.accept(file)) {
+		if (ExtensionFilter.AUDIO_FILES.accept(file)) {
 
 			if (Properties.PLAY_ON_CLICK.getValueAsBoolean()) {
 				ASS.getAudioPlayer().play(file);

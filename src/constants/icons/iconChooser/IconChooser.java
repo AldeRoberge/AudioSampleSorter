@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -26,7 +27,7 @@ import javax.swing.event.DocumentListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import alde.commons.util.UtilityJFrame;
+import alde.commons.util.window.UtilityJFrame;
 import ui.WrapLayout;
 
 public class IconChooser extends UtilityJFrame {
@@ -43,7 +44,7 @@ public class IconChooser extends UtilityJFrame {
 	/**
 	 * Create the frame.
 	 */
-	public IconChooser(final GetIcon waitingForAnswer) {
+	public IconChooser(final Consumer<UserIcon> waitingForAnswer) {
 
 		searchForValue = "";
 
@@ -153,7 +154,7 @@ public class IconChooser extends UtilityJFrame {
 
 	}
 
-	private void repopulate(GetIcon waitingForAnswer, String searchForValue) {
+	private void repopulate(Consumer<UserIcon> waitingForAnswer, String searchForValue) {
 
 		log.info("Repopulating with " + IconsLibrary.userIcons.size() + " icons.");
 
@@ -167,9 +168,7 @@ public class IconChooser extends UtilityJFrame {
 				IconChooserButton selectThisIcon = new IconChooserButton(i);
 				selectThisIcon.setFont(font);
 				selectThisIcon.addActionListener(e -> {
-					//selectThisIcon.getIcon(),
-
-					waitingForAnswer.getResponse(selectThisIcon.getStaticIcon());
+					waitingForAnswer.accept(selectThisIcon.getStaticIcon());
 					setVisible(false);
 				});
 				icon.add(selectThisIcon);
