@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import ass.action.editeable.EditableProperty;
 
-
 /**
  * Action is a single Action (rename, move, etc) to be performed on a SoundPanel
  * (Sound).
@@ -21,8 +20,7 @@ import ass.action.editeable.EditableProperty;
 public interface Action extends Serializable {
 
 	Logger log = LoggerFactory.getLogger(Action.class);
-	
-	
+
 	boolean hasBeenPerformed = false;
 
 	public default boolean hasEditeableProperties() {
@@ -37,17 +35,18 @@ public interface Action extends Serializable {
 
 	public abstract String getDescription();
 
-	public default boolean isEditable() { // used by MacroActionEditPanel (Edit
-												// button) to know if there is
-											// editableProperties inside the
-											// action
+	/**	used by MacroActionEditPanel (Editbutton) to know if there is
+		editableProperties inside the action
+	 */
+
+	public default boolean isEditable() {
 		return (getEditableProperties() != null);
 	}
 
 	//File policy (if it can be performed on the current amount of selected files in FileManager (ex : Play cant be performed on more than 1 file))
 
 	public static final int PERFORMED_ON_ZERO_FILES_ONLY_POLICY = -2; //0 selected files
-	public static final int PERFORMED_ON_ONE_FILE_ONLY_POLICY = -1; //1 to 1 selected file
+	public static final int PERFORMED_ON_ONE_FILE_ONLY_POLICY = -1; //1 selected file
 	public static final int PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY = 0; //0 to infinity selected files
 	public static final int PERFORMED_ON_ONE_OR_MANY_FILES_ONLY_POLICY = 1; //1 to infinity selected files
 	public static final int PERFORMED_ON_MANY_FILES_ONLY_POLICY = 2; //2 to infinity selected files

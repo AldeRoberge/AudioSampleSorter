@@ -12,6 +12,8 @@ import ass.action.interfaces.Action;
 
 class MacroActionPanel extends JPanel {
 
+	private static final Font FONT = new Font("Segoe UI Light", Font.BOLD, 14);
+
 	private MacroActionPanel me = this;
 
 	Action action;
@@ -34,7 +36,7 @@ class MacroActionPanel extends JPanel {
 		panel.setLayout(null);
 
 		JLabel lblTitle = new JLabel(action.toString());
-		lblTitle.setFont(new Font("Segoe UI Light", Font.BOLD, 14));
+		lblTitle.setFont(FONT);
 		lblTitle.setBounds(12, 0, 200, 19);
 		lblTitle.setToolTipText(action.getDescription());
 		panel.add(lblTitle);
@@ -42,7 +44,7 @@ class MacroActionPanel extends JPanel {
 		JButton btnRemove = new JButton("X");
 		btnRemove.setForeground(Color.RED);
 		btnRemove.addActionListener(e -> k.removeFromPanels(me));
-		btnRemove.setFont(new Font("Segoe UI Light", Font.BOLD, 13));
+		btnRemove.setFont(FONT);
 		btnRemove.setToolTipText("Remove");
 		btnRemove.setBounds(283, -1, 41, 22);
 		panel.add(btnRemove);

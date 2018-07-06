@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import ass.action.editeable.EditableProperty;
 import ass.action.interfaces.UIAction;
 
-
 public class SimpleUIAction extends UIAction {
 
 	public String TAG = "UIAction"; //real action name is defined bellow
@@ -16,10 +15,14 @@ public class SimpleUIAction extends UIAction {
 
 	private static int NO_POLICY = UIAction.PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY;
 
-	public static final SimpleUIAction SHOW_CREDITS = new SimpleUIAction(0, "Show Credits", "Shows the credits UI.", NO_POLICY);
-	public static final SimpleUIAction SHOW_MACRO = new SimpleUIAction(1, "Edit Macros", "Shows the macro UI.", NO_POLICY);
-	public static final SimpleUIAction SHOW_SETTINGS = new SimpleUIAction(2, "Edit Settings", "Shows the settings UI.", NO_POLICY);
-	public static final SimpleUIAction SHOW_LOGGER = new SimpleUIAction(3, "Show Logger", "Shows the debug log.", NO_POLICY);
+	public static final SimpleUIAction SHOW_CREDITS = new SimpleUIAction(0, "Show Credits", "Shows the credits UI.",
+			NO_POLICY);
+	public static final SimpleUIAction SHOW_MACRO = new SimpleUIAction(1, "Edit Macros", "Shows the macro UI.",
+			NO_POLICY);
+	public static final SimpleUIAction SHOW_SETTINGS = new SimpleUIAction(2, "Edit Settings", "Shows the settings UI.",
+			NO_POLICY);
+	public static final SimpleUIAction SHOW_LOGGER = new SimpleUIAction(3, "Show Logger", "Shows the debug log.",
+			NO_POLICY);
 
 	public static void init() {
 		UIActions.add(SHOW_CREDITS);
@@ -29,8 +32,6 @@ public class SimpleUIAction extends UIAction {
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	private boolean currentState = false; //used to unperform
 
 	private int id;
 	private String name; //Used in toString (populating combobox)
@@ -77,13 +78,13 @@ public class SimpleUIAction extends UIAction {
 		 */
 
 		if (id == SHOW_CREDITS.getId()) {
-			currentState = ASS.showCredits(false, false);
+			ASS.showCredits();
 		} else if (id == SHOW_MACRO.getId()) {
-			currentState = ASS.showEditMacros(false, false);
+			ASS.showEditMacros();
 		} else if (id == SHOW_SETTINGS.getId()) {
-			currentState = ASS.showSettings(false, false);
+			ASS.showSettings();
 		} else if (id == SHOW_LOGGER.getId()) {
-			currentState = ASS.showLogger(false, false);
+			ASS.showLogger();
 		} else {
 			log.error(name, "Invalid object for perform SimpleUIAction");
 		}
@@ -92,20 +93,8 @@ public class SimpleUIAction extends UIAction {
 
 	@Override
 	public void unperform() {
-		boolean switchState = !currentState;
-
-		if (id == SHOW_CREDITS.getId()) {
-			currentState = ASS.showCredits(true, switchState);
-		} else if (id == SHOW_MACRO.getId()) {
-			currentState = ASS.showEditMacros(true, switchState);
-		} else if (id == SHOW_SETTINGS.getId()) {
-			currentState = ASS.showSettings(true, switchState);
-		} else if (id == SHOW_LOGGER.getId()) {
-			currentState = ASS.showLogger(true, switchState);
-		} else {
-			log.error(name, "Invalid object for perform SimpleUIAction");
-		}
-
+		// TODO Auto-generated method stub
+		
 	}
 
 }

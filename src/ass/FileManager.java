@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -54,11 +55,8 @@ import org.slf4j.LoggerFactory;
 
 import alde.commons.util.file.FileSizeToString;
 import alde.commons.util.file.extensions.ExtensionFilter;
-import alde.commons.util.window.UtilityJFrame;
 import alde.commons.util.window.UtilityJPanel;
 import ass.action.interfaces.FileEvent;
-import ass.file.ListenForSelectedFilesChanges;
-import ass.keyboard.macro.ListenForMacroChanges;
 import ass.keyboard.macro.MacroAction;
 import constants.Constants;
 import constants.property.Properties;
@@ -77,7 +75,7 @@ Credits :
 @author Alde
 
 */
-public class FileManager extends UtilityJPanel implements ActionListener, ListenForMacroChanges {
+public class FileManager extends UtilityJPanel implements ActionListener {
 
 	static Logger log = LoggerFactory.getLogger(FileManager.class);
 
@@ -648,18 +646,16 @@ public class FileManager extends UtilityJPanel implements ActionListener, Listen
 	}
 
 	//Waiting for selected files change (used by MacroLoader to update weither MacroAction is enabled based on policy)
-	private ArrayList<ListenForSelectedFilesChanges> waitingForChanges = new ArrayList<>();
+	private ArrayList<Consumer<Integer>> waitingForChanges = new ArrayList<>();
 
-	public void registerWaitingForFileChanges(ListenForSelectedFilesChanges f) {
+	public void registerWaitingForFileChanges(Consumer<Integer> f) {
 		waitingForChanges.add(f);
 	}
 
 	void tellSelectedFilesChanged() {
-
-		for (ListenForSelectedFilesChanges l : waitingForChanges) {
-			l.filesChanged(selectedFiles.size());
+		for (Consumer<Integer> l : waitingForChanges) {
+			l.accept(selectedFiles.size());
 		}
-
 	}
 
 	public void removeSelectedFiles() {
@@ -753,7 +749,6 @@ public class FileManager extends UtilityJPanel implements ActionListener, Listen
 
 	public ArrayList<MacroAction> macros = new ArrayList<>();
 
-	@Override
 	public void macroChanged(ArrayList<MacroAction> newMacros) {
 		macros = newMacros;
 		updatePopupMenuAndToolBar();

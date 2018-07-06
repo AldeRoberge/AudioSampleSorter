@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
@@ -18,6 +19,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -57,10 +60,10 @@ public class ASS extends UtilityJFrame {
 
 	private MacroEditor macroEditor;
 
-	private BasicContainer logger = new BasicContainer("Logger", Icons.LOGGER.getImage(), LoggerPanel.get(), true);
+	private BasicContainer logger = new BasicContainer("Logger", Icons.LOGGER.getImage(), LoggerPanel.get());
 	private BasicContainer settings = new BasicContainer("Settings", Icons.SETTINGS.getImage(),
-			new SettingsUI(audioPlayer), false);
-	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new CreditsUI(), true);
+			new SettingsUI(audioPlayer));
+	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new CreditsUI());
 
 	public static AudioPlayer getAudioPlayer() {
 		return audioPlayer;
@@ -73,22 +76,19 @@ public class ASS extends UtilityJFrame {
 	 * 
 	 */
 	public ASS() {
-
 		UIAction.ASS = this;
 		FileAction.ASS = this;
 
 		macroEditor = new MacroEditor();
 
-		macroEditor.macroLoader.registerWaitingForMacroChanges(fileManager);
+		macroEditor.macroLoader.registerWaitingForMacroChanges(fileManager::macroChanged);
 
 		//Manually trigger it to populate fMan and toolBar
 		macroEditor.macroLoader.tellMacroChanged();
 
-		fileManager.registerWaitingForFileChanges(macroEditor.macroLoader);
+		fileManager.registerWaitingForFileChanges(macroEditor.macroLoader::filesChanged);
 
-		//
-
-		System.setProperty("sun.awt.noerasebackground", "true"); //Suposed to reduce flicker on manual window resize
+		System.setProperty("sun.awt.noerasebackground", "true"); //Supposed to reduce flicker on manual window resize (AFAIK doesnt work)
 
 		setResizable(true);
 		setBackground(Color.WHITE);
@@ -187,7 +187,7 @@ public class ASS extends UtilityJFrame {
 
 		JMenuItem mntmMacros = new JMenuItem(new AbstractAction("Edit Macros") {
 			public void actionPerformed(ActionEvent e) {
-				showEditMacros(true, true);
+				showEditMacros();
 			}
 
 		});
@@ -198,7 +198,7 @@ public class ASS extends UtilityJFrame {
 
 		JMenuItem mntmSettings = new JMenuItem(new AbstractAction("Settings") {
 			public void actionPerformed(ActionEvent e) {
-				showSettings(true, true);
+				showSettings();
 			}
 
 		});
@@ -212,8 +212,9 @@ public class ASS extends UtilityJFrame {
 
 		JMenuItem mntmConsole = new JMenuItem(new AbstractAction("Show Log") {
 			public void actionPerformed(ActionEvent e) {
-				showLogger(true, true);
+				showLogger();
 			}
+
 		});
 		mntmConsole.setIcon(Icons.LOGGER.getImageIcon());
 		mnHelp.add(mntmConsole);
@@ -222,13 +223,36 @@ public class ASS extends UtilityJFrame {
 
 		JMenuItem mntmAbout = new JMenuItem(new AbstractAction("About") {
 			public void actionPerformed(ActionEvent e) {
-				showCredits(true, true);
+				showCredits();
 			}
+
 		});
 		mntmAbout.setIcon(Icons.ABOUT.getImageIcon());
 		mnHelp.add(mntmAbout);
 
 		//getContentPane().add(AudioVisualiser., BorderLayout.SOUTH);
+
+		// SHOW UI BUTTONS
+
+		menuBar.add(Box.createHorizontalGlue());
+
+		JButton showMenu = new JButton("Menu");
+		showMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showConsole();
+			}
+
+		});
+		menuBar.add(showMenu);
+
+		JButton showConsole = new JButton("Console");
+		showConsole.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showConsole();
+			}
+
+		});
+		menuBar.add(showConsole);
 
 		/** End of menus */
 
@@ -315,50 +339,7 @@ public class ASS extends UtilityJFrame {
 
 		if (Properties.FIRST_LAUNCH.getValueAsBoolean()) {
 			Properties.FIRST_LAUNCH.setNewValue(false);
-			showCredits(true, true);
-		}
-	}
-
-	/**
-	 * @param forceState enforce new visibility state (if is set to false, component will switch visibility)
-	 * @param newState new state of visiblity (if forceState set to false, newState is invalidated)
-	 * @return
-	 */
-	public boolean showCredits(boolean forceState, boolean newState) {
-		return toggleVisibility(credits, forceState, newState);
-	}
-
-	public boolean showEditMacros(boolean forceState, boolean newState) {
-		return toggleVisibility(macroEditor, forceState, newState);
-	}
-
-	public boolean showSettings(boolean forceState, boolean newState) {
-		return toggleVisibility(settings, forceState, newState);
-	}
-
-	public boolean showLogger(boolean forceState, boolean newState) {
-		return toggleVisibility(logger, forceState, newState);
-	}
-
-	/**
-	 * @param c Component to toggleVisibility on
-	 * @param forceState If we should force the new visiblity state
-	 * @param newState New state (true == set to visible)
-	 * @return returns the new state of the component (true == now visible)
-	 */
-	boolean toggleVisibility(Component c, boolean forceState, boolean newState) {
-
-		if (forceState) {
-			c.setVisible(newState);
-			return newState;
-		} else {
-			if (c.isVisible()) {
-				c.setVisible(false);
-				return false;
-			} else {
-				c.setVisible(true);
-				return true;
-			}
+			showCredits();
 		}
 	}
 
@@ -367,6 +348,31 @@ public class ASS extends UtilityJFrame {
 	 */
 	public boolean resumeOrPauseSound() {
 		return audioPlayer.resumeOrPause();
+	}
+
+	private void showConsole() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void showEditMacros() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void showSettings() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void showLogger() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void showCredits() {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**

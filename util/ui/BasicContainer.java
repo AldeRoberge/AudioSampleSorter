@@ -15,56 +15,45 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import alde.commons.util.window.UtilityJFrame;
+import alde.commons.util.window.UtilityJPanel;
 
-public class BasicContainer extends UtilityJFrame {
+public class BasicContainer {
 
 	static Logger log = LoggerFactory.getLogger(BasicContainer.class);
 
-	/**
-	 * Panels contained in the Container need to be static. (Irrelevant to any other components)
-	 * The Container setBounds(); to the content's bounds 
-	 */
-	public BasicContainer(String title, Image iconImage, JPanel content, boolean isResizeable) {
+	String title;
+	Image iconImage;
+	JPanel content;
 
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception weTried) {
-			log.error("BasicContainer (" + title + ")", "Error with look and feel", weTried);
-		}
-
-		setIconImage(iconImage);
-		setResizable(isResizeable);
-		setTitle(title);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-		if (content != null) {
-			setBounds(content.getBounds());
-			setContentPane(content);
-		}
-
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				setVisible(false);
-			}
-		});
-
-		pack();
-
+	public BasicContainer(String title, Image iconImage, JPanel content) {
+		this.title = title;
+		this.iconImage = iconImage;
+		this.content = content;
 	}
 
-	public BasicContainer(String title, Image iconImage, JComponent component, boolean isResizeable) {
-		this(title, iconImage, generatePanel(component), isResizeable);
+	public BasicContainer(String title, Image iconImage, JComponent component) {
+		this(title, iconImage, generatePanel(component));
 	}
 
 	private static JPanel generatePanel(JComponent component) {
-
 		JScrollPane jscp = new JScrollPane();
 		jscp.setViewportView(component);
 
 		JPanel p = new JPanel(new BorderLayout());
 		p.add(jscp, BorderLayout.CENTER);
-
 		return p;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public Image getIconImage() {
+		return iconImage;
+	}
+
+	public JPanel getContent() {
+		return content;
 	}
 
 }

@@ -136,30 +136,19 @@ public class MacroAction implements Serializable {
 
 		StringBuilder build = new StringBuilder("<html>");
 
-		build.append("<p><strong>").append(getName()).append("</strong></p>");
+		build.append("<p><b>").append(getName()).append("</b></p>");
 
 		for (Action a : actionsToPerform) {
 			build.append("<p>").append(a.getDescription()).append("</p>");
 		}
 
-		//Get highest policy as string
-
-		int highestPolicy = -100;
-
-		for (Action a : actionsToPerform) {
-			if (a.getPolicy() > highestPolicy) {
-				highestPolicy = a.getPolicy();
-			}
-		}
-
-		//
-
 		if (keys.size() > 0) {
 			build.append("<p>Shortcut : ").append(getKeysAsString()).append("</p>");
 		}
 
-		if (highestPolicy != -100) { //If there is no actions, policy will stay at -100
+		int highestPolicy = getHighestPolicy();
 
+		if (highestPolicy != -100) { //If there is no actions, policy will stay at -100
 			String policyString = "<small>Requires " + Action.getPolicyAsString(highestPolicy)
 					+ " to be selected</small>";
 
@@ -172,7 +161,18 @@ public class MacroAction implements Serializable {
 		}
 
 		return build + "</html>";
+	}
 
+	private int getHighestPolicy() {
+		int highestPolicy = -100;
+
+		for (Action a : actionsToPerform) {
+			if (a.getPolicy() > highestPolicy) {
+				highestPolicy = a.getPolicy();
+			}
+		}
+
+		return highestPolicy;
 	}
 
 	public String getKeysAsString() {
