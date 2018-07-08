@@ -2,9 +2,6 @@ package ass.action.interfaces;
 
 import java.io.File;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import alde.commons.util.file.FileNameUtil;
 import ass.ASS;
 

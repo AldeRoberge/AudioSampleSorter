@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ass.keyboard.macro.MacroAction;
 import ui.FloatingLoadingBar;
 
 public class IconsLibrary {
@@ -29,10 +28,8 @@ public class IconsLibrary {
 
 		for (int i = 0; i < allIcons.length; i++) {
 			loadingBar.setCurrentProgress(i, allIcons.length);
-
 			userIcons.add(new UserIcon(allIcons[i].getAbsolutePath()));
 		}
-
 		loadingBar.end();
 	}
 

@@ -1,7 +1,6 @@
 package ass.keyboard.key;
 
 import java.awt.event.KeyEvent;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Handler;

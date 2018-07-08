@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ass.keyboard.key.GlobalKeyListener;
 import ass.keyboard.macro.edit.MacroEditorUI;
 import ass.keyboard.macro.list.MacroListUI;
 

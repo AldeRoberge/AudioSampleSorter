@@ -58,7 +58,6 @@ import alde.commons.util.file.extensions.ExtensionFilter;
 import alde.commons.util.window.UtilityJPanel;
 import ass.action.interfaces.FileEvent;
 import ass.keyboard.macro.MacroAction;
-import constants.Constants;
 import constants.property.Properties;
 import ui.PrettyTimeStatic;
 
@@ -134,7 +133,7 @@ public class FileManager extends UtilityJPanel implements ActionListener {
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.setAutoCreateRowSorter(true);
 		table.setShowVerticalLines(false);
-		table.setSelectionBackground(Constants.SICK_PURPLE);
+		table.setSelectionBackground(new Color(136, 23, 152));
 		table.setSelectionForeground(Color.WHITE);
 
 		table.setComponentPopupMenu(popupMenu);

@@ -12,7 +12,6 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import alde.commons.util.window.UtilityJFrame;
-import constants.Constants;
 
 public class FloatingLoadingBar extends UtilityJFrame {
 	private JProgressBar progressBar;
@@ -48,7 +47,7 @@ public class FloatingLoadingBar extends UtilityJFrame {
 
 		progressBar = new JProgressBar();
 		progressBar.setBackground(Color.WHITE);
-		progressBar.setForeground(Constants.SICK_PURPLE);
+		progressBar.setForeground(Color.BLACK);
 		progressBar.setStringPainted(true);
 		contentPane.add(progressBar, BorderLayout.CENTER);
 

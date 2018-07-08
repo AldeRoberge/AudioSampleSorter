@@ -2,7 +2,6 @@ package ass;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -43,7 +42,6 @@ import ass.action.interfaces.UIAction;
 import ass.keyboard.macro.MacroEditor;
 import ass.ui.CreditsUI;
 import ass.ui.SettingsUI;
-import constants.Constants;
 import constants.icons.iconChooser.Icons;
 import constants.icons.iconChooser.IconsLibrary;
 import constants.icons.iconChooser.UserIcon;
@@ -51,6 +49,8 @@ import constants.property.Properties;
 import ui.BasicContainer;
 
 public class ASS extends UtilityJFrame {
+
+	private static final String SOFTWARE_NAME = "AudioSampleSorter";
 
 	static Logger log = LoggerFactory.getLogger(ASS.class);
 
@@ -65,6 +65,8 @@ public class ASS extends UtilityJFrame {
 			new SettingsUI(audioPlayer));
 	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new CreditsUI());
 
+	private BasicContainer mainView;
+
 	public static AudioPlayer getAudioPlayer() {
 		return audioPlayer;
 	}
@@ -76,6 +78,7 @@ public class ASS extends UtilityJFrame {
 	 * 
 	 */
 	public ASS() {
+
 		UIAction.ASS = this;
 		FileAction.ASS = this;
 
@@ -92,20 +95,21 @@ public class ASS extends UtilityJFrame {
 
 		setResizable(true);
 		setBackground(Color.WHITE);
-		setTitle(Constants.SOFTWARE_NAME);
+		setTitle(ASS.SOFTWARE_NAME);
 		setBounds(100, 100, 655, 493);
 
-		if (Properties.SIZE_WIDTH.isDefaultValue() && Properties.SIZE_HEIGH.isDefaultValue()) {
+		if (Properties.SIZE_WIDTH.isDefaultValue() && Properties.SIZE_HEIGHT.isDefaultValue()) {
 			setSize(new Dimension(824, 499));
 		} else {
-			setSize(new Dimension(Properties.SIZE_WIDTH.getValueAsInt(), Properties.SIZE_HEIGH.getValueAsInt()));
-
+			setSize(new Dimension(Properties.SIZE_WIDTH.getValueAsInt(), Properties.SIZE_HEIGHT.getValueAsInt()));
 		}
+
+		// Save width and height on resize
 
 		addComponentListener(new ComponentListener() {
 			public void componentResized(ComponentEvent e) {
 				Properties.SIZE_WIDTH.setNewValue(getWidth());
-				Properties.SIZE_HEIGH.setNewValue(getHeight());
+				Properties.SIZE_HEIGHT.setNewValue(getHeight());
 			}
 
 			@Override
@@ -123,17 +127,13 @@ public class ASS extends UtilityJFrame {
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-		//
-
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent we) {
-
 				if (Properties.PROMPT_ON_EXIT.getValueAsBoolean()) {
 					String ObjButtons[] = { "Yes", "No" };
 					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?",
-							JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, Icons.ABOUT.getImageIcon(),
-							ObjButtons, ObjButtons[1]);
+							JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
 					if (PromptResult == JOptionPane.YES_OPTION) {
 						System.exit(0);
 					}
@@ -142,6 +142,8 @@ public class ASS extends UtilityJFrame {
 				}
 			}
 		});
+
+		//
 
 		/** Menu bar */
 
@@ -153,7 +155,7 @@ public class ASS extends UtilityJFrame {
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 
-		// File, Import
+		// Import
 
 		JMenuItem mntmChangeFolder = new JMenuItem(new AbstractAction("Set library root folder...") {
 			public void actionPerformed(ActionEvent e) {
@@ -165,11 +167,11 @@ public class ASS extends UtilityJFrame {
 		mntmChangeFolder.setIcon(Icons.IMPORT.getImageIcon());
 		mnFile.add(mntmChangeFolder);
 
-		// File (Separator)
+		// Separator
 
 		mnFile.addSeparator();
 
-		//File, Exit
+		// Exit
 
 		JMenuItem mnExit = new JMenuItem(new AbstractAction("Exit") {
 			public void actionPerformed(ActionEvent e) {
@@ -180,7 +182,7 @@ public class ASS extends UtilityJFrame {
 		mnExit.setIcon(Icons.EXIT.getImageIcon());
 		mnFile.add(mnExit);
 
-		//Edit
+		/* Edit */
 
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
@@ -194,7 +196,7 @@ public class ASS extends UtilityJFrame {
 		mntmMacros.setIcon(Icons.MACROS.getImageIcon());
 		mnEdit.add(mntmMacros);
 
-		//Edit, Settings
+		// Settings
 
 		JMenuItem mntmSettings = new JMenuItem(new AbstractAction("Settings") {
 			public void actionPerformed(ActionEvent e) {
@@ -205,7 +207,7 @@ public class ASS extends UtilityJFrame {
 		mntmSettings.setIcon(Icons.SETTINGS.getImageIcon());
 		mnEdit.add(mntmSettings);
 
-		//Help
+		/* Help */
 
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
@@ -219,7 +221,7 @@ public class ASS extends UtilityJFrame {
 		mntmConsole.setIcon(Icons.LOGGER.getImageIcon());
 		mnHelp.add(mntmConsole);
 
-		// Help : About
+		// About
 
 		JMenuItem mntmAbout = new JMenuItem(new AbstractAction("About") {
 			public void actionPerformed(ActionEvent e) {
@@ -230,7 +232,7 @@ public class ASS extends UtilityJFrame {
 		mntmAbout.setIcon(Icons.ABOUT.getImageIcon());
 		mnHelp.add(mntmAbout);
 
-		//getContentPane().add(AudioVisualiser., BorderLayout.SOUTH);
+		// getContentPane().add(AudioVisualiser., BorderLayout.SOUTH);
 
 		// SHOW UI BUTTONS
 
@@ -239,7 +241,7 @@ public class ASS extends UtilityJFrame {
 		JButton showMenu = new JButton("Menu");
 		showMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				showConsole();
+				showMainView();
 			}
 
 		});
@@ -248,7 +250,7 @@ public class ASS extends UtilityJFrame {
 		JButton showConsole = new JButton("Console");
 		showConsole.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				showConsole();
+				showLogger();
 			}
 
 		});
@@ -258,12 +260,12 @@ public class ASS extends UtilityJFrame {
 
 		//
 
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setResizeWeight(1);
-		splitPane.setDividerLocation(350);
+		JSplitPane viewPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		viewPane.setResizeWeight(1);
+		viewPane.setDividerLocation(350);
 
 		// Divider moved
-		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
+		viewPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
 				pce -> Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION
 						.setNewValue((((Integer) pce.getNewValue()).intValue()) + ""));
 		BorderLayout borderLayout = (BorderLayout) fileManager.getLayout();
@@ -271,13 +273,13 @@ public class ASS extends UtilityJFrame {
 		borderLayout.setHgap(1);
 
 		//fMan
-		splitPane.setTopComponent(fileManager);
+		viewPane.setTopComponent(fileManager);
 
 		//
 
 		JPanel progressContainer = new JPanel();
 
-		splitPane.setBottomComponent(progressContainer);
+		viewPane.setBottomComponent(progressContainer);
 		progressContainer.setLayout(new BorderLayout(0, 0));
 
 		JPanel progressPanel = new JPanel();
@@ -288,7 +290,7 @@ public class ASS extends UtilityJFrame {
 
 		progressContainer.add(AudioVisualizer.getVisualiser(), BorderLayout.CENTER);
 
-		getContentPane().add(splitPane, BorderLayout.CENTER);
+		mainView = new BasicContainer(ASS.SOFTWARE_NAME, Icons.DEFAULT_ICON.getImage(), viewPane);
 
 		addWindowListener(new WindowAdapter() {
 
@@ -341,6 +343,23 @@ public class ASS extends UtilityJFrame {
 			Properties.FIRST_LAUNCH.setNewValue(false);
 			showCredits();
 		}
+
+		showMainView();
+	}
+
+	private void show(BasicContainer viewPane2) {
+		getContentPane().removeAll();
+		getContentPane().add(viewPane2.getContent(), BorderLayout.CENTER);
+		setTitle(viewPane2.getTitle());
+		setIconImage(viewPane2.getIconImage());
+
+		revalidate();
+		repaint();
+
+	}
+
+	private void showMainView() {
+		show(mainView);
 	}
 
 	/**
@@ -350,29 +369,20 @@ public class ASS extends UtilityJFrame {
 		return audioPlayer.resumeOrPause();
 	}
 
-	private void showConsole() {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void showEditMacros() {
-		// TODO Auto-generated method stub
-
+		macroEditor.showMacroEditUI();
 	}
 
 	public void showSettings() {
-		// TODO Auto-generated method stub
-
+		show(settings);
 	}
 
 	public void showLogger() {
-		// TODO Auto-generated method stub
-
+		show(logger);
 	}
 
 	public void showCredits() {
-		// TODO Auto-generated method stub
-
+		show(credits);
 	}
 
 	/**
