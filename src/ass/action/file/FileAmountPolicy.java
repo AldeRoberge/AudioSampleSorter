@@ -1,5 +1,6 @@
 package ass.action.file;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.slf4j.Logger;
@@ -10,7 +11,7 @@ import org.slf4j.LoggerFactory;
  * File policy (if it can be performed on the current amount of selected files in FileManager
  * ex : Play can only be performed on 1 file
  */
-public class FileAmountPolicy {
+public class FileAmountPolicy implements Serializable {
 
 	private static Logger log = LoggerFactory.getLogger(FileAmountPolicy.class);
 

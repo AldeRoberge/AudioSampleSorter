@@ -404,6 +404,11 @@ public class ASS extends UtilityJFrame {
 			BufferedImage textImage = ImageIO.read(new File(IMAGE_LOCATION + "/TITLE.png"));
 
 			SplashScreen s = new SplashScreen(inImage, outImage, textImage);
+			s.setRunnableAfterClose(new Runnable() {
+				public void run() {
+					ASS.setVisible(true);
+				}
+			});
 			s.setVisible(true);
 
 		} catch (IOException e) {
