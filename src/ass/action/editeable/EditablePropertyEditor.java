@@ -19,6 +19,8 @@ import ass.action.interfaces.Action;
 
 public class EditablePropertyEditor extends UtilityJFrame {
 
+	private static final int WIDTH = 620;
+
 	private Logger log = LoggerFactory.getLogger(EditablePropertyEditor.class);
 	
 	private JPanel editeablePropertyPanels = new JPanel();
@@ -39,7 +41,7 @@ public class EditablePropertyEditor extends UtilityJFrame {
 		// scrolleable list
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(15, 16, 620, 398);
+		scrollPane.setBounds(15, 16, WIDTH, 398);
 		scrollPane.setAutoscrolls(true);
 		contentPane.add(scrollPane);
 
@@ -50,9 +52,6 @@ public class EditablePropertyEditor extends UtilityJFrame {
 		setContentPane(contentPane);
 
 		updateHeight();
-
-		// end
-
 	}
 
 	public void updateHeight() { //TODO this right here is the dirtiest piece of code
@@ -60,36 +59,25 @@ public class EditablePropertyEditor extends UtilityJFrame {
 		for (int i = 0; i < allValueEditorPanels.size(); i++) {
 			height += allValueEditorPanels.get(i).getHeight();
 		}
-
-		setSize(new Dimension(600, height + 40));
-
-		//pack();
+		setSize(new Dimension(WIDTH, height + 40));
 	}
 
-	// TODO : update this when adding fields
-	public void changeAction(Action e) {
-
+	public void changeAction(Action e) { // TODO : update this when adding fields
 		allValueEditorPanels.clear();
 		editeablePropertyPanels.removeAll();
 
 		for (EditableProperty<?> a : e.getEditableProperties()) {
 			EditablePropertyPanel infoPanel = new EditablePropertyPanel(a);
-
 			allValueEditorPanels.add(infoPanel);
 			editeablePropertyPanels.add(infoPanel);
 		}
 
-		refreshInfoPanels();
-
+		redraw();
 	}
-
-	private void refreshInfoPanels() {
-
+	private void redraw() {
 		for (EditablePropertyPanel logPanel : allValueEditorPanels) {
-
 			logPanel.validate();
 			logPanel.repaint();
-
 		}
 
 		editeablePropertyPanels.validate();
@@ -97,7 +85,6 @@ public class EditablePropertyEditor extends UtilityJFrame {
 
 		scrollPane.validate();
 		scrollPane.repaint();
-
 	}
 
 }

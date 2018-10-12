@@ -1,4 +1,4 @@
-package ass.action;
+package ass.action.file;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,6 +7,9 @@ import ass.action.editeable.EditableProperty;
 import ass.action.interfaces.FileAction;
 import ass.action.interfaces.FileEvent;
 
+/**
+ * Test of all editeable Properties (boolean, string, integer, filetest)
+ */
 public class TestAction extends FileAction {
 
 	@Override
@@ -37,8 +40,8 @@ public class TestAction extends FileAction {
 	}
 
 	@Override
-	public int getPolicy() {
-		return FileAction.PERFORMED_ON_ONE_OR_MANY_FILES_ONLY_POLICY;
+	public FileAmountPolicy getPolicy() {
+		return FileAmountPolicy.PERFORMED_ON_ONE_OR_MANY_FILES_ONLY_POLICY;
 	}
 
 	@Override

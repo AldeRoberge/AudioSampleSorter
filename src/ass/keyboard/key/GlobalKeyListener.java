@@ -13,78 +13,25 @@ import org.jnativehook.keyboard.NativeKeyListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//Call GlobalScreen.unregisterNativeHook(); to remove (unneeded here)
-
+/**
+ * Utility class that implements NativeKeyListener and dispatches events to listeners
+ */
 public class GlobalKeyListener implements NativeKeyListener {
 
-	static Logger log = LoggerFactory.getLogger(GlobalKeyListener.class);
+	private static Logger log = LoggerFactory.getLogger(GlobalKeyListener.class);
 
-	private static GlobalKeyListener globalKeyListener; //Singleton
+	private static GlobalKeyListener instance;
 
-	private static List<GlobalKeyEventListener> gs = new ArrayList<>();
+	private static List<GlobalKeyEventListener> listeners = new ArrayList<>();
 
 	/**
-	 * List of pressed keys
-	 * Converted from NativeKey
+	 * List of currently pressed keys
+	 * converted from NativeKey
 	 */
-	private List<Key> pressedKeys = new ArrayList<>();
+	private List<Key> keysPressed = new ArrayList<>();
 
 	public static void addListener(GlobalKeyEventListener g) {
-		gs.add(g);
-	}
-
-	/**
-	 * @return self, creates if not already instantiated
-	 */
-	public static GlobalKeyListener get() {
-		if (globalKeyListener == null) {
-			globalKeyListener = new GlobalKeyListener();
-		}
-		return globalKeyListener;
-	}
-
-	/**
-	 * NativeKeyListener pressed keys
-	 */
-	@Override
-	public void nativeKeyPressed(NativeKeyEvent ke) {
-
-		Key k = GetNativeKeyAsJavaKey.getAsJavaKey(ke);
-
-		if (!pressedKeys.contains(k)) {
-			pressedKeys.add(k);
-
-			warnListenersOfUpdate();
-		}
-
-		for (GlobalKeyEventListener g : gs) {
-			g.keyPressed(k);
-		}
-
-		warnListenersOfUpdate();
-	}
-
-	/**
-	 * NativeKeyListener released keys
-	 */
-	@Override
-	public void nativeKeyReleased(NativeKeyEvent ke) {
-
-		Key k = GetNativeKeyAsJavaKey.getAsJavaKey(ke);
-
-		pressedKeys.remove(k);
-
-		for (GlobalKeyEventListener g : gs) {
-			g.keyReleased(k);
-		}
-
-		warnListenersOfUpdate();
-	}
-
-	private void warnListenersOfUpdate() {
-		for (GlobalKeyEventListener g : gs) {
-			g.keyPressedChanged(pressedKeys);
-		}
+		listeners.add(g);
 	}
 
 	static {
@@ -105,21 +52,75 @@ public class GlobalKeyListener implements NativeKeyListener {
 		} catch (NativeHookException ex) {
 			log.error("There was a problem registering the native hook.", ex);
 		}
+	}
 
+	/**
+	 * Singleton GlobalKeyListener
+	 * Returns instance of this (creates if null)
+	 */
+	public static GlobalKeyListener get() {
+		if (instance == null) {
+			instance = new GlobalKeyListener();
+		}
+		return instance;
+	}
+
+	/**
+	 * Receive 'pressed keys' and send them to listeners
+	 */
+	@Override
+	public void nativeKeyPressed(NativeKeyEvent ke) {
+
+		Key k = Key.getAsJavaKey(ke);
+
+		if (!keysPressed.contains(k)) {
+			keysPressed.add(k);
+		}
+
+		for (GlobalKeyEventListener g : listeners) {
+			g.keyPressed(k);
+		}
+
+		warnListenersOfUpdate();
+	}
+
+	/**
+	 * Receive 'released keys' and send them to listeners
+	 */
+	@Override
+	public void nativeKeyReleased(NativeKeyEvent ke) {
+
+		Key k = Key.getAsJavaKey(ke);
+
+		if (keysPressed.contains(k)) {
+			keysPressed.remove(k);
+		}
+
+		for (GlobalKeyEventListener g : listeners) {
+			g.keyReleased(k);
+		}
+
+		warnListenersOfUpdate();
+	}
+
+	private void warnListenersOfUpdate() {
+		for (GlobalKeyEventListener g : listeners) {
+			g.keysPressedChanged(keysPressed);
+		}
 	}
 
 	/**
 	 * @param Key pressedKey
 	 */
 	public boolean keyIsPressed(Key pressedKey) {
-		return pressedKeys.contains(pressedKey);
+		return keysPressed.contains(pressedKey);
 	}
 
 	/**
 	 * @param int code of pressedKey
 	 */
 	boolean keyIsPressed(int keyCodeOfPressedKey) {
-		return pressedKeys.contains(new Key(keyCodeOfPressedKey));
+		return keysPressed.contains(new Key(keyCodeOfPressedKey));
 	}
 
 	/**
@@ -127,7 +128,7 @@ public class GlobalKeyListener implements NativeKeyListener {
 	 */
 	private boolean keysArePressed(ArrayList<Key> keys) {
 		for (Key key : keys) {
-			if (!pressedKeys.contains(key)) {
+			if (!keysPressed.contains(key)) {
 				return false;
 			}
 		}
@@ -139,7 +140,7 @@ public class GlobalKeyListener implements NativeKeyListener {
 		int current = 0;
 
 		for (Key kR : requiredKeys) {
-			for (Key k : pressedKeys) {
+			for (Key k : keysPressed) {
 				if (k.equals(kR)) {
 					current++;
 				}

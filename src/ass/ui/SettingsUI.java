@@ -46,7 +46,7 @@ public class SettingsUI extends JPanel {
 
 		volumeSlider.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent me) { // On mouse release
-				Properties.MAIN_VOLUME_SLIDER_VALUE.setNewValue(volumeSlider.getValue() + "");
+				Properties.MAIN_VOLUME_SLIDER_VALUE.setValue(volumeSlider.getValue() + "");
 			}
 		});
 
@@ -70,7 +70,7 @@ public class SettingsUI extends JPanel {
 
 		panSlider.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent me) { // On mouse release
-				Properties.MAIN_PAN_SLIDER_VALUE.setNewValue(panSlider.getValue() + "");
+				Properties.MAIN_PAN_SLIDER_VALUE.setValue(panSlider.getValue() + "");
 			}
 		});
 
@@ -88,7 +88,7 @@ public class SettingsUI extends JPanel {
 		chckbxPlayAudioOn.setToolTipText("Toggles weither to play audio files on click");
 		chckbxPlayAudioOn.setSelected(Properties.PLAY_ON_CLICK.getValueAsBoolean());
 		chckbxPlayAudioOn.setBounds(22, 115, 147, 25);
-		ActionListener act = actionEvent -> Properties.PLAY_ON_CLICK.setNewValue(chckbxPlayAudioOn.isSelected());
+		ActionListener act = actionEvent -> Properties.PLAY_ON_CLICK.setValue(chckbxPlayAudioOn.isSelected());
 		chckbxPlayAudioOn.addActionListener(act);
 		add(chckbxPlayAudioOn);
 
@@ -99,7 +99,7 @@ public class SettingsUI extends JPanel {
 		chckbxIncludeSubfoldersInSearch.setToolTipText("Toggles weither if we should import files contained inside the selected folders");
 		chckbxIncludeSubfoldersInSearch.setBounds(22, 145, 208, 25);
 		chckbxIncludeSubfoldersInSearch.setSelected(Properties.INCLUDE_SUBFOLDERS.getValueAsBoolean());
-		ActionListener includeSubfoldersAction = actionEvent -> Properties.INCLUDE_SUBFOLDERS.setNewValue(chckbxIncludeSubfoldersInSearch.isSelected());
+		ActionListener includeSubfoldersAction = actionEvent -> Properties.INCLUDE_SUBFOLDERS.setValue(chckbxIncludeSubfoldersInSearch.isSelected());
 		chckbxIncludeSubfoldersInSearch.addActionListener(includeSubfoldersAction);
 
 		add(chckbxIncludeSubfoldersInSearch);
@@ -111,7 +111,7 @@ public class SettingsUI extends JPanel {
 		chckbxPromptOnClose.setSelected(Properties.PROMPT_ON_EXIT.getValueAsBoolean());
 		chckbxPromptOnClose.setBounds(22, 175, 147, 25);
 		ActionListener changePromptOnClose = actionEvent -> {
-			Properties.PROMPT_ON_EXIT.setNewValue(chckbxPromptOnClose.isSelected());
+			Properties.PROMPT_ON_EXIT.setValue(chckbxPromptOnClose.isSelected());
 			//sorter.refreshInfoPanels();
 		};
 		chckbxPromptOnClose.addActionListener(changePromptOnClose);

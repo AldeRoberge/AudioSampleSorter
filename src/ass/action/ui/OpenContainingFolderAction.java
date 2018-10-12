@@ -1,15 +1,17 @@
-package ass.action;
+package ass.action.ui;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 
+import ass.action.file.FileAmountPolicy;
 import ass.action.interfaces.UIAction;
 
 public class OpenContainingFolderAction extends UIAction {
 
 	@Override
-	public int getPolicy() {
-		return UIAction.PERFORMED_ON_ONE_FILE_ONLY_POLICY;
+	public FileAmountPolicy getPolicy() {
+		return FileAmountPolicy.PERFORMED_ON_ONE_FILE_ONLY_POLICY;
 	}
 
 	@Override

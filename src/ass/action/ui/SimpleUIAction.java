@@ -1,8 +1,9 @@
-package ass.action;
+package ass.action.ui;
 
 import java.util.ArrayList;
 
 import ass.action.editeable.EditableProperty;
+import ass.action.file.FileAmountPolicy;
 import ass.action.interfaces.UIAction;
 
 public class SimpleUIAction extends UIAction {
@@ -13,7 +14,7 @@ public class SimpleUIAction extends UIAction {
 
 	public static ArrayList<SimpleUIAction> UIActions = new ArrayList<>();
 
-	private static int NO_POLICY = UIAction.PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY;
+	private static FileAmountPolicy NO_POLICY = FileAmountPolicy.PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY;
 
 	public static final SimpleUIAction SHOW_CREDITS = new SimpleUIAction(0, "Show Credits", "Shows the credits UI.",
 			NO_POLICY);
@@ -35,10 +36,10 @@ public class SimpleUIAction extends UIAction {
 
 	private int id;
 	private String name; //Used in toString (populating combobox)
-	private int policy;
+	private FileAmountPolicy policy;
 	private String description;
 
-	private SimpleUIAction(int id, String name, String description, int policy) {
+	private SimpleUIAction(int id, String name, String description, FileAmountPolicy policy) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -61,7 +62,7 @@ public class SimpleUIAction extends UIAction {
 	}
 
 	@Override
-	public int getPolicy() {
+	public FileAmountPolicy getPolicy() {
 		return policy;
 	}
 

@@ -9,6 +9,7 @@ import javax.swing.Icon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ass.action.file.FileAmountPolicy;
 import ass.action.interfaces.Action;
 import ass.action.interfaces.FileAction;
 import ass.action.interfaces.UIAction;
@@ -146,28 +147,23 @@ public class MacroAction implements Serializable {
 			build.append("<p>Shortcut : ").append(getKeysAsString()).append("</p>");
 		}
 
-		int highestPolicy = getHighestPolicy();
-
-		if (highestPolicy != -100) { //If there is no actions, policy will stay at -100
-			String policyString = "<small>Requires " + Action.getPolicyAsString(highestPolicy)
-					+ " to be selected</small>";
+		if (!actionsToPerform.isEmpty()) {
+			String policyString = "<small>Requires " + FileAmountPolicy.getPolicyAsString(getHighestPolicy().policy) + " to be selected</small>";
 
 			if (!isEnabled) {
 				build.append("<p><font color=\"red\">").append(policyString).append("</font></p>");
-			} /*else {
-				build += "<p>" + policyString + "</p>";
-				}*/
+			}
 
 		}
 
 		return build + "</html>";
 	}
 
-	private int getHighestPolicy() {
-		int highestPolicy = -100;
+	private FileAmountPolicy getHighestPolicy() {
+		FileAmountPolicy highestPolicy = FileAmountPolicy.PERFORMED_ON_ZERO_TO_MANY_FILES_POLICY;
 
 		for (Action a : actionsToPerform) {
-			if (a.getPolicy() > highestPolicy) {
+			if (a.getPolicy().policy > highestPolicy.policy) {
 				highestPolicy = a.getPolicy();
 			}
 		}

@@ -5,36 +5,43 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 import alde.commons.util.file.ObjectSerializer;
-import ass.action.DeleteAction;
-import ass.action.OpenContainingFolderAction;
-import ass.action.RemoveSelectedFilesAction;
-import ass.action.RenameAction;
-import ass.action.SimpleUIAction;
+import ass.action.file.DeleteAction;
+import ass.action.file.RenameAction;
 import ass.action.interfaces.Action;
+import ass.action.ui.OpenContainingFolderAction;
+import ass.action.ui.RemoveSelectedFilesAction;
+import ass.action.ui.SimpleUIAction;
 import ass.keyboard.key.Key;
 import constants.icons.iconChooser.Icons;
 import constants.library.ASSLibraryManager;
 
-public class MacroLoader  {
+public class MacroLoader {
 
 	/**
-	 * macroActions is the shortcuts currently in the program
-	 * 
-	 * (formelly 'actions')
+	 * Macro actions
 	 */
 	public ArrayList<MacroAction> macroActions = new ArrayList<>();
 
+	/**
+	 * Macro editor UI (edit and create custom macros)
+	 */
 	private MacroEditor macroEditor;
 
+	/**
+	 * Object serializer to store list of MacroActions
+	 */
 	private ObjectSerializer<ArrayList<MacroAction>> macroSerializer = new ObjectSerializer<ArrayList<MacroAction>>(
 			ASSLibraryManager.getMacroFile());
+
+	public void serialise() {
+		macroSerializer.set(macroActions);
+	}
 
 	public MacroLoader(MacroEditor macroEditor) {
 		this.macroEditor = macroEditor;
 
-		//restore macros from file
 
-		if (!macroSerializer.isNull()) {
+		if (!macroSerializer.isNull()) { // Restore macros from file
 
 			if (macroSerializer.get() != null) { //null might be caused if we remove all the macroactions
 				for (MacroAction tmp : macroSerializer.get()) {
@@ -42,11 +49,8 @@ public class MacroLoader  {
 				}
 			}
 
-		} else {
-			//Default macro actions
-
+		} else { //Create default macros
 			populateDefaultMacros();
-
 		}
 
 	}
@@ -95,26 +99,19 @@ public class MacroLoader  {
 		tellMacroChanged();
 	}
 
-	private ArrayList<Consumer<ArrayList<MacroAction>>> waitingForChanges = new ArrayList<>();
 
-	/**
-	 * @param an object that wants to know when Macros change (toolbar and menu in manager)
-	 */
-	public void registerWaitingForMacroChanges(Consumer<ArrayList<MacroAction>> l) {
-		waitingForChanges.add(l);
+	private ArrayList<Consumer<ArrayList<MacroAction>>> listeningForMacroChanges = new ArrayList<>();
+
+	public void registerListeningForMacroChanges(Consumer<ArrayList<MacroAction>> l) {
+		listeningForMacroChanges.add(l);
 
 	}
 
 	public void tellMacroChanged() {
-		for (Consumer<ArrayList<MacroAction>> l : waitingForChanges) {
+		for (Consumer<ArrayList<MacroAction>> l : listeningForMacroChanges) {
 			l.accept(macroActions);
 		}
 	}
-
-	public void serialise() {
-		macroSerializer.set(macroActions);
-	}
-
 
 	public void filesChanged(int amountOfSelectedFiles) {
 
@@ -123,7 +120,7 @@ public class MacroLoader  {
 			boolean canBePerformed = true;
 
 			for (Action a : ma.actionsToPerform) {
-				if (!a.canBePerformedOnFiles(amountOfSelectedFiles)) {
+				if (!a.getPolicy().canBePerformedOnFiles(amountOfSelectedFiles)) {
 					canBePerformed = false;
 					break;
 				}

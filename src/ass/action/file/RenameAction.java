@@ -1,4 +1,4 @@
-package ass.action;
+package ass.action.file;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,8 +30,8 @@ public class RenameAction extends FileAction {
 	}
 
 	@Override
-	public int getPolicy() {
-		return FileAction.PERFORMED_ON_ONE_OR_MANY_FILES_ONLY_POLICY;
+	public FileAmountPolicy getPolicy() {
+		return FileAmountPolicy.PERFORMED_ON_ONE_OR_MANY_FILES_ONLY_POLICY;
 	}
 
 	@Override

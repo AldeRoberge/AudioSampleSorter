@@ -67,11 +67,6 @@ Original credits :
 @author Andrew Thompson
 @version 2011-06-08
 @see http://codereview.stackexchange.com/q/4446/7784
-@license LGPL
-
-Credits : 
-
-@author Alde
 
 */
 public class FileManager extends UtilityJPanel implements ActionListener {
@@ -313,7 +308,7 @@ public class FileManager extends UtilityJPanel implements ActionListener {
 
 			String directory = chooser.getCurrentDirectory().toString();
 
-			Properties.ROOT_FOLDER.setNewValue(directory);
+			Properties.ROOT_FOLDER.setValue(directory);
 
 			updateRoot();
 

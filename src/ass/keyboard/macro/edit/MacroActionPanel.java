@@ -12,16 +12,11 @@ import ass.action.interfaces.Action;
 
 class MacroActionPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final Font FONT = new Font("Segoe UI Light", Font.BOLD, 14);
 
-	private MacroActionPanel me = this;
-
 	Action action;
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	public MacroActionPanel(Action action, MacroEditorUI k) {
 		this.action = action;
@@ -43,7 +38,7 @@ class MacroActionPanel extends JPanel {
 
 		JButton btnRemove = new JButton("X");
 		btnRemove.setForeground(Color.RED);
-		btnRemove.addActionListener(e -> k.removeFromPanels(me));
+		btnRemove.addActionListener(e -> k.removeFromPanels(this)); //Changed from static instance (this) to this
 		btnRemove.setFont(FONT);
 		btnRemove.setToolTipText("Remove");
 		btnRemove.setBounds(283, -1, 41, 22);

@@ -61,8 +61,7 @@ public class ASS extends UtilityJFrame {
 	private MacroEditor macroEditor;
 
 	private BasicContainer logger = new BasicContainer("Logger", Icons.LOGGER.getImage(), LoggerPanel.get());
-	private BasicContainer settings = new BasicContainer("Settings", Icons.SETTINGS.getImage(),
-			new SettingsUI(audioPlayer));
+	private BasicContainer settings = new BasicContainer("Settings", Icons.SETTINGS.getImage(), new SettingsUI(audioPlayer));
 	private BasicContainer credits = new BasicContainer("Credits", Icons.ABOUT.getImage(), new CreditsUI());
 
 	private BasicContainer mainView;
@@ -73,9 +72,8 @@ public class ASS extends UtilityJFrame {
 
 	/**
 	 * Create the frame.
-	 * 
+	 * <p>
 	 * (Hidden by default)
-	 * 
 	 */
 	public ASS() {
 
@@ -84,7 +82,7 @@ public class ASS extends UtilityJFrame {
 
 		macroEditor = new MacroEditor();
 
-		macroEditor.macroLoader.registerWaitingForMacroChanges(fileManager::macroChanged);
+		macroEditor.macroLoader.registerListeningForMacroChanges(fileManager::macroChanged);
 
 		//Manually trigger it to populate fMan and toolBar
 		macroEditor.macroLoader.tellMacroChanged();
@@ -105,11 +103,10 @@ public class ASS extends UtilityJFrame {
 		}
 
 		// Save width and height on resize
-
 		addComponentListener(new ComponentListener() {
 			public void componentResized(ComponentEvent e) {
-				Properties.SIZE_WIDTH.setNewValue(getWidth());
-				Properties.SIZE_HEIGHT.setNewValue(getHeight());
+				Properties.SIZE_WIDTH.setValue(getWidth());
+				Properties.SIZE_HEIGHT.setValue(getHeight());
 			}
 
 			@Override
@@ -132,8 +129,8 @@ public class ASS extends UtilityJFrame {
 			public void windowClosing(WindowEvent we) {
 				if (Properties.PROMPT_ON_EXIT.getValueAsBoolean()) {
 					String ObjButtons[] = { "Yes", "No" };
-					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?",
-							JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
+					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons,
+							ObjButtons[1]);
 					if (PromptResult == JOptionPane.YES_OPTION) {
 						System.exit(0);
 					}
@@ -265,9 +262,7 @@ public class ASS extends UtilityJFrame {
 		viewPane.setDividerLocation(350);
 
 		// Divider moved
-		viewPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
-				pce -> Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION
-						.setNewValue((((Integer) pce.getNewValue()).intValue()) + ""));
+		viewPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, pce -> Properties.HORIZONTAL_SPLITPANE_DIVIDERLOCATION.setValue((((Integer) pce.getNewValue()).intValue()) + ""));
 		BorderLayout borderLayout = (BorderLayout) fileManager.getLayout();
 		borderLayout.setVgap(1);
 		borderLayout.setHgap(1);
@@ -300,16 +295,6 @@ public class ASS extends UtilityJFrame {
 			}
 
 			@Override
-			public void windowClosed(WindowEvent e) {
-				setIsListenningForInputs(false);
-			}
-
-			@Override
-			public void windowIconified(WindowEvent e) {
-				setIsListenningForInputs(false);
-			}
-
-			@Override
 			public void windowDeiconified(WindowEvent e) {
 				setIsListenningForInputs(true);
 			}
@@ -320,13 +305,23 @@ public class ASS extends UtilityJFrame {
 			}
 
 			@Override
-			public void windowDeactivated(WindowEvent e) {
+			public void windowGainedFocus(WindowEvent e) {
+				setIsListenningForInputs(true);
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
 				setIsListenningForInputs(false);
 			}
 
 			@Override
-			public void windowGainedFocus(WindowEvent e) {
-				setIsListenningForInputs(true);
+			public void windowIconified(WindowEvent e) {
+				setIsListenningForInputs(false);
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				setIsListenningForInputs(false);
 			}
 
 			@Override
@@ -340,7 +335,7 @@ public class ASS extends UtilityJFrame {
 		});
 
 		if (Properties.FIRST_LAUNCH.getValueAsBoolean()) {
-			Properties.FIRST_LAUNCH.setNewValue(false);
+			Properties.FIRST_LAUNCH.setValue(false);
 			showCredits();
 		}
 
@@ -355,7 +350,6 @@ public class ASS extends UtilityJFrame {
 
 		revalidate();
 		repaint();
-
 	}
 
 	private void showMainView() {
@@ -409,7 +403,8 @@ public class ASS extends UtilityJFrame {
 			BufferedImage outImage = ImageIO.read(new File(IMAGE_LOCATION + "/BG.png"));
 			BufferedImage textImage = ImageIO.read(new File(IMAGE_LOCATION + "/TITLE.png"));
 
-			new SplashScreen(inImage, outImage, textImage, ASS, true, 20);
+			SplashScreen s = new SplashScreen(inImage, outImage, textImage);
+			s.setVisible(true);
 
 		} catch (IOException e) {
 			log.error("Error with SplashScreen!");

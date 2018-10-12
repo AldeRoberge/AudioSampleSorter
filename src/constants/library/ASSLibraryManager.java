@@ -31,7 +31,7 @@ public class ASSLibraryManager {
 					LIBRARY_FOLDER.mkdir();
 				}
 
-				Properties.LIBRARY_LOCATION.setNewValue(LIBRARY_FOLDER.getAbsolutePath());
+				Properties.LIBRARY_LOCATION.setValue(LIBRARY_FOLDER.getAbsolutePath());
 
 			}
 

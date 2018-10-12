@@ -26,15 +26,15 @@ import javax.swing.event.DocumentListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ass.action.DeleteAction;
-import ass.action.MoveToFolderAction;
-import ass.action.OpenContainingFolderAction;
-import ass.action.RemoveSelectedFilesAction;
-import ass.action.RenameAction;
-import ass.action.SimpleUIAction;
-import ass.action.TestAction;
 import ass.action.editeable.EditablePropertyEditor;
+import ass.action.file.DeleteAction;
+import ass.action.file.MoveToFolderAction;
+import ass.action.file.RenameAction;
+import ass.action.file.TestAction;
 import ass.action.interfaces.Action;
+import ass.action.ui.OpenContainingFolderAction;
+import ass.action.ui.RemoveSelectedFilesAction;
+import ass.action.ui.SimpleUIAction;
 import ass.keyboard.key.GlobalKeyEventListener;
 import ass.keyboard.key.GlobalKeyListener;
 import ass.keyboard.key.Key;
@@ -301,7 +301,7 @@ public class MacroEditorUI extends JPanel {
 			private List<Key> keysPressedAndNotReleased = new ArrayList<>();
 
 			@Override
-			public void keyPressedChanged(List<Key> pressedKeys) {
+			public void keysPressedChanged(List<Key> pressedKeys) {
 			}
 
 			@Override
@@ -327,8 +327,6 @@ public class MacroEditorUI extends JPanel {
 
 			@Override
 			public void keyReleased(Key k) {
-
-				log.info("awdadawdawda " + isListenningForKeyInputs);
 
 				if (isListenningForKeyInputs) {
 

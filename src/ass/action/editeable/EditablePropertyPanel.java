@@ -25,8 +25,6 @@ import constants.property.Properties;
 /**
  * See ActionEditor
  */
-
-@SuppressWarnings("unchecked")
 class EditablePropertyPanel extends JPanel {
 
 	private Logger log = LoggerFactory.getLogger(EditablePropertyPanel.class);
@@ -49,16 +47,16 @@ class EditablePropertyPanel extends JPanel {
 
 		if (propertyToEdit.getId() == EditableProperty.BOOLEAN_ID) { // JCHECKBOX
 
-			JCheckBox chckbxNewCheckBox = new JCheckBox(propertyToEdit.prefix);
-			chckbxNewCheckBox.setBounds(8, 9, 434, 25);
-			chckbxNewCheckBox.setSelected((Boolean) propertyToEdit.getValue());
-			add(chckbxNewCheckBox);
+			JCheckBox booleanPropertyCheckbox = new JCheckBox(propertyToEdit.prefix);
+			booleanPropertyCheckbox.setBounds(8, 9, 434, 25);
+			booleanPropertyCheckbox.setSelected((Boolean) propertyToEdit.getValue());
+			add(booleanPropertyCheckbox);
 
 			ActionListener act = actionEvent -> {
-				log.info("Value updated to " + chckbxNewCheckBox.isSelected());
-				propertyToEdit.setValue(chckbxNewCheckBox.isSelected());
+				log.info("Value updated to " + booleanPropertyCheckbox.isSelected());
+				propertyToEdit.setValue(booleanPropertyCheckbox.isSelected());
 			};
-			chckbxNewCheckBox.addActionListener(act);
+			booleanPropertyCheckbox.addActionListener(act);
 
 		} else if (propertyToEdit.getId() == EditableProperty.STRING_ID) { // JTEXTFIELD
 
@@ -66,13 +64,13 @@ class EditablePropertyPanel extends JPanel {
 			lblPrefix.setBounds(12, 16, 56, 16);
 			add(lblPrefix);
 
-			JTextField stringInputField = new JTextField();
-			stringInputField.setBounds(80, 13, 135, 22);
-			stringInputField.setColumns(10);
-			stringInputField.grabFocus();
-			stringInputField.setText((String) propertyToEdit.getValue());
+			JTextField stringPropertyField = new JTextField();
+			stringPropertyField.setBounds(80, 13, 135, 22);
+			stringPropertyField.setColumns(10);
+			stringPropertyField.grabFocus();
+			stringPropertyField.setText((String) propertyToEdit.getValue());
 
-			stringInputField.getDocument().addDocumentListener(new DocumentListener() {
+			stringPropertyField.getDocument().addDocumentListener(new DocumentListener() {
 
 				@Override
 				public void removeUpdate(DocumentEvent e) {
@@ -90,13 +88,13 @@ class EditablePropertyPanel extends JPanel {
 				}
 
 				public void updateValue() {
-					log.info("Value updated to " + stringInputField.getText());
-					propertyToEdit.setValue(stringInputField.getText());
+					log.info("Value updated to " + stringPropertyField.getText());
+					propertyToEdit.setValue(stringPropertyField.getText());
 				}
 
 			});
 
-			add(stringInputField);
+			add(stringPropertyField);
 
 		} else if (propertyToEdit.getId() == EditableProperty.INT_ID) { // JTEXTFIELD that only accepts ints
 
@@ -106,12 +104,12 @@ class EditablePropertyPanel extends JPanel {
 			lblPrefix.setBounds(12, 16, 56, 16);
 			add(lblPrefix);
 
-			JTextField intInputField = new JTextField();
-			intInputField.setBounds(80, 13, 135, 22);
-			intInputField.setColumns(10);
-			intInputField.setText(propertyToEdit.getValue().toString());
+			JTextField intPropertyField = new JTextField();
+			intPropertyField.setBounds(80, 13, 135, 22);
+			intPropertyField.setColumns(10);
+			intPropertyField.setText(propertyToEdit.getValue().toString());
 
-			intInputField.addKeyListener(new KeyAdapter() { //Consume non integers
+			intPropertyField.addKeyListener(new KeyAdapter() { //Consume non integers
 				public void keyTyped(KeyEvent e) {
 					char c = e.getKeyChar();
 					if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
@@ -119,16 +117,16 @@ class EditablePropertyPanel extends JPanel {
 						e.consume();
 					}
 
-					if (!intInputField.getText().equals("")) {
-						log.info("Value updated to " + intInputField.getText());
-						propertyToEdit.setValue(Integer.parseInt(intInputField.getText()));
+					if (!intPropertyField.getText().equals("")) {
+						log.info("Value updated to " + intPropertyField.getText());
+						propertyToEdit.setValue(Integer.parseInt(intPropertyField.getText()));
 					}
 
 				}
 
 			});
 
-			add(intInputField);
+			add(intPropertyField);
 
 		} else if (propertyToEdit.getId() == EditableProperty.FILE_CHOOSER_ID) { // JFILECHOOSER
 
