@@ -104,7 +104,7 @@ public class ASS extends UtilityJFrame {
 
 		// Save width and height on resize
 		addComponentListener(new ComponentListener() {
-			public void componentResized(ComponentEvent e) {
+			public void componentResized(ComponentEvent e) { //TODO remake this so it doesnt stop screen resizing
 				Properties.SIZE_WIDTH.setValue(getWidth());
 				Properties.SIZE_HEIGHT.setValue(getHeight());
 			}
@@ -127,16 +127,7 @@ public class ASS extends UtilityJFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent we) {
-				if (Properties.PROMPT_ON_EXIT.getValueAsBoolean()) {
-					String ObjButtons[] = { "Yes", "No" };
-					int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons,
-							ObjButtons[1]);
-					if (PromptResult == JOptionPane.YES_OPTION) {
-						System.exit(0);
-					}
-				} else {
-					System.exit(0);
-				}
+				close();
 			}
 		});
 
@@ -172,8 +163,7 @@ public class ASS extends UtilityJFrame {
 
 		JMenuItem mnExit = new JMenuItem(new AbstractAction("Exit") {
 			public void actionPerformed(ActionEvent e) {
-				log.info("Exiting...");
-				System.exit(0);
+				close();
 			}
 		});
 		mnExit.setIcon(Icons.EXIT.getImageIcon());
@@ -340,6 +330,20 @@ public class ASS extends UtilityJFrame {
 		}
 
 		showMainView();
+	}
+
+	private void close() {
+		log.info("Exiting...");
+
+		if (Properties.PROMPT_ON_EXIT.getValueAsBoolean()) {
+			String ObjButtons[] = { "Yes", "No" };
+			int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exit?", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
+			if (PromptResult == JOptionPane.YES_OPTION) {
+				System.exit(0);
+			}
+		} else {
+			System.exit(0);
+		}
 	}
 
 	private void show(BasicContainer viewPane2) {
